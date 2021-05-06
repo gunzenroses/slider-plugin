@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "removeComments": true,
+        "moduleResolution": "node",
+        "noEmit": true,
+        "outDir": "./dist",
+        "watch": true,
+        //"outFile": "main.js"
+    },
+    "include": [
+        "src/"
+    ]
+} 
