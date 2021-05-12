@@ -4,9 +4,9 @@
   "description": "jQuery plugin range-slider with MVC structure",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "build": "rimraf dist && webpack --env production --mode=production",
-    "dev": "webpack serve --env development --progress",
+    "dev": "webpack serve --env development --progress --liveReload",
     "docs": "jsdoc2md --template ./README.hbs --files ./src/lib/*.ts --configure ./jsdoc2md.json > ./README.md"
   },
   "repository": {
@@ -25,20 +25,26 @@
     "url": "https://github.com/gunzenroses/jq-range-slider/issues"
   },
   "homepage": "https://github.com/gunzenroses/jq-range-slider#readme",
-  "jest": {
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    }
-  },
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/preset-env": "^7.14.1",
     "@babel/preset-typescript": "^7.13.0",
+    "@types/jest": "^26.0.23",
+    "@types/jquery": "^3.5.5",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^8.1.1",
+    "css-loader": "^5.2.4",
     "html-webpack-plugin": "^5.3.1",
+    "jest": "^26.6.3",
     "mini-css-extract-plugin": "^1.6.0",
+    "postcss-loader": "^5.2.0",
+    "sass": "^1.32.12",
+    "sass-loader": "^11.0.1",
+    "style-loader": "^2.0.0",
+    "ts-jest": "^26.5.6",
+    "ts-loader": "^9.1.2",
     "webpack": "^5.36.2",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
