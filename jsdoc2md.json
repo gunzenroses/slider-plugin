@@ -2,11 +2,12 @@
     "source": {
         "includePattern": ".+\\.ts(doc|x)?$"
     },
-    "plugins": {
-        "node_modules/jsdoc-babel"
-    },
-    "babel": {
-        "extentions": ["ts"],
-        "presets": ["@babel/preset-typescript"]
-    }
+    "plugins": [
+        "node_modules/jsdoc-babel",
+        {"babel": {
+                    "extentions": ["ts"],
+                    "presets": ["@babel/preset-typescript"]
+                }
+        }
+    ]
 }
