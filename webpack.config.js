@@ -28,13 +28,26 @@ module.exports = (env) => ({
     devtool: env.development ? 'inline-source-map' : false,
     module: {
         rules: [
+            {
+                test: /\.m?js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ['@babel/preset-env'],
+                    }
+                }
+            },
+            {
+                test: /\.tsx?$/,
+                use: [
+                    'babel-loader',
+                    'ts-loader',
+                ],
+                exclude: /node_modules/,
+            },
             // {
-            //     test: /\.tsx?$/,
-            //     use: 'ts-loader',
-            //     exclude: /node_modules/,
-            // },
-            // {
-            //     test: /\/(ts|js)x$/,
+            //     test: /\.(ts|js)x$/,
             //     exclude: /node_modules/,
             //     use: [
             //         'babel-loader',
@@ -45,27 +58,18 @@ module.exports = (env) => ({
                 test: /\.css$/,
                 exclude: /node_modules/,
                 use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                    },
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1,
-                        }
-                    }
+                    "style-loader",
+                    "css-loader",
                 ]
             },
             {
-                test: /\.m?js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ['@babel/preset-env'],
-                    }
-                }
-            }
+                test: /\.s[ac]ss$/,
+                use: [
+                    "style-loader", // Creates `style` nodes from JS strings
+                    "css-loader", // Translates CSS into CommonJS
+                    "sass-loader", // Compiles Sass to CSS
+                ]
+            },
         ],
     },
     
