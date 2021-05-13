@@ -9,7 +9,7 @@ import { renderSliderTrack } from "./subviews/renderSliderTrack"
 
 class SliderView {
     constructor(){
-        this.fromViewChangeCurrentFirst = new EventDispatcher(this)
+        this.fromViewSelectCurrentFirst = new EventDispatcher(this)
         this.fromViewDragThumbFirst = new EventDispatcher(this)
     }
 
@@ -30,28 +30,30 @@ class SliderView {
             this.sliderThumbFirst.classList.add("slider__thumb","thumb_first");
         this.sliderRange = document.createElement("div");
             this.sliderRange.classList.add("slider__range");
+        this.dragObject = {};
         return this;
     }
 
     setupHandlers(){
-        this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);
+        this.selectCurrentFirstHandler = this.selectCurrentFirst.bind(this);
         this.dragThumbFirstStartHandler = this.dragThumbFirstStart.bind(this);
         this.dragThumbFirstMoveHandler = this.dragThumbFirstMove.bind(this);
+        this.dragThumbFirstEndHandler = this.dragThumbFirstEnd.bind(this);
+        //this.simpleHandler = this.simple.bind(this);
         return this;
     }
 
     enable(){
-        this.sliderContainer.addEventListener("click", this.changeCurrentFirstHandler);
+        this.sliderContainer.addEventListener("click", this.selectCurrentFirstHandler);
         this.sliderThumbFirst.addEventListener("mousedown", this.dragThumbFirstStartHandler);
-        this.sliderContainer.addEventListener("mousemove", ()=>{
-            console.log("move!");
-        });
-        // this.sliderContainer.addEventListener("mousemove", this.dragThumbFirstMoveHandler);
+        document.addEventListener("mouseup", this.dragThumbFirstEndHandler);
+        document.addEventListener("mousemove", this.dragThumbFirstMoveHandler);
         return this;
     }
 
-    changeCurrentFirst(e){
-        this.fromViewChangeCurrentFirst.notify(e.clientX);
+    selectCurrentFirst(e){
+        if (e.target === this.sliderThumbFirst) return;
+        this.fromViewSelectCurrentFirst.notify(e.clientX);
         return this;
     }
     
@@ -61,22 +63,33 @@ class SliderView {
         return this;
     }
 
-
     dragThumbFirstStart(e){
-        this.thumbFirstStartX = e.offsetX;
-        console.log(this.thumbFirstStartX);
-        return this;
+        if (e.target != this.sliderThumbFirst){
+            return;
+        } else {
+            this.dragObject.elem = e.target;
+            this.dragObject.offsetX = e.offsetX;
+            this.dragObject.clientX = e.clientX;
+            return this;
+        }
     }
 
     dragThumbFirstMove(e){
-        this.sliderThumbFirst.style.left = 13+"%";
-        console.log("another step");
-        //this.sliderThumbFirst.style.left = 
-
-        this.fromViewDragThumbFirst.notify()
+        e.preventDefault();
+        if (!this.dragObject.elem) return;
+        this.fromViewDragThumbFirst.notify(e);
         return this;
     }
 
+    dragThumbFirstEnd(){
+        this.dragObject = {};
+        (this.sliderThumbFirst.style.left);
+        return this;
+    }
+
+
+
+    
     fromPresenterDragThumbFirst(styleLeft){
         this.sliderThumbFirst.style.left = styleLeft + "%";
         return this;

@@ -29,7 +29,7 @@ class SliderPresenter {
     }
 
     setupHandlers(){
-        this.fromViewChangeCurentFirstHandler = this.changeCurrentFirstInModel.bind(this);
+        this.fromViewSelectCurentFirstHandler = this.selectCurrentFirstInPresenter.bind(this);
         this.fromModelChangeCurrentFirstHandler = this.changeCurrentFirstInView.bind(this);
 
         this.fromViewDragThumbFirstHandler = this.dragThumbFirstInPresenter.bind(this);
@@ -37,9 +37,8 @@ class SliderPresenter {
     }
 
     enable(){
-        this.view.fromViewChangeCurrentFirst.add(this.fromViewChangeCurentFirstHandler);
+        this.view.fromViewSelectCurrentFirst.add(this.fromViewSelectCurentFirstHandler);
         this.model.fromModelChangeCurrentFirst.add(this.fromModelChangeCurrentFirstHandler);
-
         this.view.fromViewDragThumbFirst.add(this.fromViewDragThumbFirstHandler);
         return this;
     }
@@ -48,13 +47,20 @@ class SliderPresenter {
         this.view.init(this.containerId);
     }
 
-    changeCurrentFirstInModel(newFirst){
-        let sliderContainerWidth = getComputedStyle(this.view.sliderContainer).width.replace("px","");
-        let percentFirst = parseInt(newFirst/sliderContainerWidth*100);
-        if (percentFirst > 0 && percentFirst <=100){
-            this.model.changeCurrentFirst(percentFirst)
-        }
+    selectCurrentFirstInPresenter(newCoord){
+        //вынести отдельно повторяющиеся величины первые две?
+        let containerWidth = getComputedStyle(this.view.sliderContainer).width.replace("px","");
+        let thumbWidth = getComputedStyle(this.view.sliderThumbFirst).width.replace("px","");
+        let newThumbPosition = newCoord - thumbWidth/2;
+        let newCurrentFirst = parseInt(newThumbPosition/containerWidth*100);
+        this.changeCurrentFirstInModel(newCurrentFirst);
         return this;
+    }
+
+    changeCurrentFirstInModel(newCurrentFirst){
+        if (newCurrentFirst > 0 && newCurrentFirst <=100){
+            this.model.fromPresenterChangeCurrentFirst(newCurrentFirst)
+        }
     }
 
     changeCurrentFirstInView(newCurrentFirst){
@@ -62,11 +68,18 @@ class SliderPresenter {
         return this;
     }
 
-    dragThumbFirstInPresenter(){
-        //let offsetX = event.offsetX;
-        
-        console.log()
-        
+    dragThumbFirstInPresenter(e){
+        let clientX = e.clientX;
+        let containerWidth = getComputedStyle(this.view.sliderContainer).width.replace("px","");
+        let thumbInnerShift = this.view.dragObject.offsetX;
+
+        let newThumbPosition = clientX - thumbInnerShift;
+        let newCurrentFirst = parseInt(newThumbPosition/containerWidth*100);
+        this.changeCurrentFirstInModel(newCurrentFirst);
+        // if (newCurrentFirst > 0 && newCurrentFirst <=100){
+        //     //this.model.changeCurrentFirst(thumbStyleLeft)
+        //     this.view.fromPresenterChangeCurrentFirst(newCurrentFirst);
+        // }
         return this;
     }
 

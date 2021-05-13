@@ -26,7 +26,7 @@ class SliderModel {
     }
 
     //callback from and to presenter
-    changeCurrentFirst(newFirst){
+    fromPresenterChangeCurrentFirst(newFirst){
         this.settings.currentFirst = newFirst;
         this.fromModelChangeCurrentFirst.notify(newFirst);
         return this;
