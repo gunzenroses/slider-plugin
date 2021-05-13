@@ -7,7 +7,7 @@ class SliderModel {
     constructor(containerId, settings){
         this.containerId = containerId
         this.settings = settings
-        this.fromModelChangeThumbFirst = new EventDispatcher(this)
+        this.fromModelChangeThumb = new EventDispatcher(this)
         this.init()
     }
 
@@ -26,9 +26,9 @@ class SliderModel {
     }
 
     //callback from and to presenter
-    fromPresenterChangeThumbFirst(newFirst){
-        this.settings.currentFirst = newFirst;
-        this.fromModelChangeThumbFirst.notify(newFirst);
+    fromPresenterChangeThumb(newThumbCurrent){
+        this.settings.currentFirst = newThumbCurrent;
+        this.fromModelChangeThumb.notify(newThumbCurrent);
         return this;
     }
 

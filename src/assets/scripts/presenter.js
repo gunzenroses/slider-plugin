@@ -14,70 +14,65 @@ class SliderPresenter {
     }
 
     init(){
-        this.createChildren();
+        this.view.init(this.containerId, this.settings);
         this.setupHandlers();
         this.enable();
         this.renderView();
         return this;
     }
 
-    createChildren(){
-            
-        return this;
-    }
-
     setupHandlers(){
-        this.fromViewSelectThumbFirstHandler = this.selectThumbFirstInPresenter.bind(this);
-        this.fromViewDragThumbFirstHandler = this.dragThumbFirstInPresenter.bind(this);
+        this.fromViewSelectThumbHandler = this.selectThumbInPresenter.bind(this);
+        this.fromViewDragThumbHandler = this.dragThumbInPresenter.bind(this);
 
-        this.fromModelChangeThumbFirstHandler = this.changeThumbFirstInView.bind(this);
+        this.fromModelChangeThumbHandler = this.changeThumbInView.bind(this);
         return this;
     }
 
     enable(){
-        this.view.fromViewSelectThumbFirst.add(this.fromViewSelectThumbFirstHandler);
-        this.view.fromViewDragThumbFirst.add(this.fromViewDragThumbFirstHandler);
+        this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler);
+        this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler);
 
-        this.model.fromModelChangeThumbFirst.add(this.fromModelChangeThumbFirstHandler);
+        this.model.fromModelChangeThumb.add(this.fromModelChangeThumbHandler);
         return this;
     }
 
     renderView(){
-        this.view.init(this.containerId);
+        
     }
 
-    selectThumbFirstInPresenter(newCoord){
+    selectThumbInPresenter(newCoord){
         //вынести отдельно повторяющиеся величины первые две?
             let containerWidth = getComputedStyle(this.view.sliderContainer).width.replace("px","");
-            let thumbWidth = getComputedStyle(this.view.sliderThumbFirst).width.replace("px","");
-        let newThumbPosition = newCoord - thumbWidth/2;
-        let newThumbFirst = Math.floor(newThumbPosition/containerWidth*100);
-        this.changeThumbFirstInModel(newThumbFirst);
+            let thumbWidth = getComputedStyle(this.view.sliderThumb).width.replace("px","");
+        let newThumbCurrentPosition = newCoord - thumbWidth/2;
+        let newThumbCurrent = Math.floor(newThumbCurrentPosition/containerWidth*100);
+        this.changeThumbInModel(newThumbCurrent);
         return this;
     }
 
-    dragThumbFirstInPresenter(e){
+    dragThumbInPresenter(e){
         let clientX = e.clientX;
             let containerWidth = getComputedStyle(this.view.sliderContainer).width.replace("px","");
             let thumbInnerShift = this.view.dragObject.offsetX;
-        let newThumbPosition = clientX - thumbInnerShift;
-        let newThumbFirst = Math.floor(newThumbPosition/containerWidth*100);
-        this.changeThumbFirstInModel(newThumbFirst);
+        let newThumbCurrentPosition = clientX - thumbInnerShift;
+        let newThumbCurrent = Math.floor(newThumbCurrentPosition/containerWidth*100);
+        this.changeThumbInModel(newThumbCurrent);
         return this;
     }
 
 
-    changeThumbFirstInModel(newThumbFirst){
-        if (newThumbFirst >= 0 && newThumbFirst <= 100){
-            this.model.fromPresenterChangeThumbFirst(newThumbFirst)
+    changeThumbInModel(newThumbCurrent){
+        if (newThumbCurrent >= 0 && newThumbCurrent <= 100){
+            this.model.fromPresenterChangeThumb(newThumbCurrent);
         }
     }
 
-    changeThumbFirstInView(newThumbFirst){
-        this.view.fromPresenterChangeThumbFirst(newThumbFirst)
+    changeThumbInView(newThumbCurrent){
+        this.view.fromPresenterChangeThumb(newThumbCurrent);
+        this.view.fromPresenterChangeRange(newThumbCurrent);
         return this;
     }
-
 }
 
 export { SliderPresenter }
