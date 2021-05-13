@@ -9,7 +9,7 @@ import { renderSliderTrack } from "./subviews/renderSliderTrack"
 
 class SliderView {
     constructor(){
-        this.fromViewSelectCurrentFirst = new EventDispatcher(this)
+        this.fromViewSelectThumbFirst = new EventDispatcher(this)
         this.fromViewDragThumbFirst = new EventDispatcher(this)
     }
 
@@ -35,7 +35,7 @@ class SliderView {
     }
 
     setupHandlers(){
-        this.selectCurrentFirstHandler = this.selectCurrentFirst.bind(this);
+        this.selectThumbFirstHandler = this.selectThumbFirst.bind(this);
         this.dragThumbFirstStartHandler = this.dragThumbFirstStart.bind(this);
         this.dragThumbFirstMoveHandler = this.dragThumbFirstMove.bind(this);
         this.dragThumbFirstEndHandler = this.dragThumbFirstEnd.bind(this);
@@ -44,25 +44,19 @@ class SliderView {
     }
 
     enable(){
-        this.sliderContainer.addEventListener("click", this.selectCurrentFirstHandler);
+        this.sliderContainer.addEventListener("click", this.selectThumbFirstHandler);
         this.sliderThumbFirst.addEventListener("mousedown", this.dragThumbFirstStartHandler);
-        document.addEventListener("mouseup", this.dragThumbFirstEndHandler);
         document.addEventListener("mousemove", this.dragThumbFirstMoveHandler);
+        document.addEventListener("mouseup", this.dragThumbFirstEndHandler);
         return this;
     }
 
-    selectCurrentFirst(e){
+    selectThumbFirst(e){
         if (e.target === this.sliderThumbFirst) return;
-        this.fromViewSelectCurrentFirst.notify(e.clientX);
+        this.fromViewSelectThumbFirst.notify(e.clientX);
         return this;
     }
     
-    fromPresenterChangeCurrentFirst(newCurrentFirst){
-        this.sliderThumbFirst.style.left = newCurrentFirst+"%";
-        this.sliderRange.style.right = (100 - newCurrentFirst) + "%";
-        return this;
-    }
-
     dragThumbFirstStart(e){
         if (e.target != this.sliderThumbFirst){
             return;
@@ -89,19 +83,20 @@ class SliderView {
 
 
 
-    
-    fromPresenterDragThumbFirst(styleLeft){
-        this.sliderThumbFirst.style.left = styleLeft + "%";
+    // subviews?
+    fromPresenterChangeThumbFirst(newThumbFirst){
+        this.sliderThumbFirst.style.left = newThumbFirst + "%";
+        this.sliderRange.style.right = (100 - newThumbFirst) + "%";
         return this;
     }
+
 
     render(){
         //поставить вызовы функций для отрисовки каждого элемента!
         this.sliderContainer.innerHTML = "";
-        this.sliderContainer.append(this.sliderTrack);
+        this.sliderContainer.prepend(this.sliderTrack);
         this.sliderContainer.append(this.sliderThumbFirst);
         this.sliderContainer.append(this.sliderRange);
-        
         return this;
     }
 }
