@@ -1,5 +1,8 @@
 import { EventDispatcher } from "./eventDispatcher"
-import { renderSliderTrack } from "./subviews/renderSliderTrack"
+import { SliderContainer } from "./subviews/SliderContainer"
+import { SliderTrack } from "./subviews/SliderTrack"
+import { SliderThumb } from "./subviews/SliderThumb"
+import { SliderRange } from "./subviews/SliderRange"
 
 // Passive view!! View ничего не знает о Model // предоставляет свойства для отображения на экране,
 // обновляется Presenter' ом //слой для управления отображением (View) — 
@@ -9,12 +12,14 @@ import { renderSliderTrack } from "./subviews/renderSliderTrack"
 
 class SliderView {
     constructor(){
-        this.fromViewSelectThumbFirst = new EventDispatcher(this)
-        this.fromViewDragThumbFirst = new EventDispatcher(this)
+        this.fromViewSelectThumb = new EventDispatcher(this)
+        this.fromViewDragThumb = new EventDispatcher(this)
     }
 
-    init(containerId){
+    init(containerId, settings){
         this.createChildren(containerId);
+        this.containerId = containerId;
+        this.settings = settings;
         this.render();
         this.setupHandlers();
         this.enable();
@@ -22,83 +27,105 @@ class SliderView {
     }
 
     createChildren(containerId){
-        this.sliderContainer = document.getElementById(containerId);
-            this.sliderContainer.classList.add("slider__content");
-        this.sliderTrack = document.createElement("div");
-            this.sliderTrack.classList.add("slider__track");
-        this.sliderThumbFirst = document.createElement("div");
-            this.sliderThumbFirst.classList.add("slider__thumb","thumb_first");
-        this.sliderRange = document.createElement("div");
-            this.sliderRange.classList.add("slider__range");
+        
+        
+        this.sliderThumbSecond = document.createElement("div");
+            this.sliderThumbSecond.classList.add("slider__thumb","thumb_second");
+        
         this.dragObject = {};
         return this;
     }
 
     setupHandlers(){
-        this.selectThumbFirstHandler = this.selectThumbFirst.bind(this);
-        this.dragThumbFirstStartHandler = this.dragThumbFirstStart.bind(this);
-        this.dragThumbFirstMoveHandler = this.dragThumbFirstMove.bind(this);
-        this.dragThumbFirstEndHandler = this.dragThumbFirstEnd.bind(this);
+        this.selectThumbHandler = this.selectThumb.bind(this);
+        this.dragThumbStartHandler = this.dragThumbStart.bind(this);
+        this.dragThumbMoveHandler = this.dragThumbMove.bind(this);
+        this.dragThumbEndHandler = this.dragThumbEnd.bind(this);
         //this.simpleHandler = this.simple.bind(this);
         return this;
     }
 
     enable(){
-        this.sliderContainer.addEventListener("click", this.selectThumbFirstHandler);
-        this.sliderThumbFirst.addEventListener("mousedown", this.dragThumbFirstStartHandler);
-        document.addEventListener("mousemove", this.dragThumbFirstMoveHandler);
-        document.addEventListener("mouseup", this.dragThumbFirstEndHandler);
+        this.sliderContainer.addEventListener("click", this.selectThumbHandler);
+        this.sliderThumb.addEventListener("mousedown", this.dragThumbStartHandler);
+        document.addEventListener("mousemove", this.dragThumbMoveHandler);
+        document.addEventListener("mouseup", this.dragThumbEndHandler);
         return this;
     }
 
-    selectThumbFirst(e){
-        if (e.target === this.sliderThumbFirst) return;
-        this.fromViewSelectThumbFirst.notify(e.clientX);
+    selectThumb(e){
+        if (e.target === this.sliderThumb) return;
+        this.fromViewSelectThumb.notify(e.clientX);
         return this;
     }
     
-    dragThumbFirstStart(e){
-        if (e.target != this.sliderThumbFirst){
+    dragThumbStart(e){
+        if (e.target != this.sliderThumb){
             return;
         } else {
             this.dragObject.elem = e.target;
-            this.dragObject.offsetX = e.offsetX;
-            this.dragObject.clientX = e.clientX;
+            // this.dragObject.offsetX = e.offsetX;
+            // this.dragObject.clientX = e.clientX;
             return this;
         }
     }
 
-    dragThumbFirstMove(e){
+    dragThumbMove(e){
         e.preventDefault();
         if (!this.dragObject.elem) return;
-        this.fromViewDragThumbFirst.notify(e);
+        this.fromViewDragThumb.notify(e);
         return this;
     }
 
-    dragThumbFirstEnd(){
+    dragThumbEnd(){
         this.dragObject = {};
-        (this.sliderThumbFirst.style.left);
         return this;
     }
-
-
 
     // subviews?
-    fromPresenterChangeThumbFirst(newThumbFirst){
-        this.sliderThumbFirst.style.left = newThumbFirst + "%";
-        this.sliderRange.style.right = (100 - newThumbFirst) + "%";
+    fromPresenterChangeThumb(newThumbCurrent){
+        this.sliderThumb.style.left = newThumbCurrent + "%";
         return this;
     }
 
+    fromPresenterChangeRange(newThumbCurrent){
+        this.sliderRange.style.right = (100 - newThumbCurrent) + "%";
+        return this;
+    }
 
-    render(){
-        //поставить вызовы функций для отрисовки каждого элемента!
-        this.sliderContainer.innerHTML = "";
+    renderSliderContainer(containerId){
+        this.sliderContainer = new SliderContainer(containerId);
+        return this;
+    }
+
+    renderSliderTrack(){
+        this.sliderTrack = new SliderTrack();
         this.sliderContainer.prepend(this.sliderTrack);
-        this.sliderContainer.append(this.sliderThumbFirst);
+        return this;
+    }
+
+    renderSliderThumb(className){
+        this.sliderThumb = new SliderThumb(className)
+        this.sliderContainer.append(this.sliderThumb);
+    }
+
+    renderSliderRange(){
+        this.sliderRange = new SliderRange();
         this.sliderContainer.append(this.sliderRange);
         return this;
     }
+
+    render(){
+        this.renderSliderContainer(this.containerId);
+        this.renderSliderTrack();
+        this.renderSliderThumb("thumb_first");
+        //this.renderSliderThumb("thumb_second");
+        this.renderSliderRange();
+        return this;
+    }
 }
+
+
+
 
 export { SliderView }
