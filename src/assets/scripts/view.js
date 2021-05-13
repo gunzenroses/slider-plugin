@@ -35,13 +35,18 @@ class SliderView {
 
     setupHandlers(){
         this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);
-        this.dragThumbFirstHandler = this.dragThumbFirst.bind(this);
+        this.dragThumbFirstStartHandler = this.dragThumbFirstStart.bind(this);
+        this.dragThumbFirstMoveHandler = this.dragThumbFirstMove.bind(this);
         return this;
     }
 
     enable(){
         this.sliderContainer.addEventListener("click", this.changeCurrentFirstHandler);
-        this.sliderThumbFirst.addEventListener("mousedown", this.dragThumbFirstHandler);
+        this.sliderThumbFirst.addEventListener("mousedown", this.dragThumbFirstStartHandler);
+        this.sliderContainer.addEventListener("mousemove", ()=>{
+            console.log("move!");
+        });
+        // this.sliderContainer.addEventListener("mousemove", this.dragThumbFirstMoveHandler);
         return this;
     }
 
@@ -57,10 +62,18 @@ class SliderView {
     }
 
 
-    dragThumbFirst(){
-        document.addEventListener("mousemove", (e)=>{
-            this.fromViewDragThumbFirst.notify(e.clientX)
-        })
+    dragThumbFirstStart(e){
+        this.thumbFirstStartX = e.offsetX;
+        console.log(this.thumbFirstStartX);
+        return this;
+    }
+
+    dragThumbFirstMove(e){
+        this.sliderThumbFirst.style.left = 13+"%";
+        console.log("another step");
+        //this.sliderThumbFirst.style.left = 
+
+        this.fromViewDragThumbFirst.notify()
         return this;
     }
 

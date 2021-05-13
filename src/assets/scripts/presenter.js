@@ -32,7 +32,7 @@ class SliderPresenter {
         this.fromViewChangeCurentFirstHandler = this.changeCurrentFirstInModel.bind(this);
         this.fromModelChangeCurrentFirstHandler = this.changeCurrentFirstInView.bind(this);
 
-        this.fromViewDragThumbFirstHandler = this.dragThumbFirstInModel.bind(this);
+        this.fromViewDragThumbFirstHandler = this.dragThumbFirstInPresenter.bind(this);
         return this;
     }
 
@@ -62,29 +62,11 @@ class SliderPresenter {
         return this;
     }
 
-    dragThumbFirstInModel(clientX){
-        let sliderContainerWidth = getComputedStyle(this.view.sliderContainer).width.replace("px","");
-        let thumbWidth = getComputedStyle(this.view.sliderThumbFirst).width.replace("px","");
-        let moveLeft = clientX - thumbWidth/2;
-        let styleLeft = parseInt(moveLeft/sliderContainerWidth*100);
-
-        this.changeCurrentFirstInModel(styleLeft)
-
-        // document.addEventListener('mousemove', (event)=>{
-        //     console.log(event.clientX)
-        //     //let moveLeft = event.clientX - thumbWidth/2;
-        // });
-
-        // this.view.sliderThumbFirst.onmouseup = ()=>{
-        //     document.removeEventListener('mousemove', ()=>{
-        //         let styleLeft = event.pageX - shiftX + "px";
-        //     });
-        // }
-        // // отпустить мяч, удалить ненужные обработчики
-        // ball.onmouseup = function() {
-        //     document.removeEventListener('mousemove', onMouseMove);
-        //     ball.onmouseup = null;
-        // };
+    dragThumbFirstInPresenter(){
+        //let offsetX = event.offsetX;
+        
+        console.log()
+        
         return this;
     }
 
