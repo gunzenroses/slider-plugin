@@ -25,9 +25,15 @@
     height: 100%;
     top: 0;
     left: 0%;
-    right: 67%;
+    right: 33%;
     border-radius: 3px;
     background: #670042;
+
+    &_true {
+        @extend .slider__range;
+        left: 33%;
+        right: 33%;
+    }
 }
 
 .slider__thumb {
@@ -41,11 +47,11 @@
 }
 
 .slider__thumb.thumb_first {
-    left: 33%;
-    transform: translateX(-8px);
+    left: 67%;
+    //transform: translateX(-8px);
 }
 
 .slider__thumb.thumb_second {
-    right: 33%;
-    transform: translate(-8px);
+    left: 33%;
+    //transform: translate(-8px);
 }
