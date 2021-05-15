@@ -1,7 +1,7 @@
 class SliderRange {
-    constructor(){
+    constructor(className){
         this.sliderRange = document.createElement("div");
-        this.sliderRange.classList.add("slider__range");
+        this.sliderRange.classList.add(className);
         return this.sliderRange;
     }
 }

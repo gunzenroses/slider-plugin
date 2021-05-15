@@ -15,10 +15,16 @@ class SliderPresenter {
 
     init(){
         this.view.init(this.containerId, this.settings);
+        this.createChildren();
         this.setupHandlers();
         this.enable();
         this.renderView();
         return this;
+    }
+
+    createChildren(){
+        this.containerWidth = getComputedStyle(this.view.sliderContainer).width.replace("px","");
+        this.thumbWidth = getComputedStyle(this.view.sliderThumb).width.replace("px","");
     }
 
     setupHandlers(){
@@ -42,35 +48,60 @@ class SliderPresenter {
     }
 
     selectThumbInPresenter(newCoord){
-        //вынести отдельно повторяющиеся величины первые две?
-            let containerWidth = getComputedStyle(this.view.sliderContainer).width.replace("px","");
-            let thumbWidth = getComputedStyle(this.view.sliderThumb).width.replace("px","");
-        let newThumbCurrentPosition = newCoord - thumbWidth/2;
-        let newThumbCurrent = Math.floor(newThumbCurrentPosition/containerWidth*100);
-        this.changeThumbInModel(newThumbCurrent);
+        let newThumbCurrentPosition = newCoord - this.thumbWidth;
+        let newThumbCurrentPercent = Math.floor(newThumbCurrentPosition/this.containerWidth*100);
+        if (!this.model.settings.range){ this.selectThumbInPresenterRangeFalse(newThumbCurrentPercent)};
+        if (this.model.settings.range){ this.selectThumbInPresenterRangeTrue(newThumbCurrentPercent)};
+        return;
+    }
+
+    selectThumbInPresenterRangeFalse(newThumbCurrentPercent){
+        this.view.selectObject = this.view.sliderThumb;
+        this.changeThumbInModel(newThumbCurrentPercent);
+        return this;
+    }
+
+    selectThumbInPresenterRangeTrue(newThumbCurrentPercent){
+            let firstThumb = getComputedStyle(this.view.sliderThumb).left.replace("px","");
+            let secondThumb = getComputedStyle(this.view.sliderThumbSecond).left.replace("px","");
+            let firstThumbCoord = Math.floor(firstThumb/this.containerWidth*100);
+            let secondThumbCoord = Math.floor(secondThumb/this.containerWidth*100);
+        let firstDiff = Math.abs(firstThumbCoord - newThumbCurrentPercent);
+        let secondDiff = Math.abs(secondThumbCoord - newThumbCurrentPercent);
+        if (firstDiff <= secondDiff){ 
+            this.view.selectObject = this.view.sliderThumb;
+            this.changeThumbInModel(newThumbCurrentPercent) 
+        } if (firstDiff > secondDiff){
+            this.view.selectObject = this.view.sliderThumbSecond;
+            this.changeThumbRightInModel(newThumbCurrentPercent);
+        }
         return this;
     }
 
     dragThumbInPresenter(e){
         let clientX = e.clientX;
-            let containerWidth = getComputedStyle(this.view.sliderContainer).width.replace("px","");
-            let thumbInnerShift = this.view.dragObject.offsetX;
-        let newThumbCurrentPosition = clientX - thumbInnerShift;
-        let newThumbCurrent = Math.floor(newThumbCurrentPosition/containerWidth*100);
+        let newThumbCurrentPosition = clientX - this.thumbInnerShift;
+        let newThumbCurrent = Math.floor(newThumbCurrentPosition/this.containerWidth*100);
         this.changeThumbInModel(newThumbCurrent);
         return this;
     }
 
 
-    changeThumbInModel(newThumbCurrent){
-        if (newThumbCurrent >= 0 && newThumbCurrent <= 100){
-            this.model.fromPresenterChangeThumb(newThumbCurrent);
+    changeThumbInModel(newThumbValue){
+        if (newThumbValue >= 0 && newThumbValue <= 100){
+            this.model.fromPresenterChangeThumb(newThumbValue);
         }
     }
 
-    changeThumbInView(newThumbCurrent){
-        this.view.fromPresenterChangeThumb(newThumbCurrent);
-        this.view.fromPresenterChangeRange(newThumbCurrent);
+    changeThumbRightInModel(newThumbValue){
+        if (newThumbValue >= 0 && newThumbValue <= 100){
+            this.model.fromPresenterChangeThumbRight(newThumbValue);
+        }
+    }
+
+    changeThumbInView(newThumbValue){
+        this.view.fromPresenterChangeThumb(newThumbValue);
+        this.view.fromPresenterChangeRange(newThumbValue);
         return this;
     }
 }

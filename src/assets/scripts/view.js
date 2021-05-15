@@ -1,8 +1,6 @@
 import { EventDispatcher } from "./eventDispatcher"
-import { SliderContainer } from "./subviews/SliderContainer"
-import { SliderTrack } from "./subviews/SliderTrack"
-import { SliderThumb } from "./subviews/SliderThumb"
-import { SliderRange } from "./subviews/SliderRange"
+import { RangeFalse } from "./strateries/rangeFalse"
+import { RangeTrue } from "./strateries/rangeTrue";
 
 // Passive view!! View ничего не знает о Model // предоставляет свойства для отображения на экране,
 // обновляется Presenter' ом //слой для управления отображением (View) — 
@@ -20,6 +18,7 @@ class SliderView {
         this.createChildren(containerId);
         this.containerId = containerId;
         this.settings = settings;
+        this.slider;
         this.render();
         this.setupHandlers();
         this.enable();
@@ -27,11 +26,7 @@ class SliderView {
     }
 
     createChildren(containerId){
-        
-        
-        this.sliderThumbSecond = document.createElement("div");
-            this.sliderThumbSecond.classList.add("slider__thumb","thumb_second");
-        
+        this.selectObject;
         this.dragObject = {};
         return this;
     }
@@ -41,7 +36,6 @@ class SliderView {
         this.dragThumbStartHandler = this.dragThumbStart.bind(this);
         this.dragThumbMoveHandler = this.dragThumbMove.bind(this);
         this.dragThumbEndHandler = this.dragThumbEnd.bind(this);
-        //this.simpleHandler = this.simple.bind(this);
         return this;
     }
 
@@ -54,8 +48,9 @@ class SliderView {
     }
 
     selectThumb(e){
-        if (e.target === this.sliderThumb) return;
-        this.fromViewSelectThumb.notify(e.clientX);
+        if (e.target === this.sliderThumb || 
+            e.target === this.sliderThumbSecond) return;
+        this.fromViewSelectThumb.notify(e.clientX)
         return this;
     }
     
@@ -64,8 +59,6 @@ class SliderView {
             return;
         } else {
             this.dragObject.elem = e.target;
-            // this.dragObject.offsetX = e.offsetX;
-            // this.dragObject.clientX = e.clientX;
             return this;
         }
     }
@@ -82,45 +75,23 @@ class SliderView {
         return this;
     }
 
-    // subviews?
     fromPresenterChangeThumb(newThumbCurrent){
-        this.sliderThumb.style.left = newThumbCurrent + "%";
+        this.selectObject.style.left = newThumbCurrent + "%";
         return this;
     }
 
     fromPresenterChangeRange(newThumbCurrent){
-        this.sliderRange.style.right = (100 - newThumbCurrent) + "%";
-        return this;
-    }
-
-    renderSliderContainer(containerId){
-        this.sliderContainer = new SliderContainer(containerId);
-        return this;
-    }
-
-    renderSliderTrack(){
-        this.sliderTrack = new SliderTrack();
-        this.sliderContainer.prepend(this.sliderTrack);
-        return this;
-    }
-
-    renderSliderThumb(className){
-        this.sliderThumb = new SliderThumb(className)
-        this.sliderContainer.append(this.sliderThumb);
-    }
-
-    renderSliderRange(){
-        this.sliderRange = new SliderRange();
-        this.sliderContainer.append(this.sliderRange);
+        if (this.selectObject === this.sliderThumb){
+            this.sliderRange.style.right = (100 - newThumbCurrent) + "%";
+        } else if (this.selectObject === this.sliderThumbSecond){
+            this.sliderRange.style.left = newThumbCurrent + "%";
+        }
         return this;
     }
 
     render(){
-        this.renderSliderContainer(this.containerId);
-        this.renderSliderTrack();
-        this.renderSliderThumb("thumb_first");
-        //this.renderSliderThumb("thumb_second");
-        this.renderSliderRange();
+        if (!this.settings.range){ return new RangeFalse(this, this.containerId)}
+        else if (this.settings.range){ return new RangeTrue(this, this.containerId)}
         return this;
     }
 }

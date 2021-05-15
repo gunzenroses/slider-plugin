@@ -26,9 +26,15 @@ class SliderModel {
     }
 
     //callback from and to presenter
-    fromPresenterChangeThumb(newThumbCurrent){
-        this.settings.currentFirst = newThumbCurrent;
-        this.fromModelChangeThumb.notify(newThumbCurrent);
+    fromPresenterChangeThumb(newThumbValue){
+        this.settings.currentFirst = newThumbValue;
+        this.fromModelChangeThumb.notify(newThumbValue);
+        return this;
+    }
+
+    fromPresenterChangeThumbRight(newThumbValue){
+        this.settings.currentSecond = newThumbValue;
+        this.fromModelChangeThumb.notify(newThumbValue);
         return this;
     }
 
