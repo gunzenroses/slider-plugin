@@ -79,8 +79,8 @@ class SliderPresenter {
     }
 
     dragThumbInPresenter(e){
-        let clientX = e.clientX;
-        let newThumbCurrentPosition = clientX - this.thumbInnerShift;
+        this.thumbInnerShift = this.view.dragObject.offsetX;
+        let newThumbCurrentPosition = e.clientX - this.thumbInnerShift;
         let newThumbCurrent = Math.floor(newThumbCurrentPosition/this.containerWidth*100);
         this.changeThumbInModel(newThumbCurrent);
         return this;

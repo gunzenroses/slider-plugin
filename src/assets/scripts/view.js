@@ -42,6 +42,7 @@ class SliderView {
     enable(){
         this.sliderContainer.addEventListener("click", this.selectThumbHandler);
         this.sliderThumb.addEventListener("mousedown", this.dragThumbStartHandler);
+        this.sliderThumbSecond.addEventListener("mousedown", this.dragThumbStartHandler);
         document.addEventListener("mousemove", this.dragThumbMoveHandler);
         document.addEventListener("mouseup", this.dragThumbEndHandler);
         return this;
@@ -55,10 +56,13 @@ class SliderView {
     }
     
     dragThumbStart(e){
-        if (e.target != this.sliderThumb){
-            return;
-        } else {
+        if (e.target !== this.sliderThumb &&
+            e.target !== this.sliderThumbSecond) return;
+        else {
+            this.selectObject = e.target;
             this.dragObject.elem = e.target;
+            this.dragObject.offsetX = e.offsetX;
+            // this.dragObject.clientX = e.clientX;
             return this;
         }
     }
