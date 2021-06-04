@@ -1,6 +1,6 @@
-import { EventDispatcher } from "./eventDispatcher"
-import { RangeFalse } from "./strateries/rangeFalse"
-import { RangeTrue } from "./strateries/rangeTrue";
+import { EventDispatcher } from "../eventDispatcher"
+import { RangeFalse } from "../strateries/rangeFalse"
+import { RangeTrue } from "../strateries/rangeTrue";
 
 // Passive view!! View ничего не знает о Model // предоставляет свойства для отображения на экране,
 // обновляется Presenter' ом //слой для управления отображением (View) — 
@@ -15,11 +15,11 @@ class SliderView {
     }
 
     init(containerId, settings){
-        this.createChildren(containerId);
         this.containerId = containerId;
         this.settings = settings;
         this.slider;
         this.render();
+        this.createChildren(containerId);
         this.setupHandlers();
         this.enable();
         return this;
@@ -28,6 +28,9 @@ class SliderView {
     createChildren(containerId){
         this.selectObject;
         this.dragObject = {};
+        // this.thumbPosition = parseInt(getComputedStyle(this.sliderThumb).left.replace("px","")/this.containerWidth*100);
+        if (this.settings.range) this.thumbSecondPosition = parseInt(getComputedStyle(this.sliderThumbSecond).left.replace("px","")/this.containerWidth*100);
+        // console.log(this.thumbPosition);
         return this;
     }
 
@@ -42,7 +45,7 @@ class SliderView {
     enable(){
         this.sliderContainer.addEventListener("click", this.selectThumbHandler);
         this.sliderThumb.addEventListener("mousedown", this.dragThumbStartHandler);
-        this.sliderThumbSecond.addEventListener("mousedown", this.dragThumbStartHandler);
+        if (this.settings.range){ this.sliderThumbSecond.addEventListener("mousedown", this.dragThumbStartHandler) };
         document.addEventListener("mousemove", this.dragThumbMoveHandler);
         document.addEventListener("mouseup", this.dragThumbEndHandler);
         return this;
@@ -50,16 +53,17 @@ class SliderView {
 
     selectThumb(e){
         if (e.target === this.sliderThumb || 
-            e.target === this.sliderThumbSecond) return;
-        this.fromViewSelectThumb.notify(e.clientX)
+            e.target === this.sliderThumbSecond ) return;
+        this.fromViewSelectThumb.notify(e.clientX);
         return this;
     }
     
     dragThumbStart(e){
+        e.preventDefault();
         if (e.target !== this.sliderThumb &&
             e.target !== this.sliderThumbSecond) return;
         else {
-            this.selectObject = e.target;
+            //this.selectObject = e.target;
             this.dragObject.elem = e.target;
             this.dragObject.offsetX = e.offsetX;
             // this.dragObject.clientX = e.clientX;
@@ -68,7 +72,6 @@ class SliderView {
     }
 
     dragThumbMove(e){
-        e.preventDefault();
         if (!this.dragObject.elem) return;
         this.fromViewDragThumb.notify(e);
         return this;
@@ -79,15 +82,17 @@ class SliderView {
         return this;
     }
 
-    fromPresenterChangeThumb(newThumbCurrent){
-        this.selectObject.style.left = newThumbCurrent + "%";
+    fromPresenterChangeThumb(object, newThumbCurrent){
+        console.log(object)
+        console.log(newThumbCurrent)
+        object.style.left = newThumbCurrent + "%";
         return this;
     }
 
-    fromPresenterChangeRange(newThumbCurrent){
-        if (this.selectObject === this.sliderThumb){
+    fromPresenterChangeRange(object, newThumbCurrent){
+        if (object === this.sliderThumb){
             this.sliderRange.style.right = (100 - newThumbCurrent) + "%";
-        } else if (this.selectObject === this.sliderThumbSecond){
+        } else if (object === this.sliderThumbSecond){
             this.sliderRange.style.left = newThumbCurrent + "%";
         }
         return this;

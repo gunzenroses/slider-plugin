@@ -1,7 +1,7 @@
-import { sliderData } from "./data"
-import { SliderModel } from "./model"
-import { SliderView } from "./view"
-import { SliderPresenter } from "./presenter"
+import { sliderData } from "../data"
+import { SliderModel } from "../model"
+import { SliderView } from "../view"
+import { SliderPresenter } from "../presenter"
 
 function SliderMaker(id, options){
 
