@@ -1,3 +1,4 @@
+import "../styles/slider.scss"
 import { sliderData } from "./data"
 import { Settings } from "./types/types"
 import { SliderModel } from "./model"
