@@ -1,6 +1,8 @@
 import { EventDispatcher } from "./eventDispatcher"
 import { Settings } from "./types/types"
-
+import { sliderThumbMaker } from "./subview/sliderThumbMaker"
+import { sliderTrackMaker } from "./subview/sliderTrackMaker"
+import { sliderRangeMaker } from "./subview/sliderRangeMaker"
 
 interface View {
     fromViewSelectThumb: EventDispatcher;
@@ -13,10 +15,11 @@ interface View {
     // containerWidth: number;
 
     init(containerId: string, settings: Settings): object;
+    createClasses(): object;
     createChildren(containerId: string): object;
     setupHandlers(): object;
     enable(): object;
-    render(): string;
+    render(): void;
 
     sliderContainer: HTMLElement;
     sliderThumb: HTMLElement;
@@ -59,17 +62,24 @@ class SliderView implements View {
     sliderRange!: HTMLElement;
     sliderTrack!: HTMLElement;
 
+    sliderRangeClass!: string;
+    sliderTrackClass!: string;
+    sliderThumbFirstClass!: string;
+    sliderThumbSecondClass!: string;
+
     selectObject!: HTMLElement;
 
     constructor(containerId: string){
         this.fromViewSelectThumb = new EventDispatcher(this)
         this.fromViewDragThumb = new EventDispatcher(this)
         this.sliderContainer = document.getElementById(containerId)!;
+        this.sliderContainer.classList.add("slider__content");
     }
 
     init(containerId: string, settings: Settings){
         this.containerId = containerId;
         this.settings = settings;
+        this.createClasses();
         this.render();
         this.createChildren();
         this.setupHandlers();
@@ -77,13 +87,29 @@ class SliderView implements View {
         return this;
     }
 
+    createClasses(){
+        this.sliderRangeClass = this.settings.orientation === "horisontal"
+                            ? (this.settings.range ? "slider__range_true" : "")
+                            : (this.settings.range ? "slider__range_vertical-true" : "slider__range_vertical");
+        this.sliderTrackClass = this.settings.orientation === "horisontal" 
+                            ? "slider__track" 
+                            : "slider__track_vertical" ;
+        this.sliderThumbFirstClass = this.settings.orientation === "horisontal"
+                            ? "thumb_first" 
+                            : "thumb_first-vertical";
+        this.sliderThumbSecondClass = this.settings.orientation === "horisontal"
+                            ? "thumb_second"
+                            : "thumb_second-vertical";
+        return this;
+    }
+
     createChildren(){
         this.dragObject = {};
-        this.sliderRange = this.sliderContainer.querySelector(".slider__range")!; //slider__range
-        this.sliderThumb = this.sliderContainer.querySelector(".thumb_first")!;
-        this.sliderTrack = this.sliderContainer.querySelector(".slider__track")!;
+        this.sliderRange = this.sliderContainer.querySelector(`.${this.sliderRangeClass}`)!; //slider__range
+        this.sliderThumb = this.sliderContainer.querySelector(`.${this.sliderThumbFirstClass}`)!;
+        this.sliderTrack = this.sliderContainer.querySelector(`${this.sliderTrackClass}`)!;
         if (this.settings.range){
-            this.sliderThumbSecond = this.sliderContainer.querySelector(".thumb_second")!;
+            this.sliderThumbSecond = this.sliderContainer.querySelector(`.${this.sliderThumbSecondClass}`)!;
             this.thumbSecondPosition = parseInt(getComputedStyle(this.sliderThumbSecond).left.replace("px",""))/this.containerWidth*100;
         }
         return this;
@@ -155,17 +181,15 @@ class SliderView implements View {
     }
 
     render(){
-        this.sliderContainer.classList.add("slider__content");
         this.sliderContainer.innerHTML = "";
-        return (
-            this.sliderContainer.innerHTML =
-            `
-                <div class="slider__track"></div>
-                <div class="slider__thumb thumb_first"></div> 
-                <div class="slider__thumb thumb_second"></div>   
-                <div class="slider__range slider__range_true"></div> 
-            `
-        )
+
+        this.sliderContainer.innerHTML += 
+                            sliderTrackMaker(this.sliderTrackClass)
+                                + sliderThumbMaker(this.sliderThumbFirstClass) 
+                                + sliderThumbMaker(this.sliderThumbSecondClass)
+                                + sliderRangeMaker(this.sliderRangeClass);
+                            `</div>`;
+        return this;
     }
 }
 
