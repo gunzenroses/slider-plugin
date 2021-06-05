@@ -75,8 +75,8 @@ class SliderPresenter implements Presenter {
 
     selectThumb(e: any){
         this.newThumbCurrentPosition = (this.settings.orientation === "horizontal")
-                    ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left - this.thumbWidth/2
-                    : e.clientY - this.view.sliderContainer.getBoundingClientRect().top - this.thumbWidth/2;
+                    ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left + this.thumbWidth/2
+                    : e.clientY - this.view.sliderContainer.getBoundingClientRect().top + this.thumbWidth/2;
         let newThumbCurrentPercent = Math.floor(this.newThumbCurrentPosition/this.containerSize*100);
         if (!this.model.settings.range){ this.selectThumbRangeFalse(newThumbCurrentPercent)};
         if (this.model.settings.range){ this.selectThumbRangeTrue(newThumbCurrentPercent)};
@@ -117,9 +117,13 @@ class SliderPresenter implements Presenter {
     }
 
     dragThumb(e: MouseEvent){
-        let thumbInnerShift: number = parseInt(this.view.dragObject.offsetX);
-        let newThumbCurrentPX = e.clientX - thumbInnerShift;
+        // let thumbInnerShift: number = parseInt(this.view.dragObject.offset);
+        let newThumbCurrentPX = (this.model.settings.orientation === "horizontal")
+            ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left
+            : e.clientY - this.view.sliderContainer.getBoundingClientRect().top;
+
         this.newThumbCurrent = Math.floor(newThumbCurrentPX/this.containerSize*100);
+
         if (!this.model.settings.range){ return this.dragThumbRangeFalse(this.newThumbCurrent) }
         else if (this.model.settings.range){ return this.dragThumbRangeTrue(this.newThumbCurrent) }
         return this;
@@ -131,27 +135,33 @@ class SliderPresenter implements Presenter {
     }
 
     dragThumbRangeTrue(newThumbCurrent: number){
-        if (!this.view.sliderThumb.style.left){
-            this.thumbPosition = parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))/this.containerSize*100;
+        if (this.settings.orientation === "horizontal"){
+            (this.view.sliderThumb.style.left)
+                ? this.thumbPosition =  parseInt(this.view.sliderThumb.style.left.replace("%",""))
+                : this.thumbPosition = parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))/this.containerSize*100;
+
+            (this.view.sliderThumbSecond.style.left)
+                ? this.thumbSecondPosition = parseInt(this.view.sliderThumbSecond.style.left.replace("%",""))
+                : this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond).left.replace("px",""))/this.containerSize*100;
         } else {
-            this.thumbPosition =  parseInt(this.view.sliderThumb.style.left.replace("%",""));
-        };
-        if (!this.view.sliderThumbSecond.style.left){
-            this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond).left.replace("px",""))/this.containerSize*100;
-        } else {
-            this.thumbSecondPosition = parseInt(this.view.sliderThumbSecond.style.left.replace("%",""));
-        };
-        
+            (this.view.sliderThumb.style.top)
+                ? this.thumbPosition =  parseInt(this.view.sliderThumb.style.top.replace("%",""))
+                : this.thumbPosition = parseInt(getComputedStyle(this.view.sliderThumb).top.replace("px",""))/this.containerSize*100;
+
+            (this.view.sliderThumbSecond.style.top)
+                ? this.thumbSecondPosition = parseInt(this.view.sliderThumbSecond.style.top.replace("%",""))
+                : this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond).top.replace("px",""))/this.containerSize*100;
+        }   
 
         if (this.view.dragObject.elem === this.view.sliderThumb &&
-            this.newThumbCurrent > this.thumbSecondPosition){
-                // console.log(this.newThumbCurrent)
-                // console.log(this.thumbSecondPosition)
+            this.newThumbCurrent > this.thumbSecondPosition + 1 &&
+            this.newThumbCurrent <= 100 ){
             this.changeThumbInModel(this.view.dragObject.elem, this.newThumbCurrent);
             return this;
         } 
         else if (this.view.dragObject.elem === this.view.sliderThumbSecond &&
-            this.newThumbCurrent < this.thumbPosition){
+            this.newThumbCurrent < this.thumbPosition - 1 &&
+            this.newThumbCurrent >= 0 ){
             this.changeThumbRightInModel(this.view.dragObject.elem, this.newThumbCurrent);
             return this;
         } 
@@ -177,6 +187,7 @@ class SliderPresenter implements Presenter {
     changeThumbInView(args: {object: object, newThumbValue: number}){
         this.view.fromPresenterChangeThumb(args.object, args.newThumbValue);
         this.view.fromPresenterChangeRange(args.object, args.newThumbValue);
+        this.view.selectObject = {};
         return this;
     }
 }
