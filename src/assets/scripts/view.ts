@@ -28,7 +28,7 @@ interface IView {
     sliderTrack: HTMLElement;
 
 
-    selectObject: HTMLElement;
+    selectObject: any; //HTMLElement;
 
     // selectThumb(ev: MouseEvent): object | undefined;
     // dragThumbStart(ev: MouseEvent): object | undefined;
@@ -67,7 +67,7 @@ class SliderView implements IView {
     sliderThumbFirstClass!: string;
     sliderThumbSecondClass!: string;
 
-    selectObject!: HTMLElement;
+    selectObject!: any; //HTMLElement;
 
     constructor(containerId: string){
         this.fromViewSelectThumb = new EventDispatcher(this)
@@ -135,26 +135,28 @@ class SliderView implements IView {
     selectThumb(e: MouseEvent){
         if (e.target === this.sliderThumb || 
             e.target === this.sliderThumbSecond) return;
-        // let newCoort = (this.settings.orientation === "horizontal")
-        //                 ? e.clientX
-        //                 : e.clientY;
         this.fromViewSelectThumb.notify(event);
         return this;
     }
     
     dragThumbStart(e: MouseEvent){
-        e.preventDefault();
+        e.preventDefault;
         if (e.target !== this.sliderThumb &&
-            e.target !== this.sliderThumbSecond) 
+            e.target !== this.sliderThumbSecond)
             return;
         else {
             this.dragObject.elem = e.target;
-            this.dragObject.offsetX = e.offsetX;
+            console.log(this.dragObject.elem);
+            (this.settings.orientation === "horizontal")
+                ? this.dragObject.offset = e.offsetX
+                : this.dragObject.offset = e.offsetY;
+                console.log(this.dragObject.offset)
             return this;
         }
     }
 
     dragThumbMove(e: MouseEvent){
+        e.preventDefault;
         if (!this.dragObject.elem) return;
         this.fromViewDragThumb.notify(e);
         return this;
@@ -168,8 +170,6 @@ class SliderView implements IView {
 
 
     fromPresenterChangeThumb(object: any, newThumbCurrent: number){
-        console.log(object)
-        console.log(newThumbCurrent)
         this.settings.orientation === "horizontal"
                     ? object.style.left = newThumbCurrent + "%"
                     : object.style.top = newThumbCurrent + "%";
