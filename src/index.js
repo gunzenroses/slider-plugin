@@ -1,8 +1,7 @@
-import "../src/assets/styles/slider.scss"
 import { SliderMaker } from "./assets/scripts/sliderMaker"
+import "./index.css"
 
 window.onload = function() {
-    console.log("heeey");
     const $ = require('jquery')
     $("div").toggleClass("active");
 
@@ -11,5 +10,9 @@ window.onload = function() {
     
     let simpleSlider = SliderMaker("RS", {
         max: 200,
+    })
+
+    let verticalSlider = SliderMaker("vertical", {
+        orientation: "vertical",
     })
 }
