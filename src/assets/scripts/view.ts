@@ -4,7 +4,7 @@ import { sliderThumbMaker } from "./subview/sliderThumbMaker"
 import { sliderTrackMaker } from "./subview/sliderTrackMaker"
 import { sliderRangeMaker } from "./subview/sliderRangeMaker"
 
-interface View {
+interface IView {
     fromViewSelectThumb: EventDispatcher;
     fromViewDragThumb: EventDispatcher;
 
@@ -41,7 +41,7 @@ interface View {
 
 
 
-class SliderView implements View {
+class SliderView implements IView {
     fromViewSelectThumb: EventDispatcher;
     fromViewDragThumb: EventDispatcher;
     sliderContainer: HTMLElement;
@@ -88,16 +88,16 @@ class SliderView implements View {
     }
 
     createClasses(){
-        this.sliderRangeClass = this.settings.orientation === "horisontal"
+        this.sliderRangeClass = this.settings.orientation === "horizontal"
                             ? (this.settings.range ? "slider__range_true" : "")
                             : (this.settings.range ? "slider__range_vertical-true" : "slider__range_vertical");
-        this.sliderTrackClass = this.settings.orientation === "horisontal" 
+        this.sliderTrackClass = this.settings.orientation === "horizontal" 
                             ? "slider__track" 
                             : "slider__track_vertical" ;
-        this.sliderThumbFirstClass = this.settings.orientation === "horisontal"
+        this.sliderThumbFirstClass = this.settings.orientation === "horizontal"
                             ? "thumb_first" 
                             : "thumb_first-vertical";
-        this.sliderThumbSecondClass = this.settings.orientation === "horisontal"
+        this.sliderThumbSecondClass = this.settings.orientation === "horizontal"
                             ? "thumb_second"
                             : "thumb_second-vertical";
         return this;
@@ -134,8 +134,11 @@ class SliderView implements View {
 
     selectThumb(e: MouseEvent){
         if (e.target === this.sliderThumb || 
-            e.target === this.sliderThumbSecond ) return;
-        this.fromViewSelectThumb.notify(e.clientX);
+            e.target === this.sliderThumbSecond) return;
+        // let newCoort = (this.settings.orientation === "horizontal")
+        //                 ? e.clientX
+        //                 : e.clientY;
+        this.fromViewSelectThumb.notify(event);
         return this;
     }
     
@@ -167,16 +170,20 @@ class SliderView implements View {
     fromPresenterChangeThumb(object: any, newThumbCurrent: number){
         console.log(object)
         console.log(newThumbCurrent)
-        object.style.left = newThumbCurrent + "%";
+        this.settings.orientation === "horizontal"
+                    ? object.style.left = newThumbCurrent + "%"
+                    : object.style.top = newThumbCurrent + "%";
         return this;
     }
 
     fromPresenterChangeRange(object: object, newThumbCurrent: number){
-        if (object === this.sliderThumb){
-            this.sliderRange.style.right = (100 - newThumbCurrent) + "%";
-        } else if (object === this.sliderThumbSecond){
-            this.sliderRange.style.left = newThumbCurrent + "%";
-        }
+        this.settings.orientation === "horizontal"
+            ? ((object === this.sliderThumb) 
+                ? this.sliderRange.style.right = (100 - newThumbCurrent) + "%"
+                : this.sliderRange.style.left = newThumbCurrent + "%")
+            : ((object === this.sliderThumb) 
+                ? this.sliderRange.style.bottom = (100 - newThumbCurrent) + "%"
+                : this.sliderRange.style.top = newThumbCurrent + "%")
         return this;
     }
 
@@ -193,4 +200,4 @@ class SliderView implements View {
     }
 }
 
-export { View, SliderView }
+export { IView, SliderView }

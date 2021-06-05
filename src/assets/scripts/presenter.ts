@@ -1,10 +1,10 @@
 import { Model } from "./model"
-import { View } from "./view"
+import { IView } from "./view"
 import { Settings } from "./types/types"
 
 interface Presenter {
     model: Model;
-    view: View;
+    view: IView;
     containerId: string;
     settings: Settings;
 
@@ -17,12 +17,12 @@ interface Presenter {
 
 class SliderPresenter implements Presenter {
     model: Model;
-    view: View;
+    view: IView;
     containerId: string;
     settings: Settings;
 
     newThumbCurrent!: number;
-    containerWidth!: number;
+    containerSize!: number;
     thumbWidth!: number;
     newThumbCurrentPosition!: number;
     thumbPosition!: number;
@@ -33,7 +33,7 @@ class SliderPresenter implements Presenter {
     fromModelChangeThumbHandler!: { (args: {object: object, newThumbValue: number})
                                     : object | undefined };
 
-    constructor(model: Model, view: View){
+    constructor(model: Model, view: IView){
         this.model = model
         this.view = view
         this.containerId = this.model.containerId
@@ -50,9 +50,10 @@ class SliderPresenter implements Presenter {
     }
 
     createChildren(){
-        //this.newThumbCurrentPX;
-        this.newThumbCurrent;
-        this.containerWidth = parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""));
+        this.containerSize = (this.settings.orientation === "horizontal")
+                            ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""))
+                            : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px",""))
+        //this.containerWidth = parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""));
         this.thumbWidth = parseInt(getComputedStyle(this.view.sliderThumb).width.replace("px",""));
         return this;
     }
@@ -72,9 +73,11 @@ class SliderPresenter implements Presenter {
         return this;
     }
 
-    selectThumb(newCoord: number){
-        this.newThumbCurrentPosition = newCoord - this.thumbWidth/2;
-        let newThumbCurrentPercent = Math.floor(this.newThumbCurrentPosition/this.containerWidth*100);
+    selectThumb(e: any){
+        this.newThumbCurrentPosition = (this.settings.orientation === "horizontal")
+                    ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left - this.thumbWidth/2
+                    : e.clientY - this.view.sliderContainer.getBoundingClientRect().top - this.thumbWidth/2;
+        let newThumbCurrentPercent = Math.floor(this.newThumbCurrentPosition/this.containerSize*100);
         if (!this.model.settings.range){ this.selectThumbRangeFalse(newThumbCurrentPercent)};
         if (this.model.settings.range){ this.selectThumbRangeTrue(newThumbCurrentPercent)};
         return this;
@@ -87,12 +90,20 @@ class SliderPresenter implements Presenter {
     }
 
     selectThumbRangeTrue(newThumbCurrentPercent: number){
-            let firstThumb: number = parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""));
-            let secondThumb: number = parseInt(getComputedStyle(this.view.sliderThumbSecond!).left.replace("px",""));
-            let firstThumbCoord = Math.round(firstThumb/this.containerWidth*100);
-            let secondThumbCoord = Math.floor(secondThumb/this.containerWidth*100);
+            let firstThumb: number = this.settings.orientation === "horizontal"
+                        ? parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))
+                        : parseInt(getComputedStyle(this.view.sliderThumb).top.replace("px",""));
+
+            let secondThumb: number = this.settings.orientation === "horizontal"
+                        ? parseInt(getComputedStyle(this.view.sliderThumbSecond!).left.replace("px",""))
+                        : parseInt(getComputedStyle(this.view.sliderThumbSecond!).top.replace("px",""));
+
+            let firstThumbCoord = Math.round(firstThumb/this.containerSize*100);
+            let secondThumbCoord = Math.floor(secondThumb/this.containerSize*100);
+
         let firstDiff: number = Math.abs(firstThumbCoord - newThumbCurrentPercent);
         let secondDiff: number = Math.abs(secondThumbCoord - newThumbCurrentPercent);
+
         if (firstDiff < secondDiff){ 
             this.view.selectObject = this.view.sliderThumb;
             this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent) 
@@ -108,7 +119,7 @@ class SliderPresenter implements Presenter {
     dragThumb(e: MouseEvent){
         let thumbInnerShift: number = parseInt(this.view.dragObject.offsetX);
         let newThumbCurrentPX = e.clientX - thumbInnerShift;
-        this.newThumbCurrent = Math.floor(newThumbCurrentPX/this.containerWidth*100);
+        this.newThumbCurrent = Math.floor(newThumbCurrentPX/this.containerSize*100);
         if (!this.model.settings.range){ return this.dragThumbRangeFalse(this.newThumbCurrent) }
         else if (this.model.settings.range){ return this.dragThumbRangeTrue(this.newThumbCurrent) }
         return this;
@@ -121,12 +132,12 @@ class SliderPresenter implements Presenter {
 
     dragThumbRangeTrue(newThumbCurrent: number){
         if (!this.view.sliderThumb.style.left){
-            this.thumbPosition = parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))/this.containerWidth*100;
+            this.thumbPosition = parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))/this.containerSize*100;
         } else {
             this.thumbPosition =  parseInt(this.view.sliderThumb.style.left.replace("%",""));
         };
         if (!this.view.sliderThumbSecond.style.left){
-            this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond).left.replace("px",""))/this.containerWidth*100;
+            this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond).left.replace("px",""))/this.containerSize*100;
         } else {
             this.thumbSecondPosition = parseInt(this.view.sliderThumbSecond.style.left.replace("%",""));
         };
@@ -134,8 +145,8 @@ class SliderPresenter implements Presenter {
 
         if (this.view.dragObject.elem === this.view.sliderThumb &&
             this.newThumbCurrent > this.thumbSecondPosition){
-                console.log(this.newThumbCurrent)
-                console.log(this.thumbSecondPosition)
+                // console.log(this.newThumbCurrent)
+                // console.log(this.thumbSecondPosition)
             this.changeThumbInModel(this.view.dragObject.elem, this.newThumbCurrent);
             return this;
         } 
