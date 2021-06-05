@@ -7,7 +7,7 @@ let sliderData: Settings = {
     currentFirst: 33,
     currentSecond: 66,
     step: 1,
-    orientation: "horisontal",
+    orientation: "horizontal",
     //label: false,
     //scale: false,
 }
