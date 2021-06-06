@@ -10,87 +10,18 @@ $color-border: #3d3d3d;
     height: auto;
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
     margin: 0 auto;
     border: 1px solid transparent;
-}
-
-.slider__track {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: $height-basic;
-    border-radius: 3px;
-    background-color: $color-light;
-    border: $width-border solid $color-border;
 
     &_vertical {
-        @extend .slider__track;
-        width: $height-basic;
-        height: 100%;
+        @extend .slider__content;
+        flex-direction: row;
     }
 }
 
-.slider__range {
-    position: absolute;
-    z-index: 2;
-    height: 100%;
-    width: auto;
-    top: 0%;
-    left: 0%;
-    right: 33%;
-    border: $width-border solid $color-border;
-    border-radius: 3px;
-    background: $color-basic;
-    transform: translateY(-$width-border);
-
-    &_true {
-        left: 33%;
-        right: 33%;
-    }
-
-    &_vertical {
-        @extend .slider__range;
-        transform: translateX(-$width-border);
-        width: 100%;
-        height: auto;
-        left: 0;
-        right: 0;
-        bottom: 33%;
-
-        &-true {
-            @extend .slider__range_vertical;
-            top: 33%; 
-        }
-    }
-}
-
-.slider__thumb {
-    position: absolute;
-    z-index: 3;
-    width: 16px;
-    height: 16px;
-    border-radius: 10px;
-    background: $color-basic;
-    border: 2px solid $color-light;
-}
-
-.thumb_first {
-    left: 67%;
-    transform: translate(-8px, -8px);
-}
-
-.thumb_second {
-    left: 33%;
-    transform: translate(-8px, -8px);
-}
-
-.thumb_first-vertical {
-    top: 67%;
-    transform: translate(-8px, -8px);
-}
-
-.thumb_second-vertical {
-    top: 33%;
-    transform: translate(-8px, -8px);
-} 
+@import "../scripts/subview/labelView/labelView.scss";
+@import "../scripts/subview/trackView/sliderRange/sliderRangeView.scss";
+@import "../scripts/subview/trackView/sliderThumb/sliderThumbView.scss";
+@import "../scripts/subview/trackView/sliderTrack/sliderTrackView.scss";
