@@ -1,0 +1,46 @@
+$width-label: 2rem;
+$width-slider: 3rem;
+$color-label: #008000;
+
+.slider__label {
+    position: relative;
+    width: 100%;
+    height: $width-slider;
+
+    &_vertical {
+        position: relative;
+        height: 100%;
+        width: $width-slider;
+    }
+}
+
+.label {
+    position: absolute;
+    width: $width-label;
+    height: $width-label;
+    border-radius: 3px;
+    background-color: $color-label;
+    text-align: center;
+    line-height: $width-label;
+    z-index: 2;
+}
+
+.label_first {
+    left: 33%;
+    transform: translateX(-50%);
+}
+
+.label_second {
+    left: 66%;
+    transform: translateX(-50%);
+}
+
+.label_first-vertical {
+    top: 33%;
+    transform: translateY(-50%);
+}
+
+.label_second-vertical {
+    top: 66%;
+    transform: translateY(-50%);
+}
