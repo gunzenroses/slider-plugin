@@ -1,0 +1,15 @@
+.slider__track {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: $height-basic;
+    border-radius: 3px;
+    background-color: $color-light;
+    border: $width-border solid $color-border;
+
+    &_vertical {
+        @extend .slider__track;
+        width: $height-basic;
+        height: 100%;
+    }
+}
