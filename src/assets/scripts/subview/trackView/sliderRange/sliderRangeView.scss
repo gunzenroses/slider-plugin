@@ -5,13 +5,14 @@
     width: auto;
     top: 0%;
     left: 0%;
-    right: 33%;
+    right: 66%;
     border: $width-border solid $color-border;
     border-radius: 3px;
     background: $color-basic;
     transform: translateY(-$width-border);
 
     &_true {
+        @extend .slider__range;
         left: 33%;
         right: 33%;
     }
@@ -23,7 +24,7 @@
         height: auto;
         left: 0;
         right: 0;
-        bottom: 33%;
+        bottom: 66%;
 
         &-true {
             @extend .slider__range_vertical;
