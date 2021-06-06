@@ -1,14 +1,14 @@
 import "../styles/slider.scss"
 import { sliderData } from "./data"
-import { Settings } from "./types/types"
+import { TSettings } from "./types/types"
 import { SliderModel } from "./model"
 import { SliderView } from "./view"
 import { SliderPresenter } from "./presenter"
 
-function SliderMaker(id: string, options: Settings){
+function SliderMaker(id: string, options: TSettings){
 
-    let settings = function (sliderData: Settings, options: Settings){
-        var c: Settings = {};
+    let settings = function (sliderData: TSettings, options: TSettings){
+        var c: TSettings = {};
         let key: string;
         for (key in sliderData){
             if (sliderData.hasOwnProperty(key)){
