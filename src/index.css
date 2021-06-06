@@ -1,8 +1,15 @@
+body {
+    font-size: 16px;
+}
+
+#RS {
+    width: 500px;
+    margin-top: 80px;
+}
+
 #vertical {
     margin-top: 40px;
-    color: red;
-    width: 40px;
+    width: auto;
     height: 400px;
-    background-color: green;
     margin-left: 0;
 }
