@@ -1,12 +1,12 @@
 import { Model } from "./model"
 import { IView } from "./view"
-import { Settings } from "./types/types"
+import { TSettings } from "./types/types"
 
 interface Presenter {
     model: Model;
     view: IView;
     containerId: string;
-    settings: Settings;
+    settings: TSettings;
 
     init(): object;
     setupHandlers(): object;
@@ -19,9 +19,11 @@ class SliderPresenter implements Presenter {
     model: Model;
     view: IView;
     containerId: string;
-    settings: Settings;
+    settings: TSettings;
 
     newThumbCurrent!: number;
+    ifHorizontal!: boolean;
+    ifRange!: boolean;
     containerSize!: number;
     thumbWidth!: number;
     newThumbCurrentPosition!: number;
@@ -50,7 +52,10 @@ class SliderPresenter implements Presenter {
     }
 
     createChildren(){
-        this.containerSize = (this.settings.orientation === "horizontal")
+        this.ifHorizontal = this.settings.orientation === "horizontal";
+        this.ifRange = this.settings.range;
+        
+        this.containerSize = (this.ifHorizontal)
                             ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""))
                             : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px",""))
         //this.containerWidth = parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""));
@@ -74,7 +79,7 @@ class SliderPresenter implements Presenter {
     }
 
     selectThumb(e: any){
-        this.newThumbCurrentPosition = (this.settings.orientation === "horizontal")
+        this.newThumbCurrentPosition = (this.ifHorizontal)
                     ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left + this.thumbWidth/2
                     : e.clientY - this.view.sliderContainer.getBoundingClientRect().top + this.thumbWidth/2;
         let newThumbCurrentPercent = Math.floor(this.newThumbCurrentPosition/this.containerSize*100);
@@ -90,11 +95,11 @@ class SliderPresenter implements Presenter {
     }
 
     selectThumbRangeTrue(newThumbCurrentPercent: number){
-            let firstThumb: number = this.settings.orientation === "horizontal"
+            let firstThumb: number = this.ifHorizontal
                         ? parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))
                         : parseInt(getComputedStyle(this.view.sliderThumb).top.replace("px",""));
 
-            let secondThumb: number = this.settings.orientation === "horizontal"
+            let secondThumb: number = this.ifHorizontal
                         ? parseInt(getComputedStyle(this.view.sliderThumbSecond!).left.replace("px",""))
                         : parseInt(getComputedStyle(this.view.sliderThumbSecond!).top.replace("px",""));
 
@@ -118,7 +123,7 @@ class SliderPresenter implements Presenter {
 
     dragThumb(e: MouseEvent){
         // let thumbInnerShift: number = parseInt(this.view.dragObject.offset);
-        let newThumbCurrentPX = (this.model.settings.orientation === "horizontal")
+        let newThumbCurrentPX = this.ifHorizontal
             ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left
             : e.clientY - this.view.sliderContainer.getBoundingClientRect().top;
 
@@ -135,7 +140,7 @@ class SliderPresenter implements Presenter {
     }
 
     dragThumbRangeTrue(newThumbCurrent: number){
-        if (this.settings.orientation === "horizontal"){
+        if (this.ifHorizontal){
             (this.view.sliderThumb.style.left)
                 ? this.thumbPosition =  parseInt(this.view.sliderThumb.style.left.replace("%",""))
                 : this.thumbPosition = parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))/this.containerSize*100;
@@ -186,7 +191,7 @@ class SliderPresenter implements Presenter {
 
     changeThumbInView(args: {object: object, newThumbValue: number}){
         this.view.fromPresenterChangeThumb(args.object, args.newThumbValue);
-        this.view.fromPresenterChangeRange(args.object, args.newThumbValue);
+        this.view.g(args.object, args.newThumbValue);
         this.view.selectObject = {};
         return this;
     }
