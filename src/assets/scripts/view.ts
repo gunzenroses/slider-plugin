@@ -1,20 +1,21 @@
 import { EventDispatcher } from "./eventDispatcher"
-import { Settings } from "./types/types"
-import { sliderThumbMaker } from "./subview/sliderThumbMaker"
-import { sliderTrackMaker } from "./subview/sliderTrackMaker"
-import { sliderRangeMaker } from "./subview/sliderRangeMaker"
+import { TSettings } from "./types/types"
+import { labelView } from "./subview/labelView/labelView"
+import { sliderThumbView } from "./subview/trackView/sliderThumb/sliderThumbView"
+import { sliderTrackView } from "./subview/trackView/sliderTrack/sliderTrackView"
+import { sliderRangeView } from "./subview/trackView/sliderRange/sliderRangeView"
 
 interface IView {
     fromViewSelectThumb: EventDispatcher;
     fromViewDragThumb: EventDispatcher;
 
     containerId: string;
-    settings: Settings;
-    dragObject: Settings;
+    settings: TSettings;
+    dragObject: TSettings;
     // thumbSecondPosition: number;
     // containerWidth: number;
 
-    init(containerId: string, settings: Settings): object;
+    init(containerId: string, settings: TSettings): object;
     createClasses(): object;
     createChildren(containerId: string): object;
     setupHandlers(): object;
@@ -40,14 +41,13 @@ interface IView {
 }
 
 
-
 class SliderView implements IView {
     fromViewSelectThumb: EventDispatcher;
     fromViewDragThumb: EventDispatcher;
     sliderContainer: HTMLElement;
     
     containerId!: string;
-    settings!: Settings;
+    settings!: TSettings;
     dragObject!: any; //{elem: EventTarget, offsetX: number} | {};
     thumbSecondPosition!: number;
     containerWidth!: number;
@@ -62,6 +62,9 @@ class SliderView implements IView {
     sliderRange!: HTMLElement;
     sliderTrack!: HTMLElement;
 
+    ifHorizontal!: boolean;
+    ifRange!: boolean;
+
     sliderRangeClass!: string;
     sliderTrackClass!: string;
     sliderThumbFirstClass!: string;
@@ -73,10 +76,9 @@ class SliderView implements IView {
         this.fromViewSelectThumb = new EventDispatcher(this)
         this.fromViewDragThumb = new EventDispatcher(this)
         this.sliderContainer = document.getElementById(containerId)!;
-        this.sliderContainer.classList.add("slider__content");
     }
 
-    init(containerId: string, settings: Settings){
+    init(containerId: string, settings: TSettings){
         this.containerId = containerId;
         this.settings = settings;
         this.createClasses();
@@ -88,16 +90,22 @@ class SliderView implements IView {
     }
 
     createClasses(){
-        this.sliderRangeClass = this.settings.orientation === "horizontal"
-                            ? (this.settings.range ? "slider__range_true" : "")
-                            : (this.settings.range ? "slider__range_vertical-true" : "slider__range_vertical");
-        this.sliderTrackClass = this.settings.orientation === "horizontal" 
+        this.ifHorizontal = this.settings.orientation === "horizontal";
+        this.ifRange = this.settings.range;
+        this.sliderContainer.classList.add(
+            this.ifHorizontal 
+                            ? "slider__content" 
+                            : "slider__content_vertical");
+        this.sliderRangeClass = this.ifHorizontal
+                            ? (this.ifRange ? "slider__range_true" : "")
+                            : (this.ifRange ? "slider__range_vertical-true" : "slider__range_vertical");
+        this.sliderTrackClass = this.ifHorizontal 
                             ? "slider__track" 
                             : "slider__track_vertical" ;
-        this.sliderThumbFirstClass = this.settings.orientation === "horizontal"
+        this.sliderThumbFirstClass = this.ifHorizontal
                             ? "thumb_first" 
                             : "thumb_first-vertical";
-        this.sliderThumbSecondClass = this.settings.orientation === "horizontal"
+        this.sliderThumbSecondClass = this.ifHorizontal
                             ? "thumb_second"
                             : "thumb_second-vertical";
         return this;
@@ -146,11 +154,9 @@ class SliderView implements IView {
             return;
         else {
             this.dragObject.elem = e.target;
-            console.log(this.dragObject.elem);
-            (this.settings.orientation === "horizontal")
+            this.ifHorizontal
                 ? this.dragObject.offset = e.offsetX
                 : this.dragObject.offset = e.offsetY;
-                console.log(this.dragObject.offset)
             return this;
         }
     }
@@ -170,14 +176,14 @@ class SliderView implements IView {
 
 
     fromPresenterChangeThumb(object: any, newThumbCurrent: number){
-        this.settings.orientation === "horizontal"
+        this.ifHorizontal
                     ? object.style.left = newThumbCurrent + "%"
                     : object.style.top = newThumbCurrent + "%";
         return this;
     }
 
     fromPresenterChangeRange(object: object, newThumbCurrent: number){
-        this.settings.orientation === "horizontal"
+        this.ifHorizontal
             ? ((object === this.sliderThumb) 
                 ? this.sliderRange.style.right = (100 - newThumbCurrent) + "%"
                 : this.sliderRange.style.left = newThumbCurrent + "%")
@@ -189,13 +195,15 @@ class SliderView implements IView {
 
     render(){
         this.sliderContainer.innerHTML = "";
-
         this.sliderContainer.innerHTML += 
-                            sliderTrackMaker(this.sliderTrackClass)
-                                + sliderThumbMaker(this.sliderThumbFirstClass) 
-                                + sliderThumbMaker(this.sliderThumbSecondClass)
-                                + sliderRangeMaker(this.sliderRangeClass);
-                            `</div>`;
+            `
+                ${labelView(this.ifHorizontal, this.ifRange, 
+                        this.settings.currentFirst, this.settings.currentSecond)}
+                ${sliderTrackView(this.ifHorizontal)}
+                    ${sliderThumbView(this.ifRange, this.ifHorizontal)} 
+                    ${sliderRangeView(this.ifRange, this.ifHorizontal)}
+                </div>
+            `;
         return this;
     }
 }
