@@ -1,5 +1,10 @@
-type Settings = {
+type TSettings = {
     [settingName: string]: any;
 }
 
-export { Settings }
+type TLabelItem = {
+    labelItemClass: string, 
+    value: number
+}
+
+export { TSettings, TLabelItem }
