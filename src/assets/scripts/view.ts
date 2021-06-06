@@ -10,8 +10,6 @@ interface IView {
     containerId: string;
     settings: TSettings;
     dragObject: TSettings;
-    // thumbSecondPosition: number;
-    // containerWidth: number;
 
     init(containerId: string, settings: TSettings): object;
     createClasses(): object;
@@ -25,7 +23,6 @@ interface IView {
     sliderThumbSecond: HTMLElement;
     sliderRange: HTMLElement;
     sliderTrack: HTMLElement;
-
 
     selectObject: any; //HTMLElement;
 
@@ -95,17 +92,23 @@ class SliderView implements IView {
                             ? "slider__content" 
                             : "slider__content_vertical");
         this.sliderRangeClass = this.ifHorizontal
-                            ? (this.ifRange ? "slider__range_true" : "")
-                            : (this.ifRange ? "slider__range_vertical-true" : "slider__range_vertical");
+                            ? (this.ifRange 
+                                ? "slider__range_true" 
+                                : "slider__range")
+                            : (this.ifRange 
+                                ? "slider__range_vertical-true" 
+                                : "slider__range_vertical");
         this.sliderTrackClass = this.ifHorizontal 
                             ? "slider__track" 
                             : "slider__track_vertical" ;
         this.sliderThumbFirstClass = this.ifHorizontal
                             ? "thumb_first" 
                             : "thumb_first-vertical";
-        this.sliderThumbSecondClass = this.ifHorizontal
-                            ? "thumb_second"
-                            : "thumb_second-vertical";
+        if (this.ifRange){
+            this.sliderThumbSecondClass = this.ifHorizontal
+                ? "thumb_second"
+                : "thumb_second-vertical";
+        }
         return this;
     }
 
@@ -181,13 +184,17 @@ class SliderView implements IView {
     }
 
     fromPresenterChangeRange(object: object, newThumbCurrent: number){
-        this.ifHorizontal
-            ? ((object === this.sliderThumb) 
-                ? this.sliderRange.style.left = newThumbCurrent + "%"
-                : this.sliderRange.style.right = (100 - newThumbCurrent) + "%")
-            : ((object === this.sliderThumb) 
-                ? this.sliderRange.style.top = newThumbCurrent + "%"
-                : this.sliderRange.style.bottom = (100 - newThumbCurrent) + "%")
+        this.ifRange
+        ? this.ifHorizontal
+                ? ((object === this.sliderThumb) 
+                    ? this.sliderRange.style.left = newThumbCurrent + "%"
+                    : this.sliderRange.style.right = (100 - newThumbCurrent) + "%")
+                : ((object === this.sliderThumb) 
+                    ? this.sliderRange.style.top = newThumbCurrent + "%"
+                    : this.sliderRange.style.bottom = (100 - newThumbCurrent) + "%")
+        : this.ifHorizontal
+                ? this.sliderRange.style.right = (100 - newThumbCurrent) + "%"
+                : this.sliderRange.style.bottom = (100 - newThumbCurrent) + "%";
         return this;
     }
 
@@ -195,9 +202,9 @@ class SliderView implements IView {
         this.sliderContainer.innerHTML = "";
         this.sliderContainer.innerHTML += 
             `
-                ${labelView(this.ifHorizontal, this.ifRange, 
+                ${labelView(this.ifRange, this.ifHorizontal, 
                         this.settings.currentFirst, this.settings.currentSecond)}
-                ${sliderTrackView(this.ifRange, this.ifHorizontal, )}
+                ${sliderTrackView(this.ifRange, this.ifHorizontal)}
             `;
         return this;
     }
