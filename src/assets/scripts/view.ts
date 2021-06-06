@@ -185,11 +185,11 @@ class SliderView implements IView {
     fromPresenterChangeRange(object: object, newThumbCurrent: number){
         this.ifHorizontal
             ? ((object === this.sliderThumb) 
-                ? this.sliderRange.style.right = (100 - newThumbCurrent) + "%"
-                : this.sliderRange.style.left = newThumbCurrent + "%")
+                ? this.sliderRange.style.left = newThumbCurrent + "%"
+                : this.sliderRange.style.right = (100 - newThumbCurrent) + "%")
             : ((object === this.sliderThumb) 
-                ? this.sliderRange.style.bottom = (100 - newThumbCurrent) + "%"
-                : this.sliderRange.style.top = newThumbCurrent + "%")
+                ? this.sliderRange.style.top = newThumbCurrent + "%"
+                : this.sliderRange.style.bottom = (100 - newThumbCurrent) + "%")
         return this;
     }
 
