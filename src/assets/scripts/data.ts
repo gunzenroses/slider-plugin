@@ -1,6 +1,6 @@
-import { Settings } from "./types/types"
+import { TSettings } from "./types/types"
 
-let sliderData: Settings = {
+let sliderData: TSettings = {
     min: 0,
     max: 400,
     range: true,
@@ -8,7 +8,8 @@ let sliderData: Settings = {
     currentSecond: 66,
     step: 1,
     orientation: "horizontal",
-    //label: false,
+    label: true,
+    //step: false
     //scale: false,
 }
 
