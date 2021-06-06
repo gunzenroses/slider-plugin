@@ -1,9 +1,7 @@
 import { EventDispatcher } from "./eventDispatcher"
 import { TSettings } from "./types/types"
 import { labelView } from "./subview/labelView/labelView"
-import { sliderThumbView } from "./subview/trackView/sliderThumb/sliderThumbView"
 import { sliderTrackView } from "./subview/trackView/sliderTrack/sliderTrackView"
-import { sliderRangeView } from "./subview/trackView/sliderRange/sliderRangeView"
 
 interface IView {
     fromViewSelectThumb: EventDispatcher;
@@ -199,10 +197,7 @@ class SliderView implements IView {
             `
                 ${labelView(this.ifHorizontal, this.ifRange, 
                         this.settings.currentFirst, this.settings.currentSecond)}
-                ${sliderTrackView(this.ifHorizontal)}
-                    ${sliderThumbView(this.ifRange, this.ifHorizontal)} 
-                    ${sliderRangeView(this.ifRange, this.ifHorizontal)}
-                </div>
+                ${sliderTrackView(this.ifRange, this.ifHorizontal, )}
             `;
         return this;
     }
