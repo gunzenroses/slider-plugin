@@ -8,7 +8,7 @@ window.onload = function() {
     // здесь вызывать rangeSlider.ts for every slider
     //$.fn.SliderMaker()
     
-    let simpleSlider = SliderMaker("RS", {
+    let simpleSlider = SliderMaker("horizontal", {
         max: 200,
     })
 
