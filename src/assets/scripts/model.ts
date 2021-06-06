@@ -1,8 +1,10 @@
+import { TSettings } from "./types/types"
 import { EventDispatcher } from './eventDispatcher'
 
 interface Model {
     containerId: string;
-    [propName: string]: any;
+    settings: TSettings;
+    fromModelChangeThumb: EventDispatcher;
     fromPresenterChangeThumb(object: any, newThumbValue: number): object;
     fromPresenterChangeThumbRight(object: any, newThumbValue: number): object;
 
@@ -10,10 +12,10 @@ interface Model {
 
 class SliderModel implements Model {
     containerId: string;
-    settings: any;
+    settings: TSettings;
     fromModelChangeThumb: EventDispatcher;
 
-    constructor(containerId: string, settings: any){
+    constructor(containerId: string, settings: TSettings){
         this.containerId = containerId
         this.settings = settings
         this.fromModelChangeThumb = new EventDispatcher(this)
