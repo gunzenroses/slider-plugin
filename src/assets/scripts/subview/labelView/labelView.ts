@@ -1,7 +1,7 @@
 import { labelItemView } from "./labelItemView"
 import { TLabelItem } from "../../types/types"
 
-function labelView(ifHorizontal: boolean, ifRange: boolean, 
+function labelView(ifRange: boolean, ifHorizontal: boolean, 
                     currentFirst: number, currentSecond: number)
                     : string {
     let labelRowClass: string = ifHorizontal 
