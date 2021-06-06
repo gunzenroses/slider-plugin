@@ -191,7 +191,7 @@ class SliderPresenter implements Presenter {
 
     changeThumbInView(args: {object: object, newThumbValue: number}){
         this.view.fromPresenterChangeThumb(args.object, args.newThumbValue);
-        this.view.g(args.object, args.newThumbValue);
+        this.view.fromPresenterChangeRange(args.object, args.newThumbValue);
         this.view.selectObject = {};
         return this;
     }
