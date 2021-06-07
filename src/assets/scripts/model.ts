@@ -4,7 +4,7 @@ import { EventDispatcher } from './eventDispatcher'
 interface IModel {
     containerId: string;
     settings: TSettings;
-    fromModelChangeThumb: EventDispatcher;
+    fromModelChangeView: EventDispatcher;
     fromPresenterChangeThumb(object: any, newThumbValue: number): object;
     fromPresenterChangeThumbRight(object: any, newThumbValue: number): object;
 
@@ -13,23 +13,23 @@ interface IModel {
 class SliderModel implements IModel {
     containerId: string;
     settings: TSettings;
-    fromModelChangeThumb: EventDispatcher;
+    fromModelChangeView: EventDispatcher;
 
     constructor(containerId: string, settings: TSettings){
         this.containerId = containerId
         this.settings = settings
-        this.fromModelChangeThumb = new EventDispatcher(this)
+        this.fromModelChangeView = new EventDispatcher(this)
     }
 
     fromPresenterChangeThumb(object: any, newThumbValue: number): object {
         this.settings.currentFirst = newThumbValue;
-        this.fromModelChangeThumb.notify({object, newThumbValue});
+        this.fromModelChangeView.notify({object, newThumbValue});
         return this;
     }
 
     fromPresenterChangeThumbRight(object: any, newThumbValue: number): object {
         this.settings.currentSecond = newThumbValue;
-        this.fromModelChangeThumb.notify({object, newThumbValue});
+        this.fromModelChangeView.notify({object, newThumbValue});
         return this;
     }
 }
