@@ -19,6 +19,7 @@ interface IView {
     setupHandlers(): object;
     enable(): object;
     render(): void;
+    fromPresenterChange(object: any, newThumbCurrent: number): object;
 
     sliderContainer: HTMLElement;
     sliderThumb: HTMLElement;
@@ -31,13 +32,14 @@ interface IView {
 
     selectObject: any; //HTMLElement;
 
-    //selectThumb(ev: MouseEvent): object | undefined;
+    // selectThumb(ev: MouseEvent): object | undefined;
     // dragThumbStart(ev: MouseEvent): object | undefined;
     // dragThumbMove(ev: MouseEvent): object | undefined;
     // dragThumbEnd(): object;
 
-    fromPresenterChangeThumb(object: object, newThumbCurrent: number): object;
-    fromPresenterChangeRange(object: object, newThumbCurrent: number): object;
+    // changeThumb(object: object, newThumbCurrent: number): object;
+    // changeRange(object: object, newThumbCurrent: number): object;
+    // changeTooltop(object: object, newThumbCurrent: number): object;
 }
 
 
@@ -150,16 +152,21 @@ class SliderView implements IView {
         return this;
     }
 
+    fromPresenterChange(object: any, newThumbCurrent: number){
+        this.changeThumb(object, newThumbCurrent);
+        this.changeRange(object, newThumbCurrent);
+        if (this.ifTooltip) this.changeTooltip(object, newThumbCurrent);
+        return this;
+    }
 
-
-    fromPresenterChangeThumb(object: any, newThumbCurrent: number){
+    changeThumb(object: any, newThumbCurrent: number){
         this.ifHorizontal
                     ? object.style.left = newThumbCurrent + "%"
                     : object.style.top = newThumbCurrent + "%";
         return this;
     }
 
-    fromPresenterChangeRange(object: object, newThumbCurrent: number){
+    changeRange(object: object, newThumbCurrent: number){
         this.ifRange
         ? this.ifHorizontal
                 ? ((object === this.sliderThumb) 
@@ -174,27 +181,43 @@ class SliderView implements IView {
         return this;
     }
 
+    changeTooltip(object: HTMLElement, newThumbCurrent: number){
+        let currentTooltip = object.children[0];
+        (currentTooltip === this.tooltipFirst)
+            ? this.tooltipFirst.innerText = (newThumbCurrent * (this.settings.max - this.settings.min) / 100).toString()
+            : this.tooltipSecond.innerText = (newThumbCurrent * (this.settings.max - this.settings.min) / 100).toString();
+        return this;
+    }
+
+
     render(){
         this.sliderContainer.innerHTML = "";
         this.sliderContainer.classList.add(
                                     this.ifHorizontal 
                                         ? "slider__content" 
                                         : "slider__content_vertical");
-        this.ifTooltip
-            ?   (
-                    this.tooltipRow = tooltipRowView( this.sliderContainer, this.ifHorizontal),
-                    this.tooltipFirst = tooltipItemView(this.tooltipRow, this.ifHorizontal, "tooltip_first", this.settings.currentFirst),
-                    this.ifRange 
-                        ?  this.tooltipSecond = tooltipItemView(this.tooltipRow, this.ifHorizontal, "tooltip_second", this.settings.currentSecond)
-                        : null
-                )
-            : null;
+        // this.ifTooltip
+        //     ?   (
+        //             this.tooltipRow = tooltipRowView(this.sliderContainer, this.ifHorizontal),
+        //             this.tooltipFirst = tooltipItemView(this.tooltipRow, this.ifHorizontal, "tooltip_first", this.settings.currentFirst),
+        //             this.ifRange 
+        //                 ?  this.tooltipSecond = tooltipItemView(this.tooltipRow, this.ifHorizontal, "tooltip_second", this.settings.currentSecond)
+        //                 : null
+        //         )
+        //     : null;
+
         this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
         this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal);
         this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal)
+        this.ifTooltip
+            ? this.tooltipFirst = tooltipItemView(this.sliderThumb, this.ifHorizontal, "tooltip_first", this.settings.currentFirst)
+            : null;
         this.ifRange
-            ? this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal)
-            : "";
+            ? (this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal),
+                this.ifTooltip
+                    ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, this.ifHorizontal, "tooltip_second", this.settings.currentSecond)
+                    : null)
+            : null;
         return this;
     }
 }
