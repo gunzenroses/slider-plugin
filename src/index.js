@@ -10,9 +10,11 @@ window.onload = function() {
     
     let simpleSlider = SliderMaker("horizontal", {
         max: 200,
+        range: true,
     })
 
     let verticalSlider = SliderMaker("vertical", {
         orientation: "vertical",
+        range: false,
     })
 }
