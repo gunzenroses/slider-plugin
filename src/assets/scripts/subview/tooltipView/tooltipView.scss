@@ -1,0 +1,46 @@
+$width-tooltip: 2rem;
+$width-slider: 3rem;
+$color-tooltip: #008000;
+
+.slider__tooltip {
+    position: relative;
+    width: 100%;
+    height: $width-slider;
+
+    &_vertical {
+        position: relative;
+        height: 100%;
+        width: $width-slider;
+    }
+}
+
+.tooltip {
+    position: absolute;
+    width: $width-tooltip;
+    height: $width-tooltip;
+    border-radius: 3px;
+    background-color: $color-tooltip;
+    text-align: center;
+    line-height: $width-tooltip;
+    z-index: 2;
+}
+
+.tooltip_first {
+    left: 33%;
+    transform: translateX(-50%);
+}
+
+.tooltip_second {
+    left: 66%;
+    transform: translateX(-50%);
+}
+
+.tooltip_first-vertical {
+    top: 33%;
+    transform: translateY(-50%);
+}
+
+.tooltip_second-vertical {
+    top: 66%;
+    transform: translateY(-50%);
+}
