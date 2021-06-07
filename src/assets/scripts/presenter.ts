@@ -1,9 +1,9 @@
-import { Model } from "./model"
+import { IModel } from "./model"
 import { IView } from "./view"
 import { TSettings } from "./types/types"
 
 interface Presenter {
-    model: Model;
+    model: IModel;
     view: IView;
     containerId: string;
     settings: TSettings;
@@ -16,7 +16,7 @@ interface Presenter {
 
 
 class SliderPresenter implements Presenter {
-    model: Model;
+    model:IModel;
     view: IView;
     containerId: string;
     settings: TSettings;
@@ -35,7 +35,7 @@ class SliderPresenter implements Presenter {
     fromModelChangeThumbHandler!: { (args: {object: object, newThumbValue: number})
                                     : object | undefined };
 
-    constructor(model: Model, view: IView){
+    constructor(model: IModel, view: IView){
         this.model = model
         this.view = view
         this.containerId = this.model.containerId
@@ -145,17 +145,17 @@ class SliderPresenter implements Presenter {
                 ? this.thumbPosition =  parseInt(this.view.sliderThumb.style.left.replace("%",""))
                 : this.thumbPosition = parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))/this.containerSize*100;
 
-            (this.view.sliderThumbSecond.style.left)
-                ? this.thumbSecondPosition = parseInt(this.view.sliderThumbSecond.style.left.replace("%",""))
-                : this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond).left.replace("px",""))/this.containerSize*100;
+            (this.view.sliderThumbSecond!.style.left)
+                ? this.thumbSecondPosition = parseInt(this.view.sliderThumbSecond!.style.left.replace("%",""))
+                : this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond!).left.replace("px",""))/this.containerSize*100;
         } else {
             (this.view.sliderThumb.style.top)
                 ? this.thumbPosition =  parseInt(this.view.sliderThumb.style.top.replace("%",""))
                 : this.thumbPosition = parseInt(getComputedStyle(this.view.sliderThumb).top.replace("px",""))/this.containerSize*100;
 
-            (this.view.sliderThumbSecond.style.top)
-                ? this.thumbSecondPosition = parseInt(this.view.sliderThumbSecond.style.top.replace("%",""))
-                : this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond).top.replace("px",""))/this.containerSize*100;
+            (this.view.sliderThumbSecond!.style.top)
+                ? this.thumbSecondPosition = parseInt(this.view.sliderThumbSecond!.style.top.replace("%",""))
+                : this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond!).top.replace("px",""))/this.containerSize*100;
         }   
 
         if (this.view.dragObject.elem === this.view.sliderThumb &&
