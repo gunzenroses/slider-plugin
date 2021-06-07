@@ -1,7 +1,10 @@
 import { EventDispatcher } from "./eventDispatcher"
 import { TSettings } from "./types/types"
-import { labelView } from "./subview/labelView/labelView"
 import { sliderTrackView } from "./subview/trackView/sliderTrack/sliderTrackView"
+import { sliderThumbView } from "./subview/trackView/sliderThumb/slideThumbView"
+import { sliderRangeView } from "./subview/trackView/sliderRange/sliderRangeView"
+import { tooltipRowView } from "./subview/tooltipView/tooltipRowView"
+import { tooltipItemView } from "./subview/tooltipView/tooltipItemView"
 
 interface IView {
     fromViewSelectThumb: EventDispatcher;
@@ -12,7 +15,6 @@ interface IView {
     dragObject: TSettings;
 
     init(containerId: string, settings: TSettings): object;
-    createClasses(): object;
     createChildren(containerId: string): object;
     setupHandlers(): object;
     enable(): object;
@@ -20,13 +22,16 @@ interface IView {
 
     sliderContainer: HTMLElement;
     sliderThumb: HTMLElement;
-    sliderThumbSecond: HTMLElement;
+    sliderThumbSecond?: HTMLElement;
     sliderRange: HTMLElement;
     sliderTrack: HTMLElement;
+    tooltipRow?: HTMLElement;
+    tooltipFirst?: HTMLElement;
+    tooltipSecond?: HTMLElement;
 
     selectObject: any; //HTMLElement;
 
-    // selectThumb(ev: MouseEvent): object | undefined;
+    //selectThumb(ev: MouseEvent): object | undefined;
     // dragThumbStart(ev: MouseEvent): object | undefined;
     // dragThumbMove(ev: MouseEvent): object | undefined;
     // dragThumbEnd(): object;
@@ -56,9 +61,13 @@ class SliderView implements IView {
     sliderThumbSecond!: HTMLElement;
     sliderRange!: HTMLElement;
     sliderTrack!: HTMLElement;
+    tooltipRow!: HTMLElement;
+    tooltipFirst!: HTMLElement;
+    tooltipSecond!: HTMLElement;
 
     ifHorizontal!: boolean;
     ifRange!: boolean;
+    ifTooltip!: boolean;
 
     sliderRangeClass!: string;
     sliderTrackClass!: string;
@@ -76,51 +85,18 @@ class SliderView implements IView {
     init(containerId: string, settings: TSettings){
         this.containerId = containerId;
         this.settings = settings;
-        this.createClasses();
-        this.render();
         this.createChildren();
+        this.render();
         this.setupHandlers();
         this.enable();
         return this;
     }
 
-    createClasses(){
-        this.ifHorizontal = this.settings.orientation === "horizontal";
-        this.ifRange = this.settings.range;
-        this.sliderContainer.classList.add(
-            this.ifHorizontal 
-                            ? "slider__content" 
-                            : "slider__content_vertical");
-        this.sliderRangeClass = this.ifHorizontal
-                            ? (this.ifRange 
-                                ? "slider__range_true" 
-                                : "slider__range")
-                            : (this.ifRange 
-                                ? "slider__range_vertical-true" 
-                                : "slider__range_vertical");
-        this.sliderTrackClass = this.ifHorizontal 
-                            ? "slider__track" 
-                            : "slider__track_vertical" ;
-        this.sliderThumbFirstClass = this.ifHorizontal
-                            ? "thumb_first" 
-                            : "thumb_first-vertical";
-        if (this.ifRange){
-            this.sliderThumbSecondClass = this.ifHorizontal
-                ? "thumb_second"
-                : "thumb_second-vertical";
-        }
-        return this;
-    }
-
     createChildren(){
         this.dragObject = {};
-        this.sliderRange = this.sliderContainer.querySelector(`.${this.sliderRangeClass}`)!; //slider__range
-        this.sliderThumb = this.sliderContainer.querySelector(`.${this.sliderThumbFirstClass}`)!;
-        this.sliderTrack = this.sliderContainer.querySelector(`${this.sliderTrackClass}`)!;
-        if (this.settings.range){
-            this.sliderThumbSecond = this.sliderContainer.querySelector(`.${this.sliderThumbSecondClass}`)!;
-            this.thumbSecondPosition = parseInt(getComputedStyle(this.sliderThumbSecond).left.replace("px",""))/this.containerWidth*100;
-        }
+        this.ifHorizontal = this.settings.orientation === "horizontal";
+        this.ifRange = this.settings.range;
+        this.ifTooltip = this.settings.tooltip;
         return this;
     }
 
@@ -200,12 +176,25 @@ class SliderView implements IView {
 
     render(){
         this.sliderContainer.innerHTML = "";
-        this.sliderContainer.innerHTML += 
-            `
-                ${labelView(this.ifRange, this.ifHorizontal, 
-                        this.settings.currentFirst, this.settings.currentSecond)}
-                ${sliderTrackView(this.ifRange, this.ifHorizontal)}
-            `;
+        this.sliderContainer.classList.add(
+                                    this.ifHorizontal 
+                                        ? "slider__content" 
+                                        : "slider__content_vertical");
+        this.ifTooltip
+            ?   (
+                    this.tooltipRow = tooltipRowView( this.sliderContainer, this.ifHorizontal),
+                    this.tooltipFirst = tooltipItemView(this.tooltipRow, this.ifHorizontal, "tooltip_first", this.settings.currentFirst),
+                    this.ifRange 
+                        ?  this.tooltipSecond = tooltipItemView(this.tooltipRow, this.ifHorizontal, "tooltip_second", this.settings.currentSecond)
+                        : null
+                )
+            : null;
+        this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
+        this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal);
+        this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal)
+        this.ifRange
+            ? this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal)
+            : "";
         return this;
     }
 }
