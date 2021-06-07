@@ -3,7 +3,7 @@ function sliderThumbView(parentNode: HTMLElement, className: string, ifHorizonta
     let thumbClass = `${className}${verticalClass}`
     let sliderThumbView = document.createElement("div");
     sliderThumbView.classList.add("slider__thumb", thumbClass);
-    parentNode.append(sliderThumbView);
+    parentNode.after(sliderThumbView);
     return sliderThumbView;
 }
 
