@@ -1,7 +1,7 @@
 import { TSettings } from "./types/types"
 import { EventDispatcher } from './eventDispatcher'
 
-interface Model {
+interface IModel {
     containerId: string;
     settings: TSettings;
     fromModelChangeThumb: EventDispatcher;
@@ -10,7 +10,7 @@ interface Model {
 
 }
 
-class SliderModel implements Model {
+class SliderModel implements IModel {
     containerId: string;
     settings: TSettings;
     fromModelChangeThumb: EventDispatcher;
@@ -34,4 +34,4 @@ class SliderModel implements Model {
     }
 }
 
-export { Model, SliderModel }
+export { IModel, SliderModel }
