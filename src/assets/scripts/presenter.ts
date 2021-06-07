@@ -32,7 +32,7 @@ class SliderPresenter implements Presenter {
 
     fromViewSelectThumbHandler!: { (newCoord: number): object | undefined };
     fromViewDragThumbHandler!: { (ev: MouseEvent): object | undefined };
-    fromModelChangeThumbHandler!: { (args: {object: object, newThumbValue: number})
+    fromModelChangeViewHandler!: { (args: {object: object, newThumbValue: number})
                                     : object | undefined };
 
     constructor(model: IModel, view: IView){
@@ -66,7 +66,7 @@ class SliderPresenter implements Presenter {
     setupHandlers(){
         this.fromViewSelectThumbHandler = this.selectThumb.bind(this);
         this.fromViewDragThumbHandler = this.dragThumb.bind(this);
-        this.fromModelChangeThumbHandler = this.changeThumbInView.bind(this);
+        this.fromModelChangeViewHandler = this.changeView.bind(this);
         return this;
     }
 
@@ -74,7 +74,7 @@ class SliderPresenter implements Presenter {
         this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler);
         this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler);
 
-        this.model.fromModelChangeThumb.add(this.fromModelChangeThumbHandler);
+        this.model.fromModelChangeView.add(this.fromModelChangeViewHandler);
         return this;
     }
 
@@ -189,9 +189,10 @@ class SliderPresenter implements Presenter {
                 }
             }
 
-    changeThumbInView(args: {object: object, newThumbValue: number}){
-        this.view.fromPresenterChangeThumb(args.object, args.newThumbValue);
-        this.view.fromPresenterChangeRange(args.object, args.newThumbValue);
+    changeView(args: {object: object, newThumbValue: number}){
+        this.view.fromPresenterChange(args.object, args.newThumbValue);
+        // this.view.fromPresenterChangeThumb(args.object, args.newThumbValue);
+        // this.view.fromPresenterChangeRange(args.object, args.newThumbValue);
         this.view.selectObject = {};
         return this;
     }
