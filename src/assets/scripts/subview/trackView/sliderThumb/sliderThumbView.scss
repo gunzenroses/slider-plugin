@@ -10,20 +10,20 @@
 
 .thumb_first {
     left: 33%;
-    transform: translate(-8px);
+    transform: translate(-$height-basic, -$height-basic);
 }
 
 .thumb_second {
     left: 66%;
-    transform: translate(-8px);
+    transform: translate(-$height-basic, -$height-basic);
 }
 
 .thumb_first-vertical {
     top: 33%;
-    transform: translateY(-8px);
+    transform: translate(-$height-basic, -$height-basic);
 }
 
 .thumb_second-vertical {
     top: 66%;
-    transform: translateY(-8px);
+    transform: translate(-$height-basic, -$height-basic);
 } 
