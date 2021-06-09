@@ -9,12 +9,17 @@ window.onload = function() {
     //$.fn.SliderMaker()
     
     let simpleSlider = SliderMaker("horizontal", {
-        max: 200,
+        max: 120,
+        step: 7,
+        scale: true,
         range: true,
     })
 
     let verticalSlider = SliderMaker("vertical", {
         orientation: "vertical",
+        step: 6,
+        max: 120,
+        scale: true,
         range: false,
     })
 }
