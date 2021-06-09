@@ -3,8 +3,8 @@ import { TSettings } from "./types/types"
 import { sliderTrackView } from "./subview/trackView/sliderTrack/sliderTrackView"
 import { sliderThumbView } from "./subview/trackView/sliderThumb/slideThumbView"
 import { sliderRangeView } from "./subview/trackView/sliderRange/sliderRangeView"
-import { tooltipRowView } from "./subview/tooltipView/tooltipRowView"
 import { tooltipItemView } from "./subview/tooltipView/tooltipItemView"
+import { scaleView } from "./subview/scaleView/scaleView"
 
 interface IView {
     fromViewSelectThumb: EventDispatcher;
@@ -29,6 +29,7 @@ interface IView {
     tooltipRow?: HTMLElement;
     tooltipFirst?: HTMLElement;
     tooltipSecond?: HTMLElement;
+    scale?: HTMLElement;
 
     selectObject: any; //HTMLElement;
 
@@ -66,10 +67,12 @@ class SliderView implements IView {
     tooltipRow!: HTMLElement;
     tooltipFirst!: HTMLElement;
     tooltipSecond!: HTMLElement;
+    scale!: HTMLElement;
 
     ifHorizontal!: boolean;
     ifRange!: boolean;
     ifTooltip!: boolean;
+    ifScale!: boolean;
 
     sliderRangeClass!: string;
     sliderTrackClass!: string;
@@ -99,6 +102,7 @@ class SliderView implements IView {
         this.ifHorizontal = this.settings.orientation === "horizontal";
         this.ifRange = this.settings.range;
         this.ifTooltip = this.settings.tooltip;
+        this.ifScale = this.settings.scale;
         return this;
     }
 
@@ -196,16 +200,6 @@ class SliderView implements IView {
                                     this.ifHorizontal 
                                         ? "slider__content" 
                                         : "slider__content_vertical");
-        // this.ifTooltip
-        //     ?   (
-        //             this.tooltipRow = tooltipRowView(this.sliderContainer, this.ifHorizontal),
-        //             this.tooltipFirst = tooltipItemView(this.tooltipRow, this.ifHorizontal, "tooltip_first", this.settings.currentFirst),
-        //             this.ifRange 
-        //                 ?  this.tooltipSecond = tooltipItemView(this.tooltipRow, this.ifHorizontal, "tooltip_second", this.settings.currentSecond)
-        //                 : null
-        //         )
-        //     : null;
-
         this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
         this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal);
         this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal)
@@ -217,6 +211,9 @@ class SliderView implements IView {
                 this.ifTooltip
                     ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, this.ifHorizontal, "tooltip_second", this.settings.currentSecond)
                     : null)
+            : null;
+        this.ifScale
+            ? (this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.settings.min, this.settings.max, this.settings.step))
             : null;
         return this;
     }
