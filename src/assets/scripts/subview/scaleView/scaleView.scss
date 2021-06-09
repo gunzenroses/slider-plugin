@@ -24,12 +24,16 @@ $border-width: 1px;
 
 .scale__point {
     position: relative;
-    // height: 3*$border-width;
-    // width: $border-width;
-
     &_vertical {
         @extend .scale__point;
-        // height: $border-width;
-        // width: 3*$border-width;
+    }
+}
+
+.scale__number {
+    position: absolute; 
+    transform: translate(-50%, 10px);
+    &_vertical {
+        @extend .scale__number;
+        transform: translate(10px,-50%);
     }
 }
