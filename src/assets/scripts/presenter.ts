@@ -54,7 +54,6 @@ class SliderPresenter implements Presenter {
     createChildren(){
         this.ifHorizontal = this.settings.orientation === "horizontal";
         this.ifRange = this.settings.range;
-        
         this.containerSize = (this.ifHorizontal)
                             ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""))
                             : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px",""))
@@ -79,12 +78,13 @@ class SliderPresenter implements Presenter {
     }
 
     selectThumb(e: any){
-        this.newThumbCurrentPosition = (this.ifHorizontal)
+        this.newThumbCurrentPosition = this.ifHorizontal
                     ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left + this.thumbWidth/2
                     : e.clientY - this.view.sliderContainer.getBoundingClientRect().top + this.thumbWidth/2;
         let newThumbCurrentPercent = Math.floor(this.newThumbCurrentPosition/this.containerSize*100);
-        if (!this.model.settings.range){ this.selectThumbRangeFalse(newThumbCurrentPercent)};
-        if (this.model.settings.range){ this.selectThumbRangeTrue(newThumbCurrentPercent)};
+        this.ifRange 
+            ? this.selectThumbRangeTrue(newThumbCurrentPercent)
+            :  this.selectThumbRangeFalse(newThumbCurrentPercent);
         return this;
     }
 
