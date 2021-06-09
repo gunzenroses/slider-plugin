@@ -9,8 +9,7 @@ let sliderData: TSettings = {
     step: 1,
     orientation: "horizontal",
     tooltip: true,
-    //step: false
-    //scale: false,
+    scale: false,
 }
 
 export { sliderData }
