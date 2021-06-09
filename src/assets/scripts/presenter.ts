@@ -28,11 +28,6 @@ class SliderPresenter implements Presenter {
     newThumbCurrent!: number;
     ifHorizontal!: boolean;
     ifRange!: boolean;
-<<<<<<< HEAD
-
-=======
-    step!: number;
->>>>>>> 132834e668979912f953174e8993a95974474807
     containerSize!: number;
     thumbWidth!: number;
     newThumbCurrentPosition!: number;
