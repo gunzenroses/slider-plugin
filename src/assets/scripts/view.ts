@@ -76,6 +76,8 @@ class SliderView implements IView {
     ifRange!: boolean;
     ifTooltip!: boolean;
     ifScale!: boolean;
+    step!: number;
+    max!: number;
 
     sliderRangeClass!: string;
     sliderTrackClass!: string;
@@ -106,6 +108,8 @@ class SliderView implements IView {
         this.ifRange = this.settings.range;
         this.ifTooltip = this.settings.tooltip;
         this.ifScale = this.settings.scale;
+        this.step = this.settings.step;
+        this.max = this.settings.max;
         return this;
     }
 
@@ -191,8 +195,8 @@ class SliderView implements IView {
     changeTooltip(object: HTMLElement, newThumbCurrent: number){
         let currentTooltip = object.children[0];
         (currentTooltip === this.tooltipFirst)
-            ? this.tooltipFirst.innerText = (newThumbCurrent * (this.settings.max - this.settings.min) / 100).toString()
-            : this.tooltipSecond.innerText = (newThumbCurrent * (this.settings.max - this.settings.min) / 100).toString();
+            ? this.tooltipFirst.innerText =  Math.round(newThumbCurrent * (this.settings.max - this.settings.min) / 100).toString()
+            : this.tooltipSecond.innerText = Math.round(newThumbCurrent * (this.settings.max - this.settings.min) / 100).toString();
         return this;
     }
 
