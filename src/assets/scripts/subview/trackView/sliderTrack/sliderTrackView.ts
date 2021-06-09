@@ -3,7 +3,7 @@ function sliderTrackView(parentNode: HTMLElement, ifHorizontal: boolean){
                                     ? "slider__track" 
                                     : "slider__track_vertical" ;
     let sliderTrack = document.createElement("div");
-    sliderTrack.classList.add(`${sliderTrackClass}`)
+    sliderTrack.classList.add(sliderTrackClass)
     parentNode.append(sliderTrack);
     return sliderTrack;
 }
