@@ -10,6 +10,7 @@ $border-width: 1px;
     align-items: flex-end;
     justify-content: space-between;
     flex-direction: row;
+    margin-bottom: 1rem;
 
     &_vertical {
         width: 10px;
@@ -19,6 +20,7 @@ $border-width: 1px;
         align-items: flex-end;
         justify-content: space-between;
         flex-direction: column;
+        margin-right: 1.5rem;
     }
 }
 
