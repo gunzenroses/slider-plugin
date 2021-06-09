@@ -1,6 +1,7 @@
 import { IModel } from "./model"
 import { IView } from "./view"
 import { TSettings } from "./types/types"
+import { applyStep } from "./common"
 
 interface Presenter {
     model: IModel;
@@ -21,9 +22,13 @@ class SliderPresenter implements Presenter {
     containerId: string;
     settings: TSettings;
 
+    max!: number;
+    step!: number;
+
     newThumbCurrent!: number;
     ifHorizontal!: boolean;
     ifRange!: boolean;
+
     containerSize!: number;
     thumbWidth!: number;
     newThumbCurrentPosition!: number;
@@ -52,6 +57,8 @@ class SliderPresenter implements Presenter {
     }
 
     createChildren(){
+        this.max = this.settings.max;
+        this.step = this.settings.step;
         this.ifHorizontal = this.settings.orientation === "horizontal";
         this.ifRange = this.settings.range;
         this.containerSize = (this.ifHorizontal)
@@ -72,7 +79,6 @@ class SliderPresenter implements Presenter {
     enable(){
         this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler);
         this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler);
-
         this.model.fromModelChangeView.add(this.fromModelChangeViewHandler);
         return this;
     }
@@ -179,20 +185,22 @@ class SliderPresenter implements Presenter {
 
             changeThumbInModel(object: object, newThumbValue: number){
                 if (newThumbValue >= 0 && newThumbValue <= 100){
-                    this.model.fromPresenterChangeThumb(object, newThumbValue);
+                    let newValue = applyStep(newThumbValue, this.max, this.step);
+                    this.model.fromPresenterChangeThumb(object, newValue);
                 }
+                return this;
             }
 
             changeThumbRightInModel(object: object, newThumbValue: number){
                 if (newThumbValue >= 0 && newThumbValue <= 100){
-                    this.model.fromPresenterChangeThumbRight(object, newThumbValue);
+                    let newValue = applyStep(newThumbValue, this.max, this.step);
+                    this.model.fromPresenterChangeThumbRight(object, newValue);
                 }
+                return this;
             }
 
     changeView(args: {object: object, newThumbValue: number}){
         this.view.fromPresenterChange(args.object, args.newThumbValue);
-        // this.view.fromPresenterChangeThumb(args.object, args.newThumbValue);
-        // this.view.fromPresenterChangeRange(args.object, args.newThumbValue);
         this.view.selectObject = {};
         return this;
     }
