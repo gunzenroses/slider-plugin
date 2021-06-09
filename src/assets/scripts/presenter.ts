@@ -24,6 +24,7 @@ class SliderPresenter implements Presenter {
     newThumbCurrent!: number;
     ifHorizontal!: boolean;
     ifRange!: boolean;
+    step!: number;
     containerSize!: number;
     thumbWidth!: number;
     newThumbCurrentPosition!: number;
@@ -54,6 +55,7 @@ class SliderPresenter implements Presenter {
     createChildren(){
         this.ifHorizontal = this.settings.orientation === "horizontal";
         this.ifRange = this.settings.range;
+        this.step = this.settings.step;
         this.containerSize = (this.ifHorizontal)
                             ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""))
                             : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px",""))
@@ -72,7 +74,6 @@ class SliderPresenter implements Presenter {
     enable(){
         this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler);
         this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler);
-
         this.model.fromModelChangeView.add(this.fromModelChangeViewHandler);
         return this;
     }
@@ -90,11 +91,17 @@ class SliderPresenter implements Presenter {
 
     selectThumbRangeFalse(newThumbCurrentPercent: number){
         this.view.selectObject = this.view.sliderThumb;
-        this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent);
+        let newValue = (newThumbCurrentPercent % this.step === 0 || newThumbCurrentPercent === this.settings.max)
+                ? newThumbCurrentPercent
+                : Math.round(newThumbCurrentPercent/this.step)*this.step;
+        this.changeThumbInModel(this.view.selectObject, newValue);
         return this;
     }
 
     selectThumbRangeTrue(newThumbCurrentPercent: number){
+            let newValue = (newThumbCurrentPercent % this.step === 0 || newThumbCurrentPercent === this.settings.max)
+                ? newThumbCurrentPercent
+                : Math.round(newThumbCurrentPercent/this.step)*this.step;
             let firstThumb: number = this.ifHorizontal
                         ? parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))
                         : parseInt(getComputedStyle(this.view.sliderThumb).top.replace("px",""));
@@ -111,10 +118,10 @@ class SliderPresenter implements Presenter {
 
         if (firstDiff < secondDiff){ 
             this.view.selectObject = this.view.sliderThumb;
-            this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent) 
+            this.changeThumbInModel(this.view.selectObject, newValue) 
         } if (firstDiff > secondDiff){
             this.view.selectObject = this.view.sliderThumbSecond!;
-            this.changeThumbRightInModel(this.view.selectObject, newThumbCurrentPercent);
+            this.changeThumbRightInModel(this.view.selectObject, newValue);
         } if (firstDiff === secondDiff){
             return;
         }
