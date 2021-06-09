@@ -1,5 +1,6 @@
 import { EventDispatcher } from "./eventDispatcher"
 import { TSettings } from "./types/types"
+import { sliderContainerView } from "./subview/trackView/sliderContainer/sliderContainerView"
 import { sliderTrackView } from "./subview/trackView/sliderTrack/sliderTrackView"
 import { sliderThumbView } from "./subview/trackView/sliderThumb/slideThumbView"
 import { sliderRangeView } from "./subview/trackView/sliderRange/sliderRangeView"
@@ -21,6 +22,7 @@ interface IView {
     render(): void;
     fromPresenterChange(object: any, newThumbCurrent: number): object;
 
+    parentContainer: HTMLElement;
     sliderContainer: HTMLElement;
     sliderThumb: HTMLElement;
     sliderThumbSecond?: HTMLElement;
@@ -47,8 +49,9 @@ interface IView {
 class SliderView implements IView {
     fromViewSelectThumb: EventDispatcher;
     fromViewDragThumb: EventDispatcher;
-    sliderContainer: HTMLElement;
+    parentContainer: HTMLElement;
     
+    sliderContainer!: HTMLElement;
     containerId!: string;
     settings!: TSettings;
     dragObject!: any; //{elem: EventTarget, offsetX: number} | {};
@@ -84,7 +87,7 @@ class SliderView implements IView {
     constructor(containerId: string){
         this.fromViewSelectThumb = new EventDispatcher(this)
         this.fromViewDragThumb = new EventDispatcher(this)
-        this.sliderContainer = document.getElementById(containerId)!;
+        this.parentContainer = document.getElementById(containerId)!;
     }
 
     init(containerId: string, settings: TSettings){
@@ -195,11 +198,8 @@ class SliderView implements IView {
 
 
     render(){
+        this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
         this.sliderContainer.innerHTML = "";
-        this.sliderContainer.classList.add(
-                                    this.ifHorizontal 
-                                        ? "slider__content" 
-                                        : "slider__content_vertical");
         this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
         this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal);
         this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal)
