@@ -17,12 +17,13 @@ function scaleItemView(ifHorizontal: boolean, scaleLength: number, min: number, 
     let itemClass: string = ifHorizontal ? "scale__point" : "scale__point_vertical";
     let borderType: string = ifHorizontal ? "left" : "top";
     let borderWidth: number = 1;
-    let borderStyle = `border-${borderType}: ${borderWidth}px solid black;`;
+    let borderStyle: string = `border-${borderType}: ${borderWidth}px solid black;`;
+    let spanClass: string = ifHorizontal ? "scale__number" : "scale__number_vertical"
 
     function scaleMaker(item: number){
         return (
             (item % (10*step) === 0) 
-                ? `<div class=${itemClass} style="${borderStyle} ${pointSegmentStyle}""></div>`
+                ? `<div class=${itemClass} style="${borderStyle} ${pointSegmentStyle}""><span class="${spanClass}">${item}</span></div>`
                 : `<div class=${itemClass} style="${borderStyle} ${pointStyle}""></div>`
         )
     }
