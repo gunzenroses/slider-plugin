@@ -5,7 +5,7 @@ function tooltipItemView(parentNode: HTMLElement, ifHorizontal: boolean, classNa
     let tooltip = document.createElement("span");
     tooltip.classList.add("tooltip", `${className}${verticalClass}`);
     let newValue = Math.round(applyStep(value, max, step));
-    tooltip.innerHTML = newValue.toString();
+    tooltip.innerText = newValue.toString();
     parentNode.append(tooltip);
     return tooltip;
 }
