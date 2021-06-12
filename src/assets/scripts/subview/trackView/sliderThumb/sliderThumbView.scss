@@ -1,8 +1,8 @@
 .slider__thumb {
     position: absolute;
     z-index: 3;
-    width: 16px;
-    height: 16px;
+    width: $half-thumb*2;
+    height: $half-thumb*2;
     border-radius: 10px;
     background: $color-basic;
     border: 2px solid $color-light;
@@ -10,17 +10,17 @@
 
 .thumb_first {
     left: 33%;
-    transform: translate(-$height-basic, -$height-basic);
+    transform: translate(-$half-thumb, -$height-basic);
 }
 
 .thumb_second {
     left: 66%;
-    transform: translate(-$height-basic, -$height-basic);
+    transform: translate(-$half-thumb, -$height-basic);
 }
 
 .thumb_first-vertical {
     top: 33%;
-    transform: translate(-$height-basic, -$height-basic);
+    transform: translate(-$height-basic, -$half-thumb);
 }
 
 .thumb_second-vertical {
