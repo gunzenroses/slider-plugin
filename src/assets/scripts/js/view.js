@@ -28,9 +28,7 @@ class SliderView {
     createChildren(containerId){
         this.selectObject;
         this.dragObject = {};
-        // this.thumbPosition = parseInt(getComputedStyle(this.sliderThumb).left.replace("px","")/this.containerWidth*100);
         if (this.settings.range) this.thumbSecondPosition = parseInt(getComputedStyle(this.sliderThumbSecond).left.replace("px","")/this.containerWidth*100);
-        // console.log(this.thumbPosition);
         return this;
     }
 
@@ -83,8 +81,6 @@ class SliderView {
     }
 
     fromPresenterChangeThumb(object, newThumbCurrent){
-        console.log(object)
-        console.log(newThumbCurrent)
         object.style.left = newThumbCurrent + "%";
         return this;
     }
