@@ -4,7 +4,9 @@ function tooltipItemView(parentNode: HTMLElement, ifHorizontal: boolean, classNa
     let verticalClass = ifHorizontal ? "" : "-vertical";
     let tooltip = document.createElement("span");
     tooltip.classList.add("tooltip", `${className}${verticalClass}`);
-    let newValue = Math.round(applyStep(value, max, step));
+    let newValue = Math.round(applyStep(value, max, step)) > max
+                    ? max
+                    : Math.round(applyStep(value, max, step));
     tooltip.innerText = newValue.toString();
     parentNode.append(tooltip);
     return tooltip;
