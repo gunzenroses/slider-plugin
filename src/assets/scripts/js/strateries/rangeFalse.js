@@ -12,7 +12,6 @@ class RangeFalse {
             context.sliderContainer.append(context.sliderThumb);
         context.sliderRange = new SliderRange("slider__range");
             context.sliderContainer.append(context.sliderRange);
-        console.log("falseee")
         return context;
     }
 }
