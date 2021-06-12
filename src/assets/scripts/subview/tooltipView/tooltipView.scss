@@ -23,6 +23,7 @@ $color-tooltip: #008000;
     text-align: center;
     line-height: $height-tooltip;
     z-index: 2;
+    user-select: none;
 }
 
 .tooltip_first {
