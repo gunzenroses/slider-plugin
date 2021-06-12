@@ -84,8 +84,10 @@ class SliderPresenter implements Presenter {
     selectThumb(e: any){
         this.newThumbCurrentPosition = this.ifHorizontal
                     ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left + this.thumbWidth/2
-                    : e.clientY - this.view.sliderContainer.getBoundingClientRect().top + this.thumbWidth/2;
-        let newThumbCurrentPercent = Math.floor(this.newThumbCurrentPosition/this.containerSize*100);
+                    : e.clientY - this.view.sliderContainer.getBoundingClientRect().top //+ this.thumbWidth/2;
+        let newThumbCurrentPercent = this.ifHorizontal
+                    ? Math.floor(this.newThumbCurrentPosition/this.containerSize*100)
+                    : Math.floor((this.containerSize - this.newThumbCurrentPosition)/this.containerSize*100);
         this.ifRange 
             ? this.selectThumbRangeTrue(newThumbCurrentPercent)
             :  this.selectThumbRangeFalse(newThumbCurrentPercent);
@@ -181,12 +183,13 @@ class SliderPresenter implements Presenter {
     }
 
             changeThumbInModel(object: object, newThumbValue: number){
-                let newValue = applyStep(newThumbValue, this.max, this.step) > 100 
-                            ? 100
-                            : applyStep(newThumbValue, this.max, this.step);
-                if (newValue >= 0 && newValue <= 100){
-                    this.model.fromPresenterChangeThumb(object, newValue);
-                }
+                let temp = applyStep(newThumbValue, this.max, this.step);
+                let newValue = temp > 100
+                    ? 100
+                    : temp < 0
+                        ? 0
+                        : temp;
+                this.model.fromPresenterChangeThumb(object, newValue);
             }
 
             changeThumbRightInModel(object: object, newThumbValue: number){

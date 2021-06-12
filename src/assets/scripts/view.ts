@@ -166,18 +166,14 @@ class SliderView implements IView {
     fromPresenterChange(object: any, newThumbCurrent: number){
         this.changeThumb(object, newThumbCurrent);
         this.changeRange(object, newThumbCurrent);
-        if (this.ifTooltip) {
-            this.ifHorizontal 
-                ? this.changeTooltip(object, newThumbCurrent)
-                : this.changeTooltip(object, Math.abs(100 - newThumbCurrent));
-        }
+        if (this.ifTooltip) this.changeTooltip(object, newThumbCurrent);
         return this;
     }
 
     changeThumb(object: any, newThumbCurrent: number){
         this.ifHorizontal
                     ? object.style.left = newThumbCurrent + "%"
-                    : object.style.top = newThumbCurrent + "%";
+                    : object.style.top = (100 - newThumbCurrent) + "%";
         return this;
     }
 
@@ -188,16 +184,15 @@ class SliderView implements IView {
                     ? this.sliderRange.style.left = newThumbCurrent + "%"
                     : this.sliderRange.style.right = (100 - newThumbCurrent) + "%")
                 : ((object === this.sliderThumb) 
-                    ? this.sliderRange.style.bottom = (100 - newThumbCurrent) + "%"
-                    : this.sliderRange.style.top = newThumbCurrent + "%")
+                    ? this.sliderRange.style.top = (100 - newThumbCurrent) + "%"
+                    : this.sliderRange.style.bottom = newThumbCurrent + "%")
         : this.ifHorizontal
                 ? this.sliderRange.style.right = (100 - newThumbCurrent) + "%"
-                : this.sliderRange.style.top = newThumbCurrent + "%";
+                : this.sliderRange.style.top = (100 - newThumbCurrent) + "%";
         return this;
     }
 
     changeTooltip(object: HTMLElement, newThumbCurrent: number){
-        console.log(newThumbCurrent)
         let currentTooltip = object.children[0];
         (currentTooltip === this.tooltipFirst)
             ? this.tooltipFirst.innerText =  Math.round(newThumbCurrent * (this.settings.max - this.settings.min) / 100).toString()
