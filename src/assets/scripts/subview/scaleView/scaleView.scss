@@ -19,7 +19,7 @@ $border-width: 1px;
         border-right: $border-width solid black;
         display: flex;
         align-items: flex-end;
-        flex-direction: column;
+        flex-direction: column-reverse;
         margin-right: 1.5rem;
     }
 }

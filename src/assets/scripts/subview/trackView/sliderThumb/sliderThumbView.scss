@@ -19,11 +19,13 @@
 }
 
 .thumb_first-vertical {
-    top: 33%;
+    //top: 33%;
+    bottom: 33%;
     transform: translate(-$height-basic, -$half-thumb);
 }
 
 .thumb_second-vertical {
-    top: 66%;
+    //top: 66%;
+    bottom: 66%;
     transform: translate(-$height-basic, -$height-basic);
 } 

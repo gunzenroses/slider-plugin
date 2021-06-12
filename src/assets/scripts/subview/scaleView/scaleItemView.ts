@@ -19,7 +19,7 @@ function scaleItemView(ifHorizontal: boolean, scaleLength: number, min: number, 
     let borderStyle: string = "" //`border-${borderType}: ${borderWidth}px solid black;`;
     let spanClass: string = ifHorizontal ? "scale__number" : "scale__number_vertical"
 
-    let marginType: string = ifHorizontal ? "right" : "bottom";
+    let marginType: string = ifHorizontal ? "right" : "top";
     let marginWidth: number = scaleLength / scaleItemRow.length - borderWidth;
     let marginStyle: string = `margin-${marginType}: ${marginWidth}px;`;
 
@@ -35,8 +35,8 @@ function scaleItemView(ifHorizontal: boolean, scaleLength: number, min: number, 
     }
 
     let scaleItemView = 
-            scaleItemRow.map(item => scaleMaker(item)).join(" ")
-            + scaleItemMax;
+            scaleItemMax +
+            scaleItemRow.map(item => scaleMaker(item)).join(" ");
 
     return scaleItemView;
 }
