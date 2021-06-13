@@ -101,16 +101,8 @@ class SliderPresenter implements Presenter {
     }
 
     selectThumbRangeTrue(newThumbCurrentPercent: number){
-        let firstThumb: number = this.ifHorizontal
-                    ? parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))
-                    : parseInt(getComputedStyle(this.view.sliderThumb).bottom.replace("px",""));
-
-        let secondThumb: number = this.ifHorizontal
-                    ? parseInt(getComputedStyle(this.view.sliderThumbSecond!).left.replace("px",""))
-                    : parseInt(getComputedStyle(this.view.sliderThumbSecond!).bottom.replace("px",""));
-
-        let firstThumbCoord = Math.round(firstThumb/this.containerSize*100);
-        let secondThumbCoord = Math.floor(secondThumb/this.containerSize*100);
+        let firstThumbCoord: number = findPosition(this.view.sliderThumb, this.ifHorizontal, this.containerSize);
+        let secondThumbCoord: number = findPosition(this.view.sliderThumbSecond!, this.ifHorizontal, this.containerSize);
 
         let firstDiff: number = Math.abs(firstThumbCoord - newThumbCurrentPercent);
         let secondDiff: number = Math.abs(secondThumbCoord - newThumbCurrentPercent);
