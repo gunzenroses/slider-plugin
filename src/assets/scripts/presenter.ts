@@ -112,7 +112,7 @@ class SliderPresenter implements Presenter {
             this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent) 
         } if (firstDiff > secondDiff){
             this.view.selectObject = this.view.sliderThumbSecond!;
-            this.changeThumbRightInModel(this.view.selectObject, newThumbCurrentPercent);
+            this.changeThumbSecondInModel(this.view.selectObject, newThumbCurrentPercent);
         } if (firstDiff === secondDiff){
             return;
         }
@@ -151,7 +151,7 @@ class SliderPresenter implements Presenter {
         else if (this.view.dragObject.elem === this.view.sliderThumbSecond &&
             this.newThumbCurrent >= this.thumbPosition + 1 &&
             this.newThumbCurrent <= 100){
-            this.changeThumbRightInModel(this.view.dragObject.elem, newThumbCurrent);
+            this.changeThumbSecondInModel(this.view.dragObject.elem, newThumbCurrent);
             return this;
         } 
         else {
@@ -171,14 +171,14 @@ class SliderPresenter implements Presenter {
                 this.model.fromPresenterChangeThumb(object, newValue);
             }
 
-            changeThumbRightInModel(object: object, newThumbValue: number){
+            changeThumbSecondInModel(object: object, newThumbValue: number){
                 let temp = applyStep(newThumbValue, this.max, this.step);
                 let newValue = temp > 100
                     ? 100
                     : temp < 0
                         ? 0
                         : temp;
-                this.model.fromPresenterChangeThumbRight(object, newValue);
+                this.model.fromPresenterChangeThumbSecond(object, newValue);
                 return this;
             }
 
