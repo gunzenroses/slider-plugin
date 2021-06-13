@@ -7,16 +7,9 @@ function sliderThumbView(parentNode: HTMLElement, className: string, ifHorizonta
     parentNode.append(sliderThumbView);
     return sliderThumbView;
 
-    //applyStep(newThumbValue, max, step);
     //findPosition
+    //applyStep(newThumbValue, max, step);
+    //changeThumb(object: any, ifHorizontal: boolean, newThumbCurrent: number)
 }
 
-
-function changeThumb(object: any, ifHorizontal: boolean, newThumbCurrent: number){
-    ifHorizontal
-                ? object.style.left = newThumbCurrent + "%"
-                : object.style.bottom = newThumbCurrent + "%";
-    return object;
-}
-
-export { sliderThumbView, changeThumb };
+export { sliderThumbView };
