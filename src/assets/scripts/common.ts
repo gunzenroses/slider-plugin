@@ -10,4 +10,8 @@ function applyStep(value: number, max: number, step: number): number {
     return realValue;
 }
 
-export { applyStep }
+function fromPercentsToValue(value: number, max: number, min: number){
+    let newValue = Math.round(value * (max - min) / 100).toString();
+    return newValue;
+}
+export { applyStep, fromPercentsToValue }
