@@ -1,7 +1,7 @@
 import { IModel } from "./model"
 import { IView } from "./view"
 import { TSettings } from "./types/types"
-import { applyStep } from "./common"
+import { applyStep, findPosition } from "./common"
 
 interface Presenter {
     model: IModel;
@@ -147,23 +147,9 @@ class SliderPresenter implements Presenter {
     }
 
     dragThumbRangeTrue(newThumbCurrent: number){
-        if (this.ifHorizontal){
-            this.thumbPosition = (this.view.sliderThumb.style.left)
-                ? parseInt(this.view.sliderThumb.style.left.replace("%",""))
-                : parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))/this.containerSize*100;
+        this.thumbPosition = findPosition(this.view.sliderThumb, this.ifHorizontal, this.containerSize);
+        this.thumbSecondPosition = findPosition(this.view.sliderThumbSecond!, this.ifHorizontal, this.containerSize);
 
-            this.thumbSecondPosition = (this.view.sliderThumbSecond!.style.left)
-                ? parseInt(this.view.sliderThumbSecond!.style.left.replace("%",""))
-                : parseInt(getComputedStyle(this.view.sliderThumbSecond!).left.replace("px",""))/this.containerSize*100;
-        } else {
-            this.thumbPosition = (this.view.sliderThumb.style.bottom)
-                ? parseInt(this.view.sliderThumb.style.bottom.replace("%",""))
-                : parseInt(getComputedStyle(this.view.sliderThumb).bottom.replace("px",""))/this.containerSize*100;
-
-            this.thumbSecondPosition = (this.view.sliderThumbSecond!.style.bottom)
-                ? parseInt(this.view.sliderThumbSecond!.style.bottom.replace("%",""))
-                : parseInt(getComputedStyle(this.view.sliderThumbSecond!).bottom.replace("px",""))/this.containerSize*100;
-        }   
         if (this.view.dragObject.elem === this.view.sliderThumb &&
             this.newThumbCurrent <= this.thumbSecondPosition + 1 &&
             this.newThumbCurrent >= 0 ){
