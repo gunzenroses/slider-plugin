@@ -78,6 +78,7 @@ class SliderView implements IView {
     ifScale!: boolean;
     step!: number;
     max!: number;
+    min!: number;
 
     sliderRangeClass!: string;
     sliderTrackClass!: string;
@@ -110,6 +111,7 @@ class SliderView implements IView {
         this.ifScale = this.settings.scale;
         this.step = this.settings.step;
         this.max = this.settings.max;
+        this.min = this.settings.min;
         return this;
     }
 
@@ -208,12 +210,12 @@ class SliderView implements IView {
         this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal);
         this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal)
         this.ifTooltip
-            ? this.tooltipFirst = tooltipItemView(this.sliderThumb, this.ifHorizontal, "tooltip_first", this.settings.currentFirst, this.max, this.step)
+            ? this.tooltipFirst = tooltipItemView(this.sliderThumb, this.ifHorizontal, "tooltip_first", this.settings.currentFirst, this.max, this.min, this.step)
             : null;
         this.ifRange
             ? (this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal),
                 this.ifTooltip
-                    ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, this.ifHorizontal, "tooltip_second", this.settings.currentSecond, this.max, this.step)
+                    ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, this.ifHorizontal, "tooltip_second", this.settings.currentSecond, this.max, this.min, this.step)
                     : null)
             : null;
         this.ifScale
