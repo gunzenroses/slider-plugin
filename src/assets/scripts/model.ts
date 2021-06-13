@@ -6,7 +6,7 @@ interface IModel {
     settings: TSettings;
     fromModelChangeView: EventDispatcher;
     fromPresenterChangeThumb(object: any, newThumbValue: number): object;
-    fromPresenterChangeThumbRight(object: any, newThumbValue: number): object;
+    fromPresenterChangeThumbSecond(object: any, newThumbValue: number): object;
 
 }
 
@@ -27,7 +27,7 @@ class SliderModel implements IModel {
         return this;
     }
 
-    fromPresenterChangeThumbRight(object: any, newThumbValue: number): object {
+    fromPresenterChangeThumbSecond(object: any, newThumbValue: number): object {
         this.settings.currentSecond = newThumbValue;
         this.fromModelChangeView.notify({object, newThumbValue});
         return this;
