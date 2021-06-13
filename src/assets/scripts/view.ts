@@ -184,8 +184,8 @@ class SliderView implements IView {
                     ? this.sliderRange.style.left = newThumbCurrent + "%"
                     : this.sliderRange.style.right = (100 - newThumbCurrent) + "%")
                 : ((object === this.sliderThumb) 
-                    ? this.sliderRange.style.top = (100 - newThumbCurrent) + "%"
-                    : this.sliderRange.style.bottom = newThumbCurrent + "%")
+                    ? this.sliderRange.style.bottom = newThumbCurrent + "%"
+                    : this.sliderRange.style.top = (100 - newThumbCurrent) + "%")
         : this.ifHorizontal
                 ? this.sliderRange.style.right = (100 - newThumbCurrent) + "%"
                 : this.sliderRange.style.top = (100 - newThumbCurrent) + "%";

@@ -103,11 +103,11 @@ class SliderPresenter implements Presenter {
     selectThumbRangeTrue(newThumbCurrentPercent: number){
         let firstThumb: number = this.ifHorizontal
                     ? parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))
-                    : parseInt(getComputedStyle(this.view.sliderThumb).top.replace("px",""));
+                    : parseInt(getComputedStyle(this.view.sliderThumb).bottom.replace("px",""));
 
         let secondThumb: number = this.ifHorizontal
                     ? parseInt(getComputedStyle(this.view.sliderThumbSecond!).left.replace("px",""))
-                    : parseInt(getComputedStyle(this.view.sliderThumbSecond!).top.replace("px",""));
+                    : parseInt(getComputedStyle(this.view.sliderThumbSecond!).bottom.replace("px",""));
 
         let firstThumbCoord = Math.round(firstThumb/this.containerSize*100);
         let secondThumbCoord = Math.floor(secondThumb/this.containerSize*100);
@@ -183,6 +183,7 @@ class SliderPresenter implements Presenter {
     }
 
             changeThumbInModel(object: object, newThumbValue: number){
+                console.log("here")
                 let temp = applyStep(newThumbValue, this.max, this.step);
                 let newValue = temp > 100
                     ? 100
@@ -193,12 +194,13 @@ class SliderPresenter implements Presenter {
             }
 
             changeThumbRightInModel(object: object, newThumbValue: number){
-                let newValue = applyStep(newThumbValue, this.max, this.step) > 100 
-                            ? 100
-                            : applyStep(newThumbValue, this.max, this.step);
-                if (newValue >= 0 && newValue <= 100){
-                    this.model.fromPresenterChangeThumbRight(object, newValue);
-                }
+                let temp = applyStep(newThumbValue, this.max, this.step);
+                let newValue = temp > 100
+                    ? 100
+                    : temp < 0
+                        ? 0
+                        : temp;
+                this.model.fromPresenterChangeThumbRight(object, newValue);
                 return this;
             }
 
