@@ -2,10 +2,12 @@ import { EventDispatcher } from "./eventDispatcher"
 import { TSettings } from "./types/types"
 import { sliderContainerView } from "./subview/trackView/sliderContainer/sliderContainerView"
 import { sliderTrackView } from "./subview/trackView/sliderTrack/sliderTrackView"
-import { sliderThumbView } from "./subview/trackView/sliderThumb/slideThumbView"
-import { sliderRangeView } from "./subview/trackView/sliderRange/sliderRangeView"
+import { sliderThumbView, changeThumb } from "./subview/trackView/sliderThumb/slideThumbView"
+import { sliderRangeView, changeRange } from "./subview/trackView/sliderRange/sliderRangeView"
 import { tooltipItemView } from "./subview/tooltipView/tooltipItemView"
+import { changeTooltip } from "./subview/tooltipView/changeTooltip"
 import { scaleView } from "./subview/scaleView/scaleView"
+import { fromPercentsToValue } from "./common"
 
 interface IView {
     fromViewSelectThumb: EventDispatcher;
@@ -34,15 +36,6 @@ interface IView {
     scale?: HTMLElement;
 
     selectObject: any; //HTMLElement;
-
-    // selectThumb(ev: MouseEvent): object | undefined;
-    // dragThumbStart(ev: MouseEvent): object | undefined;
-    // dragThumbMove(ev: MouseEvent): object | undefined;
-    // dragThumbEnd(): object;
-
-    // changeThumb(object: object, newThumbCurrent: number): object;
-    // changeRange(object: object, newThumbCurrent: number): object;
-    // changeTooltop(object: object, newThumbCurrent: number): object;
 }
 
 
@@ -166,42 +159,19 @@ class SliderView implements IView {
     }
 
     fromPresenterChange(object: any, newThumbCurrent: number){
-        this.changeThumb(object, newThumbCurrent);
-        this.changeRange(object, newThumbCurrent);
-        if (this.ifTooltip) this.changeTooltip(object, newThumbCurrent);
+        changeThumb(object, this.ifHorizontal, newThumbCurrent)
+
+        let ifThumbFirst = (object === this.sliderThumb)
+        changeRange(this.sliderRange, newThumbCurrent, this.ifHorizontal, this.ifRange, ifThumbFirst);
+        
+        if (this.ifTooltip) {
+            let currentTooltip = object.children[0];
+            (currentTooltip === this.tooltipFirst)
+                ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.max, this.min)
+                : changeTooltip(this.tooltipSecond, newThumbCurrent, this.max, this.min)
+        }
         return this;
     }
-
-    changeThumb(object: any, newThumbCurrent: number){
-        this.ifHorizontal
-                    ? object.style.left = newThumbCurrent + "%"
-                    : object.style.bottom = newThumbCurrent + "%";
-        return this;
-    }
-
-    changeRange(object: object, newThumbCurrent: number){
-        this.ifRange
-        ? this.ifHorizontal
-                ? ((object === this.sliderThumb) 
-                    ? this.sliderRange.style.left = newThumbCurrent + "%"
-                    : this.sliderRange.style.right = (100 - newThumbCurrent) + "%")
-                : ((object === this.sliderThumb) 
-                    ? this.sliderRange.style.bottom = newThumbCurrent + "%"
-                    : this.sliderRange.style.top = (100 - newThumbCurrent) + "%")
-        : this.ifHorizontal
-                ? this.sliderRange.style.right = (100 - newThumbCurrent) + "%"
-                : this.sliderRange.style.top = (100 - newThumbCurrent) + "%";
-        return this;
-    }
-
-    changeTooltip(object: HTMLElement, newThumbCurrent: number){
-        let currentTooltip = object.children[0];
-        (currentTooltip === this.tooltipFirst)
-            ? this.tooltipFirst.innerText =  Math.round(newThumbCurrent * (this.settings.max - this.settings.min) / 100).toString()
-            : this.tooltipSecond.innerText = Math.round(newThumbCurrent * (this.settings.max - this.settings.min) / 100).toString();
-        return this;
-    }
-
 
     render(){
         this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
