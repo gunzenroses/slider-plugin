@@ -173,7 +173,7 @@ class SliderView implements IView {
     changeThumb(object: any, newThumbCurrent: number){
         this.ifHorizontal
                     ? object.style.left = newThumbCurrent + "%"
-                    : object.style.top = (100 - newThumbCurrent) + "%";
+                    : object.style.bottom = newThumbCurrent + "%";
         return this;
     }
 

@@ -132,8 +132,9 @@ class SliderPresenter implements Presenter {
         let newThumbCurrentPX = this.ifHorizontal
             ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left
             : e.clientY - this.view.sliderContainer.getBoundingClientRect().top;
-
-        this.newThumbCurrent = Math.floor(newThumbCurrentPX/this.containerSize*100);
+        this.newThumbCurrent = this.ifHorizontal
+                ? Math.floor(newThumbCurrentPX/this.containerSize*100)
+                : Math.floor((this.containerSize - newThumbCurrentPX)/this.containerSize*100);
         this.ifRange
                 ? this.dragThumbRangeTrue(this.newThumbCurrent)
                 : this.dragThumbRangeFalse(this.newThumbCurrent);
@@ -147,30 +148,30 @@ class SliderPresenter implements Presenter {
 
     dragThumbRangeTrue(newThumbCurrent: number){
         if (this.ifHorizontal){
-            (this.view.sliderThumb.style.left)
-                ? this.thumbPosition =  parseInt(this.view.sliderThumb.style.left.replace("%",""))
-                : this.thumbPosition = parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))/this.containerSize*100;
+            this.thumbPosition = (this.view.sliderThumb.style.left)
+                ? parseInt(this.view.sliderThumb.style.left.replace("%",""))
+                : parseInt(getComputedStyle(this.view.sliderThumb).left.replace("px",""))/this.containerSize*100;
 
-            (this.view.sliderThumbSecond!.style.left)
-                ? this.thumbSecondPosition = parseInt(this.view.sliderThumbSecond!.style.left.replace("%",""))
-                : this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond!).left.replace("px",""))/this.containerSize*100;
+            this.thumbSecondPosition = (this.view.sliderThumbSecond!.style.left)
+                ? parseInt(this.view.sliderThumbSecond!.style.left.replace("%",""))
+                : parseInt(getComputedStyle(this.view.sliderThumbSecond!).left.replace("px",""))/this.containerSize*100;
         } else {
-            (this.view.sliderThumb.style.top)
-                ? this.thumbPosition =  parseInt(this.view.sliderThumb.style.top.replace("%",""))
-                : this.thumbPosition = parseInt(getComputedStyle(this.view.sliderThumb).top.replace("px",""))/this.containerSize*100;
+            this.thumbPosition = (this.view.sliderThumb.style.bottom)
+                ? parseInt(this.view.sliderThumb.style.bottom.replace("%",""))
+                : parseInt(getComputedStyle(this.view.sliderThumb).bottom.replace("px",""))/this.containerSize*100;
 
-            (this.view.sliderThumbSecond!.style.top)
-                ? this.thumbSecondPosition = parseInt(this.view.sliderThumbSecond!.style.top.replace("%",""))
-                : this.thumbSecondPosition = parseInt(getComputedStyle(this.view.sliderThumbSecond!).top.replace("px",""))/this.containerSize*100;
+            this.thumbSecondPosition = (this.view.sliderThumbSecond!.style.bottom)
+                ? parseInt(this.view.sliderThumbSecond!.style.bottom.replace("%",""))
+                : parseInt(getComputedStyle(this.view.sliderThumbSecond!).bottom.replace("px",""))/this.containerSize*100;
         }   
         if (this.view.dragObject.elem === this.view.sliderThumb &&
-            this.newThumbCurrent < this.thumbSecondPosition + 1 &&
+            this.newThumbCurrent <= this.thumbSecondPosition + 1 &&
             this.newThumbCurrent >= 0 ){
             this.changeThumbInModel(this.view.dragObject.elem, newThumbCurrent);
             return this;
         } 
         else if (this.view.dragObject.elem === this.view.sliderThumbSecond &&
-            this.newThumbCurrent > this.thumbPosition - 1 &&
+            this.newThumbCurrent >= this.thumbPosition + 1 &&
             this.newThumbCurrent <= 100){
             this.changeThumbRightInModel(this.view.dragObject.elem, newThumbCurrent);
             return this;
@@ -183,7 +184,6 @@ class SliderPresenter implements Presenter {
     }
 
             changeThumbInModel(object: object, newThumbValue: number){
-                console.log("here")
                 let temp = applyStep(newThumbValue, this.max, this.step);
                 let newValue = temp > 100
                     ? 100
