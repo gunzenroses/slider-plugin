@@ -10,6 +10,15 @@ function applyStep(value: number, max: number, step: number): number {
     return realValue;
 }
 
+function applyRestrictions(value: number){
+    let newValue = value > 100
+                    ? 100
+                    : value < 0
+                        ? 0
+                        : value;
+    return newValue;
+}
+
 function fromPercentsToValue(value: number, max: number, min: number){
     let newValue = Math.round(value * (max - min) / 100).toString();
     return newValue;
@@ -28,4 +37,4 @@ function findPosition(thisElement: HTMLElement, ifHorizontal: boolean, container
 
 
 
-export { applyStep, fromPercentsToValue, findPosition }
+export { applyStep, applyRestrictions, fromPercentsToValue, findPosition }
