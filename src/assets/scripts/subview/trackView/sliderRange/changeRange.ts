@@ -1,10 +1,10 @@
-function changeRange(object: HTMLElement, newThumbCurrent: number, ifHorizontal: boolean, ifThumbFirst: boolean, ifFirst: boolean){
-    ifThumbFirst
+function changeRange(object: HTMLElement, newThumbCurrent: number, ifHorizontal: boolean, ifRange: boolean, ifThumbFirst: boolean){
+    ifRange
         ? ifHorizontal
-                ? (ifFirst 
+                ? (ifThumbFirst 
                     ? object.style.left = newThumbCurrent + "%"
                     : object.style.right = (100 - newThumbCurrent) + "%")
-                : (ifFirst 
+                : (ifThumbFirst 
                     ? object.style.bottom = newThumbCurrent + "%"
                     : object.style.top = (100 - newThumbCurrent) + "%")
         : ifHorizontal
