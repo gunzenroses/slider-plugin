@@ -11,10 +11,6 @@ function sliderThumbView(parentNode: HTMLElement, className: string, ifHorizonta
                     ? 33
                     : 66;
     let posChecked = applyRestrictions(applyStep(posTemp, max, step));
-    // ifHorizontal 
-    //             ? sliderThumbView.style.left = posChecked + "%"
-    //             : sliderThumbView.style.bottom = posChecked + "%";
-
     changeThumb(sliderThumbView, ifHorizontal, posChecked)
 
     parentNode.append(sliderThumbView);
