@@ -1,11 +1,83 @@
-function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal: boolean){
+import { changeRange } from "./changeRange"
+import { applyStep } from "../../../common"
+
+function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal: boolean, max: number, step: number){
     let sliderRangeClass: string = ifRange
-                            ? (ifHorizontal ? "slider__range_true"
+                            ? (ifHorizontal ? "slider__range-true"
                                             : "slider__range_vertical-true")
                             : (ifHorizontal ? "slider__range"
                                             : "slider__range_vertical")
     let sliderRange = document.createElement("div");
     sliderRange.classList.add(`${sliderRangeClass}`);
+    
+    type TRange = {
+        newThumbCurrent: number, 
+        ifHorizontal: boolean, 
+        ifRange: boolean, 
+        ifThumbFirst: boolean
+    };
+
+    let rangeRow: TRange[] = [];
+    switch (String(sliderRangeClass)){
+        case "slider__range": rangeRow = [
+            {
+                newThumbCurrent: 0, 
+                ifHorizontal: true, 
+                ifRange: true, 
+                ifThumbFirst: true
+            }, 
+            {
+                newThumbCurrent: 66, 
+                ifHorizontal: true, 
+                ifRange: true, 
+                ifThumbFirst: false}
+            ]; 
+            break;
+        case "slider__range-true": rangeRow = [
+            {
+                newThumbCurrent: 33, 
+                ifHorizontal: true, 
+                ifRange: true, 
+                ifThumbFirst: true
+            }, 
+            {
+                newThumbCurrent: 66, 
+                ifHorizontal: true, 
+                ifRange: true, 
+                ifThumbFirst: false}
+            ]; 
+            break;
+        case "slider__range_vertical": rangeRow = [
+            {
+                newThumbCurrent: 0, 
+                ifHorizontal: false, 
+                ifRange: true, 
+                ifThumbFirst: true
+            }, 
+            {
+                newThumbCurrent: 66, 
+                ifHorizontal: false, 
+                ifRange: true, 
+                ifThumbFirst: false}
+            ]; 
+            break;
+        case "slider__range_vertical-true": rangeRow = [
+            {
+                newThumbCurrent: 33, 
+                ifHorizontal: false, 
+                ifRange: true, 
+                ifThumbFirst: true
+            }, 
+            {
+                newThumbCurrent: 66, 
+                ifHorizontal: false, 
+                ifRange: true, 
+                ifThumbFirst: false}
+            ]; 
+            break;
+    }
+    rangeRow.forEach(item => changeRange(sliderRange, applyStep(item.newThumbCurrent, max, step), item.ifHorizontal, item.ifRange, item.ifThumbFirst))
+    
     parentNode.append(sliderRange);
     return sliderRange;
 }
