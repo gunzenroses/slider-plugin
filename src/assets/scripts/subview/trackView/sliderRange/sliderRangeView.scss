@@ -10,7 +10,7 @@
     border-radius: 3px;
     background: $color-basic;
 
-    &_true {
+    &-true {
         @extend .slider__range;
         left: 33%;
         right: 33%;
