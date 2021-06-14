@@ -9,21 +9,17 @@
 }
 
 .thumb_first {
-    //left: 33%;
     transform: translate(-$half-thumb, -$height-basic);
 }
 
 .thumb_second {
-    //left: 66%;
     transform: translate(-$half-thumb, -$height-basic);
 }
 
 .thumb_first-vertical {
-    //bottom: 33%;
     transform: translate(-$height-basic, $half-thumb);
 }
 
 .thumb_second-vertical {
-    //bottom: 66%;
     transform: translate(-$height-basic, $height-basic);
 } 
