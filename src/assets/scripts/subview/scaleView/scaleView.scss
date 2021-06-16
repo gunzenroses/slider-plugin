@@ -24,13 +24,38 @@ $border-width: 1px;
     }
 }
 
+.scale__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    &_vertical {
+        @extend .scale__row;
+        flex-direction: column-reverse;
+    }
+}
+
 .scale__point {
     // position: relative;
-    
     background: black;
+    width: 1px;
+    height: 3px;
     flex-shrink: 0;
     &_vertical {
         @extend .scale__point;
+        width: 3px;
+        height: 1px;
+    }
+}
+
+.scale__segment {
+    @extend .scale__point;
+    height: 6px;
+    
+    &_vertical {
+        @extend .scale__point_vertical;
+        width: 6px;
     }
 }
 
