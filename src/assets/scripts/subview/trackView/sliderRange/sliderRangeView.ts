@@ -1,7 +1,7 @@
 import { changeRange } from "./changeRange"
 import { applyStep } from "../../../common"
 
-function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal: boolean, max: number, step: number){
+function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal: boolean, max: number, min: number, step: number){
     let sliderRangeClass: string = ifRange
                             ? (ifHorizontal ? "slider__range-true"
                                             : "slider__range_vertical-true")
@@ -76,7 +76,7 @@ function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal
             ]; 
             break;
     }
-    rangeRow.forEach(item => changeRange(sliderRange, applyStep(item.newThumbCurrent, max, step), item.ifHorizontal, item.ifRange, item.ifThumbFirst))
+    rangeRow.forEach(item => changeRange(sliderRange, applyStep(item.newThumbCurrent, max, min, step), item.ifHorizontal, item.ifRange, item.ifThumbFirst))
     
     parentNode.append(sliderRange);
     return sliderRange;
