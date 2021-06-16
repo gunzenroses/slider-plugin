@@ -1,5 +1,5 @@
-function applyStep(value: number, max: number, step: number): number {
-    let stepInPercents: number = parseFloat((100/max * step).toFixed(2));
+function applyStep(value: number, max: number, min: number, step: number): number {
+    let stepInPercents: number = parseFloat((100/(max - min) * step).toFixed(2));
     let numberOfSteps = value / stepInPercents;
     let realNumberOfSteps = (value % stepInPercents > stepInPercents/2)
                 ? Math.ceil(numberOfSteps)
@@ -20,8 +20,15 @@ function applyRestrictions(value: number){
 }
 
 function fromPercentsToValue(value: number, max: number, min: number){
-    let newValue = Math.round(value * (max - min) / 100).toString();
+    let newValue = (Math.round(value * (max - min) / 100) + min).toString();
     return newValue;
+}
+
+function fromValueToPX(value: number, max: number, min: number, containerSize: number){
+    let pxPerDivis = containerSize / (max - min);
+    console.log(pxPerDivis)
+    let valueInPx = value*pxPerDivis;
+    return valueInPx;
 }
 
 function findPosition(thisElement: HTMLElement, ifHorizontal: boolean, containerSize: number){
@@ -37,4 +44,4 @@ function findPosition(thisElement: HTMLElement, ifHorizontal: boolean, container
 
 
 
-export { applyStep, applyRestrictions, fromPercentsToValue, findPosition }
+export { applyStep, applyRestrictions, fromPercentsToValue, fromValueToPX, findPosition }
