@@ -1,4 +1,4 @@
-import { scaleItemView } from "./scaleItemView"
+import { scaleItemRow} from "./scaleItemRow"
 
 function scaleView(parentNode: HTMLElement, ifHorizontal: boolean, min: number, max: number, stepValue?: number): HTMLElement {
     let scaleClass: string = ifHorizontal
@@ -16,8 +16,7 @@ function scaleView(parentNode: HTMLElement, ifHorizontal: boolean, min: number, 
                     ? Math.ceil(parseFloat(parentNodeStyle.width))
                     : Math.ceil(parseFloat(parentNodeStyle.height));
 
-    scale.innerHTML = scaleItemView(ifHorizontal, scaleLength, min, max, step);
-    
+    scale.append(scaleItemRow(ifHorizontal, scaleLength, min, max, step));
     parentNode.append(scale);
     return scale;
 }
