@@ -21,6 +21,7 @@ class SliderPresenter implements Presenter {
     containerId: string;
     settings: TSettings;
 
+    min!:number;
     max!: number;
     step!: number;
 
@@ -55,6 +56,7 @@ class SliderPresenter implements Presenter {
     }
 
     createChildren(){
+        this.min = this.settings.min;
         this.max = this.settings.max;
         this.step = this.settings.step;
         this.ifHorizontal = this.settings.orientation === "horizontal";
@@ -162,12 +164,12 @@ class SliderPresenter implements Presenter {
     }
 
             changeThumbInModel(object: object, newThumbValue: number){
-                let newValue = applyRestrictions(applyStep(newThumbValue, this.max, this.step));
+                let newValue = applyRestrictions(applyStep(newThumbValue, this.max, this.min, this.step));
                 this.model.fromPresenterChangeThumb(object, newValue);
             }
 
             changeThumbSecondInModel(object: object, newThumbValue: number){
-                let newValue = applyRestrictions(applyStep(newThumbValue, this.max, this.step));
+                let newValue = applyRestrictions(applyStep(newThumbValue, this.max, this.min, this.step));
                 this.model.fromPresenterChangeThumbSecond(object, newValue);
                 return this;
             }
