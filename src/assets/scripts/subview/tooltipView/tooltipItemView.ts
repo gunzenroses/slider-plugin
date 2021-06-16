@@ -5,9 +5,9 @@ function tooltipItemView(parentNode: HTMLElement, ifHorizontal: boolean, classNa
     let tooltip = document.createElement("span");
     tooltip.classList.add("tooltip", `${className}${verticalClass}`);
     
-    let newValue = Math.round(applyStep(value, max, step)) > max
+    let newValue = Math.round(applyStep(value, max, min, step)) > max
                     ? max
-                    : Math.round(applyStep(value, max, step));
+                    : Math.round(applyStep(value, max, min, step));
 
     tooltip.innerText = fromPercentsToValue(newValue, max, min);
     
