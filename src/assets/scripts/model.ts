@@ -2,35 +2,57 @@ import { TSettings } from "./types/types"
 import { EventDispatcher } from './eventDispatcher'
 
 interface IModel {
-    containerId: string;
-    settings: TSettings;
     fromModelChangeView: EventDispatcher;
-    fromPresenterChangeThumb(object: any, newThumbValue: number): object;
-    fromPresenterChangeThumbSecond(object: any, newThumbValue: number): object;
-
+    setData(newData: TSettings): void;
+    getData(): object;
+    getContainerId(): string;
+    changeThumb(object: any, newData: number): void;
+    changeThumbSecond(object: any, newData: number): void;
 }
 
 class SliderModel implements IModel {
-    containerId: string;
-    settings: TSettings;
+    private containerId: string;
+    private data: TSettings;
     fromModelChangeView: EventDispatcher;
 
     constructor(containerId: string, settings: TSettings){
         this.containerId = containerId
-        this.settings = settings
+        this.data = settings
         this.fromModelChangeView = new EventDispatcher(this)
     }
-
-    fromPresenterChangeThumb(object: any, newThumbValue: number): object {
-        this.settings.currentFirst = newThumbValue;
-        this.fromModelChangeView.notify({object, newThumbValue});
-        return this;
+    
+    getContainerId(){
+        return this.containerId;
     }
 
-    fromPresenterChangeThumbSecond(object: any, newThumbValue: number): object {
-        this.settings.currentSecond = newThumbValue;
+    setData(newData: TSettings){
+        this.data = newData;
+    }
+
+    getData(){
+        return this.data;
+    }
+
+    // changeThumb(newThumbValue: number){
+    //     this.data.currentFirst = newThumbValue;
+    //     this.fromModelChangeView.notify(newThumbValue);
+    // }
+
+    // changeThumbSecond(newThumbValue: number) {
+    //     this.data.currentSecond = newThumbValue;
+    //     this.fromModelChangeView.notify(newThumbValue);
+    // }
+
+    changeThumb(object: any, newThumbValue: number) {
+        this.data.currentFirst = newThumbValue;
         this.fromModelChangeView.notify({object, newThumbValue});
-        return this;
+        //return this;
+    }
+
+    changeThumbSecond(object: any, newThumbValue: number) {
+        this.data.currentSecond = newThumbValue;
+        this.fromModelChangeView.notify({object, newThumbValue});
+        // return this;
     }
 }
 
