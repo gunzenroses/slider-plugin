@@ -1,24 +1,17 @@
-//doesn't work at all
-// modile.exports = {
-//   transform: {
-    //"^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
-    // "^.+\\.[t|j]sx?$": "babel-jest",
-    // "^.+\\.tsx?$": "ts-jest",
-//   }
-// }
-
-//work just with js, not ts
-// module.exports = {
-//   preset: 'ts-jest',
-//   testEnvironment: 'node',
-// };
-
-
 module.exports = {
   transform: {
-    "^.+\\.tsx?$": "ts-jest"
+    //"^.+\\.tsx?$": "ts-jest",
+    "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
+    "^.+\\.[t|j]sx?$": "babel-jest",
+    "^.+\\.tsx?$": "ts-jest",
   },
-  testPathIgnorePatterns: ['/node_modules/'],
+  // testPathIgnorePatterns: [
+  //   ['/node_modules/'],
+  //   ['**/I[A-Z]*.{ts}']
+  // ],
+  collectCoverage: true,
+  coverageReporters: ["html"],
+  //setupFilesAfterEnv: ["<rootDir>/jestSetup.js"],
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   moduleFileExtensions: [
     "ts",
@@ -32,10 +25,3 @@ module.exports = {
   //   "<rootDir>/test/setupTests.ts"
   // ]
 }
-
-  // modile is not defined
-  // modile.exports = {
-  //   transform: {
-  //     "^.+\\.[t|j]sx?$": "babel-jest"
-  //   }
-  // }
