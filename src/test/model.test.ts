@@ -16,12 +16,7 @@ describe('class Model', ()=>{
         model = new SliderModel(containerClass, data);
     })
 
-    describe('getData()', ()=>{
-        test('return object with data', ()=>{
-            //assertion
-            expect(model.getData()).toEqual(data);
-        })
-
+    describe('method getData()', ()=>{
         test('should be called', ()=>{
             //arrange
             const spyGetData = jest.spyOn(model, "getData");
@@ -30,7 +25,12 @@ describe('class Model', ()=>{
             model.getData();
 
             //assertion
-            expect(spyGetData).toHaveBeenCalled();
+            expect(spyGetData).toHaveBeenCalledTimes(1);
+        })
+
+        test('return object with passed into constructor data', ()=>{
+            //assertion
+            expect(model.getData()).toEqual(data);
         })
 
         test('have valid properties(min, max, range, currentFirst, currentSecond, step, orientation, tooltip, scale)', ()=>{
@@ -47,49 +47,79 @@ describe('class Model', ()=>{
         })
     })
 
-    describe('setData()', ()=>{
-        //arrange
-        let newData: TSettings;
-        newData = {
-            min: 20,
-            max: 200,
-            range: false,
-            currentFirst: 20,
-            currentSecond: 40,
-            step: 11,
-            orientation: "horizontal",
-            tooltip: false,
-            scale: true,
-        }
+    describe('method setData()', ()=>{
+        test('replace previous data with passed into method data', ()=>{
+            //arrange
+            let newData = {some: data}
 
-        test('replace previous data with the new one', ()=>{
             //act
             model.setData(newData)
+            
             //assert
             expect(model.getData()).toEqual(newData);
         })
     })
 
-    describe('getContainerId()', ()=>{
-        test('return string with containerId',()=>{
+    describe('method getContainerId()', ()=>{
+        test('return string with containerId passed into constructor',()=>{
             expect(model.getContainerId()).toEqual(containerClass);
         })
     })
 
-    describe('changeThumb()', ()=>{
+    describe('method changeThumb()', ()=>{
+        let obj = {};
+        let val = 3;
+
         test('should be called',()=>{
-            let obj = {data: "some"};
-            let val = 1;
+            //arrange
             const spyChangeThumb = jest.spyOn(model, "changeThumb");
-
-            model.changeThumb(obj, val)
-
-            expect(model.changeThumb).toBeCalledTimes(1)
+            //act
+            model.changeThumb(obj, val);
+            //assertion
+            expect(model.changeThumb).toBeCalledTimes(1);
         })
 
-        test('should call EventDispatcher', ()=>{
-            
+        test('should change data.currentFirst', ()=>{
+            //act
+            model.changeThumb(obj, val);
+            //assertion
+            expect(model.getData()).toHaveProperty('currentFirst', val);
+        })
 
+        test('should notify subscribers', ()=>{
+            //arrange
+            const spyNotify = jest.spyOn(model, "notify");
+            //act
+            model.changeThumb(obj, val);
+            //assertion
+            expect(model.notify).toHaveBeenCalledTimes(1);
+        })
+    })
+
+    describe('method changeThumbSecond()', ()=>{
+        let obj = {};
+        let num = 5;
+
+        test('should be called', ()=>{
+            const spyChangeThumbSecond = jest.spyOn(model, "changeThumbSecond");
+
+            model.changeThumbSecond(obj, num);
+
+            expect(model.changeThumbSecond).toBeCalledTimes(1);
+        })
+
+        test('should change the value of data.CurrentSecond', ()=>{
+            model.changeThumbSecond(obj, num);
+
+            expect(model.getData()).toHaveProperty('currentSecond', num);
+        })
+
+        test('should notify subscribers', ()=>{
+            let spyChangeThumbSecond = jest.spyOn(model, 'notify');
+            
+            model.changeThumbSecond(obj, num);
+            
+            expect(model.notify).toHaveBeenCalledTimes(1)
         })
     })
 })
