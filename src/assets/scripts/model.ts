@@ -1,24 +1,22 @@
 import { TSettings } from "./types/types"
-import { EventDispatcher } from './eventDispatcher'
+import { ISender, EventDispatcher } from './eventDispatcher'
 
-interface IModel {
-    fromModelChangeView: EventDispatcher;
+interface IModel extends ISender {
     setData(newData: TSettings): void;
-    getData(): object;
+    getData(): TSettings;
     getContainerId(): string;
     changeThumb(object: any, newData: number): void;
     changeThumbSecond(object: any, newData: number): void;
 }
 
-class SliderModel implements IModel {
+class SliderModel extends EventDispatcher implements IModel {
     private containerId: string;
     private data: TSettings;
-    fromModelChangeView: EventDispatcher;
 
     constructor(containerId: string, settings: TSettings){
+        super()
         this.containerId = containerId
         this.data = settings
-        this.fromModelChangeView = new EventDispatcher(this)
     }
     
     getContainerId(){
@@ -33,26 +31,14 @@ class SliderModel implements IModel {
         return this.data;
     }
 
-    // changeThumb(newThumbValue: number){
-    //     this.data.currentFirst = newThumbValue;
-    //     this.fromModelChangeView.notify(newThumbValue);
-    // }
-
-    // changeThumbSecond(newThumbValue: number) {
-    //     this.data.currentSecond = newThumbValue;
-    //     this.fromModelChangeView.notify(newThumbValue);
-    // }
-
     changeThumb(object: any, newThumbValue: number) {
         this.data.currentFirst = newThumbValue;
-        this.fromModelChangeView.notify({object, newThumbValue});
-        //return this;
+        this.notify({object, newThumbValue});
     }
 
     changeThumbSecond(object: any, newThumbValue: number) {
         this.data.currentSecond = newThumbValue;
-        this.fromModelChangeView.notify({object, newThumbValue});
-        // return this;
+        this.notify({object, newThumbValue});
     }
 }
 
