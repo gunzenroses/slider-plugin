@@ -1,5 +1,5 @@
-import { EventDispatcher } from "./eventDispatcher"
-import { TSettings } from "./types/types"
+import { ISender, EventDispatcher } from "./eventDispatcher"
+import { TSettings, TDragObject } from "./types/types"
 import { sliderContainerView } from "./subview/trackView/sliderContainer/sliderContainerView"
 import { sliderTrackView } from "./subview/trackView/sliderTrack/sliderTrackView"
 import { sliderThumbView } from "./subview/trackView/sliderThumb/slideThumbView"
@@ -9,15 +9,11 @@ import { changeRange } from "./subview/trackView/sliderRange/changeRange"
 import { tooltipItemView } from "./subview/tooltipView/tooltipItemView"
 import { changeTooltip } from "./subview/tooltipView/changeTooltip"
 import { scaleView } from "./subview/scaleView/scaleView"
-import { fromPercentsToValue } from "./common"
 
-interface IView {
-    fromViewSelectThumb: EventDispatcher;
-    fromViewDragThumb: EventDispatcher;
-
+interface IView extends ISender {
     containerId: string;
     settings: TSettings;
-    dragObject: TSettings;
+    dragObject: TDragObject;
 
     init(containerId: string, settings: TSettings): object;
     createChildren(containerId: string): object;
@@ -36,20 +32,16 @@ interface IView {
     tooltipFirst?: HTMLElement;
     tooltipSecond?: HTMLElement;
     scale?: HTMLElement;
-
     selectObject: any; //HTMLElement;
 }
 
-
-class SliderView implements IView {
-    fromViewSelectThumb: EventDispatcher;
-    fromViewDragThumb: EventDispatcher;
+class SliderView extends EventDispatcher implements IView {
     parentContainer: HTMLElement;
     
     sliderContainer!: HTMLElement;
     containerId!: string;
     settings!: TSettings;
-    dragObject!: any; //{elem: EventTarget, offsetX: number} | {};
+    dragObject!: TDragObject; //{elem: EventTarget, offsetX: number} | {};
     thumbSecondPosition!: number;
     containerWidth!: number;
 
@@ -83,8 +75,7 @@ class SliderView implements IView {
     selectObject!: any; //HTMLElement;
 
     constructor(containerId: string){
-        this.fromViewSelectThumb = new EventDispatcher(this)
-        this.fromViewDragThumb = new EventDispatcher(this)
+        super();
         this.parentContainer = document.getElementById(containerId)!;
     }
 
@@ -130,7 +121,7 @@ class SliderView implements IView {
     selectThumb(e: MouseEvent){
         if (e.target === this.sliderThumb || 
             e.target === this.sliderThumbSecond) return;
-        this.fromViewSelectThumb.notify(event);
+        this.notify(event);
         return this;
     }
     
@@ -151,7 +142,7 @@ class SliderView implements IView {
     dragThumbMove(e: MouseEvent){
         e.preventDefault;
         if (!this.dragObject.elem) return;
-        this.fromViewDragThumb.notify(e);
+        this.notify(e);
         return this;
     }
 
