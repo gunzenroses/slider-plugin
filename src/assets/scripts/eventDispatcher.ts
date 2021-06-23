@@ -1,33 +1,29 @@
-interface Subject {
-    add(listener: Observer): void;
-    remove(listener: Observer): void;
+interface ISender {
+    add(listener: object): void;
+    remove(listener: object): void;
     notify(args: any): void;
 }
 
-interface Observer {
-    //update(temperature: number): void;
-}
-
-class EventDispatcher implements Subject  {
+class EventDispatcher implements ISender  {
     private _sender: object;
     private _listeners = new Array();
 
-    constructor(sender: object){
-        this._sender = sender;
+    constructor(){
+        this._sender = this;
     }
 
-    public add(listener: Observer): void {
+    add(listener: object): void {
         this._listeners.push(listener);
     }
 
-    public remove(listener: Observer): void {
+    remove(listener: object): void {
         let index = this._listeners.indexOf(listener);
         this._listeners.splice(index,1);
     }
 
-    public notify(args: any): void {
+    notify(args: any): void {
         this._listeners.forEach(listener => listener(args));
     }
 }
 
-export { EventDispatcher }
+export { ISender, EventDispatcher }
