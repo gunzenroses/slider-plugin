@@ -7,7 +7,7 @@ interface Presenter {
     model: IModel;
     view: IView;
     containerId: string;
-    settings: TSettings;
+    data: TSettings;
 
     init(): object;
     setupHandlers(): object;
@@ -19,7 +19,7 @@ class SliderPresenter implements Presenter {
     model:IModel;
     view: IView;
     containerId: string;
-    settings: TSettings;
+    data: TSettings;
 
     min!:number;
     max!: number;
@@ -42,13 +42,13 @@ class SliderPresenter implements Presenter {
     constructor(model: IModel, view: IView){
         this.model = model
         this.view = view
-        this.containerId = this.model.containerId
-        this.settings = this.model.settings
+        this.containerId = this.model.getContainerId()
+        this.data = this.model.getData()
         this.init();
     }
 
     init(){
-        this.view.init(this.containerId, this.settings);
+        this.view.init(this.containerId, this.data);
         this.createChildren();
         this.setupHandlers();
         this.enable();
@@ -56,12 +56,12 @@ class SliderPresenter implements Presenter {
     }
 
     createChildren(){
-        this.min = this.settings.min;
-        this.max = this.settings.max;
-        this.step = this.settings.step;
-        this.ifHorizontal = this.settings.orientation === "horizontal";
-        this.ifRange = this.settings.range;
-        this.step = this.settings.step;
+        this.min = this.data.min;
+        this.max = this.data.max;
+        this.step = this.data.step;
+        this.ifHorizontal = this.data.orientation === "horizontal";
+        this.ifRange = this.data.range;
+        this.step = this.data.step;
         this.containerSize = (this.ifHorizontal)
                             ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""))
                             : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px",""));
@@ -77,9 +77,9 @@ class SliderPresenter implements Presenter {
     }
 
     enable(){
-        this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler);
-        this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler);
-        this.model.fromModelChangeView.add(this.fromModelChangeViewHandler);
+        this.view.add(this.fromViewSelectThumbHandler);
+        this.view.add(this.fromViewDragThumbHandler);
+        this.model.add(this.fromModelChangeViewHandler);
         return this;
     }
 
@@ -165,12 +165,12 @@ class SliderPresenter implements Presenter {
 
             changeThumbInModel(object: object, newThumbValue: number){
                 let newValue = applyRestrictions(applyStep(newThumbValue, this.max, this.min, this.step));
-                this.model.fromPresenterChangeThumb(object, newValue);
+                this.model.changeThumb(object, newValue);
             }
 
             changeThumbSecondInModel(object: object, newThumbValue: number){
                 let newValue = applyRestrictions(applyStep(newThumbValue, this.max, this.min, this.step));
-                this.model.fromPresenterChangeThumbSecond(object, newValue);
+                this.model.changeThumbSecond(object, newValue);
                 return this;
             }
 
