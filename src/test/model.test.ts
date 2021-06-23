@@ -30,7 +30,6 @@ describe('class Model', ()=>{
             model.getData();
 
             //assertion
-            //expect(model.getData()).toEqual(data);
             expect(spyGetData).toHaveBeenCalled();
         })
 
@@ -78,10 +77,19 @@ describe('class Model', ()=>{
     })
 
     describe('changeThumb()', ()=>{
-        test('',()=>{
+        test('should be called',()=>{
+            let obj = {data: "some"};
+            let val = 1;
+            const spyChangeThumb = jest.spyOn(model, "changeThumb");
+
+            model.changeThumb(obj, val)
+
+            expect(model.changeThumb).toBeCalledTimes(1)
+        })
+
+        test('should call EventDispatcher', ()=>{
             
-            this.data.currentFirst = newThumbValue;
-            this.fromModelChangeView.notify({object, newThumbValue});
+
         })
     })
 })
