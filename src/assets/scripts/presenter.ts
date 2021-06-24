@@ -34,10 +34,9 @@ class SliderPresenter implements Presenter {
     thumbPosition!: number;
     thumbSecondPosition!: number;
 
-    fromViewSelectThumbHandler!: { (newCoord: number): object | undefined };
-    fromViewDragThumbHandler!: { (ev: MouseEvent): object | undefined };
     fromModelChangeViewHandler!: { (args: {object: object, newThumbValue: number})
                                     : object | undefined };
+    fromViewSortActionsHandler!: {(args: {flag: string, event: Event}) : void};
 
     constructor(model: IModel, view: IView){
         this.model = model
@@ -48,7 +47,7 @@ class SliderPresenter implements Presenter {
     }
 
     init(){
-        this.view.init(this.containerId, this.data);
+        this.view.init(this.data);
         this.createChildren();
         this.setupHandlers();
         this.enable();
@@ -70,16 +69,20 @@ class SliderPresenter implements Presenter {
     }
 
     setupHandlers(){
-        this.fromViewSelectThumbHandler = this.selectThumb.bind(this);
-        this.fromViewDragThumbHandler = this.dragThumb.bind(this);
+        this.fromViewSortActionsHandler = this.sortThumbActions.bind(this);
         this.fromModelChangeViewHandler = this.changeView.bind(this);
         return this;
     }
 
     enable(){
-        this.view.add(this.fromViewSelectThumbHandler);
-        this.view.add(this.fromViewDragThumbHandler);
+        this.view.add(this.fromViewSortActionsHandler);
         this.model.add(this.fromModelChangeViewHandler);
+        return this;
+    }
+
+    sortThumbActions(args: any){
+        if (args.flag = 'selectThumb'){ this.selectThumb(args.e); } 
+        else if (args.flag = 'dragThumbMove'){ this.dragThumb(args.e); }
         return this;
     }
 
