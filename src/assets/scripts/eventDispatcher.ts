@@ -6,23 +6,23 @@ interface ISender {
 
 class EventDispatcher implements ISender  {
     private _sender: object;
-    private _listeners = new Array();
+    listeners = new Array();
 
     constructor(){
         this._sender = this;
     }
 
     add(listener: object): void {
-        this._listeners.push(listener);
+        this.listeners.push(listener);
     }
 
     remove(listener: object): void {
-        let index = this._listeners.indexOf(listener);
-        this._listeners.splice(index,1);
+        let index = this.listeners.indexOf(listener);
+        this.listeners.splice(index,1);
     }
 
     notify(args: any): void {
-        this._listeners.forEach(listener => listener(args));
+        this.listeners.forEach(listener => listener(args));
     }
 }
 
