@@ -11,16 +11,7 @@ import { changeTooltip } from "./subview/tooltipView/changeTooltip"
 import { scaleView } from "./subview/scaleView/scaleView"
 
 interface IView extends ISender {
-    containerId: string;
     settings: TSettings;
-    dragObject: TDragObject;
-
-    init(containerId: string, settings: TSettings): object;
-    createChildren(containerId: string): object;
-    setupHandlers(): object;
-    enable(): object;
-    render(): void;
-    fromPresenterChange(object: any, newThumbCurrent: number): object;
 
     parentContainer: HTMLElement;
     sliderContainer: HTMLElement;
@@ -32,24 +23,23 @@ interface IView extends ISender {
     tooltipFirst?: HTMLElement;
     tooltipSecond?: HTMLElement;
     scale?: HTMLElement;
+
+    dragObject: TDragObject;
     selectObject: any; //HTMLElement;
+
+    init(settings: TSettings): object;
+    createChildren(): object;
+    setupHandlers(): object;
+    enable(): object;
+    render(): void;
+    fromPresenterChange(object: any, newThumbCurrent: number): object;
 }
 
 class SliderView extends EventDispatcher implements IView {
     parentContainer: HTMLElement;
-    
-    sliderContainer!: HTMLElement;
-    containerId!: string;
     settings!: TSettings;
-    dragObject!: TDragObject; //{elem: EventTarget, offsetX: number} | {};
-    thumbSecondPosition!: number;
-    containerWidth!: number;
 
-    selectThumbHandler!: { (ev: MouseEvent): object | undefined };
-    dragThumbStartHandler!: { (ev: MouseEvent): object | undefined};
-    dragThumbMoveHandler!: { (ev: MouseEvent): object | undefined};
-    dragThumbEndHandler!: () => object;
-
+    sliderContainer!: HTMLElement;
     sliderThumb!: HTMLElement;
     sliderThumbSecond!: HTMLElement;
     sliderRange!: HTMLElement;
@@ -58,6 +48,16 @@ class SliderView extends EventDispatcher implements IView {
     tooltipFirst!: HTMLElement;
     tooltipSecond!: HTMLElement;
     scale!: HTMLElement;
+
+    selectObject!: any; //HTMLElement;
+    dragObject!: TDragObject; //{elem: EventTarget, offsetX: number} | {};
+    thumbSecondPosition!: number;
+    containerWidth!: number;
+
+    selectThumbHandler!: { (ev: MouseEvent): object | undefined };
+    dragThumbStartHandler!: { (ev: MouseEvent): object | undefined};
+    dragThumbMoveHandler!: { (ev: MouseEvent): object | undefined};
+    dragThumbEndHandler!: () => object;
 
     ifHorizontal!: boolean;
     ifRange!: boolean;
@@ -72,15 +72,12 @@ class SliderView extends EventDispatcher implements IView {
     sliderThumbFirstClass!: string;
     sliderThumbSecondClass!: string;
 
-    selectObject!: any; //HTMLElement;
-
     constructor(containerId: string){
         super();
         this.parentContainer = document.getElementById(containerId)!;
     }
 
-    init(containerId: string, settings: TSettings){
-        this.containerId = containerId;
+    init(settings: TSettings){
         this.settings = settings;
         this.createChildren();
         this.render();
@@ -119,9 +116,10 @@ class SliderView extends EventDispatcher implements IView {
     }
 
     selectThumb(e: MouseEvent){
+        let flag = 'selectThumb';
         if (e.target === this.sliderThumb || 
             e.target === this.sliderThumbSecond) return;
-        this.notify(event);
+        this.notify({flag, e});
         return this;
     }
     
@@ -142,7 +140,8 @@ class SliderView extends EventDispatcher implements IView {
     dragThumbMove(e: MouseEvent){
         e.preventDefault;
         if (!this.dragObject.elem) return;
-        this.notify(e);
+        let flag = 'dragThumbMove';
+        this.notify({flag, e});
         return this;
     }
 
