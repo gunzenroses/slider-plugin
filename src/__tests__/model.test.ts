@@ -1,8 +1,8 @@
-import { IModel, SliderModel } from "../assets/scripts/model";
-import { sliderData } from "../assets/scripts/data";
-import { TSettings } from "../assets/scripts/types/types";
+import { IModel, SliderModel } from "../assets/scripts/model"
+import { sliderData } from "../assets/scripts/data"
+import { TSettings } from "../assets/scripts/types/types"
 
-describe('class Model', ()=>{
+describe('class SliderModel', ()=>{
     let containerClass: string;
     let data: TSettings;
     let model: IModel;
