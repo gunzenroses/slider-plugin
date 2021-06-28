@@ -101,7 +101,7 @@ class SliderPresenter implements Presenter {
     selectThumbRangeFalse(newThumbCurrentPercent: number){
         // this.view.selectObject = this.view.sliderThumb;
         // this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent);
-        this.view.selectObject.elem = this.view.sliderThumb;
+        this.view.selectObject = this.view.sliderThumb;
         this.changeThumbInModel(newThumbCurrentPercent);
         this.view.changeThumbEnd();
     }
@@ -114,10 +114,10 @@ class SliderPresenter implements Presenter {
         let secondDiff: number = Math.abs(secondThumbPercent - newThumbCurrentPercent);
 
         if (firstDiff < secondDiff){ 
-            this.view.selectObject.elem = this.view.sliderThumb;
+            this.view.selectObject = this.view.sliderThumb;
             this.changeThumbInModel(newThumbCurrentPercent) 
         } if (firstDiff >= secondDiff){
-            this.view.selectObject.elem = this.view.sliderThumbSecond!;
+            this.view.selectObject = this.view.sliderThumbSecond!;
             this.changeThumbSecondInModel(newThumbCurrentPercent);
         }
         this.view.changeThumbEnd();
@@ -144,13 +144,13 @@ class SliderPresenter implements Presenter {
         let firstThumbPercent = findPosition(this.view.sliderThumb, this.ifHorizontal, this.containerSize);
         let secondThumbPercent = findPosition(this.view.sliderThumbSecond!, this.ifHorizontal, this.containerSize);
 
-        if (this.view.selectObject.elem === this.view.sliderThumb &&
+        if (this.view.selectObject === this.view.sliderThumb &&
             newThumbCurrent<= secondThumbPercent + 1 &&
             newThumbCurrent>= 0 ){
             this.changeThumbInModel(newThumbCurrent);
             return this;
         } 
-        else if (this.view.selectObject.elem === this.view.sliderThumbSecond &&
+        else if (this.view.selectObject === this.view.sliderThumbSecond &&
             newThumbCurrent>= firstThumbPercent + 1 &&
             newThumbCurrent<= 100){
             this.changeThumbSecondInModel(newThumbCurrent);
@@ -170,7 +170,7 @@ class SliderPresenter implements Presenter {
 
     changeView(value: number){
         this.view.сhange(value);
-        //this.view.selectObject.elem = {};
+        //this.view.selectObject = {};
     }
 }
 

@@ -134,17 +134,17 @@ class SliderView extends EventDispatcher implements IView {
         else {
             if (e.type === "mousedown"){
                 let mouseEvent = e as MouseEvent;
-                this.selectObject.elem = e.target;
-                this.ifHorizontal
-                    ? this.selectObject.offset = mouseEvent.offsetX
-                    : this.selectObject.offset = mouseEvent.offsetY;
+                this.selectObject = e.target;
+                // this.ifHorizontal
+                //     ? this.selectObject.offset = mouseEvent.offsetX
+                //     : this.selectObject.offset = mouseEvent.offsetY;
             // } else {
             //     let touchEvent = e as TouchEvent;
             //         let rect  = touchEvent.target!.getBoundingClientRect();
             //         let offsetX = touchEvent.targetTouches[0].clientX - rect.x;
             //         let offsetY = touchEvent.targetTouches[0].clientY - rect.y
                 
-            //     this.selectObject.elem = touchEvent.touches[0].target;
+            //     this.selectObject = touchEvent.touches[0].target;
             //     this.ifHorizontal
             //         ? this.selectObject.offset = offsetX
             //         : this.selectObject.offset = offsetY;
@@ -154,7 +154,7 @@ class SliderView extends EventDispatcher implements IView {
 
     dragThumbMove(e: MouseEvent){
         e.preventDefault;
-        if (!this.selectObject.elem) return;
+        if (!this.selectObject) return;
         let flag = 'dragThumb';
         this.notify(flag, e);
     }
@@ -166,13 +166,13 @@ class SliderView extends EventDispatcher implements IView {
     сhange(newThumbCurrent: number){
         //fix: validate newThumbCurrent to be 0 to 100?
 
-        changeThumb(this.selectObject.elem, this.ifHorizontal, newThumbCurrent)
+        changeThumb(this.selectObject, this.ifHorizontal, newThumbCurrent)
 
-        let ifThumbFirst = (this.selectObject.elem === this.sliderThumb)
+        let ifThumbFirst = (this.selectObject === this.sliderThumb)
         changeRange(this.sliderRange, newThumbCurrent, this.ifHorizontal, this.ifRange, ifThumbFirst);
         
         if (this.ifTooltip) {
-            let currentTooltip = this.selectObject.elem.children[0];
+            let currentTooltip = this.selectObject.children[0];
             (currentTooltip === this.tooltipFirst)
                 ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.max, this.min)
                 : changeTooltip(this.tooltipSecond, newThumbCurrent, this.max, this.min)
