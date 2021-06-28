@@ -1,7 +1,7 @@
 import { fromValueToPX } from "../../common"
 import { scaleItem } from "./scaleItem"
 
-function scaleItemRow (ifHorizontal: boolean, containerSize: number, min: number, max: number, step: number, heightValue?: number, widthValue?: number){
+function scaleItemRow (ifHorizontal: boolean, containerSize: number, min: number, max: number, step: number, stepPerDiv: number, heightValue?: number, widthValue?: number){
     //find the row of elements (with step)
     let scaleItemRow: number[] = [];
     let i=min;
@@ -9,11 +9,6 @@ function scaleItemRow (ifHorizontal: boolean, containerSize: number, min: number
         scaleItemRow.push(i);
         i+=step;
     }
-
-    //find the sequence number of the segment 
-    let sequenceNum = (scaleItemRow.length+1) % 2 === 0
-                        ? 2
-                        : 3;
 
     //determine classes for elements
     let segmentClass: string = ifHorizontal ? "scale__segment" : "scale__segment_vertical";
@@ -36,7 +31,7 @@ function scaleItemRow (ifHorizontal: boolean, containerSize: number, min: number
     let maxStyle: string = `position: absolute; ${marginType}: 0;`;
     let scaleItemMax: string = `<div class=${segmentClass} style="${maxStyle}""><span class="${spanClass}">${max}</span></div>`
 
-    scaleItems.innerHTML = scaleItemRow.map(item => scaleItem(item, sequenceNum, ifHorizontal, segmentClass, spanClass, min, max, step)).join(" ") 
+    scaleItems.innerHTML = scaleItemRow.map(item => scaleItem(item, stepPerDiv, ifHorizontal, segmentClass, spanClass, min, max, step)).join(" ") 
                         + scaleItemMax;
 
     return scaleItems;
