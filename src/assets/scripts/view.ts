@@ -69,6 +69,8 @@ class SliderView extends EventDispatcher implements IView {
     max!: number;
     min!: number;
 
+    stepPerDiv!: number;
+
     sliderRangeClass!: string;
     sliderTrackClass!: string;
     sliderThumbFirstClass!: string;
@@ -93,6 +95,7 @@ class SliderView extends EventDispatcher implements IView {
         this.ifRange = this.settings.range;
         this.ifTooltip = this.settings.tooltip;
         this.ifScale = this.settings.scale;
+        this.stepPerDiv = this.settings.scale.stepPerDiv;
         this.step = this.settings.step;
         this.max = this.settings.max;
         this.min = this.settings.min;
@@ -135,9 +138,6 @@ class SliderView extends EventDispatcher implements IView {
             if (e.type === "mousedown"){
                 let mouseEvent = e as MouseEvent;
                 this.selectObject = e.target;
-                // this.ifHorizontal
-                //     ? this.selectObject.offset = mouseEvent.offsetX
-                //     : this.selectObject.offset = mouseEvent.offsetY;
             // } else {
             //     let touchEvent = e as TouchEvent;
             //         let rect  = touchEvent.target!.getBoundingClientRect();
@@ -186,16 +186,16 @@ class SliderView extends EventDispatcher implements IView {
         this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal, this.max, this.min, this.step);
         this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal, this.max, this.min, this.step)
         this.ifTooltip
-            ? this.tooltipFirst = tooltipItemView(this.sliderThumb, this.ifHorizontal, "tooltip_first", this.settings.currentFirst, this.max, this.min, this.step)
+            ? this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.settings.currentFirst, this.ifHorizontal, this.max, this.min, this.step)
             : null;
         this.ifRange
             ? (this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal, this.max, this.min, this.step),
                 this.ifTooltip
-                    ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, this.ifHorizontal, "tooltip_second", this.settings.currentSecond, this.max, this.min, this.step)
+                    ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.settings.currentSecond, this.ifHorizontal, this.max, this.min, this.step)
                     : null)
             : null;
         this.ifScale
-            ? (this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.settings.min, this.settings.max, this.settings.step))
+            ? (this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.max, this.min,  this.step, this.stepPerDiv))
             : null;
         return this;
     }
