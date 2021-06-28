@@ -34,7 +34,7 @@ interface IView extends ISender {
     
     // selectThumb(e: MouseEvent): void;
     // dragThumbStart(e: MouseEvent): void;
-    сhange(object: any, newThumbCurrent: number): void;
+    сhange(newThumbCurrent: number): void;
     changeThumbEnd(): void;
 }
 
@@ -163,16 +163,16 @@ class SliderView extends EventDispatcher implements IView {
         this.selectObject = {};
     }
 
-    сhange(object: any, newThumbCurrent: number){
+    сhange(newThumbCurrent: number){
         //fix: validate newThumbCurrent to be 0 to 100?
 
-        changeThumb(object, this.ifHorizontal, newThumbCurrent)
+        changeThumb(this.selectObject.elem, this.ifHorizontal, newThumbCurrent)
 
-        let ifThumbFirst = (object === this.sliderThumb)
+        let ifThumbFirst = (this.selectObject.elem === this.sliderThumb)
         changeRange(this.sliderRange, newThumbCurrent, this.ifHorizontal, this.ifRange, ifThumbFirst);
         
         if (this.ifTooltip) {
-            let currentTooltip = object.children[0];
+            let currentTooltip = this.selectObject.elem.children[0];
             (currentTooltip === this.tooltipFirst)
                 ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.max, this.min)
                 : changeTooltip(this.tooltipSecond, newThumbCurrent, this.max, this.min)
