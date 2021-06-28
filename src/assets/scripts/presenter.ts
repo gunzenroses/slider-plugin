@@ -124,7 +124,6 @@ class SliderPresenter implements Presenter {
     }
 
     dragThumb(e: any){
-        // let thumbInnerShift: number = parseInt(this.view.selectObject.offset);
         let newThumbCurrentPX = this.ifHorizontal
             ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left
             : e.clientY - this.view.sliderContainer.getBoundingClientRect().top;
@@ -170,7 +169,6 @@ class SliderPresenter implements Presenter {
 
     changeView(value: number){
         this.view.сhange(value);
-        //this.view.selectObject = {};
     }
 }
 
