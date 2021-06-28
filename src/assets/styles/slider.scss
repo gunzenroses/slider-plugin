@@ -23,7 +23,7 @@ $color-border: #3d3d3d;
 
     &_vertical {
         @extend .slider__content;
-        width: fit-content;
+        width: max-content;
         height: 100%;
         flex-direction: row;
     }
