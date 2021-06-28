@@ -1,13 +1,10 @@
 import { scaleItemRow} from "./scaleItemRow"
 
-function scaleView(parentNode: HTMLElement, ifHorizontal: boolean, min: number, max: number, stepValue?: number): HTMLElement {
+function scaleView(parentNode: HTMLElement, ifHorizontal: boolean, max: number, min: number,  step: number, stepPerDiv?: number): HTMLElement {
     let scaleClass: string = ifHorizontal
                 ? "slider__scale"
                 : "slider__scale_vertical";
-    let step: number;
-    stepValue
-            ? step = stepValue 
-            : step = 1;
+
     let scale: HTMLElement = document.createElement("div");
     scale.classList.add(scaleClass);
     
@@ -16,7 +13,13 @@ function scaleView(parentNode: HTMLElement, ifHorizontal: boolean, min: number, 
                     ? Math.ceil(parseFloat(parentNodeStyle.width))
                     : Math.ceil(parseFloat(parentNodeStyle.height));
 
-    scale.append(scaleItemRow(ifHorizontal, scaleLength, min, max, step));
+    let stepPerDivValue = stepPerDiv
+                    ? stepPerDiv
+                    : ((scaleItemRow.length+1) % 2 === 0)
+                        ? 2
+                        : 3;
+
+    scale.append(scaleItemRow(ifHorizontal, scaleLength, min, max, step, stepPerDivValue));
     parentNode.append(scale);
     return scale;
 }
