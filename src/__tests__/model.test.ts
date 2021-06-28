@@ -59,19 +59,18 @@ describe('class SliderModel', ()=>{
     })
 
     describe('method changeThumb()', ()=>{
-        let obj = {};
         let val = 3;
 
         test('should be called',()=>{
             const spyChangeThumb = jest.spyOn(model, "changeThumb");
 
-            model.changeThumb(obj, val);
+            model.changeThumb(val);
 
-            expect(model.changeThumb).toBeCalledTimes(1);
+            expect(spyChangeThumb).toBeCalledTimes(1);
         })
 
         test('should change data.currentFirst', ()=>{
-            model.changeThumb(obj, val);
+            model.changeThumb(val);
 
             expect(model.getData()).toHaveProperty('currentFirst', val);
         })
@@ -79,9 +78,9 @@ describe('class SliderModel', ()=>{
         test('should notify subscribers', ()=>{
             const spyNotify = jest.spyOn(model, "notify");
 
-            model.changeThumb(obj, val);
+            model.changeThumb(val);
 
-            expect(model.notify).toHaveBeenCalledTimes(1);
+            expect(spyNotify).toHaveBeenCalledTimes(1);
         })
     })
 
@@ -92,13 +91,13 @@ describe('class SliderModel', ()=>{
         test('should be called', ()=>{
             const spyChangeThumbSecond = jest.spyOn(model, "changeThumbSecond");
 
-            model.changeThumbSecond(obj, num);
+            model.changeThumbSecond(num);
 
-            expect(model.changeThumbSecond).toBeCalledTimes(1);
+            expect(spyChangeThumbSecond).toBeCalledTimes(1);
         })
 
         test('should change the value of data.CurrentSecond', ()=>{
-            model.changeThumbSecond(obj, num);
+            model.changeThumbSecond(num);
 
             expect(model.getData()).toHaveProperty('currentSecond', num);
         })
@@ -106,9 +105,9 @@ describe('class SliderModel', ()=>{
         test('should notify subscribers', ()=>{
             let spyChangeThumbSecond = jest.spyOn(model, 'notify');
             
-            model.changeThumbSecond(obj, num);
+            model.changeThumbSecond(num);
             
-            expect(model.notify).toHaveBeenCalledTimes(1)
+            expect(spyChangeThumbSecond).toHaveBeenCalledTimes(1)
         })
     })
 })
