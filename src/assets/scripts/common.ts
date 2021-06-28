@@ -26,7 +26,6 @@ function fromPercentsToValue(value: number, max: number, min: number){
 
 function fromValueToPX(value: number, max: number, min: number, containerSize: number){
     let pxPerDivis = containerSize / (max - min);
-    console.log(pxPerDivis)
     let valueInPx = value*pxPerDivis;
     return valueInPx;
 }
