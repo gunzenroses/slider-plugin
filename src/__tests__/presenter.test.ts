@@ -137,44 +137,40 @@ describe('SliderPresenter', ()=>{
     describe('function changeThumbInModel()', ()=>{
         test('calls model.changeThumb() method with provided arguments ', () => {
             let spyModelChangeThumb = jest.spyOn(model, 'changeThumb').mockImplementation();
-            let object = {};
             let value = 7;
     
-            presenter.changeThumbInModel(object, value);
+            presenter.changeThumbInModel(value);
     
             expect(spyModelChangeThumb).toBeCalledTimes(1);
-            expect(spyModelChangeThumb).toBeCalledWith(object, value);
+            expect(spyModelChangeThumb).toBeCalledWith(value);
         })
     })
 
     describe('function changeThumbSecondInModel()', ()=>{
         test('calls model.changeThumbSecond() with provided argumets', () => {
             let spyModelChangeThumbSecond = jest.spyOn(model, 'changeThumbSecond').mockImplementation();
-            let object = {};
             let value = 7;
 
-            presenter.changeThumbSecondInModel(object, value);
+            presenter.changeThumbSecondInModel(value);
 
             expect(spyModelChangeThumbSecond).toBeCalledTimes(1);
-            expect(spyModelChangeThumbSecond).toBeCalledWith(object, value);
+            expect(spyModelChangeThumbSecond).toBeCalledWith(value);
         })
     })
 
     describe('function changeView()', ()=>{
         test('calls view.change() method with provided arguments', ()=>{
             let spyViewChange = jest.spyOn(view, 'сhange').mockImplementation();
-            let object = {};
             let value = 11;
 
-            presenter.changeView(object, value);
+            presenter.changeView(value);
 
             expect(spyViewChange).toBeCalledTimes(1);
-            expect(spyViewChange).toBeCalledWith(object, value);
+            expect(spyViewChange).toBeCalledWith(value);
         })
 
-        test('clears data in view.selecObject()', () => {
-            expect(view.selectObject).toEqual({});
-        })
-        
+        // test('clears data in view.selecObject()', () => {
+        //     expect(view.selectObject).toEqual({});
+        // })
     })
 })
