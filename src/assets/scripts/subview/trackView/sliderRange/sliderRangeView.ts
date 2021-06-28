@@ -1,5 +1,6 @@
 import { changeRange } from "./changeRange"
 import { applyStep } from "../../../common"
+import { TRangeStyle } from "../../../types/types";
 
 function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal: boolean, max: number, min: number, step: number){
     let sliderRangeClass: string = ifRange
@@ -9,15 +10,8 @@ function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal
                                             : "slider__range_vertical")
     let sliderRange = document.createElement("div");
     sliderRange.classList.add(`${sliderRangeClass}`);
-    
-    type TRange = {
-        newThumbCurrent: number, 
-        ifHorizontal: boolean, 
-        ifRange: boolean, 
-        ifThumbFirst: boolean
-    };
 
-    let rangeRow: TRange[] = [];
+    let rangeRow: TRangeStyle[] = [];
     switch (String(sliderRangeClass)){
         case "slider__range": rangeRow = [
             {
@@ -76,6 +70,7 @@ function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal
             ]; 
             break;
     }
+
     rangeRow.forEach(item => changeRange(sliderRange, applyStep(item.newThumbCurrent, max, min, step), item.ifHorizontal, item.ifRange, item.ifThumbFirst))
     
     parentNode.append(sliderRange);
