@@ -1,7 +1,6 @@
 import { SliderView } from "../assets/scripts/view"
 import { sliderData } from "../assets/scripts/data"
 
-
 let data = sliderData;
 let containerId = 'container1';
 
@@ -10,7 +9,6 @@ initialContainer.id = containerId;
 document.body.append(initialContainer);
 
 describe('class SliderView', ()=>{
-    //arrange
     let view = new SliderView(containerId);
 
     afterEach (()=>{
@@ -38,7 +36,7 @@ describe('class SliderView', ()=>{
     })
 
     describe('function change()', ()=>{
-        test ('update styles for Thumb, Range and Tooltip when sliderThumb is object', ()=>{
+        test ('update styles for Thumb, Range and Tooltip when (object === sliderThumb)', ()=>{
             let obj = view.sliderThumb;
             let num = 7;
 
@@ -49,7 +47,7 @@ describe('class SliderView', ()=>{
             expect(parseInt(view.tooltipFirst.innerText)).toBe(num);
         })
 
-        test ('update styles for Thumb, Range and Tooltip when sliderThumbSecond is object', ()=>{
+        test ('update styles for Thumb, Range and Tooltip when (object === sliderThumbSecond)', ()=>{
             let obj = view.sliderThumbSecond;
             let num = 11;
 
@@ -171,6 +169,3 @@ describe('class SliderView', ()=>{
         })
     })
 })
-
-//const fakeFunc = jest.fn() as jest.mockedFunction<typeof innerFunc>
-//fakeFunc.mockImplementation((a,b)=>{ return a + b})

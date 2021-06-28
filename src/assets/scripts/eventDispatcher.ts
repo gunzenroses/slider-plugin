@@ -21,8 +21,8 @@ class EventDispatcher implements ISender  {
         this.listeners.splice(index,1);
     }
 
-    notify(args: any): void {
-        this.listeners.forEach(listener => listener(args));
+    notify(...args: any): void {
+        this.listeners.forEach(listener => listener(...args));
     }
 }
 
