@@ -167,7 +167,7 @@ class SliderPresenter implements Presenter {
         let newValue = applyRestrictions(applyStep(value, this.max, this.min, this.step));
         this.model.changeThumbSecond(object, newValue);
     }
-    
+
     changeView(object: object, value: number){
         this.view.сhange(object, value);
         //this.view.selectObject.elem = {};

@@ -35,7 +35,7 @@ interface IView extends ISender {
     // selectThumb(e: MouseEvent): void;
     // dragThumbStart(e: MouseEvent): void;
     сhange(object: any, newThumbCurrent: number): void;
-    dragThumbEnd(): void;
+    changeThumbEnd(): void;
 }
 
 class SliderView extends EventDispatcher implements IView {
@@ -102,7 +102,7 @@ class SliderView extends EventDispatcher implements IView {
         this.selectThumbHandler = this.selectThumb.bind(this);
         this.dragThumbStartHandler = this.dragThumbStart.bind(this);
         this.dragThumbMoveHandler = this.dragThumbMove.bind(this);
-        this.dragThumbEndHandler = this.dragThumbEnd.bind(this);
+        this.dragThumbEndHandler = this.changeThumbEnd.bind(this);
     }
 
     enable(){
@@ -159,7 +159,7 @@ class SliderView extends EventDispatcher implements IView {
         this.notify(flag, e);
     }
 
-    dragThumbEnd(){
+    changeThumbEnd(){
         this.selectObject = {};
     }
 
