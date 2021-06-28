@@ -17,7 +17,7 @@ describe('SliderPresenter', ()=>{
         jest.restoreAllMocks();
     })
 
-    describe('function init()', ()=>{
+    describe('method init()', ()=>{
         test('calls methods view.init(), createChildren(), setupHandlers(), enable()', ()=>{
             let spyView = jest.spyOn(view, 'init');
             let spyCreateChildren = jest.spyOn(presenter, 'createChildren');
@@ -47,7 +47,7 @@ describe('SliderPresenter', ()=>{
         })
     })
 
-    describe('function sortThumbActions()', ()=>{
+    describe('method sortThumbActions()', ()=>{
         test('calls selectThumb method if passed argument has a (flag === selectThumb)', () => {
             let spySelectThumb = jest.spyOn(presenter, 'selectThumb');
             let flag = 'selectThumb';
@@ -81,7 +81,7 @@ describe('SliderPresenter', ()=>{
         })
     })
 
-    describe('function selectThumb()', ()=>{
+    describe('method selectThumb()', ()=>{
         test('calls selectThumbRangeTrue() if (range === true)', () => {
             let spySelectThumbRangeTrue = jest.spyOn(presenter, 'selectThumbRangeTrue');
             presenter.ifRange = true;
@@ -107,7 +107,7 @@ describe('SliderPresenter', ()=>{
         })
     })
 
-    describe('function dragThumb()', ()=>{
+    describe('method dragThumb()', ()=>{
         test('calls dragThumbRangeTrue() if (range === true)', () => {
             let spyDragThumbRangeTrue = jest.spyOn(presenter, 'dragThumbRangeTrue').mockImplementation();
             presenter.ifRange = true;
@@ -134,7 +134,7 @@ describe('SliderPresenter', ()=>{
         
     })
 
-    describe('function changeThumbInModel()', ()=>{
+    describe('method changeThumbInModel()', ()=>{
         test('calls model.changeThumb() method with provided arguments ', () => {
             let spyModelChangeThumb = jest.spyOn(model, 'changeThumb').mockImplementation();
             let value = 7;
@@ -146,7 +146,7 @@ describe('SliderPresenter', ()=>{
         })
     })
 
-    describe('function changeThumbSecondInModel()', ()=>{
+    describe('method changeThumbSecondInModel()', ()=>{
         test('calls model.changeThumbSecond() with provided argumets', () => {
             let spyModelChangeThumbSecond = jest.spyOn(model, 'changeThumbSecond').mockImplementation();
             let value = 7;
@@ -158,7 +158,7 @@ describe('SliderPresenter', ()=>{
         })
     })
 
-    describe('function changeView()', ()=>{
+    describe('method changeView()', ()=>{
         test('calls view.change() method with provided arguments', ()=>{
             let spyViewChange = jest.spyOn(view, 'сhange').mockImplementation();
             let value = 11;
