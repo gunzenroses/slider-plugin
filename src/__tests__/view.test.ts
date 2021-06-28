@@ -15,7 +15,7 @@ describe('class SliderView', ()=>{
         jest.restoreAllMocks();
     })
 
-    describe('function init()', ()=>{
+    describe('method init()', ()=>{
         let spyCreateChildren = jest.spyOn(view, 'createChildren');
         let spyRender = jest.spyOn(view, 'render');
         let spySetupHandlers = jest.spyOn(view, 'setupHandlers');
@@ -27,7 +27,7 @@ describe('class SliderView', ()=>{
             expect(view.settings).toEqual(data);
         })
 
-        test('call functions createChildren(), render(), setupHandlers(), enable()', ()=>{
+        test('call methods createChildren(), render(), setupHandlers(), enable()', ()=>{
             expect(spyCreateChildren).toHaveBeenCalledTimes(1)
             expect(spyRender).toHaveBeenCalledTimes(1)
             expect(spySetupHandlers).toHaveBeenCalledTimes(1)
@@ -35,7 +35,7 @@ describe('class SliderView', ()=>{
         })
     })
 
-    describe('function change()', ()=>{
+    describe('method change()', ()=>{
         test ('update styles for Thumb, Range and Tooltip when (selectObject === sliderThumb)', ()=>{
             view.selectObject = view.sliderThumb;
             let num = 7;
@@ -59,7 +59,7 @@ describe('class SliderView', ()=>{
         })
     })
 
-    describe('function render()', ()=>{
+    describe('method render()', ()=>{
         test('should render all elements of slider',()=>{
             view.render();
 
@@ -74,7 +74,7 @@ describe('class SliderView', ()=>{
         })
     })
 
-    describe('function selectThumb()', ()=>{
+    describe('method selectThumb()', ()=>{
         test('return undefined if (e.target === sliderThumb || sliderThumbSecond)', ()=>{
             var e = {
                 target: view.sliderThumb,
@@ -99,7 +99,7 @@ describe('class SliderView', ()=>{
         })
     })
 
-    describe('function dragThumbStart()', () => {
+    describe('method dragThumbStart()', () => {
         test('return undefined if (e.target !== sliderThumb || sliderThumbSecond)', ()=>{
             var e = {
                 target: view.sliderTrack,
@@ -135,7 +135,7 @@ describe('class SliderView', ()=>{
         })
     })
 
-    describe('function dragThumbMove()', () => {
+    describe('method dragThumbMove()', () => {
         var e = {
             target: view.sliderThumb,
             ... new Event('mousemove')
@@ -159,7 +159,7 @@ describe('class SliderView', ()=>{
         })
     })
 
-    describe('function dragThumbEnd', ()=>{
+    describe('method dragThumbEnd', ()=>{
         test('clear selectObject data',()=>{
             let clearedObject = {};
 
