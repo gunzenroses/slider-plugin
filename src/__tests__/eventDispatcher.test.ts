@@ -5,8 +5,8 @@ describe('EventDispatcher',()=>{
     let listener = function(val: number){ return val+1 };
 
     ed.add(listener);
+    
     test('method add(): add listener to listeners', ()=>{
-        //assert
         expect(ed.listeners.length).toBe(1);
     })
 
