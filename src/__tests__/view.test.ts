@@ -37,25 +37,23 @@ describe('class SliderView', ()=>{
 
     describe('function change()', ()=>{
         test ('update styles for Thumb, Range and Tooltip when (object === sliderThumb)', ()=>{
-            let obj = view.sliderThumb;
-            let num = 7;
+            // let num = 7;
 
-            view.сhange(obj, num);
+            // view.сhange(num);
 
-            expect(view.sliderThumb.style.left).toBe(num + '%');
-            expect(view.sliderRange.style.left).toBe(num + '%');
-            expect(parseInt(view.tooltipFirst.innerText)).toBe(num);
+            // expect(view.sliderThumb.style.left).toBe(num + '%');
+            // expect(view.sliderRange.style.left).toBe(num + '%');
+            // expect(parseInt(view.tooltipFirst.innerText)).toBe(num);
         })
 
         test ('update styles for Thumb, Range and Tooltip when (object === sliderThumbSecond)', ()=>{
-            let obj = view.sliderThumbSecond;
-            let num = 11;
+            // let num = 11;
 
-            view.сhange(obj, num);
+            // view.сhange(num);
 
-            expect(view.sliderThumbSecond.style.left).toBe(num + '%');
-            expect(view.sliderRange.style.right).toBe((100 - num) + '%');
-            expect(parseInt(view.tooltipSecond.innerText)).toBe(num);
+            // expect(view.sliderThumbSecond.style.left).toBe(num + '%');
+            // expect(view.sliderRange.style.right).toBe((100 - num) + '%');
+            // expect(parseInt(view.tooltipSecond.innerText)).toBe(num);
         })
     })
 
@@ -122,7 +120,7 @@ describe('class SliderView', ()=>{
             expect(check).toBeFalsy();
         })
 
-        test('assign (dragObject = e.target) if (e.target === sliderThumb || sliderThumbSecond)', ()=>{
+        test('assign (selectObject = e.target) if (e.target === sliderThumb || sliderThumbSecond)', ()=>{
             var e = {
                 target: view.sliderThumb,
                 ... new Event('mousedown'),
@@ -131,7 +129,7 @@ describe('class SliderView', ()=>{
 
             view.dragThumbStart(e as MouseEvent);
 
-            expect(view.dragObject.elem).toEqual(e.target);
+            expect(view.selectObject.elem).toEqual(e.target);
         })
     })
 
@@ -142,7 +140,7 @@ describe('class SliderView', ()=>{
         };
 
         test('return undefined if no dragObject', ()=>{
-            view.dragObject = {};
+            view.selectObject = {};
 
             let check = view.dragThumbMove(e as MouseEvent);
 
@@ -151,7 +149,7 @@ describe('class SliderView', ()=>{
 
         test('notify subscribers if dragObject exists', ()=>{
             let spyNotify = jest.spyOn(view, 'notify');
-            view.dragObject.elem = view.sliderThumb;
+            view.selectObject.elem = view.sliderThumb;
 
             view.dragThumbMove(e as MouseEvent);
 
@@ -160,12 +158,12 @@ describe('class SliderView', ()=>{
     })
 
     describe('function dragThumbEnd', ()=>{
-        test('clear dragObject data',()=>{
+        test('clear selectObject data',()=>{
             let clearedObject = {};
 
-            view.dragThumbEnd();
+            view.changeThumbEnd();
 
-            expect(view.dragObject).toEqual(clearedObject);
+            expect(view.selectObject).toEqual(clearedObject);
         })
     })
 })
