@@ -24,8 +24,7 @@ interface IView extends ISender {
     tooltipSecond?: HTMLElement;
     scale?: HTMLElement;
 
-    dragObject: TDragObject;
-    selectObject: any; //HTMLElement;
+    selectObject: TDragObject;
 
     init(settings: TSettings): void;
     //createChildren(): void;
@@ -36,7 +35,7 @@ interface IView extends ISender {
     // selectThumb(e: MouseEvent): void;
     // dragThumbStart(e: MouseEvent): void;
     сhange(object: any, newThumbCurrent: number): void;
-
+    dragThumbEnd(): void;
 }
 
 class SliderView extends EventDispatcher implements IView {
@@ -53,8 +52,7 @@ class SliderView extends EventDispatcher implements IView {
     tooltipSecond!: HTMLElement;
     scale!: HTMLElement;
 
-    selectObject!: any; //HTMLElement;
-    dragObject!: TDragObject; //{elem: EventTarget, offsetX: number} | {};
+    selectObject!: TDragObject; //{elem: EventTarget, offsetX: number} | {};
     thumbSecondPosition!: number;
     containerWidth!: number;
 
@@ -90,7 +88,7 @@ class SliderView extends EventDispatcher implements IView {
     }
 
     createChildren(){
-        this.dragObject = {};
+        this.selectObject = {};
         this.ifHorizontal = this.settings.orientation === "horizontal";
         this.ifRange = this.settings.range;
         this.ifTooltip = this.settings.tooltip;
@@ -136,34 +134,33 @@ class SliderView extends EventDispatcher implements IView {
         else {
             if (e.type === "mousedown"){
                 let mouseEvent = e as MouseEvent;
-                this.dragObject.elem = mouseEvent.target;
+                this.selectObject.elem = e.target;
                 this.ifHorizontal
-                    ? this.dragObject.offset = mouseEvent.offsetX
-                    : this.dragObject.offset = mouseEvent.offsetY;
-
+                    ? this.selectObject.offset = mouseEvent.offsetX
+                    : this.selectObject.offset = mouseEvent.offsetY;
             // } else {
             //     let touchEvent = e as TouchEvent;
             //         let rect  = touchEvent.target!.getBoundingClientRect();
             //         let offsetX = touchEvent.targetTouches[0].clientX - rect.x;
             //         let offsetY = touchEvent.targetTouches[0].clientY - rect.y
                 
-            //     this.dragObject.elem = touchEvent.touches[0].target;
+            //     this.selectObject.elem = touchEvent.touches[0].target;
             //     this.ifHorizontal
-            //         ? this.dragObject.offset = offsetX
-            //         : this.dragObject.offset = offsetY;
+            //         ? this.selectObject.offset = offsetX
+            //         : this.selectObject.offset = offsetY;
             }
-        } 
+        }
     }
 
     dragThumbMove(e: MouseEvent){
         e.preventDefault;
-        if (!this.dragObject.elem) return;
+        if (!this.selectObject.elem) return;
         let flag = 'dragThumb';
         this.notify(flag, e);
     }
 
     dragThumbEnd(){
-        this.dragObject = {};
+        this.selectObject = {};
     }
 
     сhange(object: any, newThumbCurrent: number){
