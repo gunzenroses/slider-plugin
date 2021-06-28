@@ -168,9 +168,5 @@ describe('SliderPresenter', ()=>{
             expect(spyViewChange).toBeCalledTimes(1);
             expect(spyViewChange).toBeCalledWith(value);
         })
-
-        // test('clears data in view.selecObject()', () => {
-        //     expect(view.selectObject).toEqual({});
-        // })
     })
 })
