@@ -9,10 +9,13 @@ interface Presenter {
     containerId: string;
     data: TSettings;
 
-    init(): object;
-    setupHandlers(): object;
-    createChildren(): object;
-    enable(): object;
+    init(): void;
+    sortThumbActions(flag: string, e: Event): void;
+    selectThumb(e: any): void;
+    dragThumb(e: MouseEvent): void;
+    changeThumbInModel(object: object, value: number): void;
+    changeThumbSecondInModel(object: object, value: number): void;
+    changeView(object: object, value: number): void;
 }
 
 class SliderPresenter implements Presenter {
@@ -34,9 +37,8 @@ class SliderPresenter implements Presenter {
     thumbPosition!: number;
     thumbSecondPosition!: number;
 
-    fromModelChangeViewHandler!: { (args: {object: object, newThumbValue: number})
-                                    : object | undefined };
-    fromViewSortActionsHandler!: {(args: {flag: string, event: Event}) : void};
+    fromModelChangeViewHandler!: { (object: object, newThumbValue: number) : void };
+    fromViewSortActionsHandler!: {(flag: string, event: Event) : void };
 
     constructor(model: IModel, view: IView){
         this.model = model
@@ -60,7 +62,6 @@ class SliderPresenter implements Presenter {
         this.step = this.data.step;
         this.ifHorizontal = this.data.orientation === "horizontal";
         this.ifRange = this.data.range;
-        this.step = this.data.step;
         this.containerSize = (this.ifHorizontal)
                             ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""))
                             : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px",""));
@@ -80,10 +81,9 @@ class SliderPresenter implements Presenter {
         return this;
     }
 
-    sortThumbActions(args: any){
-        if (args.flag = 'selectThumb'){ this.selectThumb(args.e); } 
-        else if (args.flag = 'dragThumbMove'){ this.dragThumb(args.e); }
-        return this;
+    sortThumbActions(flag: string, e: Event){
+        if (flag === 'selectThumb'){ this.selectThumb(e);} 
+        else if (flag === 'dragThumb'){ this.dragThumb(e);}
     }
 
     selectThumb(e: any){
@@ -96,13 +96,11 @@ class SliderPresenter implements Presenter {
         this.ifRange 
             ? this.selectThumbRangeTrue(newThumbCurrentPercent)
             :  this.selectThumbRangeFalse(newThumbCurrentPercent);
-        return this;
     }
 
     selectThumbRangeFalse(newThumbCurrentPercent: number){
         this.view.selectObject = this.view.sliderThumb;
         this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent);
-        return this;
     }
 
     selectThumbRangeTrue(newThumbCurrentPercent: number){
@@ -115,16 +113,15 @@ class SliderPresenter implements Presenter {
         if (firstDiff < secondDiff){ 
             this.view.selectObject = this.view.sliderThumb;
             this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent) 
-        } if (firstDiff > secondDiff){
+        } if (firstDiff >= secondDiff){
             this.view.selectObject = this.view.sliderThumbSecond!;
             this.changeThumbSecondInModel(this.view.selectObject, newThumbCurrentPercent);
-        } if (firstDiff === secondDiff){
-            return;
+        // } if (firstDiff === secondDiff){
+        //     return;
         }
-        return this;
     }
 
-    dragThumb(e: MouseEvent){
+    dragThumb(e: any){
         // let thumbInnerShift: number = parseInt(this.view.dragObject.offset);
         let newThumbCurrentPX = this.ifHorizontal
             ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left
@@ -135,12 +132,10 @@ class SliderPresenter implements Presenter {
         this.ifRange
                 ? this.dragThumbRangeTrue(newThumbCurrent)
                 : this.dragThumbRangeFalse(newThumbCurrent);
-        return this;
     }
 
     dragThumbRangeFalse(newThumbCurrent: number){
         this.changeThumbInModel(this.view.dragObject.elem, newThumbCurrent);
-        return this;
     }
 
     dragThumbRangeTrue(newThumbCurrent: number){
@@ -157,30 +152,23 @@ class SliderPresenter implements Presenter {
             newThumbCurrent>= firstThumbPercent + 1 &&
             newThumbCurrent<= 100){
             this.changeThumbSecondInModel(this.view.dragObject.elem, newThumbCurrent);
-            return this;
         } 
-        else {
-            //this.view.dragThumbEnd();
-            return this;
-        }
-        
+        else return;
     }
 
-            changeThumbInModel(object: object, newThumbValue: number){
-                let newValue = applyRestrictions(applyStep(newThumbValue, this.max, this.min, this.step));
-                this.model.changeThumb(object, newValue);
-            }
+    changeThumbInModel(object: object, value: number){
+        let newValue = applyRestrictions(applyStep(value, this.max, this.min, this.step));
+        this.model.changeThumb(object, newValue);
+    }
 
-            changeThumbSecondInModel(object: object, newThumbValue: number){
-                let newValue = applyRestrictions(applyStep(newThumbValue, this.max, this.min, this.step));
-                this.model.changeThumbSecond(object, newValue);
-                return this;
-            }
+    changeThumbSecondInModel(object: object, value: number){
+        let newValue = applyRestrictions(applyStep(value, this.max, this.min, this.step));
+        this.model.changeThumbSecond(object, newValue);
+    }
 
-    changeView(args: {object: object, newThumbValue: number}){
-        this.view.fromPresenterChange(args.object, args.newThumbValue);
+    changeView(object: object, value: number){
+        this.view.сhange(object, value);
         this.view.selectObject = {};
-        return this;
     }
 }
 
