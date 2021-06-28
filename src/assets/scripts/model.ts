@@ -5,8 +5,8 @@ interface IModel extends ISender {
     setData(newData: TSettings): void;
     getData(): TSettings;
     getContainerId(): string;
-    changeThumb(newData: number): void;
-    changeThumbSecond(newData: number): void;
+    changeThumb(value: number): void;
+    changeThumbSecond(value: number): void;
 }
 
 class SliderModel extends EventDispatcher implements IModel {
@@ -31,14 +31,14 @@ class SliderModel extends EventDispatcher implements IModel {
         return this.data;
     }
 
-    changeThumb(newThumbValue: number) {
-        this.data.currentFirst = newThumbValue;
-        this.notify(newThumbValue);
+    changeThumb(value: number) {
+        this.data.currentFirst = value;
+        this.notify(value);
     }
 
-    changeThumbSecond(newThumbValue: number) {
-        this.data.currentSecond = newThumbValue;
-        this.notify(newThumbValue);
+    changeThumbSecond(value: number) {
+        this.data.currentSecond = value;
+        this.notify(value);
     }
 }
 
