@@ -27,12 +27,16 @@ interface IView extends ISender {
     dragObject: TDragObject;
     selectObject: any; //HTMLElement;
 
-    init(settings: TSettings): object;
-    createChildren(): object;
-    setupHandlers(): object;
-    enable(): object;
+    init(settings: TSettings): void;
+    //createChildren(): void;
+    //setupHandlers(): void;
+    //enable(): void;
     render(): void;
-    fromPresenterChange(object: any, newThumbCurrent: number): object;
+    
+    // selectThumb(e: MouseEvent): void;
+    // dragThumbStart(e: MouseEvent): void;
+    сhange(object: any, newThumbCurrent: number): void;
+
 }
 
 class SliderView extends EventDispatcher implements IView {
@@ -54,10 +58,10 @@ class SliderView extends EventDispatcher implements IView {
     thumbSecondPosition!: number;
     containerWidth!: number;
 
-    selectThumbHandler!: { (ev: MouseEvent): object | undefined };
-    dragThumbStartHandler!: { (ev: MouseEvent): object | undefined};
-    dragThumbMoveHandler!: { (ev: MouseEvent): object | undefined};
-    dragThumbEndHandler!: () => object;
+    selectThumbHandler!: { (ev: MouseEvent): void };
+    dragThumbStartHandler!: { (ev: MouseEvent ): void };
+    dragThumbMoveHandler!: { (ev: MouseEvent ): void };
+    dragThumbEndHandler!: () => void;
 
     ifHorizontal!: boolean;
     ifRange!: boolean;
@@ -83,7 +87,6 @@ class SliderView extends EventDispatcher implements IView {
         this.render();
         this.setupHandlers();
         this.enable();
-        return this;
     }
 
     createChildren(){
@@ -95,7 +98,6 @@ class SliderView extends EventDispatcher implements IView {
         this.step = this.settings.step;
         this.max = this.settings.max;
         this.min = this.settings.min;
-        return this;
     }
 
     setupHandlers(){
@@ -103,24 +105,27 @@ class SliderView extends EventDispatcher implements IView {
         this.dragThumbStartHandler = this.dragThumbStart.bind(this);
         this.dragThumbMoveHandler = this.dragThumbMove.bind(this);
         this.dragThumbEndHandler = this.dragThumbEnd.bind(this);
-        return this;
     }
 
     enable(){
         this.sliderContainer.addEventListener("click", this.selectThumbHandler);
         this.sliderThumb.addEventListener("mousedown", this.dragThumbStartHandler);
-        if (this.settings.range){ this.sliderThumbSecond.addEventListener("mousedown", this.dragThumbStartHandler) };
+        // this.sliderThumb.addEventListener("touchstart", this.dragThumbStartHandler);
+        if (this.settings.range){ 
+            this.sliderThumbSecond.addEventListener("mousedown", this.dragThumbStartHandler); 
+            // this.sliderThumbSecond.addEventListener("touchstart", this.dragThumbStartHandler);
+        };
         document.addEventListener("mousemove", this.dragThumbMoveHandler);
         document.addEventListener("mouseup", this.dragThumbEndHandler);
-        return this;
+        // document.addEventListener("touchmove", this.dragThumbMoveHandler);
+        // document.addEventListener("touchend", this.dragThumbEndHandler);
     }
 
     selectThumb(e: MouseEvent){
         let flag = 'selectThumb';
         if (e.target === this.sliderThumb || 
             e.target === this.sliderThumbSecond) return;
-        this.notify({flag, e});
-        return this;
+        this.notify(flag, e);
     }
     
     dragThumbStart(e: MouseEvent){
@@ -129,28 +134,41 @@ class SliderView extends EventDispatcher implements IView {
             e.target !== this.sliderThumbSecond)
             return;
         else {
-            this.dragObject.elem = e.target;
-            this.ifHorizontal
-                ? this.dragObject.offset = e.offsetX
-                : this.dragObject.offset = e.offsetY;
-            return this;
-        }
+            if (e.type === "mousedown"){
+                let mouseEvent = e as MouseEvent;
+                this.dragObject.elem = mouseEvent.target;
+                this.ifHorizontal
+                    ? this.dragObject.offset = mouseEvent.offsetX
+                    : this.dragObject.offset = mouseEvent.offsetY;
+
+            // } else {
+            //     let touchEvent = e as TouchEvent;
+            //         let rect  = touchEvent.target!.getBoundingClientRect();
+            //         let offsetX = touchEvent.targetTouches[0].clientX - rect.x;
+            //         let offsetY = touchEvent.targetTouches[0].clientY - rect.y
+                
+            //     this.dragObject.elem = touchEvent.touches[0].target;
+            //     this.ifHorizontal
+            //         ? this.dragObject.offset = offsetX
+            //         : this.dragObject.offset = offsetY;
+            }
+        } 
     }
 
     dragThumbMove(e: MouseEvent){
         e.preventDefault;
         if (!this.dragObject.elem) return;
-        let flag = 'dragThumbMove';
-        this.notify({flag, e});
-        return this;
+        let flag = 'dragThumb';
+        this.notify(flag, e);
     }
 
     dragThumbEnd(){
         this.dragObject = {};
-        return this;
     }
 
-    fromPresenterChange(object: any, newThumbCurrent: number){
+    сhange(object: any, newThumbCurrent: number){
+        //fix: validate newThumbCurrent to be 0 to 100?
+
         changeThumb(object, this.ifHorizontal, newThumbCurrent)
 
         let ifThumbFirst = (object === this.sliderThumb)
@@ -162,7 +180,6 @@ class SliderView extends EventDispatcher implements IView {
                 ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.max, this.min)
                 : changeTooltip(this.tooltipSecond, newThumbCurrent, this.max, this.min)
         }
-        return this;
     }
 
     render(){
