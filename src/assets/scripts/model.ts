@@ -33,12 +33,12 @@ class SliderModel extends EventDispatcher implements IModel {
 
     changeThumb(object: any, newThumbValue: number) {
         this.data.currentFirst = newThumbValue;
-        this.notify({object, newThumbValue});
+        this.notify(object, newThumbValue);
     }
 
     changeThumbSecond(object: any, newThumbValue: number) {
         this.data.currentSecond = newThumbValue;
-        this.notify({object, newThumbValue});
+        this.notify(object, newThumbValue);
     }
 }
 
