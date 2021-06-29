@@ -26,6 +26,8 @@ interface IView extends ISender {
 
     selectObject: TDragObject;
 
+    changeHandler: (number: number) => void;
+
     init(settings: TSettings): void;
     //createChildren(): void;
     //setupHandlers(): void;
@@ -35,7 +37,7 @@ interface IView extends ISender {
     // selectThumb(e: MouseEvent): void;
     // dragThumbStart(e: MouseEvent): void;
     сhange(newThumbCurrent: number): void;
-    changeThumbEnd(): void;
+    dragThumbEnd(): void;
 }
 
 class SliderView extends EventDispatcher implements IView {
@@ -60,6 +62,7 @@ class SliderView extends EventDispatcher implements IView {
     dragThumbStartHandler!: { (ev: MouseEvent ): void };
     dragThumbMoveHandler!: { (ev: MouseEvent ): void };
     dragThumbEndHandler!: () => void;
+    changeHandler!: (number: number) => void;
 
     ifHorizontal!: boolean;
     ifRange!: boolean;
@@ -105,7 +108,8 @@ class SliderView extends EventDispatcher implements IView {
         this.selectThumbHandler = this.selectThumb.bind(this);
         this.dragThumbStartHandler = this.dragThumbStart.bind(this);
         this.dragThumbMoveHandler = this.dragThumbMove.bind(this);
-        this.dragThumbEndHandler = this.changeThumbEnd.bind(this);
+        this.dragThumbEndHandler = this.dragThumbEnd.bind(this);
+        this.changeHandler = this.сhange.bind(this);
     }
 
     enable(){
@@ -159,7 +163,7 @@ class SliderView extends EventDispatcher implements IView {
         this.notify(flag, e);
     }
 
-    changeThumbEnd(){
+    dragThumbEnd(){
         this.selectObject = {};
     }
 
@@ -172,8 +176,7 @@ class SliderView extends EventDispatcher implements IView {
         changeRange(this.sliderRange, newThumbCurrent, this.ifHorizontal, this.ifRange, ifThumbFirst);
         
         if (this.ifTooltip) {
-            let currentTooltip = this.selectObject.children[0];
-            (currentTooltip === this.tooltipFirst)
+            (this.selectObject.children[0] === this.tooltipFirst)
                 ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.max, this.min)
                 : changeTooltip(this.tooltipSecond, newThumbCurrent, this.max, this.min)
         }
