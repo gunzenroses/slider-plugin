@@ -2,8 +2,9 @@ import { IModel } from "./model"
 import { IView } from "./view"
 import { TSettings } from "./types/types"
 import { applyStep, applyRestrictions, findPosition } from "./common"
+import { ISender, EventDispatcher } from "./eventDispatcher"
 
-interface Presenter {
+interface IPresenter extends ISender {
     model: IModel;
     view: IView;
     containerId: string;
@@ -18,7 +19,7 @@ interface Presenter {
     changeView(value: number): void;
 }
 
-class SliderPresenter implements Presenter {
+class SliderPresenter extends EventDispatcher implements IPresenter {
     model:IModel;
     view: IView;
     containerId: string;
@@ -41,6 +42,7 @@ class SliderPresenter implements Presenter {
     fromViewSortActionsHandler!: {(flag: string, event: Event) : void };
 
     constructor(model: IModel, view: IView){
+        super()
         this.model = model
         this.view = view
         this.containerId = this.model.getContainerId()
@@ -78,6 +80,7 @@ class SliderPresenter implements Presenter {
     enable(){
         this.view.add(this.fromViewSortActionsHandler);
         this.model.add(this.fromModelChangeViewHandler);
+        this.add(this.view.changeHandler);
         return this;
     }
 
@@ -103,7 +106,7 @@ class SliderPresenter implements Presenter {
         // this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent);
         this.view.selectObject = this.view.sliderThumb;
         this.changeThumbInModel(newThumbCurrentPercent);
-        this.view.changeThumbEnd();
+        this.view.dragThumbEnd();
     }
 
     selectThumbRangeTrue(newThumbCurrentPercent: number){
@@ -120,7 +123,7 @@ class SliderPresenter implements Presenter {
             this.view.selectObject = this.view.sliderThumbSecond!;
             this.changeThumbSecondInModel(newThumbCurrentPercent);
         }
-        this.view.changeThumbEnd();
+        this.view.dragThumbEnd();
     }
 
     dragThumb(e: any){
@@ -168,8 +171,9 @@ class SliderPresenter implements Presenter {
     }
 
     changeView(value: number){
-        this.view.сhange(value);
+        //this.view.сhange(value);
+        this.notify(value);
     }
 }
 
-export { SliderPresenter }
+export { IPresenter, SliderPresenter }
