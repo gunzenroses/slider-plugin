@@ -171,7 +171,6 @@ class SliderPresenter extends EventDispatcher implements IPresenter {
     }
 
     changeView(value: number){
-        //this.view.сhange(value);
         this.notify(value);
     }
 }
