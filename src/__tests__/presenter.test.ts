@@ -159,14 +159,14 @@ describe('SliderPresenter', ()=>{
     })
 
     describe('method changeView()', ()=>{
-        test('calls view.change() method with provided arguments', ()=>{
-            let spyViewChange = jest.spyOn(view, 'сhange').mockImplementation();
+        test('calls presenter.notify() method with provided argument', ()=>{
             let value = 11;
+            let spyNotify = jest.spyOn(presenter, 'notify').mockImplementation();
 
             presenter.changeView(value);
 
-            expect(spyViewChange).toBeCalledTimes(1);
-            expect(spyViewChange).toBeCalledWith(value);
+            expect(spyNotify).toHaveBeenCalledTimes(1);
+            expect(spyNotify).toBeCalledWith(value);
         })
     })
 })
