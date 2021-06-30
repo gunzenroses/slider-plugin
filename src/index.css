@@ -2,9 +2,18 @@ body {
     font-size: 16px;
 }
 
+.slider-panel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 40px;
+    margin: 40px auto;
+    align-items: center;
+}
+
 #horizontal{
     width: 500px;
-    margin-top: 80px;
 }
 
 #vertical {
