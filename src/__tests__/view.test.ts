@@ -163,7 +163,7 @@ describe('class SliderView', ()=>{
         test('clear selectObject data',()=>{
             let clearedObject = {};
 
-            view.changeThumbEnd();
+            view.dragThumbEnd();
 
             expect(view.selectObject).toEqual(clearedObject);
         })
