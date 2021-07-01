@@ -37,7 +37,7 @@ describe('class SliderView', ()=>{
 
     describe('method change()', ()=>{
         test ('update styles for Thumb, Range and Tooltip when (selectObject === sliderThumb)', ()=>{
-            view.selectObject = view.sliderThumb;
+            view.dragObject = view.sliderThumb;
             let num = 7;
 
             view.сhange(num);
@@ -48,7 +48,7 @@ describe('class SliderView', ()=>{
         })
 
         test ('update styles for Thumb, Range and Tooltip when (selectObject === sliderThumbSecond)', ()=>{
-            view.selectObject = view.sliderThumbSecond;
+            view.dragObject = view.sliderThumbSecond;
             let num = 11;
 
             view.сhange(num);
@@ -87,7 +87,7 @@ describe('class SliderView', ()=>{
         })
 
         test('notify subscribers if (e.target !== sliderThumb || sliderThumbSecond)', ()=>{
-            let spyNotify = jest.spyOn(view, 'notify');
+            let spyNotify = jest.spyOn(view.fromViewSelectThumb, 'notify');
             var evt = {
                 target: view.sliderTrack,
                 ... new Event('click'),
@@ -150,7 +150,7 @@ describe('class SliderView', ()=>{
         })
 
         test('notify subscribers if dragObject exists', ()=>{
-            let spyNotify = jest.spyOn(view, 'notify');
+            let spyNotify = jest.spyOn(view.fromViewDragThumb, 'notify');
             view.selectObject.elem = view.sliderThumb;
 
             view.dragThumbMove(e as MouseEvent);
@@ -160,12 +160,12 @@ describe('class SliderView', ()=>{
     })
 
     describe('method dragThumbEnd', ()=>{
-        test('clear selectObject data',()=>{
+        test('clear dragObject data',()=>{
             let clearedObject = {};
 
             view.dragThumbEnd();
 
-            expect(view.selectObject).toEqual(clearedObject);
+            expect(view.dragObject).toEqual(clearedObject);
         })
     })
 })
