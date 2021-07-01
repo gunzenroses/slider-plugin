@@ -10,8 +10,11 @@ import { tooltipItemView } from "./subview/tooltipView/tooltipItemView"
 import { changeTooltip } from "./subview/tooltipView/changeTooltip"
 import { scaleView } from "./subview/scaleView/scaleView"
 
-interface IView extends ISender {
+interface IView {
     settings: TSettings;
+
+    fromViewSelectThumb: EventDispatcher;
+    fromViewDragThumb: EventDispatcher;
 
     parentContainer: HTMLElement;
     sliderContainer: HTMLElement;
@@ -25,6 +28,7 @@ interface IView extends ISender {
     scale?: HTMLElement;
 
     selectObject: TDragObject;
+    dragObject: TDragObject;
 
     changeHandler: (number: number) => void;
 
@@ -40,9 +44,11 @@ interface IView extends ISender {
     dragThumbEnd(): void;
 }
 
-class SliderView extends EventDispatcher implements IView {
+class SliderView implements IView {
     parentContainer: HTMLElement;
     settings!: TSettings;
+    fromViewSelectThumb: EventDispatcher
+    fromViewDragThumb: EventDispatcher
 
     sliderContainer!: HTMLElement;
     sliderThumb!: HTMLElement;
@@ -55,6 +61,7 @@ class SliderView extends EventDispatcher implements IView {
     scale!: HTMLElement;
 
     selectObject!: TDragObject; //{elem: EventTarget, offsetX: number} | {};
+    dragObject!: TDragObject;
     thumbSecondPosition!: number;
     containerWidth!: number;
 
@@ -80,7 +87,8 @@ class SliderView extends EventDispatcher implements IView {
     sliderThumbSecondClass!: string;
 
     constructor(containerId: string){
-        super();
+        this.fromViewSelectThumb = new EventDispatcher(this);
+        this.fromViewDragThumb = new EventDispatcher(this);
         this.parentContainer = document.getElementById(containerId)!;
     }
 
@@ -127,10 +135,9 @@ class SliderView extends EventDispatcher implements IView {
     }
 
     selectThumb(e: MouseEvent){
-        let flag = 'selectThumb';
         if (e.target === this.sliderThumb || 
             e.target === this.sliderThumbSecond) return;
-        this.notify(flag, e);
+        this.fromViewSelectThumb.notify(event);
     }
     
     dragThumbStart(e: MouseEvent){
@@ -141,7 +148,7 @@ class SliderView extends EventDispatcher implements IView {
         else {
             if (e.type === "mousedown"){
                 let mouseEvent = e as MouseEvent;
-                this.selectObject = e.target;
+                this.dragObject = e.target;
             // } else {
             //     let touchEvent = e as TouchEvent;
             //         let rect  = touchEvent.target!.getBoundingClientRect();
@@ -158,25 +165,31 @@ class SliderView extends EventDispatcher implements IView {
 
     dragThumbMove(e: MouseEvent){
         e.preventDefault;
-        if (!this.selectObject) return;
-        let flag = 'dragThumb';
-        this.notify(flag, e);
+        if (!this.dragObject) return;
+        this.fromViewDragThumb.notify(e);
     }
 
     dragThumbEnd(){
+        this.dragObject = {};
         this.selectObject = {};
     }
 
     сhange(newThumbCurrent: number){
         //fix: validate newThumbCurrent to be 0 to 100?
+        
+        let object = (this.dragObject.classList !== undefined)
+            ? this.dragObject 
+            : this.selectObject
 
-        changeThumb(this.selectObject, this.ifHorizontal, newThumbCurrent)
+        console.log(object)
 
-        let ifThumbFirst = (this.selectObject === this.sliderThumb)
+        changeThumb(object, this.ifHorizontal, newThumbCurrent)
+
+        let ifThumbFirst = (object === this.sliderThumb)
         changeRange(this.sliderRange, newThumbCurrent, this.ifHorizontal, this.ifRange, ifThumbFirst);
         
         if (this.ifTooltip) {
-            (this.selectObject.children[0] === this.tooltipFirst)
+            (object.children[0] === this.tooltipFirst)
                 ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.max, this.min)
                 : changeTooltip(this.tooltipSecond, newThumbCurrent, this.max, this.min)
         }
