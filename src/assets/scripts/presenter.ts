@@ -4,14 +4,13 @@ import { TSettings } from "./types/types"
 import { applyStep, applyRestrictions, findPosition } from "./common"
 import { ISender, EventDispatcher } from "./eventDispatcher"
 
-interface IPresenter extends ISender {
+interface IPresenter {
     model: IModel;
     view: IView;
     containerId: string;
     data: TSettings;
 
     init(): void;
-    sortThumbActions(flag: string, e: Event): void;
     selectThumb(e: any): void;
     dragThumb(e: MouseEvent): void;
     changeThumbInModel(value: number): void;
@@ -19,7 +18,7 @@ interface IPresenter extends ISender {
     changeView(value: number): void;
 }
 
-class SliderPresenter extends EventDispatcher implements IPresenter {
+class SliderPresenter implements IPresenter {
     model:IModel;
     view: IView;
     containerId: string;
@@ -39,10 +38,11 @@ class SliderPresenter extends EventDispatcher implements IPresenter {
     thumbSecondPosition!: number;
 
     fromModelChangeViewHandler!: { (newThumbValue: number) : void };
+    fromViewSelectThumbHandler!: { (newThumbValue: number) : void };
+    fromViewDragThumbHandler!: { (newThumbValue: number) : void };
     fromViewSortActionsHandler!: {(flag: string, event: Event) : void };
 
     constructor(model: IModel, view: IView){
-        super()
         this.model = model
         this.view = view
         this.containerId = this.model.getContainerId()
@@ -72,21 +72,22 @@ class SliderPresenter extends EventDispatcher implements IPresenter {
     }
 
     setupHandlers(){
-        this.fromViewSortActionsHandler = this.sortThumbActions.bind(this);
+        this.fromViewSelectThumbHandler = this.selectThumb.bind(this);
+        this.fromViewDragThumbHandler = this.dragThumb.bind(this);
         this.fromModelChangeViewHandler = this.changeView.bind(this);
         return this;
     }
 
     enable(){
-        this.view.add(this.fromViewSortActionsHandler);
-        this.model.add(this.fromModelChangeViewHandler);
-        this.add(this.view.changeHandler);
+        // this.view.add(this.fromViewSelectThumbHandler);
+        // this.view.add(this.fromViewDragThumbHandler);
+        this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler);
+        this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler);
+        this.model.fromModelChangeView.add(this.fromModelChangeViewHandler);
+        //this.add(this.view.changeHandler);
+        this.model.fromModelChangeView.add(this.fromModelChangeViewHandler);
+        //this.add(this.model.setData);
         return this;
-    }
-
-    sortThumbActions(flag: string, e: Event){
-        if (flag === 'selectThumb'){ this.selectThumb(e);} 
-        else if (flag === 'dragThumb'){ this.dragThumb(e);}
     }
 
     selectThumb(e: any){
@@ -106,7 +107,7 @@ class SliderPresenter extends EventDispatcher implements IPresenter {
         // this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent);
         this.view.selectObject = this.view.sliderThumb;
         this.changeThumbInModel(newThumbCurrentPercent);
-        this.view.dragThumbEnd();
+        this.view.selectObject = {};
     }
 
     selectThumbRangeTrue(newThumbCurrentPercent: number){
@@ -123,7 +124,8 @@ class SliderPresenter extends EventDispatcher implements IPresenter {
             this.view.selectObject = this.view.sliderThumbSecond!;
             this.changeThumbSecondInModel(newThumbCurrentPercent);
         }
-        this.view.dragThumbEnd();
+        console.log(11)
+        this.view.selectObject = {};
     }
 
     dragThumb(e: any){
@@ -146,13 +148,13 @@ class SliderPresenter extends EventDispatcher implements IPresenter {
         let firstThumbPercent = findPosition(this.view.sliderThumb, this.ifHorizontal, this.containerSize);
         let secondThumbPercent = findPosition(this.view.sliderThumbSecond!, this.ifHorizontal, this.containerSize);
 
-        if (this.view.selectObject === this.view.sliderThumb &&
+        if (this.view.dragObject === this.view.sliderThumb &&
             newThumbCurrent<= secondThumbPercent + 1 &&
             newThumbCurrent>= 0 ){
             this.changeThumbInModel(newThumbCurrent);
             return this;
         } 
-        else if (this.view.selectObject === this.view.sliderThumbSecond &&
+        else if (this.view.dragObject === this.view.sliderThumbSecond &&
             newThumbCurrent>= firstThumbPercent + 1 &&
             newThumbCurrent<= 100){
             this.changeThumbSecondInModel(newThumbCurrent);
@@ -171,7 +173,7 @@ class SliderPresenter extends EventDispatcher implements IPresenter {
     }
 
     changeView(value: number){
-        this.notify(value);
+        this.view.сhange(value);
     }
 }
 
