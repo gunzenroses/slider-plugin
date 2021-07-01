@@ -47,40 +47,6 @@ describe('SliderPresenter', ()=>{
         })
     })
 
-    describe('method sortThumbActions()', ()=>{
-        test('calls selectThumb method if passed argument has a (flag === selectThumb)', () => {
-            let spySelectThumb = jest.spyOn(presenter, 'selectThumb');
-            let flag = 'selectThumb';
-            let e = new Event('click')
-
-            presenter.sortThumbActions(flag, e);
-            
-            expect(spySelectThumb).toBeCalledTimes(1);
-        })
-
-        test('calls dragThumb method if passed argument has a (flag === dragThumb)', () => {
-            let spyDragThumb = jest.spyOn(presenter, 'dragThumb');
-            let flag = 'dragThumb';
-            let e = new Event('dragmove');
-
-            presenter.sortThumbActions(flag, e);
-
-            expect(spyDragThumb).toBeCalledTimes(1);
-        })
-
-        test('does not call any method if passed argument has a wrong (flag)', () => {
-            let spySelectThumb = jest.spyOn(presenter, 'selectThumb');
-            let spyDragThumb = jest.spyOn(presenter, 'dragThumb');
-            let flag = 'anythingElse';
-            let e = new Event('dragmove');
-
-            presenter.sortThumbActions(flag, e);
-
-            expect(spySelectThumb).not.toBeCalled();
-            expect(spyDragThumb).not.toBeCalled();
-        })
-    })
-
     describe('method selectThumb()', ()=>{
         test('calls selectThumbRangeTrue() if (range === true)', () => {
             let spySelectThumbRangeTrue = jest.spyOn(presenter, 'selectThumbRangeTrue');
@@ -95,7 +61,7 @@ describe('SliderPresenter', ()=>{
         })
         
         test('calls selectThumbRangeFalse() if (range === false)', () => {
-            let spySelectThumbRangeFalse = jest.spyOn(presenter, 'selectThumbRangeFalse');
+            let spySelectThumbRangeFalse = jest.spyOn(presenter, 'selectThumbRangeFalse').mockImplementation();
             presenter.ifRange = false;
             let mockEvent = {
                 ... new MouseEvent('click')
@@ -159,9 +125,9 @@ describe('SliderPresenter', ()=>{
     })
 
     describe('method changeView()', ()=>{
-        test('calls presenter.notify() method with provided argument', ()=>{
+        test('calls view.change() method with provided argument', ()=>{
             let value = 11;
-            let spyNotify = jest.spyOn(presenter, 'notify').mockImplementation();
+            let spyNotify = jest.spyOn(presenter.view, 'сhange').mockImplementation();
 
             presenter.changeView(value);
 
