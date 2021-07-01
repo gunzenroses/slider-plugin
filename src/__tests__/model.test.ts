@@ -44,11 +44,12 @@ describe('class SliderModel', ()=>{
 
     describe('method setData()', ()=>{
         test('replace previous data with passed into method data', ()=>{
-            let newData = {some: data}
+            let newData = { min: 7 };
+            let flag = 'model';
 
-            model.setData(newData)
+            model.setData(flag, newData);
             
-            expect(model.getData()).toEqual(newData);
+            expect(model.getData()).toHaveProperty('min', newData.min);
         })
     })
 
@@ -74,14 +75,6 @@ describe('class SliderModel', ()=>{
 
             expect(model.getData()).toHaveProperty('currentFirst', val);
         })
-
-        test('should notify subscribers', ()=>{
-            const spyNotify = jest.spyOn(model, "notify");
-
-            model.changeThumb(val);
-
-            expect(spyNotify).toHaveBeenCalledTimes(1);
-        })
     })
 
     describe('method changeThumbSecond()', ()=>{
@@ -100,14 +93,6 @@ describe('class SliderModel', ()=>{
             model.changeThumbSecond(num);
 
             expect(model.getData()).toHaveProperty('currentSecond', num);
-        })
-
-        test('should notify subscribers', ()=>{
-            let spyChangeThumbSecond = jest.spyOn(model, 'notify');
-            
-            model.changeThumbSecond(num);
-            
-            expect(spyChangeThumbSecond).toHaveBeenCalledTimes(1)
         })
     })
 })
