@@ -1,20 +1,23 @@
 import { TSettings } from "./types/types"
 import { ISender, EventDispatcher } from './eventDispatcher'
+import { mergeData } from "./common"
 
-interface IModel extends ISender {
-    setData(newData: TSettings): void;
+interface IModel {
+    fromModelChangeView: EventDispatcher;
+    setData(flag: string, newData: TSettings): void;
     getData(): TSettings;
     getContainerId(): string;
     changeThumb(value: number): void;
     changeThumbSecond(value: number): void;
 }
 
-class SliderModel extends EventDispatcher implements IModel {
+class SliderModel implements IModel {
     private containerId: string;
     private data: TSettings;
+    fromModelChangeView: EventDispatcher;
 
     constructor(containerId: string, settings: TSettings){
-        super()
+        this.fromModelChangeView = new EventDispatcher(this)
         this.containerId = containerId
         this.data = settings
     }
@@ -23,8 +26,9 @@ class SliderModel extends EventDispatcher implements IModel {
         return this.containerId;
     }
 
-    setData(newData: TSettings){
-        this.data = newData;
+    setData(flag: string, newData: TSettings){
+        let oldData = this.getData();
+        this.data = mergeData(oldData, newData);
     }
 
     getData(){
@@ -33,12 +37,12 @@ class SliderModel extends EventDispatcher implements IModel {
 
     changeThumb(value: number) {
         this.data.currentFirst = value;
-        this.notify(value);
+        this.fromModelChangeView.notify(value);
     }
 
     changeThumbSecond(value: number) {
         this.data.currentSecond = value;
-        this.notify(value);
+        this.fromModelChangeView.notify(value);
     }
 }
 
