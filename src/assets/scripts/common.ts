@@ -1,3 +1,5 @@
+import { TSettings } from "./types/types";
+
 function applyStep(value: number, max: number, min: number, step: number): number {
     let stepInPercents: number = parseFloat((100/(max - min) * step).toFixed(2));
     let numberOfSteps = value / stepInPercents;
@@ -41,6 +43,17 @@ function findPosition(thisElement: HTMLElement, ifHorizontal: boolean, container
     return newPosition;
 }
 
+function mergeData(sliderData: TSettings, options: TSettings){
+    var c: TSettings = {};
+    let key: string;
+    for (key in sliderData){
+        if (sliderData.hasOwnProperty(key)){
+            c[key] = key in options ? options[key] : sliderData[key]
+        }
+    };
+    return c;
+}
 
 
-export { applyStep, applyRestrictions, fromPercentsToValue, fromValueToPX, findPosition }
+
+export { applyStep, applyRestrictions, fromPercentsToValue, fromValueToPX, findPosition, mergeData }
