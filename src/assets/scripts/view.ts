@@ -87,8 +87,8 @@ class SliderView implements IView {
     sliderThumbSecondClass!: string;
 
     constructor(containerId: string){
-        this.fromViewSelectThumb = new EventDispatcher(this);
-        this.fromViewDragThumb = new EventDispatcher(this);
+        this.fromViewSelectThumb = new EventDispatcher();
+        this.fromViewDragThumb = new EventDispatcher();
         this.parentContainer = document.getElementById(containerId)!;
     }
 
@@ -196,8 +196,8 @@ class SliderView implements IView {
     }
 
     render(){
+        this.parentContainer.innerHTML = "";
         this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
-        this.sliderContainer.innerHTML = "";
         this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
         this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal, this.max, this.min, this.step);
         this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal, this.max, this.min, this.step)
