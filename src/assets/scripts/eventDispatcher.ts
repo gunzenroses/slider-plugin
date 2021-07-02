@@ -8,8 +8,8 @@ class EventDispatcher implements ISender  {
     private _sender: object;
     listeners = new Array();
 
-    constructor(sender: object){
-        this._sender = sender;
+    constructor(){
+        this._sender = this;
     }
 
     add(listener: object): void {
