@@ -37,11 +37,18 @@ class ConfigurationPanel implements IPanel {
     }
 
     setupHandlers(){
-        
+        this.changePanelHandler = this.changePanel.bind(this);
     }
 
     enable(){
-        
+        this.panelContainer.addEventListener('change', this.changePanelHandler)
+    }
+
+    changePanel(e: Event){
+        let element = e.target as HTMLInputElement;
+        let name: string = element.getAttribute("name")!;
+        let data = parseInt(element.value);
+        this.presenter.setData({ [name]: data });
     }
 
     createPanelItem(params: any){
