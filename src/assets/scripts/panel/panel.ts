@@ -1,3 +1,4 @@
+import { EventDispatcher } from "../eventDispatcher";
 import { IPresenter } from "../presenter"
 import { TSettings } from "../types/types";
 
@@ -10,12 +11,13 @@ interface IPanel {
 
 class ConfigurationPanel implements IPanel {
     presenter: IPresenter;
-    data: TSettings;
+    data!: TSettings;
     parentContainer: HTMLElement;
 
     panelContainer!: HTMLElement;
     listOfPanelItems!: any;
 
+    updateHandler!: {(name: string, value: number): void};
     changeMinHandler!: {(): void};
     changeMaxHanler!: {(): void};
     changePanelHandler!: {(event: Event): void};
@@ -31,22 +33,24 @@ class ConfigurationPanel implements IPanel {
     }
 
     init(){
-        this.render();
+        this.render(this.data);
         this.setupHandlers();
         this.enable();
     }
 
     setupHandlers(){
         this.changePanelHandler = this.changePanel.bind(this);
+        this.updateHandler = this.updatePanel.bind(this);
     }
 
     enable(){
-        this.panelContainer.addEventListener('change', this.changePanelHandler)
+        this.panelContainer.addEventListener('change', this.changePanelHandler);
+        this.presenter.fromPresenterUpdate.add(this.updateHandler);
     }
 
     changePanel(e: Event){
         let element = e.target as HTMLInputElement;
-        let name: string = element.getAttribute("name")!;
+        let name = element.getAttribute("name")!;
         let data = parseInt(element.value);
         this.presenter.setData({ [name]: data });
     }
@@ -56,7 +60,7 @@ class ConfigurationPanel implements IPanel {
         element.classList.add('panel__item');
         let panelItemName = document.createElement('div');
         panelItemName.classList.add('panel__name')
-        panelItemName.innerText = params.name;
+        panelItemName.innerText = params.text;
         element.append(panelItemName);
         
         let panelInput = document.createElement('input');
@@ -68,7 +72,7 @@ class ConfigurationPanel implements IPanel {
             : panelInput.checked = params.value;
 
         //min, max, step
-        if (panelInput.name === "from" || panelInput.name === "to" ){
+        if (panelInput.name === "currentFirst" || panelInput.name === "currentSecond" ){
             panelInput.min = this.data.min;
             panelInput.max = this.data.max;
             panelInput.step = this.data.step;
@@ -78,51 +82,61 @@ class ConfigurationPanel implements IPanel {
         return element;
     }
 
-    render(){
+    render(data: TSettings){
+        this.panelContainer.innerHTML = "";
         this.listOfPanelItems = [
             {
                 name: 'min',
-                value: this.data.min,
+                text: 'min',
+                value: data.min,
                 type: 'number'
             },
             {
                 name: 'max',
-                value: this.data.max,
+                text: 'max',
+                value: data.max,
                 type: 'number'
             },
             {
                 name: 'step',
-                value: this.data.step,
+                text: 'step',
+                value: data.step,
                 type: 'number'
             },
             {
-                name: 'from',
-                value: this.data.currentFirst,
+                name: 'currentFirst',
+                text: 'from',
+                value: data.currentFirst,
                 type: 'number'
             },
             {
-                name: 'to',
-                value: this.data.currentSecond,
+                name: 'currentSecond',
+                text: 'to',
+                value: data.currentSecond,
                 type: 'number'
             },
             {
                 name: 'vertical',
-                value: (this.data.orientation === 'vertical'),
+                text: 'vertical',
+                value: (data.orientation === 'vertical'),
                 type: 'checkbox'
             },
             {
                 name: 'range',
-                value: this.data.range,
+                text: 'range',
+                value: data.range,
                 type: 'checkbox'
             },
             {
                 name: 'scale',
-                value: this.data.scale,
+                text: 'scale',
+                value: data.scale,
                 type: 'checkbox'
             },
             {
                 name: 'tooltip',
-                value: this.data.tooltip,
+                text: 'tooltip',
+                value: data.tooltip,
                 type: 'checkbox'
             },
         ]
@@ -130,6 +144,11 @@ class ConfigurationPanel implements IPanel {
         for (let item of this.listOfPanelItems){
             this.panelContainer.append(this.createPanelItem(item))
         }
+    }
+
+    updatePanel(name: string, value: number){
+        let element = <HTMLInputElement>this.panelContainer.querySelector(`input[name=${name}]`);
+        element.value = value.toString();
     }
 }
 
