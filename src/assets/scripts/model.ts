@@ -4,7 +4,8 @@ import { mergeData } from "./common"
 
 interface IModel {
     fromModelChangeView: EventDispatcher;
-    setData(flag: string, newData: TSettings): void;
+    fromModelUpdateView: EventDispatcher;
+    setData(newData: TSettings): void;
     getData(): TSettings;
     getContainerId(): string;
     changeThumb(value: number): void;
@@ -15,20 +16,23 @@ class SliderModel implements IModel {
     private containerId: string;
     private data: TSettings;
     fromModelChangeView: EventDispatcher;
+    fromModelUpdateView: EventDispatcher;
 
     constructor(containerId: string, settings: TSettings){
-        this.fromModelChangeView = new EventDispatcher(this)
-        this.containerId = containerId
-        this.data = settings
+        this.fromModelChangeView = new EventDispatcher();
+        this.fromModelUpdateView = new EventDispatcher();
+        this.containerId = containerId;
+        this.data = settings;
     }
     
     getContainerId(){
         return this.containerId;
     }
 
-    setData(flag: string, newData: TSettings){
+    setData(newData: object){
         let oldData = this.getData();
         this.data = mergeData(oldData, newData);
+        this.fromModelUpdateView.notify(this.data);
     }
 
     getData(){
