@@ -45,9 +45,8 @@ describe('class SliderModel', ()=>{
     describe('method setData()', ()=>{
         test('replace previous data with passed into method data', ()=>{
             let newData = { min: 7 };
-            let flag = 'model';
 
-            model.setData(flag, newData);
+            model.setData(newData);
             
             expect(model.getData()).toHaveProperty('min', newData.min);
         })
