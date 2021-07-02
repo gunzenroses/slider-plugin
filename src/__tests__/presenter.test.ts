@@ -2,6 +2,7 @@ import { SliderPresenter } from "../assets/scripts/presenter";
 import { SliderModel } from "../assets/scripts/model";
 import { SliderView } from "../assets/scripts/view";
 import { sliderData } from "../assets/scripts/data";
+import { mergeData } from "../assets/scripts/common";
 
 let containerId = "container1"
 let initialContainer = document.createElement("div");
@@ -134,5 +135,30 @@ describe('SliderPresenter', ()=>{
             expect(spyNotify).toHaveBeenCalledTimes(1);
             expect(spyNotify).toBeCalledWith(value);
         })
+    })
+
+    describe('method setData()', ()=>{
+        test('calls model.setData() with provided arguments', ()=>{
+            let args = {
+                min: 11
+            }
+            let spyOnModel = jest.spyOn(model, 'setData');
+
+            presenter.setData(args);
+
+            expect(spyOnModel).toBeCalledTimes(1);
+            expect(spyOnModel).toBeCalledWith(args);
+        })
+    })
+
+    describe('method updateView()', ()=>{
+        test('calls view.init()', () => {
+            let spyOnView = jest.spyOn(view, 'init');
+
+            presenter.updateView();
+
+            expect(spyOnView).toBeCalledTimes(1);
+        })
+        
     })
 })
