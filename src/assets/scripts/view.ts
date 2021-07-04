@@ -40,7 +40,7 @@ interface IView {
     
     // selectThumb(e: MouseEvent): void;
     // dragThumbStart(e: MouseEvent): void;
-    сhange(newThumbCurrent: number): void;
+    сhange(object: TDragObject, newThumbCurrent: number): void;
     dragThumbEnd(): void;
     //updateElement(name: string, value: any): void;
 }
@@ -70,7 +70,7 @@ class SliderView implements IView {
     dragThumbStartHandler!: { (ev: MouseEvent ): void };
     dragThumbMoveHandler!: { (ev: MouseEvent ): void };
     dragThumbEndHandler!: () => void;
-    changeHandler!: (number: number) => void;
+    changeHandler!: (object: TDragObject, number: number) => void;
 
     ifHorizontal!: boolean;
     ifRange!: boolean;
@@ -179,14 +179,11 @@ class SliderView implements IView {
         this.selectObject = {};
     }
 
-    сhange(newThumbCurrent: number){
+    сhange(object: TDragObject, newThumbCurrent: number){
         //fix: validate newThumbCurrent to be 0 to 100?
-        
-        let object = (this.dragObject.classList !== undefined)
-            ? this.dragObject 
-            : this.selectObject
-
-        console.log(object)
+        // let object = (this.dragObject.classList !== undefined)
+        //     ? this.dragObject 
+        //     : this.selectObject
 
         changeThumb(object, this.ifHorizontal, newThumbCurrent)
 
@@ -199,7 +196,7 @@ class SliderView implements IView {
                 : changeTooltip(this.tooltipSecond, newThumbCurrent, this.max, this.min)
         }
     }
-
+    
     render(){
         this.parentContainer.innerHTML = "";
         this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
