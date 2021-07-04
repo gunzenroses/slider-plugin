@@ -118,14 +118,12 @@ class ConfigurationPanel implements IPanel {
     }
 
     changePanel(e: Event){
-        // if (e.target === this.currentFirstInput 
-        //     || e.target === this.currentSecondInput
-        //     || e.target === this.maxInput
-        //     || e.target === this.minInput
-        //     || e.target === this.stepInput) return;
         let element = e.target as HTMLInputElement;
-        let name = element.getAttribute("name")!;
-        let data = parseInt(element.value);
+        let name: string = element.getAttribute("name")!;
+        let type = element.getAttribute("type");
+        let data = (type === "checkbox")
+            ? element.checked
+            : element.value;
         this.presenter.setData({ [name]: data });
     }
 
