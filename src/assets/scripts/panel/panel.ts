@@ -1,3 +1,4 @@
+import { fromPercentstoValueApplyStep } from "../common";
 import { EventDispatcher } from "../eventDispatcher";
 import { IPresenter } from "../presenter"
 import { TSettings } from "../types/types";
@@ -60,11 +61,11 @@ class ConfigurationPanel implements IPanel {
     }
 
     createChildren(){
-        // this.minInput = <HTMLInputElement>document.getElementsByName("min")[0];
-        // this.maxInput = <HTMLInputElement>document.getElementsByName("max")[0];
-        // this.stepInput = <HTMLInputElement>document.getElementsByName("step")[0];
-        this.currentFirstInput = <HTMLInputElement>document.getElementsByName("currentFirst")[0];
-        this.currentSecondInput = <HTMLInputElement>document.getElementsByName("currentSecond")[0];
+        this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
+        this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
+        this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
+        this.currentFirstInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="currentFirst"]');
+        this.currentSecondInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="currentSecond"]');
         // this.verticalInput = <HTMLInputElement>document.getElementsByName("vertical")[0];
         // this.rangeInput = <HTMLInputElement>document.getElementsByName("range")[0];
         // this.scaleInput = <HTMLInputElement>document.getElementsByName("scale")[0];
@@ -76,8 +77,8 @@ class ConfigurationPanel implements IPanel {
         // this.changeMinHandler = this.changeMin.bind(this);
         // this.changeMaxHandler = this.changeMax.bind(this);
         // this.changeStepHandler = this.changeStep.bind(this);
-        // this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
-        // this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
+        this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
+        this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
         // this.changeOrientationHandler = this.changeOrientation.bind(this);
         // this.changeRangeHandler = this.changeRange.bind(this);
         // this.changeScaleHandler = this.changeScale.bind(this);
@@ -93,8 +94,8 @@ class ConfigurationPanel implements IPanel {
         // this.minInput.addEventListener('change', this.changeMinHandler);
         // this.maxInput.addEventListener('change', this.changeMaxHandler);
         // this.stepInput.addEventListener('change', this.changeStepHandler);
-        // this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
-        // this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
+        this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
+        this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
         // this.verticalInput.addEventListener('change', this.changeOrientationHandler);
         // this.rangeInput.addEventListener('change', this.changeRangeHandler);
         // this.scaleInput.addEventListener('change', this.changeScaleHandler);
@@ -114,6 +115,11 @@ class ConfigurationPanel implements IPanel {
     }
 
     changePanel(e: Event){
+        // if (e.target === this.currentFirstInput 
+        //     || e.target === this.currentSecondInput
+        //     || e.target === this.maxInput
+        //     || e.target === this.minInput
+        //     || e.target === this.stepInput) return;
         let element = e.target as HTMLInputElement;
         let name = element.getAttribute("name")!;
         let data = parseInt(element.value);
@@ -135,17 +141,17 @@ class ConfigurationPanel implements IPanel {
     //     this.presenter.setData({step: data});
     // }
 
-    // changeCurrentFirst(){
-    //     let data = parseInt(this.currentFirstInput.value);
+    changeCurrentFirst(){
+        let data = parseInt(this.currentFirstInput.value);
+        this.presenter.view.selectObject = this.presenter.view.sliderThumb!;
+        this.presenter.changeThumbInModel(data);
+    }
 
-    //     this.presenter.changeThumbInModel(data);
-    // }
-
-    // changeCurrentSecond(){
-    //     let data = parseInt(this.currentSecondInput.value);
-
-    //     this.presenter.changeThumbSecondInModel(data);
-    // }
+    changeCurrentSecond(){
+        let data = parseInt(this.currentSecondInput.value);
+        this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!;
+        this.presenter.changeThumbSecondInModel(data);
+    }
 
     // changeOrientation(){
     //     let data = (this.verticalInput.checked)
@@ -192,59 +198,71 @@ class ConfigurationPanel implements IPanel {
 
     render(data: TSettings){
         this.panelContainer.innerHTML = "";
+        let clcCurrentFirst = fromPercentstoValueApplyStep(data.currentFirst, this.data.max, this.data.min, this.data.step);
+        let clcCurrentSecond = fromPercentstoValueApplyStep(data.currentSecond, this.data.max, this.data.min, this.data.step);
         this.listOfPanelItems = [
             {
                 name: 'min',
                 text: 'min',
                 value: data.min,
+                tag: 'input',
                 type: 'number'
             },
             {
                 name: 'max',
                 text: 'max',
                 value: data.max,
+                tag: 'input',
                 type: 'number'
             },
             {
                 name: 'step',
                 text: 'step',
                 value: data.step,
+                tag: 'input',
                 type: 'number'
             },
             {
                 name: 'currentFirst',
                 text: 'from',
-                value: data.currentFirst,
+                value: clcCurrentFirst,
+                tag: 'input',
                 type: 'number'
             },
             {
                 name: 'currentSecond',
                 text: 'to',
-                value: data.currentSecond,
+                value: clcCurrentSecond,
+                tag: 'input',
                 type: 'number'
             },
             {
-                name: 'vertical',
-                text: 'vertical',
-                value: (data.orientation === 'vertical'),
-                type: 'checkbox'
+                name: 'orientation',
+                text: 'orient',
+                value: data.orientation,
+                tag: 'select',
+                type: 'select',
+                option: ['horizontal', 'vertical']
             },
             {
                 name: 'range',
                 text: 'range',
                 value: data.range,
+                tag: 'input',
                 type: 'checkbox'
             },
             {
                 name: 'scale',
                 text: 'scale',
                 value: data.scale,
+                tag: 'input',
                 type: 'checkbox'
             },
             {
                 name: 'tooltip',
                 text: 'tooltip',
                 value: data.tooltip,
+                tag: 'input',
                 type: 'checkbox'
             },
         ]
