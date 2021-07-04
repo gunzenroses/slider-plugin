@@ -30,7 +30,7 @@ interface IView {
     selectObject: TDragObject;
     dragObject: TDragObject;
 
-    changeHandler: (number: number) => void;
+    changeHandler: (object: TDragObject, number: number) => void;
 
     init(settings: TSettings): void;
     //createChildren(): void;
@@ -42,6 +42,7 @@ interface IView {
     // dragThumbStart(e: MouseEvent): void;
     сhange(newThumbCurrent: number): void;
     dragThumbEnd(): void;
+    //updateElement(name: string, value: any): void;
 }
 
 class SliderView implements IView {
@@ -73,6 +74,8 @@ class SliderView implements IView {
 
     ifHorizontal!: boolean;
     ifRange!: boolean;
+    currentFirst!: number;
+    currentSecond!: number;
     ifTooltip!: boolean;
     ifScale!: boolean;
     step!: number;
@@ -104,6 +107,8 @@ class SliderView implements IView {
         this.selectObject = {};
         this.ifHorizontal = this.settings.orientation === "horizontal";
         this.ifRange = this.settings.range;
+        this.currentFirst = this.settings.currentFirst;
+        this.currentSecond = this.settings.currentSecond;
         this.ifTooltip = this.settings.tooltip;
         this.ifScale = this.settings.scale;
         this.stepPerDiv = this.settings.scale.stepPerDiv;
@@ -200,12 +205,12 @@ class SliderView implements IView {
         this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
         this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
         this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal, this.max, this.min, this.step);
-        this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal, this.max, this.min, this.step)
+        this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.currentFirst, this.ifHorizontal, this.max, this.min, this.step)
         this.ifTooltip
             ? this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.settings.currentFirst, this.ifHorizontal, this.max, this.min, this.step)
             : null;
         this.ifRange
-            ? (this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal, this.max, this.min, this.step),
+            ? (this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.currentSecond, this.ifHorizontal, this.max, this.min, this.step),
                 this.ifTooltip
                     ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.settings.currentSecond, this.ifHorizontal, this.max, this.min, this.step)
                     : null)
@@ -213,8 +218,11 @@ class SliderView implements IView {
         this.ifScale
             ? (this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.max, this.min,  this.step, this.stepPerDiv))
             : null;
-        return this;
     }
+
+    // updateElement(name: string, value: any){
+    //     this.scale.classList.toggle('disabled')
+    // }
 }
 
 export { IView, SliderView }
