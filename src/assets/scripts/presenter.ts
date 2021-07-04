@@ -1,7 +1,7 @@
 import { IModel } from "./model"
 import { IView } from "./view"
 import { TSettings } from "./types/types"
-import { applyStep, applyRestrictions, findPosition } from "./common"
+import { applyStep, applyRestrictions, findPosition, fromPercentsToValue } from "./common"
 import { ISender, EventDispatcher } from "./eventDispatcher"
 
 interface IPresenter {
@@ -15,9 +15,12 @@ interface IPresenter {
     dragThumb(e: MouseEvent): void;
     changeThumbInModel(value: number): void;
     changeThumbSecondInModel(value: number): void;
-    changeView(value: number): void;
     setData(args: object): void;
     updateView(): void;
+
+    fromPresenterUpdate: EventDispatcher;
+    fromPresenterThumbUpdate: EventDispatcher;
+    fromPresenterThumbSecondUpdate: EventDispatcher;
 }
 
 class SliderPresenter implements IPresenter {
@@ -30,6 +33,10 @@ class SliderPresenter implements IPresenter {
     max!: number;
     step!: number;
 
+    fromPresenterUpdate!: EventDispatcher;
+    fromPresenterThumbUpdate!: EventDispatcher;
+    fromPresenterThumbSecondUpdate!: EventDispatcher;
+
     newThumbCurrent!: number;
     ifHorizontal!: boolean;
     ifRange!: boolean;
@@ -40,15 +47,19 @@ class SliderPresenter implements IPresenter {
     thumbSecondPosition!: number;
 
     fromModelChangeViewHandler!: { (newThumbValue: number) : void };
-    fromModelUpdateViewHandler!: {(): void};
+    fromModelUpdateViewHandler!: {(name: string, value: number): void};
     fromViewSelectThumbHandler!: { (newThumbValue: number) : void };
     fromViewDragThumbHandler!: { (newThumbValue: number) : void };
     fromViewSortActionsHandler!: {(flag: string, event: Event) : void };
     
     constructor(model: IModel, view: IView){
-        this.model = model
-        this.view = view
-        this.containerId = this.model.getContainerId()
+        this.model = model;
+        this.view = view;
+        this.containerId = this.model.getContainerId();
+        this.fromPresenterUpdate = new EventDispatcher();
+        this.fromPresenterThumbUpdate = new EventDispatcher();
+        this.fromPresenterThumbSecondUpdate = new EventDispatcher();
+        this.data = this.model.getData();
         this.init();
     }
 
@@ -61,13 +72,18 @@ class SliderPresenter implements IPresenter {
         this.createChildren();
         this.setupHandlers();
         this.enable();
-        return this;
     }
 
     updateView(){
         this.data = this.model.getData();
         this.view.init(this.data);
     }
+
+    // updateElement(name: string, value: any){
+    //     // this.init();
+    //     // this.fromPresenterUpdate.notify(name, value);
+    //     this.view.updateElement(name, value);
+    // }
 
     createChildren(){
         this.min = this.data.min;
@@ -79,26 +95,21 @@ class SliderPresenter implements IPresenter {
                             ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""))
                             : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px",""));
         this.thumbWidth = parseInt(getComputedStyle(this.view.sliderThumb).width.replace("px",""));
-        return this;
     }
 
     setupHandlers(){
         this.fromViewSelectThumbHandler = this.selectThumb.bind(this);
         this.fromViewDragThumbHandler = this.dragThumb.bind(this);
-        this.fromModelChangeViewHandler = this.changeView.bind(this);
+        this.fromModelChangeViewHandler = this.changeThumbs.bind(this);
         this.fromModelUpdateViewHandler = this.updateView.bind(this);
         return this;
     }
 
     enable(){
-        // this.view.add(this.fromViewSelectThumbHandler);
-        // this.view.add(this.fromViewDragThumbHandler);
         this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler);
         this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler);
         this.model.fromModelChangeView.add(this.fromModelChangeViewHandler);
-        //this.add(this.view.changeHandler);
         this.model.fromModelUpdateView.add(this.fromModelUpdateViewHandler);
-        //this.add(this.model.setData);
         return this;
     }
 
@@ -183,9 +194,17 @@ class SliderPresenter implements IPresenter {
         this.model.changeThumbSecond(newValue);
     }
 
-    changeView(value: number){
-        //rewrite with eventDispatcher
-        this.view.сhange(value);
+    changeThumbs(value: number){
+        //rewrite with eventDispatcher?
+        let object = (this.view.dragObject.classList !== undefined)
+            ? this.view.dragObject 
+            : this.view.selectObject;
+
+        (object === this.view.sliderThumb)
+            ? this.fromPresenterThumbUpdate.notify(fromPercentsToValue(value, this.max, this.min))
+            : this.fromPresenterThumbSecondUpdate.notify(fromPercentsToValue(value, this.max, this.min))
+
+        this.view.сhange(object, value);
     }
     
 }
