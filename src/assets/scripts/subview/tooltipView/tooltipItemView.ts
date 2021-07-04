@@ -4,7 +4,7 @@ function tooltipItemView(parentNode: HTMLElement, className: string, value: numb
     let verticalClass = ifHorizontal ? "" : "-vertical";
     let tooltip = document.createElement("span");
     tooltip.classList.add("tooltip", `${className}${verticalClass}`);
-    
+    tooltip.dataset.name = "tooltip";
     let newValue = Math.round(applyStep(value, max, min, step)) > max
                     ? max
                     : Math.round(applyStep(value, max, min, step));

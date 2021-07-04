@@ -6,6 +6,7 @@ function scaleView(parentNode: HTMLElement, ifHorizontal: boolean, max: number, 
                 : "slider__scale_vertical";
 
     let scale: HTMLElement = document.createElement("div");
+    scale.dataset.name = "scale";
     scale.classList.add(scaleClass);
     
     let parentNodeStyle = getComputedStyle(parentNode);
