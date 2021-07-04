@@ -29,6 +29,10 @@ $color-border: #3d3d3d;
     }
 }
 
+.disabled {
+    visibility: hidden;
+}
+
 @import "../scripts/subview/tooltipView/tooltipView.scss";
 @import "../scripts/subview/trackView/sliderRange/sliderRangeView.scss";
 @import "../scripts/subview/trackView/sliderThumb/sliderThumbView.scss";
