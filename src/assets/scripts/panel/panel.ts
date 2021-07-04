@@ -110,11 +110,13 @@ class ConfigurationPanel implements IPanel {
     }
 
     updateThumb(value: number){
-        //this.currentFirstInput.value = value.toString();
+        this.currentSecondInput.min = value.toString();
+        this.currentFirstInput.value = value.toString();
     }
 
     updateThumbSecond(value: number){
-        //this.currentSecondInput.value = value.toString();
+        this.currentFirstInput.max = value.toString();
+        this.currentSecondInput.value = value.toString();
     }
 
     changePanel(e: Event){
