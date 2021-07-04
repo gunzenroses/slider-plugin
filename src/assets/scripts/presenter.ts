@@ -77,13 +77,8 @@ class SliderPresenter implements IPresenter {
     updateView(){
         this.data = this.model.getData();
         this.view.init(this.data);
+        this.createChildren();
     }
-
-    // updateElement(name: string, value: any){
-    //     // this.init();
-    //     // this.fromPresenterUpdate.notify(name, value);
-    //     this.view.updateElement(name, value);
-    // }
 
     createChildren(){
         this.min = this.data.min;
@@ -187,11 +182,13 @@ class SliderPresenter implements IPresenter {
     changeThumbInModel(value: number){
         let newValue = applyRestrictions(applyStep(value, this.max, this.min, this.step));
         this.model.changeThumb(newValue);
+        this.fromPresenterThumbUpdate.notify(newValue);
     }
 
     changeThumbSecondInModel(value: number){
         let newValue = applyRestrictions(applyStep(value, this.max, this.min, this.step));
         this.model.changeThumbSecond(newValue);
+        this.fromPresenterThumbSecondUpdate.notify(newValue);
     }
 
     changeThumbs(value: number){
