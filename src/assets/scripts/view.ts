@@ -169,8 +169,8 @@ class SliderView implements IView {
     }
 
     dragThumbMove(e: MouseEvent){
+        if (this.dragObject === undefined || !this.dragObject.classList) return;
         e.preventDefault;
-        if (!this.dragObject) return;
         this.fromViewDragThumb.notify(e);
     }
 
@@ -196,7 +196,7 @@ class SliderView implements IView {
                 : changeTooltip(this.tooltipSecond, newThumbCurrent, this.max, this.min)
         }
     }
-    
+
     render(){
         this.parentContainer.innerHTML = "";
         this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
