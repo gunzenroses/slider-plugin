@@ -54,6 +54,10 @@ function mergeData(sliderData: TSettings, options: TSettings){
     return c;
 }
 
+function fromPercentstoValueApplyStep(value: number, max: number, min: number, step: number){
+    let stepValue = applyStep(value, max, min, step);
+    let newValue = fromPercentsToValue(stepValue, max, min);
+    return newValue;
+}
 
-
-export { applyStep, applyRestrictions, fromPercentsToValue, fromValueToPX, findPosition, mergeData }
+export { applyStep, applyRestrictions, fromPercentsToValue, fromValueToPX, findPosition, mergeData, fromPercentstoValueApplyStep }
