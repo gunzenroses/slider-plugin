@@ -108,11 +108,11 @@ class ConfigurationPanel implements IPanel {
     }
 
     updateThumb(value: number){
-        this.currentFirstInput.value = value.toString();
+        //this.currentFirstInput.value = value.toString();
     }
 
     updateThumbSecond(value: number){
-        this.currentSecondInput.value = value.toString();
+        //this.currentSecondInput.value = value.toString();
     }
 
     changePanel(e: Event){
@@ -189,9 +189,9 @@ class ConfigurationPanel implements IPanel {
         //control (input/select/checkbox) of panelItem
         let panelControlAttr;
             switch (params.name){
-                case "currentFirst": panelControlAttr = `min = ${this.data.min} max= ${this.data.currentSecond + 1} step= ${this.data.step}`;
+                case "currentFirst": panelControlAttr = `min= "${this.data.min}" max= "${this.data.currentSecond}" step= "${this.data.step}"`;
                         break;
-                case "currentSecond": panelControlAttr = `min = ${this.data.currentFirst - 1} max= ${this.data.max} step= ${this.data.step}`;
+                case "currentSecond": panelControlAttr = `min= "${this.data.currentFirst}" max= "${this.data.max}" step= "${this.data.step}"`;
                         break;
                 default: panelControlAttr = "";
                         break;
@@ -199,11 +199,11 @@ class ConfigurationPanel implements IPanel {
 
         let panelControl;
             switch (params.type){
-                case 'number': panelControl = `<input class="panel__input" name= ${params.name} type=${params.type} value= ${params.value} ${panelControlAttr}/>`;
+                case 'number': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} ${panelControlAttr} />`;
                                 break;
-                case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type=${params.type} checked= ${params.value} ${panelControlAttr}/>`; 
+                case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} checked= ${params.value} ${panelControlAttr} />`; 
                                 break;
-                case 'select': panelControl = `<${params.tag} class="panel__input" name= ${params.name} ${panelControlAttr}> ${params.options.map((el: string) => this.selectOption(el))} </${params.tag}>`;
+                case 'select': panelControl = `<${params.type} class="panel__input" name= ${params.name}> ${params.options.map((el: string) => this.selectOption(el)).join('')} </${params.type}>`;
                                 break;
                 default: break;
             }
@@ -215,56 +215,55 @@ class ConfigurationPanel implements IPanel {
 
     selectOption(arg: string){
         let selectOption = (arg === this.data.orientation)
-            ? `<option selected value="${arg}">${arg}</option>`
-            : `<option value="${arg}">${arg}</option>`
+            ? `<option selected=true value="${arg}">${arg}</option> `
+            : `<option selected=false value="${arg}">${arg}</option> `
         return selectOption;
     }
 
     render(data: TSettings){
         this.panelContainer.innerHTML = "";
-        let clcCurrentFirst = fromPercentstoValueApplyStep(data.currentFirst, this.data.max, this.data.min, this.data.step);
-        let clcCurrentSecond = fromPercentstoValueApplyStep(data.currentSecond, this.data.max, this.data.min, this.data.step);
+        
         this.listOfPanelItems = [
             {
                 name: 'min',
                 text: 'min',
                 value: data.min,
-                tag: 'input',
+                //tag: 'input',
                 type: 'number'
             },
             {
                 name: 'max',
                 text: 'max',
                 value: data.max,
-                tag: 'input',
+                //tag: 'input',
                 type: 'number'
             },
             {
                 name: 'step',
                 text: 'step',
                 value: data.step,
-                tag: 'input',
+                //tag: 'input',
                 type: 'number'
             },
             {
                 name: 'currentFirst',
                 text: 'from',
-                value: clcCurrentFirst,
-                tag: 'input',
+                value: data.currentFirst,
+                //tag: 'input',
                 type: 'number'
             },
             {
                 name: 'currentSecond',
                 text: 'to',
-                value: clcCurrentSecond,
-                tag: 'input',
+                value: data.currentSecond,
+                //tag: 'input',
                 type: 'number'
             },
             {
                 name: 'orientation',
                 text: 'orient',
                 value: data.orientation,
-                tag: 'select',
+                //tag: 'select',
                 type: 'select',
                 options: ['horizontal', 'vertical']
             },
@@ -272,21 +271,21 @@ class ConfigurationPanel implements IPanel {
                 name: 'range',
                 text: 'range',
                 value: data.range,
-                tag: 'input',
+                //tag: 'input',
                 type: 'checkbox'
             },
             {
                 name: 'scale',
                 text: 'scale',
                 value: data.scale,
-                tag: 'input',
+                //tag: 'input',
                 type: 'checkbox'
             },
             {
                 name: 'tooltip',
                 text: 'tooltip',
                 value: data.tooltip,
-                tag: 'input',
+                //tag: 'input',
                 type: 'checkbox'
             },
         ]
