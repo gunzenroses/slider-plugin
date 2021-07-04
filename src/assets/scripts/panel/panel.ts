@@ -183,31 +183,41 @@ class ConfigurationPanel implements IPanel {
     // }
 
     createPanelItem(params: any){
+        //name of panelItem
         let panelItemName = `<div class= "panel__name">${params.text}</div>`
         
-        let panelInputAttr = (params.name === "currentFirst" || params.name === "currentSecond" )
-            ? `min = ${this.data.min} max= ${this.data.max} step= ${this.data.step}`
-            : "";
-        
+        //control (input/select/checkbox) of panelItem
+        let panelControlAttr;
+            switch (params.name){
+                case "currentFirst": panelControlAttr = `min = ${this.data.min} max= ${this.data.currentSecond + 1} step= ${this.data.step}`;
+                        break;
+                case "currentSecond": panelControlAttr = `min = ${this.data.currentFirst - 1} max= ${this.data.max} step= ${this.data.step}`;
+                        break;
+                default: panelControlAttr = "";
+                        break;
+            }
 
-        let select = (params.tag === "select")
-            ? `<option value="${params.option[0]}">${params.option[0]}</option><option value="${params.option[1]}">${params.option[1]}</option>`
-            : "";
-
-        let panelInput;
+        let panelControl;
             switch (params.type){
-                case 'number': panelInput = `<input class="panel__input" name= ${params.name} type=${params.type} value= ${params.value} ${panelInputAttr}/>`;
+                case 'number': panelControl = `<input class="panel__input" name= ${params.name} type=${params.type} value= ${params.value} ${panelControlAttr}/>`;
                                 break;
-                case 'checkbox': panelInput = `<input class="panel__input" name= ${params.name} type=${params.type} checked= ${params.value} ${panelInputAttr}/>`; 
+                case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type=${params.type} checked= ${params.value} ${panelControlAttr}/>`; 
                                 break;
-                case 'select': panelInput = `<${params.tag} class="panel__input" name= ${params.name} ${panelInputAttr}> ${select} </${params.tag}>`;
+                case 'select': panelControl = `<${params.tag} class="panel__input" name= ${params.name} ${panelControlAttr}> ${params.options.map((el: string) => this.selectOption(el))} </${params.tag}>`;
                                 break;
                 default: break;
             }
 
-        let element = `<div class= "panel__item">${panelItemName} ${panelInput}</div>`
-
+        //gathering panelItemName and panelControl
+        let element = `<div class= "panel__item">${panelItemName} ${panelControl}</div>`
         return element;
+    }
+
+    selectOption(arg: string){
+        let selectOption = (arg === this.data.orientation)
+            ? `<option selected value="${arg}">${arg}</option>`
+            : `<option value="${arg}">${arg}</option>`
+        return selectOption;
     }
 
     render(data: TSettings){
@@ -256,7 +266,7 @@ class ConfigurationPanel implements IPanel {
                 value: data.orientation,
                 tag: 'select',
                 type: 'select',
-                option: ['horizontal', 'vertical']
+                options: ['horizontal', 'vertical']
             },
             {
                 name: 'range',
