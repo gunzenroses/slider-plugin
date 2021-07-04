@@ -1,4 +1,5 @@
 import { fromPercentstoValueApplyStep } from "../common";
+import { throttle } from "throttle-typescript";
 import { EventDispatcher } from "../eventDispatcher";
 import { IPresenter } from "../presenter"
 import { TSettings } from "../types/types";
@@ -90,7 +91,7 @@ class ConfigurationPanel implements IPanel {
     }
 
     enable(){
-        this.panelContainer.addEventListener('change', this.changePanelHandler);
+        this.panelContainer.addEventListener('change', throttle(this.changePanelHandler, 300));
         // this.minInput.addEventListener('change', this.changeMinHandler);
         // this.maxInput.addEventListener('change', this.changeMaxHandler);
         // this.stepInput.addEventListener('change', this.changeStepHandler);
