@@ -65,4 +65,10 @@ function fromPercentstoValueApplyStep(value: number, max: number, min: number, s
     return newValue;
 }
 
-export { applyStepOnPercents, applyRestrictions, fromPercentsToValue, fromValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentstoValueApplyStep }
+function fromValueToPercentsApplyStep(value: number, max: number, min: number, step: number){
+    let percents = fromValueToPercents(value, max, min);
+    let newValue = applyStepOnPercents(percents, max, min, step);
+    return newValue;
+}
+
+export { applyStepOnPercents, applyRestrictions, fromPercentsToValue, fromValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentstoValueApplyStep, fromValueToPercentsApplyStep }
