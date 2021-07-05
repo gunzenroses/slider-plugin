@@ -1,7 +1,7 @@
 import { TSettings } from "./types/types";
 
 function applyStepOnPercents(value: number, max: number, min: number, step: number): number {
-    let stepInPercents: number  = Math.trunc((100/(max - min) * step)*100) / 100;
+    let stepInPercents: number  = Math.trunc((step/(max - min))*100) / 100;
     let numberOfSteps = value / stepInPercents;
     let realNumberOfSteps = (value % stepInPercents > stepInPercents/2)
                 ? Math.ceil(numberOfSteps)
@@ -9,6 +9,18 @@ function applyStepOnPercents(value: number, max: number, min: number, step: numb
     let realValue = (value === 100)
                     ? value
                     : parseFloat((realNumberOfSteps * stepInPercents).toFixed(2));
+    return realValue;
+}
+
+//kinda checked
+function applyStepOnValue(value: number, max: number, min: number, step: number): number {
+    let numberOfSteps = value / step;
+    let realNumberOfSteps = (value % step >= step/2)
+                ? Math.ceil(numberOfSteps)
+                : Math.floor(numberOfSteps);
+    let realValue = (value === max)
+                    ? value
+                    : (realNumberOfSteps * step) + min;
     return realValue;
 }
 
@@ -59,9 +71,10 @@ function mergeData(sliderData: TSettings, options: TSettings){
     return c;
 }
 
+//kinda checked
 function fromPercentstoValueApplyStep(value: number, max: number, min: number, step: number){
-    let stepValue = applyStepOnPercents(value, max, min, step);
-    let newValue = parseInt(fromPercentsToValue(stepValue, max, min));
+    let value2 = parseInt(fromPercentsToValue(value, max, min));
+    let newValue = applyStepOnValue(value2, max, min, step);
     return newValue;
 }
 
@@ -71,4 +84,4 @@ function fromValueToPercentsApplyStep(value: number, max: number, min: number, s
     return newValue;
 }
 
-export { applyStepOnPercents, applyRestrictions, fromPercentsToValue, fromValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentstoValueApplyStep, fromValueToPercentsApplyStep }
+export { applyStepOnPercents, applyStepOnValue, applyRestrictions, fromPercentsToValue, fromValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentstoValueApplyStep, fromValueToPercentsApplyStep }
