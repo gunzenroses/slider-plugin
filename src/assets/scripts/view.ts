@@ -9,6 +9,7 @@ import { changeRange } from "./subview/trackView/sliderRange/changeRange"
 import { tooltipItemView } from "./subview/tooltipView/tooltipItemView"
 import { changeTooltip } from "./subview/tooltipView/changeTooltip"
 import { scaleView } from "./subview/scaleView/scaleView"
+import { fromValueToPercents, fromValueToPercentsApplyStep } from "./common"
 
 interface IView {
     settings: TSettings;
@@ -88,6 +89,9 @@ class SliderView implements IView {
     sliderTrackClass!: string;
     sliderThumbFirstClass!: string;
     sliderThumbSecondClass!: string;
+    stepValue!: number;
+    maxValue!: number;
+    minValue!: number;
 
     constructor(containerId: string){
         this.fromViewSelectThumb = new EventDispatcher();
@@ -107,14 +111,17 @@ class SliderView implements IView {
         this.selectObject = {};
         this.ifHorizontal = this.settings.orientation === "horizontal";
         this.ifRange = this.settings.range;
-        this.currentFirst = this.settings.currentFirst;
-        this.currentSecond = this.settings.currentSecond;
         this.ifTooltip = this.settings.tooltip;
         this.ifScale = this.settings.scale;
+
+        this.step = fromValueToPercents(this.settings.step, this.settings.max, this.settings.min);
+        this.currentFirst = fromValueToPercentsApplyStep(this.settings.currentFirst, this.settings.max, this.settings.min, this.settings.step);
+        this.currentSecond = fromValueToPercentsApplyStep(this.settings.currentSecond, this.settings.max, this.settings.min, this.settings.step);
+        
+        this.stepValue = this.settings.step;
         this.stepPerDiv = this.settings.scale.stepPerDiv;
-        this.step = this.settings.step;
-        this.max = this.settings.max;
-        this.min = this.settings.min;
+        this.maxValue = this.settings.max;
+        this.minValue = this.settings.min;
     }
 
     setupHandlers(){
@@ -192,8 +199,8 @@ class SliderView implements IView {
         
         if (this.ifTooltip) {
             (object.children[0] === this.tooltipFirst)
-                ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.max, this.min)
-                : changeTooltip(this.tooltipSecond, newThumbCurrent, this.max, this.min)
+                ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.maxValue, this.minValue)
+                : changeTooltip(this.tooltipSecond, newThumbCurrent, this.maxValue, this.minValue)
         }
     }
 
@@ -201,19 +208,21 @@ class SliderView implements IView {
         this.parentContainer.innerHTML = "";
         this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
         this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
-        this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal, this.max, this.min, this.step);
-        this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.currentFirst, this.ifHorizontal, this.max, this.min, this.step)
+        this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal, this.currentFirst, this.currentSecond);
+        this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.currentFirst, this.ifHorizontal)
+        
         this.ifTooltip
-            ? this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.settings.currentFirst, this.ifHorizontal, this.max, this.min, this.step)
+            ? this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.currentFirst, this.ifHorizontal, this.maxValue, this.minValue)
             : null;
         this.ifRange
-            ? (this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.currentSecond, this.ifHorizontal, this.max, this.min, this.step),
+            ? (this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.currentSecond, this.ifHorizontal),
                 this.ifTooltip
-                    ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.settings.currentSecond, this.ifHorizontal, this.max, this.min, this.step)
+                    ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.currentSecond, this.ifHorizontal, this.maxValue, this.minValue)
                     : null)
             : null;
+
         this.ifScale
-            ? (this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.max, this.min,  this.step, this.stepPerDiv))
+            ? (this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.maxValue, this.minValue,  this.stepValue, this.stepPerDiv))
             : null;
     }
 
