@@ -1,7 +1,7 @@
 import { IModel } from "./model"
 import { IView } from "./view"
 import { TSettings } from "./types/types"
-import { applyStep, applyRestrictions, findPosition, fromPercentsToValue } from "./common"
+import { applyStepOnPercents, applyRestrictions, findPosition, fromPercentsToValue, fromPercentstoValueApplyStep, fromValueToPercents, fromValueToPercentsApplyStep } from "./common"
 import { ISender, EventDispatcher } from "./eventDispatcher"
 
 interface IPresenter {
@@ -59,7 +59,7 @@ class SliderPresenter implements IPresenter {
         this.fromPresenterUpdate = new EventDispatcher();
         this.fromPresenterThumbUpdate = new EventDispatcher();
         this.fromPresenterThumbSecondUpdate = new EventDispatcher();
-        this.data = this.model.getData();
+        //this.data = this.model.getData();
         this.init();
     }
 
@@ -180,28 +180,30 @@ class SliderPresenter implements IPresenter {
     }
 
     changeThumbInModel(value: number){
-        let newValue = applyRestrictions(applyStep(value, this.max, this.min, this.step));
-        this.model.changeThumb(newValue);
-        this.fromPresenterThumbUpdate.notify(newValue);
+        //this.changeThumbs(value); //in percents
+        let newValue = fromPercentstoValueApplyStep(value, this.max, this.min, this.step);
+        this.model.changeThumb(newValue); //as value
     }
 
     changeThumbSecondInModel(value: number){
-        let newValue = applyRestrictions(applyStep(value, this.max, this.min, this.step));
+        let newValue = fromPercentstoValueApplyStep(value, this.max, this.min, this.step);
         this.model.changeThumbSecond(newValue);
-        this.fromPresenterThumbSecondUpdate.notify(newValue);
     }
 
     changeThumbs(value: number){
-        //rewrite with eventDispatcher?
+        // //rewrite with eventDispatcher?
         let object = (this.view.dragObject.classList !== undefined)
             ? this.view.dragObject 
             : this.view.selectObject;
 
+        //change thumbs in panel
         (object === this.view.sliderThumb)
-            ? this.fromPresenterThumbUpdate.notify(fromPercentsToValue(value, this.max, this.min))
-            : this.fromPresenterThumbSecondUpdate.notify(fromPercentsToValue(value, this.max, this.min))
+            ? this.fromPresenterThumbUpdate.notify(value)
+            : this.fromPresenterThumbSecondUpdate.notify(value);
 
-        this.view.сhange(object, value);
+        //change thumbs in view
+        let newValue = fromValueToPercentsApplyStep(value, this.max, this.min, this.step);
+        this.view.сhange(object, newValue);
     }
     
 }
