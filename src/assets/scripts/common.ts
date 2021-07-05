@@ -1,14 +1,14 @@
 import { TSettings } from "./types/types";
 
-function applyStep(value: number, max: number, min: number, step: number): number {
-    let stepInPercents: number = parseFloat((100/(max - min) * step).toFixed(2));
+function applyStepOnPercents(value: number, max: number, min: number, step: number): number {
+    let stepInPercents: number  = Math.trunc((100/(max - min) * step)*100) / 100;
     let numberOfSteps = value / stepInPercents;
     let realNumberOfSteps = (value % stepInPercents > stepInPercents/2)
                 ? Math.ceil(numberOfSteps)
                 : Math.floor(numberOfSteps);
     let realValue = (value === 100)
                     ? value
-                    : realNumberOfSteps * stepInPercents;
+                    : parseFloat((realNumberOfSteps * stepInPercents).toFixed(2));
     return realValue;
 }
 
@@ -23,6 +23,11 @@ function applyRestrictions(value: number){
 
 function fromPercentsToValue(value: number, max: number, min: number){
     let newValue = (Math.round(value * (max - min) / 100) + min).toString();
+    return newValue;
+}
+
+function fromValueToPercents(value: number, max: number, min: number){
+    let newValue = (value / (max - min) * 100);
     return newValue;
 }
 
@@ -55,9 +60,9 @@ function mergeData(sliderData: TSettings, options: TSettings){
 }
 
 function fromPercentstoValueApplyStep(value: number, max: number, min: number, step: number){
-    let stepValue = applyStep(value, max, min, step);
-    let newValue = fromPercentsToValue(stepValue, max, min);
+    let stepValue = applyStepOnPercents(value, max, min, step);
+    let newValue = parseInt(fromPercentsToValue(stepValue, max, min));
     return newValue;
 }
 
-export { applyStep, applyRestrictions, fromPercentsToValue, fromValueToPX, findPosition, mergeData, fromPercentstoValueApplyStep }
+export { applyStepOnPercents, applyRestrictions, fromPercentsToValue, fromValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentstoValueApplyStep }
