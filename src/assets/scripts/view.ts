@@ -75,8 +75,8 @@ class SliderView implements IView {
 
     ifHorizontal!: boolean;
     ifRange!: boolean;
-    currentFirst!: number;
-    currentSecond!: number;
+    currentFirstInPercents!: number;
+    currentSecondInPercents!: number;
     ifTooltip!: boolean;
     ifScale!: boolean;
     step!: number;
@@ -92,7 +92,6 @@ class SliderView implements IView {
     stepValue!: number;
     maxValue!: number;
     minValue!: number;
-    valuePerPercent!: number
 
     constructor(containerId: string){
         this.fromViewSelectThumb = new EventDispatcher();
@@ -110,18 +109,19 @@ class SliderView implements IView {
 
     createChildren(){
         this.selectObject = {};
+
+        //booleans
         this.ifHorizontal = this.settings.orientation === "horizontal";
         this.ifRange = this.settings.range;
         this.ifTooltip = this.settings.tooltip;
         this.ifScale = this.settings.scale;
 
+        //values in percents
         this.step = stepToPercents(this.settings.step, this.settings.max, this.settings.min);
-        this.currentFirst = valueInPercentsWithStep(fromValueToPercents(this.settings.currentFirst, this.settings.max, this.settings.min), this.step);
-        this.currentSecond = valueInPercentsWithStep(fromValueToPercents(this.settings.currentSecond, this.settings.max, this.settings.min), this.step);
+        this.currentFirstInPercents = valueInPercentsWithStep(fromValueToPercents(this.settings.currentFirst, this.settings.max, this.settings.min), this.step);
+        this.currentSecondInPercents = valueInPercentsWithStep(fromValueToPercents(this.settings.currentSecond, this.settings.max, this.settings.min), this.step);
         
-        this.valuePerPercent = (this.settings.max - this.settings.min) / 100;
-        
-        
+        //actual values
         this.stepValue = this.settings.step;
         this.stepPerDiv = this.settings.scale.stepPerDiv;
         this.maxValue = this.settings.max;
@@ -153,7 +153,7 @@ class SliderView implements IView {
     selectThumb(e: MouseEvent){
         if (e.target === this.sliderThumb || 
             e.target === this.sliderThumbSecond) return;
-        this.fromViewSelectThumb.notify(event);
+        this.fromViewSelectThumb.notify(e);
     }
     
     dragThumbStart(e: MouseEvent){
@@ -189,13 +189,9 @@ class SliderView implements IView {
         this.dragObject = {};
         this.selectObject = {};
     }
-
+    
+    // in % and actual values
     сhange(object: TDragObject, newThumbCurrent: number){
-        //fix: validate newThumbCurrent to be 0 to 100?
-        // let object = (this.dragObject.classList !== undefined)
-        //     ? this.dragObject 
-        //     : this.selectObject
-
         changeThumb(object, this.ifHorizontal, newThumbCurrent)
 
         let ifThumbFirst = (object === this.sliderThumb)
@@ -210,21 +206,23 @@ class SliderView implements IView {
 
     render(){
         this.parentContainer.innerHTML = "";
+        //values in percents
         this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
         this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
-        this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal, this.currentFirst, this.currentSecond);
-        this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal, this.currentFirst)
-        
-        this.ifTooltip
-            ? this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.currentFirst, this.ifHorizontal, this.valuePerPercent)
-            : null;
-        this.ifRange
-            ? (this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal, this.currentSecond),
-                this.ifTooltip
-                    ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.currentSecond, this.ifHorizontal, this.valuePerPercent)
-                    : null)
-            : null;
+        this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal, this.currentFirstInPercents, this.currentSecondInPercents);
+        (this.ifRange)
+            ? (this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal, this.currentFirstInPercents),
+                this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal, this.currentSecondInPercents))
+            : (this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal, this.currentFirstInPercents),
+                this.sliderThumbSecond = null!)
 
+        //actual values
+        this.ifTooltip
+            ? (this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.currentFirstInPercents, this.ifHorizontal, this.maxValue, this.minValue),
+                this.ifRange
+                ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.currentSecondInPercents, this.ifHorizontal, this.maxValue, this.minValue)
+                : null)
+            : null;
         this.ifScale
             ? (this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.maxValue, this.minValue,  this.stepValue, this.stepPerDiv))
             : null;
