@@ -110,6 +110,7 @@ class SliderPresenter implements IPresenter {
         return this;
     }
 
+    //all values are in %
     selectThumb(e: any){
         let newThumbCurrentPosition = this.ifHorizontal
                     ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left + this.thumbWidth/2
@@ -123,7 +124,7 @@ class SliderPresenter implements IPresenter {
             : this.selectThumbRangeFalse(restrictedThumbCurrent);
     }
 
-
+    //all values are in %
     selectThumbRangeFalse(newThumbCurrentPercent: number){
         // this.view.selectObject = this.view.sliderThumb;
         // this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent);
@@ -132,6 +133,7 @@ class SliderPresenter implements IPresenter {
         this.view.selectObject = {};
     }
 
+    //all values are in %
     selectThumbRangeTrue(newThumbCurrentPercent: number){
         let firstThumbPercent: number = findPosition(this.view.sliderThumb, this.ifHorizontal, this.containerSize);
         let secondThumbPercent: number = findPosition(this.view.sliderThumbSecond!, this.ifHorizontal, this.containerSize);
@@ -149,6 +151,7 @@ class SliderPresenter implements IPresenter {
         this.view.selectObject = {};
     }
 
+    //all values are in %
     dragThumb(e: any){
         let newThumbCurrentPX = this.ifHorizontal
             ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left
@@ -162,10 +165,12 @@ class SliderPresenter implements IPresenter {
                 : this.dragThumbRangeFalse(restrictedThumbCurrent);
     }
 
+    //all values are in %
     dragThumbRangeFalse(newThumbCurrent: number){
         this.changeThumbInModel(newThumbCurrent);
     }
 
+    //all values are in %
     dragThumbRangeTrue(newThumbCurrent: number){
         let firstThumbPercent = findPosition(this.view.sliderThumb, this.ifHorizontal, this.containerSize);
         let secondThumbPercent = findPosition(this.view.sliderThumbSecond!, this.ifHorizontal, this.containerSize);
@@ -182,17 +187,20 @@ class SliderPresenter implements IPresenter {
         else return;
     }
 
+    //value - %, newValue - actual
     changeThumbInModel(value: number){
         //this.changeThumbs(value); //in percents
         let newValue = fromPercentstoValueApplyStep(value, this.max, this.min, this.step);
         this.model.changeThumb(newValue); //as value
     }
 
+    //value - %, newValue - actual
     changeThumbSecondInModel(value: number){
         let newValue = fromPercentstoValueApplyStep(value, this.max, this.min, this.step);
         this.model.changeThumbSecond(newValue);
     }
 
+    //value - actual, newValue - %
     changeThumbs(value: number){
         // //rewrite with eventDispatcher?
         let object = (this.view.dragObject.classList !== undefined)
