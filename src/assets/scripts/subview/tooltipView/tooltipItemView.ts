@@ -1,9 +1,13 @@
-function tooltipItemView(parentNode: HTMLElement, className: string, valueInPercents: number, ifHorizontal: boolean, valuePerPercent: number): HTMLElement {
-    let verticalClass = ifHorizontal ? "" : "-vertical";
+import { changeTooltip } from "./changeTooltip";
+
+function tooltipItemView(parentNode: HTMLElement, className: string, actualValue: number, ifHorizontal: boolean, maxValue: number, minValue: number): HTMLElement {
+    let verticalClass = ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
     let tooltip = document.createElement("span");
-    tooltip.classList.add("tooltip", `${className}${verticalClass}`);
+    tooltip.classList.add(className, verticalClass);
     tooltip.dataset.name = "tooltip";
-    tooltip.innerText = Math.round(valueInPercents * valuePerPercent).toString();
+
+    changeTooltip(tooltip, actualValue, maxValue, minValue);
+    console.log(tooltip.innerText)
     parentNode.append(tooltip);
     return tooltip;
 }
