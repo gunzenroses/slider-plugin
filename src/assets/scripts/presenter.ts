@@ -117,10 +117,12 @@ class SliderPresenter implements IPresenter {
         let newThumbCurrentPercent = this.ifHorizontal
                     ? Math.floor(newThumbCurrentPosition/this.containerSize*100)
                     : Math.floor((this.containerSize - newThumbCurrentPosition)/this.containerSize*100);
+        let restrictedThumbCurrent = applyRestrictions(newThumbCurrentPercent)
         this.ifRange 
-            ? this.selectThumbRangeTrue(newThumbCurrentPercent)
-            : this.selectThumbRangeFalse(newThumbCurrentPercent);
+            ? this.selectThumbRangeTrue(restrictedThumbCurrent)
+            : this.selectThumbRangeFalse(restrictedThumbCurrent);
     }
+
 
     selectThumbRangeFalse(newThumbCurrentPercent: number){
         // this.view.selectObject = this.view.sliderThumb;
