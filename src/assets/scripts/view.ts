@@ -1,4 +1,4 @@
-import { ISender, EventDispatcher } from "./eventDispatcher"
+import { EventDispatcher } from "./eventDispatcher"
 import { TSettings, TDragObject } from "./types/types"
 import { sliderContainerView } from "./subview/trackView/sliderContainer/sliderContainerView"
 import { sliderTrackView } from "./subview/trackView/sliderTrack/sliderTrackView"
