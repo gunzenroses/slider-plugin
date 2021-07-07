@@ -1,5 +1,3 @@
-import { applyStepOnPercents, fromPercentsToValue } from "../../common"
-
 function tooltipItemView(parentNode: HTMLElement, className: string, valueInPercents: number, ifHorizontal: boolean, valuePerPercent: number): HTMLElement {
     let verticalClass = ifHorizontal ? "" : "-vertical";
     let tooltip = document.createElement("span");
