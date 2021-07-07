@@ -156,17 +156,14 @@ class SliderPresenter implements IPresenter {
         let newThumbCurrent= this.ifHorizontal
                 ? Math.floor(newThumbCurrentPX/this.containerSize*100)
                 : Math.floor((this.containerSize - newThumbCurrentPX)/this.containerSize*100);
+        let restrictedThumbCurrent = applyRestrictions(newThumbCurrent) 
         this.ifRange
-                ? this.dragThumbRangeTrue(newThumbCurrent)
-                : this.dragThumbRangeFalse(newThumbCurrent);
+                ? this.dragThumbRangeTrue(restrictedThumbCurrent)
+                : this.dragThumbRangeFalse(restrictedThumbCurrent);
     }
 
     dragThumbRangeFalse(newThumbCurrent: number){
-        if (newThumbCurrent > 100){ newThumbCurrent = 100 }
-        if (newThumbCurrent < 0){ newThumbCurrent = 0 }
-        if (newThumbCurrent <= 100 && newThumbCurrent >= 0){ 
-        this.changeThumbInModel(newThumbCurrent)
-        } else return;
+        this.changeThumbInModel(newThumbCurrent);
     }
 
     dragThumbRangeTrue(newThumbCurrent: number){
@@ -174,14 +171,12 @@ class SliderPresenter implements IPresenter {
         let secondThumbPercent = findPosition(this.view.sliderThumbSecond!, this.ifHorizontal, this.containerSize);
 
         if (this.view.dragObject === this.view.sliderThumb &&
-            newThumbCurrent<= secondThumbPercent + 1 &&
-            newThumbCurrent>= 0 ){
+            newThumbCurrent<= secondThumbPercent + 1){
             this.changeThumbInModel(newThumbCurrent);
             return this;
         } 
         else if (this.view.dragObject === this.view.sliderThumbSecond &&
-            newThumbCurrent>= firstThumbPercent + 1 &&
-            newThumbCurrent<= 100){
+            newThumbCurrent>= firstThumbPercent + 1){
             this.changeThumbSecondInModel(newThumbCurrent);
         } 
         else return;
