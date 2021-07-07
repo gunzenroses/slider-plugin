@@ -1,4 +1,3 @@
-import { applyStepOnPercents, applyRestrictions } from "../../../common"
 import { changeThumb } from "./changeThumb"
 
 function sliderThumbView(parentNode: HTMLElement, className: string, ifHorizontal: boolean, currentNum: number) {
