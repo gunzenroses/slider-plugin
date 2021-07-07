@@ -225,10 +225,6 @@ class SliderView implements IView {
             ? (this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.maxValue, this.minValue,  this.stepValue, this.stepPerDiv))
             : null;
     }
-
-    // updateElement(name: string, value: any){
-    //     this.scale.classList.toggle('disabled')
-    // }
 }
 
 export { IView, SliderView }
