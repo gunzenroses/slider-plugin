@@ -15,7 +15,8 @@ interface IPresenter {
     dragThumb(e: MouseEvent): void;
     changeThumbInModel(value: number): void;
     changeThumbSecondInModel(value: number): void;
-    setData(args: object): void;
+    changeThumbs(value: number): void;
+    setData(name: string, data: any): void;
     updateView(): void;
 
     fromPresenterUpdate: EventDispatcher;
@@ -63,8 +64,8 @@ class SliderPresenter implements IPresenter {
         this.init();
     }
 
-    setData(args: object){
-        this.model.setData(args);
+    setData(name: string, data: any){
+        this.model.setData(name, data);
     }
 
     init(){
@@ -77,6 +78,7 @@ class SliderPresenter implements IPresenter {
     updateView(){
         this.data = this.model.getData();
         this.view.init(this.data);
+        this.fromPresenterUpdate.notify(this.data);
         this.createChildren();
     }
 
@@ -117,7 +119,7 @@ class SliderPresenter implements IPresenter {
                     : Math.floor((this.containerSize - newThumbCurrentPosition)/this.containerSize*100);
         this.ifRange 
             ? this.selectThumbRangeTrue(newThumbCurrentPercent)
-            :  this.selectThumbRangeFalse(newThumbCurrentPercent);
+            : this.selectThumbRangeFalse(newThumbCurrentPercent);
     }
 
     selectThumbRangeFalse(newThumbCurrentPercent: number){
