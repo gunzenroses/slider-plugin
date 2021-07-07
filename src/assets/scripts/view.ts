@@ -213,13 +213,13 @@ class SliderView implements IView {
         this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
         this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
         this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal, this.currentFirst, this.currentSecond);
-        this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.currentFirst, this.ifHorizontal)
+        this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal, this.currentFirst)
         
         this.ifTooltip
             ? this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.currentFirst, this.ifHorizontal, this.valuePerPercent)
             : null;
         this.ifRange
-            ? (this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.currentSecond, this.ifHorizontal),
+            ? (this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal, this.currentSecond),
                 this.ifTooltip
                     ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.currentSecond, this.ifHorizontal, this.valuePerPercent)
                     : null)
