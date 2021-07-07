@@ -1,5 +1,5 @@
 import { TSettings } from "./types/types"
-import { ISender, EventDispatcher } from './eventDispatcher'
+import { EventDispatcher } from './eventDispatcher'
 import { mergeData } from "./common"
 
 interface IModel {
