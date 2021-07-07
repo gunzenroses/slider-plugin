@@ -160,7 +160,11 @@ class SliderPresenter implements IPresenter {
     }
 
     dragThumbRangeFalse(newThumbCurrent: number){
-        this.changeThumbInModel(newThumbCurrent);
+        if (newThumbCurrent > 100){ newThumbCurrent = 100 }
+        if (newThumbCurrent < 0){ newThumbCurrent = 0 }
+        if (newThumbCurrent <= 100 && newThumbCurrent >= 0){ 
+        this.changeThumbInModel(newThumbCurrent)
+        } else return;
     }
 
     dragThumbRangeTrue(newThumbCurrent: number){
