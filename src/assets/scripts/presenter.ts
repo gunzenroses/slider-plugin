@@ -141,18 +141,20 @@ class SliderPresenter implements IPresenter {
         let firstDiff: number = Math.abs(firstThumbPercent - newThumbCurrentPercent);
         let secondDiff: number = Math.abs(secondThumbPercent - newThumbCurrentPercent);
 
-        if (firstDiff <= secondDiff){ 
+        if (firstDiff < secondDiff){ 
             this.view.selectObject = this.view.sliderThumb;
             this.changeThumbInModel(newThumbCurrentPercent); 
-        } if (firstDiff >= secondDiff){
+        } if (firstDiff > secondDiff){
             this.view.selectObject = this.view.sliderThumbSecond!;
             this.changeThumbSecondInModel(newThumbCurrentPercent);
         } if (firstDiff === secondDiff){
             (newThumbCurrentPercent < firstThumbPercent)
                 ? (this.view.selectObject = this.view.sliderThumb,
                     this.changeThumbInModel(newThumbCurrentPercent))
-                : (this.view.selectObject = this.view.sliderThumbSecond!,
-                    this.changeThumbSecondInModel(newThumbCurrentPercent));
+                : (newThumbCurrentPercent > firstThumbPercent
+                    ? (this.view.selectObject = this.view.sliderThumbSecond!,
+                    this.changeThumbSecondInModel(newThumbCurrentPercent))
+                    : null );
         }
         this.view.selectObject = {};
     }
