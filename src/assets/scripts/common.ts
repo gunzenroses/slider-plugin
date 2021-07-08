@@ -1,19 +1,18 @@
 import { TSettings } from "./types/types";
 
-//values %, step as value!!!!!!!!!!!!!
-function applyStepOnPercents(value: number, max: number, min: number, step: number): number {
-    let stepInPercents: number  = Math.trunc((step/(max - min))*100) / 100;
-    let numberOfSteps = value / stepInPercents;
-    let realNumberOfSteps = (value % stepInPercents > stepInPercents/2)
+//all in %
+function applyStepOnPercents(value: number, step: number): number {
+    let numberOfSteps = value / step;
+    let realNumberOfSteps = (value % step > step/2)
                 ? Math.ceil(numberOfSteps)
                 : Math.floor(numberOfSteps);
     let realValue = (value === 100)
                     ? value
-                    : parseFloat((realNumberOfSteps * stepInPercents).toFixed(2));
+                    : parseFloat((realNumberOfSteps * step).toFixed(2));
     return realValue;
 }
 
-//kinda checked
+//checked: all values are actual
 function applyStepOnValue(value: number, max: number, min: number, step: number): number {
     let numberOfSteps = value / step;
     let realNumberOfSteps = (value % step >= step/2)
@@ -25,6 +24,7 @@ function applyStepOnValue(value: number, max: number, min: number, step: number)
     return realValue;
 }
 
+//checked
 function applyRestrictions(value: number){
     let newValue = value > 100
                     ? 100
@@ -34,34 +34,22 @@ function applyRestrictions(value: number){
     return newValue;
 }
 
-// value in %, others are actual ???????
+// checked: value in %, others are actual
 function fromPercentsToValue(valueInPercents: number, max: number, min: number){
     let newValue = (Math.round(valueInPercents * (max - min) / 100) + min).toString();
     return newValue;
 }
 
-//done: initial values are actual
+//done: initial values are actual, return %
 function fromValueToPercents(value: number, max: number, min: number){
     let newValue = (value - min) / (max - min) * 100;
     return newValue;
 }
 
-//done: initial values are actual
+//done: initial values are actual, return %
 function stepToPercents(step: number, max: number, min: number){
     let newValue = parseFloat(( step / (max - min) * 100).toFixed(2));
     return newValue;
-}
-
-//done: all values should be in %
-function valueInPercentsWithStep(value: number, step: number): number {
-    let numberOfSteps = value / step;
-    let realNumberOfSteps = (value % step > step/2)
-                ? Math.ceil(numberOfSteps)
-                : Math.floor(numberOfSteps);
-    let realValue = (value === 100)
-                    ? value
-                    : parseFloat((realNumberOfSteps * step).toFixed(2));
-    return realValue;
 }
 
 function fromValueToPX(value: number, max: number, min: number, containerSize: number){
@@ -92,8 +80,8 @@ function mergeData(sliderData: TSettings, options: TSettings){
     return c;
 }
 
-//kinda checked
-function fromPercentstoValueApplyStep(value: number, max: number, min: number, step: number){
+//value %, max, min, step are actual values
+function fromPercentsToValueApplyStep(value: number, max: number, min: number, step: number){
     let value2 = parseInt(fromPercentsToValue(value, max, min));
     let newValue = applyStepOnValue(value2, max, min, step);
     return newValue;
@@ -101,10 +89,10 @@ function fromPercentstoValueApplyStep(value: number, max: number, min: number, s
 
 //values are actual 
 function fromValueToPercentsApplyStep(value: number, max: number, min: number, step: number){
-    let percents = fromValueToPercents(value, max, min);
-    //first one in %, all others are values
-    let newValue = applyStepOnPercents(percents, max, min, step);
+    let valuePerc = fromValueToPercents(value, max, min);
+    let stepPerc = stepToPercents(step, max, min);
+    let newValue = applyStepOnPercents(valuePerc, stepPerc);
     return newValue;
 }
 
-export { applyStepOnPercents, applyStepOnValue, applyRestrictions, fromPercentsToValue, fromValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentstoValueApplyStep, fromValueToPercentsApplyStep, stepToPercents, valueInPercentsWithStep }
+export { applyStepOnValue, applyRestrictions, fromPercentsToValue, fromValueToPX, findPosition, mergeData, fromPercentsToValueApplyStep, fromValueToPercentsApplyStep }
