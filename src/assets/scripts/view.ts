@@ -9,7 +9,7 @@ import { changeRange } from "./subview/trackView/sliderRange/changeRange"
 import { tooltipItemView } from "./subview/tooltipView/tooltipItemView"
 import { changeTooltip } from "./subview/tooltipView/changeTooltip"
 import { scaleView } from "./subview/scaleView/scaleView"
-import { valueInPercentsWithStep, stepToPercents, fromValueToPercents } from "./common"
+import { fromValueToPercentsApplyStep } from "./common"
 
 interface IView {
     settings: TSettings;
@@ -116,10 +116,10 @@ class SliderView implements IView {
         this.ifTooltip = this.settings.tooltip;
         this.ifScale = this.settings.scale;
 
-        //values in percents
-        this.step = stepToPercents(this.settings.step, this.settings.max, this.settings.min);
-        this.currentFirstInPercents = valueInPercentsWithStep(fromValueToPercents(this.settings.currentFirst, this.settings.max, this.settings.min), this.step);
-        this.currentSecondInPercents = valueInPercentsWithStep(fromValueToPercents(this.settings.currentSecond, this.settings.max, this.settings.min), this.step);
+         //values in percents
+        //this.step = stepToPercents(this.settings.step, this.settings.max, this.settings.min);
+        this.currentFirstInPercents = fromValueToPercentsApplyStep(this.settings.currentFirst, this.settings.max, this.settings.min, this.settings.step);
+        this.currentSecondInPercents = fromValueToPercentsApplyStep(this.settings.currentSecond, this.settings.max, this.settings.min, this.settings.step);
         
         //actual values
         this.stepValue = this.settings.step;
