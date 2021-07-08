@@ -210,22 +210,15 @@ class SliderView implements IView {
         this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
         this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
         this.sliderRange = sliderRangeView(this.sliderTrack, this.ifRange, this.ifHorizontal, this.currentFirstInPercents, this.currentSecondInPercents);
-        (this.ifRange)
-            ? (this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal, this.currentFirstInPercents),
-                this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal, this.currentSecondInPercents))
-            : (this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal, this.currentFirstInPercents),
-                this.sliderThumbSecond = null!)
+        this.sliderThumb = sliderThumbView(this.sliderTrack, "thumb_first", this.ifHorizontal, this.currentFirstInPercents),
+        this.sliderThumbSecond = sliderThumbView(this.sliderTrack, "thumb_second", this.ifHorizontal, this.currentSecondInPercents);
+        if (!this.ifRange){ this.sliderThumbSecond.classList.add("disabled"); }
 
         //actual values
-        this.ifTooltip
-            ? (this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.currentFirstInPercents, this.ifHorizontal, this.maxValue, this.minValue),
-                this.ifRange
-                ? this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.currentSecondInPercents, this.ifHorizontal, this.maxValue, this.minValue)
-                : null)
-            : null;
-        this.ifScale
-            ? (this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.maxValue, this.minValue,  this.stepValue, this.stepPerDiv))
-            : null;
+        this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.currentFirstInPercents, this.ifHorizontal, this.maxValue, this.minValue),
+        this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.currentSecondInPercents, this.ifHorizontal, this.maxValue, this.minValue)
+        if (!this.ifRange){ this.tooltipSecond.classList.add("disabled"); }
+        if (this.ifScale){ this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.maxValue, this.minValue,  this.stepValue, this.stepPerDiv); }
     }
 }
 
