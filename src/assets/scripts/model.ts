@@ -1,6 +1,6 @@
 import { TSettings } from "./types/types"
 import { EventDispatcher } from './eventDispatcher'
-import { mergeData } from "./common"
+import { applyStepOnValue, mergeData } from "./common"
 
 interface IModel {
     fromModelChangeView: EventDispatcher;
@@ -23,6 +23,9 @@ class SliderModel implements IModel {
         this.fromModelUpdateView = new EventDispatcher();
         this.containerId = containerId;
         this.data = settings;
+        
+        this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data.max, this.data.min, this.data.step)
+        this.data.currentSecond = applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
     }
     
     getContainerId(){
