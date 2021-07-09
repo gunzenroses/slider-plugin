@@ -23,13 +23,15 @@ class SliderModel implements IModel {
         this.fromModelUpdateView = new EventDispatcher();
         this.containerId = containerId;
         this.data = settings;
-        
-        this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data.max, this.data.min, this.data.step)
-        this.data.currentSecond = applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
+        this.updateCurrentsWithStep();
     }
-    
+
     getContainerId(){
         return this.containerId;
+    }
+
+    getData(){
+        return this.data;
     }
 
     setData(name: string, data: any){
@@ -37,11 +39,13 @@ class SliderModel implements IModel {
         if ((oldData[name]) === data) return;
         let newData = { [name]: data };
         this.data = mergeData(oldData, newData);
+        this.updateCurrentsWithStep();
         this.fromModelUpdateView.notify() //Object.keys(newData)[0], Object.values(newData)[0]);
     }
 
-    getData(){
-        return this.data;
+    updateCurrentsWithStep(){
+        this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data.max, this.data.min, this.data.step)
+        this.data.currentSecond = applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
     }
 
     changeThumb(value: number) {
