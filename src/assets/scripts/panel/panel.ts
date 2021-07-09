@@ -48,9 +48,7 @@ class ConfigurationPanel implements IPanel {
         this.panelContainer.classList.add('panel');
         this.parentContainer.after(this.panelContainer);
         this.presenter = presenter;
-        this.data = this.presenter.data;
-        this.data.currentFirst = fromPercentstoValueApplyStep(this.data.currentFirst, this.data.max, this.data.min, this.data.step);
-        this.data.currentSecond = fromPercentstoValueApplyStep(this.data.currentSecond, this.data.max, this.data.min, this.data.step);
+        this.getData();
         this.init();
     }
 
