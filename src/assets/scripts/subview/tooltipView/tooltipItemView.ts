@@ -7,7 +7,6 @@ function tooltipItemView(parentNode: HTMLElement, className: string, valueInPerc
     tooltip.dataset.name = "tooltip";
 
     changeTooltip(tooltip, valueInPercents, maxValue, minValue);
-    console.log(tooltip.innerText)
     parentNode.append(tooltip);
     return tooltip;
 }
