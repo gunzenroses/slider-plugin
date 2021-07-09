@@ -125,8 +125,10 @@ class ConfigurationPanel implements IPanel {
         let type = element.getAttribute("type");
         let data = (type === "checkbox")
             ? element.checked
-            : element.value;  
-        this.presenter.setData({ [name]: data });
+                : (type === "number")
+                    ? parseInt(element.value)
+                    : element.value;   
+        this.presenter.setData(name, data);
     }
 
     // changeMin(){
