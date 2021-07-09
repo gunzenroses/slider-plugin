@@ -54,6 +54,10 @@ class ConfigurationPanel implements IPanel {
         this.init();
     }
 
+    getData(){
+        this.data = this.presenter.data;
+    }
+
     init(){
         this.render(this.data);
         this.createChildren();
@@ -105,6 +109,12 @@ class ConfigurationPanel implements IPanel {
         this.presenter.fromPresenterUpdate.add(this.updateHandler);
         this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler);
         this.presenter.fromPresenterThumbSecondUpdate.add(this.updateThumbSecondHandler);
+    }
+
+    updatePanel(){
+        this.getData();
+        this.updateThumb(this.data.currentFirst);
+        this.updateThumbSecond(this.data.currentSecond);
     }
 
     updateThumb(value: number){
