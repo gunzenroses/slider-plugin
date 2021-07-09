@@ -214,8 +214,10 @@ class SliderView implements IView {
         if (!this.ifRange){ this.sliderThumbSecond.classList.add("disabled"); }
 
         //actual values
-        this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.currentFirstInPercents, this.ifHorizontal, this.maxValue, this.minValue),
-        this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.currentSecondInPercents, this.ifHorizontal, this.maxValue, this.minValue)
+        if (this.ifTooltip){
+            this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.currentFirstInPercents, this.ifHorizontal, this.maxValue, this.minValue),
+            this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.currentSecondInPercents, this.ifHorizontal, this.maxValue, this.minValue)
+        }
         if (!this.ifRange){ this.tooltipSecond.classList.add("disabled"); }
         if (this.ifScale){ this.scale = scaleView(this.sliderContainer, this.ifHorizontal, this.maxValue, this.minValue,  this.stepValue, this.stepPerDiv); }
     }
