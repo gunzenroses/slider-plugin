@@ -4,7 +4,7 @@ import { applyStepOnValue, mergeData } from "./common"
 
 interface IModel {
     fromModelChangeView: EventDispatcher;
-    fromModelUpdateView: EventDispatcher;
+    fromModelUpdateData: EventDispatcher;
     setData(name: string, data: any): void;
     getData(): TSettings;
     getContainerId(): string;
@@ -16,11 +16,11 @@ class SliderModel implements IModel {
     private containerId: string;
     private data: TSettings;
     fromModelChangeView: EventDispatcher;
-    fromModelUpdateView: EventDispatcher;
+    fromModelUpdateData: EventDispatcher;
 
     constructor(containerId: string, settings: TSettings){
         this.fromModelChangeView = new EventDispatcher();
-        this.fromModelUpdateView = new EventDispatcher();
+        this.fromModelUpdateData = new EventDispatcher();
         this.containerId = containerId;
         this.data = settings;
         this.updateCurrentsWithStep();
@@ -40,7 +40,7 @@ class SliderModel implements IModel {
         let newData = { [name]: data };
         this.data = mergeData(oldData, newData);
         this.updateCurrentsWithStep();
-        this.fromModelUpdateView.notify() //Object.keys(newData)[0], Object.values(newData)[0]);
+        this.fromModelUpdateData.notify(); //Object.keys(newData)[0], Object.values(newData)[0]);
     }
 
     updateCurrentsWithStep(){
@@ -48,6 +48,7 @@ class SliderModel implements IModel {
         this.data.currentSecond = applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
     }
 
+    //special cases for setData that changes only thumbValue
     changeThumb(value: number) {
         this.data.currentFirst = value;
         this.fromModelChangeView.notify(value);
