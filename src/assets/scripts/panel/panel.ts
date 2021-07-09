@@ -196,6 +196,7 @@ class ConfigurationPanel implements IPanel {
     // }
 
     render(data: TSettings){
+        console.log(data.range)
         this.panelContainer.innerHTML = "";
         
         this.listOfPanelItems = [
@@ -239,19 +240,25 @@ class ConfigurationPanel implements IPanel {
             {
                 name: 'range',
                 text: 'range',
-                value: data.range,
+                value: (data.range)
+                    ? "checked"
+                    : "",
                 type: 'checkbox'
             },
             {
                 name: 'scale',
                 text: 'scale',
-                value: data.scale,
+                value: (data.scale)
+                        ? "checked"
+                        : "",
                 type: 'checkbox'
             },
             {
                 name: 'tooltip',
                 text: 'tooltip',
-                value: data.tooltip,
+                value: (data.tooltip)
+                        ? "checked"
+                        : "",
                 type: 'checkbox'
             },
         ]
@@ -280,7 +287,7 @@ class ConfigurationPanel implements IPanel {
             switch (params.type){
                 case 'number': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} ${panelControlAttr} />`;
                                 break;
-                case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} checked= ${params.value} ${panelControlAttr} />`; 
+                case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value} ${panelControlAttr} />`; 
                                 break;
                 case 'select': panelControl = `<${params.type} class="panel__input" name= ${params.name}> ${params.options.map((el: string) => this.selectOption(el)).join('')} </${params.type}>`;
                                 break;
