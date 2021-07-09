@@ -69,6 +69,7 @@ class ConfigurationPanel implements IPanel {
         this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
         this.currentFirstInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="currentFirst"]');
         this.currentSecondInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="currentSecond"]');
+        if (!this.data.range){ this.currentSecondInput.disabled = true};
         // this.verticalInput = <HTMLInputElement>document.getElementsByName("vertical")[0];
         // this.rangeInput = <HTMLInputElement>document.getElementsByName("range")[0];
         // this.scaleInput = <HTMLInputElement>document.getElementsByName("scale")[0];
