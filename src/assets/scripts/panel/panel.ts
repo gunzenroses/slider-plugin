@@ -112,6 +112,7 @@ class ConfigurationPanel implements IPanel {
 
     updatePanel(){
         this.getData();
+        //update other parts of panel
         this.updateThumb(this.data.currentFirst);
         this.updateThumbSecond(this.data.currentSecond);
     }
@@ -124,6 +125,9 @@ class ConfigurationPanel implements IPanel {
     updateThumbSecond(value: number){
         this.currentFirstInput.max = value.toString();
         this.currentSecondInput.value = value.toString();
+        (this.data.range)
+            ? this.currentSecondInput.disabled = false
+            : this.currentSecondInput.disabled = true;
     }
 
     changePanel(e: Event){
