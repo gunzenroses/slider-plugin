@@ -1,6 +1,7 @@
 import { throttle } from "throttle-typescript";
 import { IPresenter } from "../presenter"
 import { TSettings } from "../types/types";
+import { validateCurrentFirst, validateCurrentSecond, validateMax, validateMin, validateStep } from "./validatePanel";
 
 interface IPanel {
     presenter: IPresenter;
@@ -29,15 +30,11 @@ class ConfigurationPanel implements IPanel {
     tooltipInput!: HTMLInputElement;
 
     updateHandler!: {(data: TSettings): void};
-    // changeMinHandler!: {(): void};
-    // changeMaxHandler!: {(): void};
-    // changeStepHandler!: {(): void};
-    // changeCurrentFirstHandler!: {(): void};
+    changeMinHandler!: {(): void};
+    changeMaxHandler!: {(): void};
+    changeStepHandler!: {(): void};
+    changeCurrentFirstHandler!: {(): void};
     // changeCurrentSecondHandler!: {(): void};
-    // changeOrientationHandler!: {(): void};
-    // changeRangeHandler!: {(): void};
-    // changeScaleHandler!: {(): void};
-    // changeTooltipHandler!: {(): void};
 
     changePanelHandler!: {(event: Event): void};
     updateThumbHandler!: {(number: number): void};
@@ -78,10 +75,10 @@ class ConfigurationPanel implements IPanel {
 
     setupHandlers(){
         this.changePanelHandler = this.changePanel.bind(this);
-        // this.changeMinHandler = this.changeMin.bind(this);
-        // this.changeMaxHandler = this.changeMax.bind(this);
-        // this.changeStepHandler = this.changeStep.bind(this);
-        // this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
+        this.changeMinHandler = this.changeMin.bind(this);
+        this.changeMaxHandler = this.changeMax.bind(this);
+        this.changeStepHandler = this.changeStep.bind(this);
+        this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
         // this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
 
         this.updateHandler = this.updatePanel.bind(this);
@@ -93,19 +90,14 @@ class ConfigurationPanel implements IPanel {
         for (let item of this.checkboxes){
             item.addEventListener('change', throttle(this.changePanelHandler, 300))
         };
-        console.log(this.orientationInput)
         this.orientationInput.addEventListener('change', throttle(this.changePanelHandler, 300));
         
         // this.panelContainer.addEventListener('change', throttle(this.changePanelHandler, 300));
-        // this.minInput.addEventListener('change', this.changeMinHandler);
-        // this.maxInput.addEventListener('change', this.changeMaxHandler);
-        // this.stepInput.addEventListener('change', this.changeStepHandler);
-        // this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
+        this.minInput.addEventListener('change', this.changeMinHandler);
+        this.maxInput.addEventListener('change', this.changeMaxHandler);
+        this.stepInput.addEventListener('change', this.changeStepHandler);
+        this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
         // this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
-        // 
-        // this.rangeInput.addEventListener('change', this.changeRangeHandler);
-        // this.scaleInput.addEventListener('change', this.changeScaleHandler);
-        // this.tooltipInput.addEventListener('change', this.changeTooltipHandler);
     
         this.presenter.fromPresenterUpdate.add(this.updateHandler);
         this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler);
@@ -147,68 +139,51 @@ class ConfigurationPanel implements IPanel {
         this.presenter.setData(name, data);
     }
 
-    // validate(name: string, data: any){
-    //     switch (name){
-    //         case "min": data <= this.data.max + this.data.step;
-    //         break;
-    //         case "max": data 
-    //     }
-    // }
+    changeMin(){
+        let name = "min";
+        let value = parseInt(this.minInput.value);
+        let validValue = validateMin(value, this.data.max, this.data.step);
+        this.minInput.value = validValue.toString();
+        this.presenter.setData(name, validValue);
+    }
 
-    // changeMin(){
-    //     let data = parseInt(this.minInput.value);
-    //     this.presenter.setData({min: data});
-    // }
+    changeMax(){
+        let name = "max";
+        let value = parseInt(this.maxInput.value);
+        let validValue = validateMax(value, this.data.min, this.data.step);
+        this.maxInput.value = validValue.toString();
+        this.presenter.setData(name, validValue);
+    }
 
-    // changeMax(){
-    //     let data = parseInt(this.maxInput.value);
-    //     this.presenter.setData({max: data});
-    // }
+    changeStep(){
+        let name = "step";
+        let value = parseInt(this.stepInput.value);
+        let validValue = validateStep(value, this.data.max, this.data.min);
+        this.stepInput.value = validValue.toString();
+        this.presenter.setData(name, validValue);
+    }
 
-    // changeStep(){
-    //     let data = parseInt(this.stepInput.value);
-    //     this.presenter.setData({step: data});
-    // }
+    changeCurrentFirst(){
+        let name = "currentFirst";
+        let value = parseInt(this.currentFirstInput.value);
+        //additional
+        this.presenter.view.selectObject = this.presenter.view.sliderThumb!;
+        //if (this.currentSecondInput.classList);
+        let validValue = validateCurrentFirst(value, this.data.currentSecond, this.data.max, this.data.min, this.data.step);
+        this.currentFirstInput.value = validValue!.toString();
+        this.presenter.setData(name, validValue);
+    }
 
-    // changeCurrentFirst(){
-    //     let data = parseInt(this.currentFirstInput.value);
-    //     this.presenter.view.selectObject = this.presenter.view.sliderThumb!;
-    //     this.presenter.changeThumbs(data);
-    // }
-
-    // changeCurrentSecond(){
-    //     let data = parseInt(this.currentSecondInput.value);
-    //     this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!;
-    //     this.presenter.changeThumbs(data);
-    // }
-
-    // changeOrientation(){
-    //     let data = (this.orientationInput.checked)
-    //         ? "vertical"
-    //         : "horizontal"
-    //     this.presenter.setData({orientation: data});
-    // }
-
-    // changeRange(){
-    //     let data = (this.rangeInput.checked)
-    //         ? true
-    //         : false;
-    //     this.presenter.setData({range: data});
-    // }
-
-    // changeScale(){
-    //     let data = (this.scaleInput.checked)
-    //         ? true
-    //         : false;
-    //     this.presenter.setData({scale: data});
-    // }
-
-    // changeTooltip(){
-    //     let data = (this.tooltipInput.checked)
-    //         ? true
-    //         : false;
-    //     this.presenter.setData({tooltip: data});
-    // }
+    changeCurrentSecond(){
+        let name = "currentSecond";
+        let value = parseInt(this.currentSecondInput.value);
+        //additional attr?
+        this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!;
+        //if (this.currentSecondInput.classList);
+        let validValue = validateCurrentSecond(value, this.data.currentFirst, this.data.max, this.data.min, this.data.step);
+        this.currentSecondInput.value = validValue!.toString();
+        this.presenter.setData(name, validValue);
+    }
 
     render(data: TSettings){
         this.panelContainer.innerHTML = "";
