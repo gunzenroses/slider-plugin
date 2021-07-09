@@ -1,6 +1,4 @@
-import { fromPercentstoValueApplyStep } from "../common";
 import { throttle } from "throttle-typescript";
-import { EventDispatcher } from "../eventDispatcher";
 import { IPresenter } from "../presenter"
 import { TSettings } from "../types/types";
 
@@ -13,10 +11,10 @@ interface IPanel {
 
 class ConfigurationPanel implements IPanel {
     presenter: IPresenter;
-    data!: TSettings;
     parentContainer: HTMLElement;
+    data!: TSettings;
 
-    panelContainer!: HTMLElement;
+    panelContainer: HTMLElement;
     listOfPanelItems!: any;
 
     minInput!: HTMLInputElement;
@@ -30,15 +28,15 @@ class ConfigurationPanel implements IPanel {
     tooltipInput!: HTMLInputElement;
 
     updateHandler!: {(name: string, value: number): void};
-    changeMinHandler!: {(): void};
-    changeMaxHandler!: {(): void};
-    changeStepHandler!: {(): void};
-    changeCurrentFirstHandler!: {(): void};
-    changeCurrentSecondHandler!: {(): void};
-    changeOrientationHandler!: {(): void};
-    changeRangeHandler!: {(): void};
-    changeScaleHandler!: {(): void};
-    changeTooltipHandler!: {(): void};
+    // changeMinHandler!: {(): void};
+    // changeMaxHandler!: {(): void};
+    // changeStepHandler!: {(): void};
+    // changeCurrentFirstHandler!: {(): void};
+    // changeCurrentSecondHandler!: {(): void};
+    // changeOrientationHandler!: {(): void};
+    // changeRangeHandler!: {(): void};
+    // changeScaleHandler!: {(): void};
+    // changeTooltipHandler!: {(): void};
 
     changePanelHandler!: {(event: Event): void};
     updateThumbHandler!: {(number: number): void};
@@ -80,14 +78,14 @@ class ConfigurationPanel implements IPanel {
         // this.changeMinHandler = this.changeMin.bind(this);
         // this.changeMaxHandler = this.changeMax.bind(this);
         // this.changeStepHandler = this.changeStep.bind(this);
-        this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
-        this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
+        // this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
+        // this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
         // this.changeOrientationHandler = this.changeOrientation.bind(this);
         // this.changeRangeHandler = this.changeRange.bind(this);
         // this.changeScaleHandler = this.changeScale.bind(this);
         // this.changeTooltipHandler = this.changeTooltip.bind(this);
 
-        //this.updateHandler = this.updatePanel.bind(this);
+        this.updateHandler = this.updatePanel.bind(this);
         this.updateThumbHandler = this.updateThumb.bind(this);
         this.updateThumbSecondHandler = this.updateThumbSecond.bind(this);
     }
@@ -97,14 +95,14 @@ class ConfigurationPanel implements IPanel {
         // this.minInput.addEventListener('change', this.changeMinHandler);
         // this.maxInput.addEventListener('change', this.changeMaxHandler);
         // this.stepInput.addEventListener('change', this.changeStepHandler);
-        this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
-        this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
+        // this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
+        // this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
         // this.verticalInput.addEventListener('change', this.changeOrientationHandler);
         // this.rangeInput.addEventListener('change', this.changeRangeHandler);
         // this.scaleInput.addEventListener('change', this.changeScaleHandler);
         // this.tooltipInput.addEventListener('change', this.changeTooltipHandler);
     
-        // this.presenter.fromPresenterUpdate.add(this.updateHandler);
+        this.presenter.fromPresenterUpdate.add(this.updateHandler);
         this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler);
         this.presenter.fromPresenterThumbSecondUpdate.add(this.updateThumbSecondHandler);
     }
@@ -120,12 +118,14 @@ class ConfigurationPanel implements IPanel {
     }
 
     changePanel(e: Event){
+        // if (e.target === this.currentFirstInput
+        //     || e.target === this.currentSecondInput) return;
         let element = e.target as HTMLInputElement;
         let name: string = element.getAttribute("name")!;
         let type = element.getAttribute("type");
         let data = (type === "checkbox")
             ? element.checked
-            : element.value;
+            : element.value;  
         this.presenter.setData({ [name]: data });
     }
 
@@ -144,17 +144,17 @@ class ConfigurationPanel implements IPanel {
     //     this.presenter.setData({step: data});
     // }
 
-    changeCurrentFirst(){
-        let data = parseInt(this.currentFirstInput.value);
-        this.presenter.view.selectObject = this.presenter.view.sliderThumb!;
-        this.presenter.changeThumbInModel(data);
-    }
+    // changeCurrentFirst(){
+    //     let data = parseInt(this.currentFirstInput.value);
+    //     this.presenter.view.selectObject = this.presenter.view.sliderThumb!;
+    //     this.presenter.changeThumbs(data);
+    // }
 
-    changeCurrentSecond(){
-        let data = parseInt(this.currentSecondInput.value);
-        this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!;
-        this.presenter.changeThumbSecondInModel(data);
-    }
+    // changeCurrentSecond(){
+    //     let data = parseInt(this.currentSecondInput.value);
+    //     this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!;
+    //     this.presenter.changeThumbs(data);
+    // }
 
     // changeOrientation(){
     //     let data = (this.verticalInput.checked)
@@ -183,6 +183,72 @@ class ConfigurationPanel implements IPanel {
     //         : false;
     //     this.presenter.setData({tooltip: data});
     // }
+
+    render(data: TSettings){
+        this.panelContainer.innerHTML = "";
+        
+        this.listOfPanelItems = [
+            {
+                name: 'min',
+                text: 'min',
+                value: data.min,
+                type: 'number'
+            },
+            {
+                name: 'max',
+                text: 'max',
+                value: data.max,
+                type: 'number'
+            },
+            {
+                name: 'step',
+                text: 'step',
+                value: data.step,
+                type: 'number'
+            },
+            {
+                name: 'currentFirst',
+                text: 'from',
+                value: data.currentFirst,
+                type: 'number'
+            },
+            {
+                name: 'currentSecond',
+                text: 'to',
+                value: data.currentSecond,
+                type: 'number'
+            },
+            {
+                name: 'orientation',
+                text: 'orient',
+                value: data.orientation,
+                type: 'select',
+                options: ['horizontal', 'vertical']
+            },
+            {
+                name: 'range',
+                text: 'range',
+                value: data.range,
+                type: 'checkbox'
+            },
+            {
+                name: 'scale',
+                text: 'scale',
+                value: data.scale,
+                type: 'checkbox'
+            },
+            {
+                name: 'tooltip',
+                text: 'tooltip',
+                value: data.tooltip,
+                type: 'checkbox'
+            },
+        ]
+
+        for (let item of this.listOfPanelItems){
+            this.panelContainer.innerHTML += this.createPanelItem(item)
+        }
+    }
 
     createPanelItem(params: any){
         //name of panelItem
@@ -217,90 +283,10 @@ class ConfigurationPanel implements IPanel {
 
     selectOption(arg: string){
         let selectOption = (arg === this.data.orientation)
-            ? `<option selected=true value="${arg}">${arg}</option> `
-            : `<option selected=false value="${arg}">${arg}</option> `
+            ? `<option selected value="${arg}">${arg}</option> `
+            : `<option value="${arg}">${arg}</option> `
         return selectOption;
     }
-
-    render(data: TSettings){
-        this.panelContainer.innerHTML = "";
-        
-        this.listOfPanelItems = [
-            {
-                name: 'min',
-                text: 'min',
-                value: data.min,
-                //tag: 'input',
-                type: 'number'
-            },
-            {
-                name: 'max',
-                text: 'max',
-                value: data.max,
-                //tag: 'input',
-                type: 'number'
-            },
-            {
-                name: 'step',
-                text: 'step',
-                value: data.step,
-                //tag: 'input',
-                type: 'number'
-            },
-            {
-                name: 'currentFirst',
-                text: 'from',
-                value: data.currentFirst,
-                //tag: 'input',
-                type: 'number'
-            },
-            {
-                name: 'currentSecond',
-                text: 'to',
-                value: data.currentSecond,
-                //tag: 'input',
-                type: 'number'
-            },
-            {
-                name: 'orientation',
-                text: 'orient',
-                value: data.orientation,
-                //tag: 'select',
-                type: 'select',
-                options: ['horizontal', 'vertical']
-            },
-            {
-                name: 'range',
-                text: 'range',
-                value: data.range,
-                //tag: 'input',
-                type: 'checkbox'
-            },
-            {
-                name: 'scale',
-                text: 'scale',
-                value: data.scale,
-                //tag: 'input',
-                type: 'checkbox'
-            },
-            {
-                name: 'tooltip',
-                text: 'tooltip',
-                value: data.tooltip,
-                //tag: 'input',
-                type: 'checkbox'
-            },
-        ]
-
-        for (let item of this.listOfPanelItems){
-            this.panelContainer.innerHTML += this.createPanelItem(item)
-        }
-    }
-
-    // updatePanel(name: string, value: number){
-    //     let element = <HTMLInputElement>this.panelContainer.querySelector(`input[name=${name}]`);
-    //     element.value = value.toString();
-    // }
 }
 
 export { ConfigurationPanel }
