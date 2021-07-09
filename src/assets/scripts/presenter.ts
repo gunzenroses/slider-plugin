@@ -1,7 +1,7 @@
 import { IModel } from "./model"
 import { IView } from "./view"
 import { TSettings } from "./types/types"
-import { applyRestrictions, findPosition, fromPercentstoValueApplyStep, fromValueToPercents, fromValueToPercentsApplyStep, stepToPercents, valueInPercentsWithStep } from "./common"
+import { applyRestrictions, findPosition, fromPercentsToValueApplyStep, changeValueToPercentsApplyStep } from "./common"
 import { EventDispatcher } from "./eventDispatcher"
 
 interface IPresenter {
@@ -198,13 +198,13 @@ class SliderPresenter implements IPresenter {
     //value - %, newValue - actual
     changeThumbInModel(value: number){
         //this.changeThumbs(value); //in percents
-        let newValue = fromPercentstoValueApplyStep(value, this.max, this.min, this.step);
+        let newValue = fromPercentsToValueApplyStep(value, this.max, this.min, this.step);
         this.model.changeThumb(newValue); //as value
     }
 
     //value - %, newValue - actual
     changeThumbSecondInModel(value: number){
-        let newValue = fromPercentstoValueApplyStep(value, this.max, this.min, this.step);
+        let newValue = fromPercentsToValueApplyStep(value, this.max, this.min, this.step);
         this.model.changeThumbSecond(newValue);
     }
 
@@ -221,10 +221,10 @@ class SliderPresenter implements IPresenter {
             : this.fromPresenterThumbSecondUpdate.notify(value);
 
         //change thumbs in view
-        let stepPerc = stepToPercents(this.step, this.max, this.min);
-        let valPerc = fromValueToPercents(value, this.max, this.min);
-        let newValue = valueInPercentsWithStep(valPerc, stepPerc);
-
+        // let stepPerc = stepToPercents(this.step, this.max, this.min);
+        // let valPerc = changeValueToPercents(value, this.max, this.min);
+        // let newValue = applyStepOnPercents(valPerc, stepPerc);
+        let newValue = changeValueToPercentsApplyStep(value, this.max, this.min, this.step);
         this.view.сhange(object, newValue);
     }
     
