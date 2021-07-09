@@ -15,6 +15,7 @@ function applyStepOnPercents(value: number, step: number): number {
 
 //checked: all values are actual
 function applyStepOnValue(value: number, max: number, min: number, step: number): number {
+    if ((value - min) <= 0) return min;
     let numberOfSteps = (value - min) * 100 / (step * 100);
     let realNumberOfSteps = ((value - min) % step > step/2)
                 ? Math.ceil(numberOfSteps)
