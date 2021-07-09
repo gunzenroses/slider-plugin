@@ -1,9 +1,10 @@
 import { TSettings } from "./types/types";
 
+//somewhere here the problem is
 //all in %
 function applyStepOnPercents(value: number, step: number): number {
-    let numberOfSteps = value / step;
-    let realNumberOfSteps = (value % step > step/2)
+    let numberOfSteps = (value * 100) / (step * 100);
+    let realNumberOfSteps = (value % step >= step/2)
                 ? Math.ceil(numberOfSteps)
                 : Math.floor(numberOfSteps);
     let realValue = (value === 100)
@@ -14,8 +15,8 @@ function applyStepOnPercents(value: number, step: number): number {
 
 //checked: all values are actual
 function applyStepOnValue(value: number, max: number, min: number, step: number): number {
-    let numberOfSteps = (value - min) / step;
-    let realNumberOfSteps = ((value - min) % step >= step/2)
+    let numberOfSteps = (value - min) * 100 / (step * 100);
+    let realNumberOfSteps = ((value - min) % step > step/2)
                 ? Math.ceil(numberOfSteps)
                 : Math.floor(numberOfSteps);
     let realValue = (value === max)
@@ -41,13 +42,13 @@ function fromPercentsToValue(valueInPercents: number, max: number, min: number){
 }
 
 //done: initial values are actual, return %
-function fromValueToPercents(value: number, max: number, min: number){
-    let newValue = (value - min) / (max - min) * 100;
+function changeValueToPercents(value: number, max: number, min: number){
+    let newValue = parseFloat( ((value - min) / (max - min) * 100).toFixed(2) );
     return newValue;
 }
 
 //done: initial values are actual, return %
-function stepToPercents(step: number, max: number, min: number){
+function changeStepToPercents(step: number, max: number, min: number){
     let newValue = parseFloat(( step / (max - min) * 100).toFixed(2));
     return newValue;
 }
@@ -88,11 +89,11 @@ function fromPercentsToValueApplyStep(value: number, max: number, min: number, s
 }
 
 //values are actual 
-function fromValueToPercentsApplyStep(value: number, max: number, min: number, step: number){
-    let valuePerc = fromValueToPercents(value, max, min);
-    let stepPerc = stepToPercents(step, max, min);
+function changeValueToPercentsApplyStep(value: number, max: number, min: number, step: number){
+    let valuePerc = changeValueToPercents(value, max, min);
+    let stepPerc = changeStepToPercents(step, max, min);
     let newValue = applyStepOnPercents(valuePerc, stepPerc);
     return newValue;
 }
 
-export { applyStepOnValue, applyRestrictions, fromPercentsToValue, fromValueToPX, findPosition, mergeData, fromPercentsToValueApplyStep, fromValueToPercentsApplyStep }
+export { applyStepOnValue, applyRestrictions, fromPercentsToValue, changeValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentsToValueApplyStep, changeValueToPercentsApplyStep }
