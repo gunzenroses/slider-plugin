@@ -17,17 +17,18 @@ class ConfigurationPanel implements IPanel {
     panelContainer: HTMLElement;
     listOfPanelItems!: any;
 
+    checkboxes!: NodeListOf<HTMLElement>;
     minInput!: HTMLInputElement;
     maxInput!: HTMLInputElement;
     stepInput!: HTMLInputElement;
     currentFirstInput!: HTMLInputElement;
     currentSecondInput!: HTMLInputElement;
-    verticalInput!: HTMLInputElement;
+    orientationInput!: HTMLInputElement;
     rangeInput!: HTMLInputElement;
     scaleInput!: HTMLInputElement;
     tooltipInput!: HTMLInputElement;
 
-    updateHandler!: {(name: string, value: number): void};
+    updateHandler!: {(data: TSettings): void};
     // changeMinHandler!: {(): void};
     // changeMaxHandler!: {(): void};
     // changeStepHandler!: {(): void};
@@ -64,16 +65,15 @@ class ConfigurationPanel implements IPanel {
     }
 
     createChildren(){
+        this.checkboxes = this.panelContainer.querySelectorAll("input[type='checkbox']");
+        this.orientationInput = <HTMLInputElement>document.querySelector('select[name="orientation"]');
+
         this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
         this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
         this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
         this.currentFirstInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="currentFirst"]');
         this.currentSecondInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="currentSecond"]');
         if (!this.data.range){ this.currentSecondInput.disabled = true};
-        // this.verticalInput = <HTMLInputElement>document.getElementsByName("vertical")[0];
-        // this.rangeInput = <HTMLInputElement>document.getElementsByName("range")[0];
-        // this.scaleInput = <HTMLInputElement>document.getElementsByName("scale")[0];
-        // this.tooltipInput = <HTMLInputElement>document.getElementsByName("tooltip")[0];
     }
 
     setupHandlers(){
@@ -83,10 +83,6 @@ class ConfigurationPanel implements IPanel {
         // this.changeStepHandler = this.changeStep.bind(this);
         // this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
         // this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
-        // this.changeOrientationHandler = this.changeOrientation.bind(this);
-        // this.changeRangeHandler = this.changeRange.bind(this);
-        // this.changeScaleHandler = this.changeScale.bind(this);
-        // this.changeTooltipHandler = this.changeTooltip.bind(this);
 
         this.updateHandler = this.updatePanel.bind(this);
         this.updateThumbHandler = this.updateThumb.bind(this);
@@ -94,13 +90,19 @@ class ConfigurationPanel implements IPanel {
     }
 
     enable(){
-        this.panelContainer.addEventListener('change', throttle(this.changePanelHandler, 300));
+        for (let item of this.checkboxes){
+            item.addEventListener('change', throttle(this.changePanelHandler, 300))
+        };
+        console.log(this.orientationInput)
+        this.orientationInput.addEventListener('change', throttle(this.changePanelHandler, 300));
+        
+        // this.panelContainer.addEventListener('change', throttle(this.changePanelHandler, 300));
         // this.minInput.addEventListener('change', this.changeMinHandler);
         // this.maxInput.addEventListener('change', this.changeMaxHandler);
         // this.stepInput.addEventListener('change', this.changeStepHandler);
         // this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
         // this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
-        // this.verticalInput.addEventListener('change', this.changeOrientationHandler);
+        // 
         // this.rangeInput.addEventListener('change', this.changeRangeHandler);
         // this.scaleInput.addEventListener('change', this.changeScaleHandler);
         // this.tooltipInput.addEventListener('change', this.changeTooltipHandler);
@@ -125,6 +127,7 @@ class ConfigurationPanel implements IPanel {
     updateThumbSecond(value: number){
         this.currentFirstInput.max = value.toString();
         this.currentSecondInput.value = value.toString();
+        //maybe that should be in 'updateRange()
         (this.data.range)
             ? this.currentSecondInput.disabled = false
             : this.currentSecondInput.disabled = true;
@@ -143,6 +146,14 @@ class ConfigurationPanel implements IPanel {
                     : element.value;   
         this.presenter.setData(name, data);
     }
+
+    // validate(name: string, data: any){
+    //     switch (name){
+    //         case "min": data <= this.data.max + this.data.step;
+    //         break;
+    //         case "max": data 
+    //     }
+    // }
 
     // changeMin(){
     //     let data = parseInt(this.minInput.value);
@@ -172,7 +183,7 @@ class ConfigurationPanel implements IPanel {
     // }
 
     // changeOrientation(){
-    //     let data = (this.verticalInput.checked)
+    //     let data = (this.orientationInput.checked)
     //         ? "vertical"
     //         : "horizontal"
     //     this.presenter.setData({orientation: data});
@@ -200,7 +211,6 @@ class ConfigurationPanel implements IPanel {
     // }
 
     render(data: TSettings){
-        console.log(data.range)
         this.panelContainer.innerHTML = "";
         
         this.listOfPanelItems = [
