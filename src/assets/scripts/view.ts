@@ -122,7 +122,9 @@ class SliderView implements IView {
         
         //actual values
         this.stepValue = this.settings.step;
-        this.stepPerDiv = this.settings.scale.stepPerDiv;
+        this.stepPerDiv = (this.stepPerDiv) 
+            ? this.stepPerDiv
+            : this.settings.scale.stepPerDiv;
         this.maxValue = this.settings.max;
         this.minValue = this.settings.min;
     }
