@@ -39,6 +39,8 @@ class ConfigurationPanel implements IPanel {
     changePanelHandler!: {(event: Event): void};
     updateThumbHandler!: {(number: number): void};
     updateThumbSecondHandler!: {(number: number): void};
+    currentFirstActual!: string;
+    currentSecondActual!: string;
 
     constructor(containerId: string, presenter: IPresenter){
         this.parentContainer = document.getElementById(containerId)!;
@@ -105,7 +107,6 @@ class ConfigurationPanel implements IPanel {
     }
 
     updatePanel(){
-        console.log(0)
         this.getData();
         this.updateThumb();
         this.updateThumbSecond();
@@ -113,14 +114,12 @@ class ConfigurationPanel implements IPanel {
 
     updateThumb(){
         this.currentFirstInput.min = this.data.min;
-        this.currentFirstInput.max = this.data.currentSecond;
         this.currentFirstInput.value = this.data.currentFirst;
         this.currentFirstInput.step = this.data.step;
     }
 
     updateThumbSecond(){
         this.currentSecondInput.min = this.data.currentFirst;
-        this.currentSecondInput.max = this.data.max;
         this.currentSecondInput.value = this.data.currentSecond;
         this.currentSecondInput.step = this.data.step;
         //maybe that should be in 'updateRange()
@@ -130,7 +129,6 @@ class ConfigurationPanel implements IPanel {
     }
 
     changePanel(e: Event){
-        console.log(11)
         // if (e.target === this.currentFirstInput
         //     || e.target === this.currentSecondInput) return;
         let element = e.target as HTMLInputElement;
@@ -180,10 +178,8 @@ class ConfigurationPanel implements IPanel {
     }
 
     changeCurrentSecond(){
-        console.log(this.currentSecondInput.attributes)
         let name = "currentSecond";
         let value = parseInt(this.currentSecondInput.value);
-        //additional attr?
         this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!;
         //if (this.currentSecondInput.classList);
         let adjustedValue = adjustCurrentSecond(value, this.data.currentFirst, this.data.max, this.data.min, this.data.step);
@@ -255,7 +251,7 @@ class ConfigurationPanel implements IPanel {
                         ? "checked"
                         : "",
                 type: 'checkbox'
-            },
+            }
         ]
 
         for (let item of this.listOfPanelItems){
@@ -270,9 +266,9 @@ class ConfigurationPanel implements IPanel {
         //control (input/select/checkbox) of panelItem
         let panelControlAttr;
             switch (params.name){
-                case "currentFirst": panelControlAttr = `min= "${this.data.min}" max= "${this.data.currentSecond}" step= "${this.data.step}"`;
+                case "currentFirst": panelControlAttr = `min= "${this.data.min}" step= "${this.data.step}"`;
                         break;
-                case "currentSecond": panelControlAttr = `min= "${this.data.currentFirst}" max= "${this.data.max}" step= "${this.data.step}"`;
+                case "currentSecond": panelControlAttr = `min= "${this.data.currentFirst}" step= "${this.data.step}"`;
                         break;
                 default: panelControlAttr = "";
                         break;
