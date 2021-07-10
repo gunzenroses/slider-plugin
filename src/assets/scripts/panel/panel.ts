@@ -34,7 +34,7 @@ class ConfigurationPanel implements IPanel {
     changeMaxHandler!: {(): void};
     changeStepHandler!: {(): void};
     changeCurrentFirstHandler!: {(): void};
-    // changeCurrentSecondHandler!: {(): void};
+    changeCurrentSecondHandler!: {(): void};
 
     changePanelHandler!: {(event: Event): void};
     updateThumbHandler!: {(number: number): void};
@@ -79,7 +79,7 @@ class ConfigurationPanel implements IPanel {
         this.changeMaxHandler = this.changeMax.bind(this);
         this.changeStepHandler = this.changeStep.bind(this);
         this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
-        // this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
+        this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
 
         this.updateHandler = this.updatePanel.bind(this);
         this.updateThumbHandler = this.updateThumb.bind(this);
@@ -97,8 +97,8 @@ class ConfigurationPanel implements IPanel {
         this.maxInput.addEventListener('change', this.changeMaxHandler);
         this.stepInput.addEventListener('change', this.changeStepHandler);
         this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
-        // this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
-    
+        this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
+
         this.presenter.fromPresenterUpdate.add(this.updateHandler);
         this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler);
         this.presenter.fromPresenterThumbSecondUpdate.add(this.updateThumbSecondHandler);
