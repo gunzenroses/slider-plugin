@@ -105,20 +105,24 @@ class ConfigurationPanel implements IPanel {
     }
 
     updatePanel(){
+        console.log(0)
         this.getData();
-        //update other parts of panel
-        this.updateThumb(this.data.currentFirst);
-        this.updateThumbSecond(this.data.currentSecond);
+        this.updateThumb();
+        this.updateThumbSecond();
     }
 
-    updateThumb(value: number){
-        this.currentSecondInput.min = value.toString();
-        this.currentFirstInput.value = value.toString();
+    updateThumb(){
+        this.currentFirstInput.min = this.data.min;
+        this.currentFirstInput.max = this.data.currentSecond;
+        this.currentFirstInput.value = this.data.currentFirst;
+        this.currentFirstInput.step = this.data.step;
     }
 
-    updateThumbSecond(value: number){
-        this.currentFirstInput.max = value.toString();
-        this.currentSecondInput.value = value.toString();
+    updateThumbSecond(){
+        this.currentSecondInput.min = this.data.currentFirst;
+        this.currentSecondInput.max = this.data.max;
+        this.currentSecondInput.value = this.data.currentSecond;
+        this.currentSecondInput.step = this.data.step;
         //maybe that should be in 'updateRange()
         (this.data.range)
             ? this.currentSecondInput.disabled = false
@@ -126,6 +130,7 @@ class ConfigurationPanel implements IPanel {
     }
 
     changePanel(e: Event){
+        console.log(11)
         // if (e.target === this.currentFirstInput
         //     || e.target === this.currentSecondInput) return;
         let element = e.target as HTMLInputElement;
@@ -175,6 +180,7 @@ class ConfigurationPanel implements IPanel {
     }
 
     changeCurrentSecond(){
+        console.log(this.currentSecondInput.attributes)
         let name = "currentSecond";
         let value = parseInt(this.currentSecondInput.value);
         //additional attr?
