@@ -45,7 +45,9 @@ class SliderModel implements IModel {
 
     updateCurrentsWithStep(){
         this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data.max, this.data.min, this.data.step)
-        this.data.currentSecond = applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
+        this.data.currentSecond =  (this.data.range)
+            ? applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
+            : this.data.max;
     }
 
     //special cases for setData that changes only thumbValue
