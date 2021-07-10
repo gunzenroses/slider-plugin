@@ -29,13 +29,13 @@ $color-border: #3d3d3d;
     }
 }
 
-.invisible {
-    visibility: hidden;
-}
-
 @import "../scripts/subview/tooltipView/tooltipView.scss";
 @import "../scripts/subview/trackView/sliderRange/sliderRangeView.scss";
 @import "../scripts/subview/trackView/sliderThumb/sliderThumbView.scss";
 @import "../scripts/subview/trackView/sliderTrack/sliderTrackView.scss";
 @import "../scripts/subview/scaleView/scaleView.scss";
 @import "../scripts//panel/panel.scss";
+
+.disabled {
+    display: none;
+}
