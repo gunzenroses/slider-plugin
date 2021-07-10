@@ -1,7 +1,7 @@
 import { throttle } from "throttle-typescript";
 import { IPresenter } from "../presenter"
 import { TSettings } from "../types/types";
-import { validateCurrentFirst, validateCurrentSecond, validateMax, validateMin, validateStep } from "./validatePanel";
+import { adjustCurrentFirst, adjustCurrentSecond, adjustMax, adjustMin, adjustStep } from "./adjustPanel";
 
 interface IPanel {
     presenter: IPresenter;
@@ -142,25 +142,25 @@ class ConfigurationPanel implements IPanel {
     changeMin(){
         let name = "min";
         let value = parseInt(this.minInput.value);
-        let validValue = validateMin(value, this.data.max, this.data.step);
-        this.minInput.value = validValue.toString();
-        this.presenter.setData(name, validValue);
+        let adjustedValue = adjustMin(value, this.data.max, this.data.step);
+        this.minInput.value = adjustedValue.toString();
+        this.presenter.setData(name, adjustedValue);
     }
 
     changeMax(){
         let name = "max";
         let value = parseInt(this.maxInput.value);
-        let validValue = validateMax(value, this.data.min, this.data.step);
-        this.maxInput.value = validValue.toString();
-        this.presenter.setData(name, validValue);
+        let adjustedValue = adjustMax(value, this.data.min, this.data.step);
+        this.maxInput.value = adjustedValue.toString();
+        this.presenter.setData(name, adjustedValue);
     }
 
     changeStep(){
         let name = "step";
         let value = parseInt(this.stepInput.value);
-        let validValue = validateStep(value, this.data.max, this.data.min);
-        this.stepInput.value = validValue.toString();
-        this.presenter.setData(name, validValue);
+        let adjustedValue = adjustStep(value, this.data.max, this.data.min);
+        this.stepInput.value = adjustedValue.toString();
+        this.presenter.setData(name, adjustedValue);
     }
 
     changeCurrentFirst(){
@@ -169,9 +169,9 @@ class ConfigurationPanel implements IPanel {
         //additional
         this.presenter.view.selectObject = this.presenter.view.sliderThumb!;
         //if (this.currentSecondInput.classList);
-        let validValue = validateCurrentFirst(value, this.data.currentSecond, this.data.max, this.data.min, this.data.step);
-        this.currentFirstInput.value = validValue!.toString();
-        this.presenter.setData(name, validValue);
+        let adjustedValue = adjustCurrentFirst(value, this.data.currentSecond, this.data.max, this.data.min, this.data.step);
+        this.currentFirstInput.value = adjustedValue!.toString();
+        this.presenter.setData(name, adjustedValue);
     }
 
     changeCurrentSecond(){
@@ -180,9 +180,9 @@ class ConfigurationPanel implements IPanel {
         //additional attr?
         this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!;
         //if (this.currentSecondInput.classList);
-        let validValue = validateCurrentSecond(value, this.data.currentFirst, this.data.max, this.data.min, this.data.step);
-        this.currentSecondInput.value = validValue!.toString();
-        this.presenter.setData(name, validValue);
+        let adjustedValue = adjustCurrentSecond(value, this.data.currentFirst, this.data.max, this.data.min, this.data.step);
+        this.currentSecondInput.value = adjustedValue!.toString();
+        this.presenter.setData(name, adjustedValue);
     }
 
     render(data: TSettings){
