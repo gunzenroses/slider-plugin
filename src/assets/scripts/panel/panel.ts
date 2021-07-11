@@ -41,6 +41,7 @@ class ConfigurationPanel implements IPanel {
     updateThumbSecondHandler!: {(number: number): void};
     currentFirstActual!: string;
     currentSecondActual!: string;
+    numberInputs!: NodeListOf<Element>;
 
     constructor(containerId: string, presenter: IPresenter){
         this.parentContainer = document.getElementById(containerId)!;
@@ -66,6 +67,7 @@ class ConfigurationPanel implements IPanel {
     createChildren(){
         this.checkboxes = this.panelContainer.querySelectorAll("input[type='checkbox']");
         this.orientationInput = <HTMLInputElement>document.querySelector('select[name="orientation"]');
+        this.numberInputs = this.panelContainer.querySelectorAll("input[type='number']")
 
         this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
         this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
@@ -77,11 +79,11 @@ class ConfigurationPanel implements IPanel {
 
     setupHandlers(){
         this.changePanelHandler = this.changePanel.bind(this);
-        this.changeMinHandler = this.changeMin.bind(this);
-        this.changeMaxHandler = this.changeMax.bind(this);
-        this.changeStepHandler = this.changeStep.bind(this);
-        this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
-        this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
+        // this.changeMinHandler = this.changeMin.bind(this);
+        // this.changeMaxHandler = this.changeMax.bind(this);
+        // this.changeStepHandler = this.changeStep.bind(this);
+        // this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
+        // this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
 
         this.updateHandler = this.updatePanel.bind(this);
         this.updateThumbHandler = this.updateThumb.bind(this);
@@ -93,13 +95,17 @@ class ConfigurationPanel implements IPanel {
             item.addEventListener('change', throttle(this.changePanelHandler, 300))
         };
         this.orientationInput.addEventListener('change', throttle(this.changePanelHandler, 300));
-        
+        for (let item of this.numberInputs){
+            item.addEventListener('change', throttle(this.changePanelHandler, 300))
+        };
+
         // this.panelContainer.addEventListener('change', throttle(this.changePanelHandler, 300));
-        this.minInput.addEventListener('change', this.changeMinHandler);
-        this.maxInput.addEventListener('change', this.changeMaxHandler);
-        this.stepInput.addEventListener('change', this.changeStepHandler);
-        this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
-        this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
+        
+        // this.minInput.addEventListener('change', this.changeMinHandler);
+        // this.maxInput.addEventListener('change', this.changeMaxHandler);
+        // this.stepInput.addEventListener('change', this.changeStepHandler);
+        // this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
+        // this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
 
         this.presenter.fromPresenterUpdate.add(this.updateHandler);
         this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler);
@@ -108,6 +114,9 @@ class ConfigurationPanel implements IPanel {
 
     updatePanel(){
         this.getData();
+        this.stepInput.value = this.data.step;
+        this.minInput.value = this.data.min;
+        this.maxInput.value = this.data.max;
         this.updateThumb();
         this.updateThumbSecond();
     }
@@ -122,15 +131,12 @@ class ConfigurationPanel implements IPanel {
         this.currentSecondInput.min = this.data.currentFirst;
         this.currentSecondInput.value = this.data.currentSecond;
         this.currentSecondInput.step = this.data.step;
-        //maybe that should be in 'updateRange()
         (this.data.range)
             ? this.currentSecondInput.disabled = false
             : this.currentSecondInput.disabled = true;
     }
 
     changePanel(e: Event){
-        // if (e.target === this.currentFirstInput
-        //     || e.target === this.currentSecondInput) return;
         let element = e.target as HTMLInputElement;
         let name: string = element.getAttribute("name")!;
         let type = element.getAttribute("type");
@@ -138,58 +144,15 @@ class ConfigurationPanel implements IPanel {
             ? element.checked
                 : (type === "number")
                     ? parseInt(element.value)
-                    : element.value;   
+                    : element.value;
+        if (name === "currentFirst"){ this.presenter.view.selectObject = this.presenter.view.sliderThumb!; }
+        if (name === "currentSecond"){ this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!; }
         this.presenter.setData(name, data);
-    }
-
-    changeMin(){
-        let name = "min";
-        let value = parseInt(this.minInput.value);
-        let adjustedValue = adjustMin(value, this.data.max, this.data.step);
-        this.minInput.value = adjustedValue.toString();
-        this.presenter.setData(name, adjustedValue);
-    }
-
-    changeMax(){
-        let name = "max";
-        let value = parseInt(this.maxInput.value);
-        let adjustedValue = adjustMax(value, this.data.min, this.data.step);
-        this.maxInput.value = adjustedValue.toString();
-        this.presenter.setData(name, adjustedValue);
-    }
-
-    changeStep(){
-        let name = "step";
-        let value = parseInt(this.stepInput.value);
-        let adjustedValue = adjustStep(value, this.data.max, this.data.min);
-        this.stepInput.value = adjustedValue.toString();
-        this.presenter.setData(name, adjustedValue);
-    }
-
-    changeCurrentFirst(){
-        let name = "currentFirst";
-        let value = parseInt(this.currentFirstInput.value);
-        //additional
-        this.presenter.view.selectObject = this.presenter.view.sliderThumb!;
-        //if (this.currentSecondInput.classList);
-        let adjustedValue = adjustCurrentFirst(value, this.data.currentSecond, this.data.max, this.data.min, this.data.step);
-        this.currentFirstInput.value = adjustedValue!.toString();
-        this.presenter.setData(name, adjustedValue);
-    }
-
-    changeCurrentSecond(){
-        let name = "currentSecond";
-        let value = parseInt(this.currentSecondInput.value);
-        this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!;
-        //if (this.currentSecondInput.classList);
-        let adjustedValue = adjustCurrentSecond(value, this.data.currentFirst, this.data.max, this.data.min, this.data.step);
-        this.currentSecondInput.value = adjustedValue!.toString();
-        this.presenter.setData(name, adjustedValue);
     }
 
     render(data: TSettings){
         this.panelContainer.innerHTML = "";
-        
+
         this.listOfPanelItems = [
             {
                 name: 'min',
@@ -262,7 +225,7 @@ class ConfigurationPanel implements IPanel {
     createPanelItem(params: any){
         //name of panelItem
         let panelItemName = `<div class= "panel__name">${params.text}</div>`
-        
+
         //control (input/select/checkbox) of panelItem
         let panelControlAttr;
             switch (params.name){
@@ -278,7 +241,7 @@ class ConfigurationPanel implements IPanel {
             switch (params.type){
                 case 'number': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} ${panelControlAttr} />`;
                                 break;
-                case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value} ${panelControlAttr} />`; 
+                case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value} ${panelControlAttr} />`;
                                 break;
                 case 'select': panelControl = `<${params.type} class="panel__input" name= ${params.name}> ${params.options.map((el: string) => this.selectOption(el)).join('')} </${params.type}>`;
                                 break;
