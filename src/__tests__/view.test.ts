@@ -1,5 +1,6 @@
 import { SliderView } from "../assets/scripts/view"
 import { sliderData } from "../assets/scripts/data"
+import { mergeData } from "../assets/scripts/common";
 
 let data = sliderData;
 let containerId = 'container1';
@@ -16,31 +17,82 @@ describe('class SliderView', ()=>{
     })
 
     describe('method init()', ()=>{
-        let spyCreateChildren = jest.spyOn(view, 'createChildren');
-        let spyRender = jest.spyOn(view, 'render');
-        let spySetupHandlers = jest.spyOn(view, 'setupHandlers');
-        let spyEnable = jest.spyOn(view, 'enable');
-
         view.init(data);
-
         test('set passed in data as settings', ()=>{
             expect(view.settings).toEqual(data);
         })
+    })
 
-        test('call methods createChildren(), render(), setupHandlers(), enable()', ()=>{
-            expect(spyCreateChildren).toHaveBeenCalledTimes(1)
-            expect(spyRender).toHaveBeenCalledTimes(1)
-            expect(spySetupHandlers).toHaveBeenCalledTimes(1)
-            expect(spyEnable).toHaveBeenCalledTimes(1)
+    describe('method createChildren()', ()=>{
+        test('create children (variables) for class functionality', ()=>{
+            expect(view.selectObject).toBeTruthy;
+            expect(view.ifHorizontal).toBeDefined;
+            expect(view.ifRange).toBeDefined;
+            expect(view.ifTooltip).toBeDefined;
+            expect(view.ifScale).toBeDefined;
+            expect(view.currentFirstInPercents).toBeTruthy;
+            expect(view.currentSecondInPercents).toBeTruthy;
+            expect(view.stepValue ).toBeTruthy;
+            expect(view.stepPerDiv).toBeTruthy;
+            expect(view.maxValue).toBeTruthy;
+            expect(view.minValue).toBeTruthy;
+        })
+    })
+
+    describe('method enable()', ()=>{
+        test('notify fromViewSelectThumb subscribers when sliderContainer is clicked', ()=>{
+            let spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
+
+            view.sliderContainer.dispatchEvent(new Event('click'));
+
+            expect(spyOnClick).toHaveBeenCalledTimes(1);
+        })
+
+        test('should not activate "fromViewSelectThumb" when sliderThumb or sliderThumbSecond is clicked', ()=>{
+            let spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
+
+            view.sliderThumb.dispatchEvent(new Event('click'));
+            view.sliderThumbSecond.dispatchEvent(new Event('click'));
+
+            expect(spyOnClick).toHaveBeenCalledTimes(0);
+        })
+
+        test('define dragObject when sliderThumb is started to be dragged', ()=>{
+            view.sliderThumb.dispatchEvent(new Event('pointerdown'));
+
+            expect(view.dragObject).toBeDefined;
+        })
+
+        test('define dragObject when sliderThumbSecond is started to be dragged', ()=>{
+            view.settings.range = true;
+
+            view.sliderThumbSecond.dispatchEvent(new Event('pointerdown'));
+
+            expect(view.dragObject).toBeDefined;
+        })
+
+        test('notify fromViewDragThumb subscribers when thumb is moved', ()=>{
+            let spyOnDragMove = jest.spyOn(view.fromViewDragThumb, "notify");
+
+            view.sliderThumbSecond.dispatchEvent(new Event('pointerdown'));
+            document.dispatchEvent(new Event('pointermove'));
+
+            expect(spyOnDragMove).toHaveBeenCalledTimes(1);
+        })
+
+        test('clear dragObject when dragged thumb is released', ()=>{
+            document.dispatchEvent(new Event('pointerup'));
+
+            expect(view.dragObject).toEqual({});
         })
     })
 
     describe('method change()', ()=>{
         test ('update styles for Thumb, Range and Tooltip when (selectObject === sliderThumb)', ()=>{
-            view.dragObject = view.sliderThumb;
+            let obj = view.sliderThumb;
             let num = 7;
 
-            view.сhange(num);
+            view.сhange(obj, num);
 
             expect(view.sliderThumb.style.left).toBe(num + '%');
             expect(view.sliderRange.style.left).toBe(num + '%');
@@ -48,10 +100,10 @@ describe('class SliderView', ()=>{
         })
 
         test ('update styles for Thumb, Range and Tooltip when (selectObject === sliderThumbSecond)', ()=>{
-            view.dragObject = view.sliderThumbSecond;
+            let obj = view.sliderThumbSecond;
             let num = 11;
 
-            view.сhange(num);
+            view.сhange(obj, num);
 
             expect(view.sliderThumbSecond.style.left).toBe(num + '%');
             expect(view.sliderRange.style.right).toBe((100 - num) + '%');
@@ -60,112 +112,29 @@ describe('class SliderView', ()=>{
     })
 
     describe('method render()', ()=>{
-        test('should render all elements of slider',()=>{
-            view.render();
-
-            expect(view.sliderContainer).toBeTruthy();
-            expect(view.sliderTrack).toBeTruthy();
-            expect(view.sliderRange).toBeTruthy();
-            expect(view.sliderThumb).toBeTruthy();
-            if (view.ifTooltip){ expect(view.tooltipFirst).toBeTruthy(); }
-            if (view.ifRange){ expect(view.sliderThumbSecond).toBeTruthy(); }
-            if (view.ifRange && view.ifTooltip){ expect(view.tooltipSecond).toBeTruthy(); }
-            if (view.ifScale){ expect(view.scale).toBeTruthy(); }
-        })
-    })
-
-    describe('method selectThumb()', ()=>{
-        test('return undefined if (e.target === sliderThumb || sliderThumbSecond)', ()=>{
-            var e = {
-                target: view.sliderThumb,
-                ... new Event('click'),
-            };
-
-            let check = view.selectThumb(e as MouseEvent);
-
-            expect(check).toBeFalsy();
+        test('init rendering of view elements', ()=>{
+            expect(view.sliderContainer).toBeDefined;
+            expect(view.sliderTrack).toBeDefined;
+            expect(view.sliderRange).toBeDefined;
+            expect(view.sliderThumb).toBeDefined;
+            expect(view.sliderThumbSecond).toBeDefined;
+            expect(view.scale).toBeDefined;
+            expect(view.tooltipFirst).toBeDefined;
+            expect(view.tooltipSecond).toBeDefined;
         })
 
-        test('notify subscribers if (e.target !== sliderThumb || sliderThumbSecond)', ()=>{
-            let spyNotify = jest.spyOn(view.fromViewSelectThumb, 'notify');
-            var evt = {
-                target: view.sliderTrack,
-                ... new Event('click'),
-            };
-
-            view.selectThumb(evt as MouseEvent);
+        test('disable elements when !ifScale, !ifTooltip, !ifRange', ()=>{
+            let newData = {
+                scale: false,
+                tooltip: false,
+                range: false
+            }
+            let updatedData = mergeData(sliderData, newData);
             
-            expect(spyNotify).toBeCalledTimes(1);
-        })
-    })
+            view.init(updatedData);
 
-    describe('method dragThumbStart()', () => {
-        test('return undefined if (e.target !== sliderThumb || sliderThumbSecond)', ()=>{
-            var e = {
-                target: view.sliderTrack,
-                ... new Event('mousedown'),
-            };
-            let check = view.dragThumbStart(e as MouseEvent);
-
-            expect(check).toBeFalsy();
-        })
-
-        test('return undefined if (e.type !== mouseup)', ()=>{
-            var e = {
-                target: view.sliderThumb,
-                ... new Event('mouseup'),
-                type: 'mouseup'
-            };
-
-            let check = view.dragThumbStart(e as MouseEvent);
-
-            expect(check).toBeFalsy();
-        })
-
-        test('assign (selectObject = e.target) if (e.target === sliderThumb || sliderThumbSecond)', ()=>{
-            var e = {
-                target: view.sliderThumb,
-                ... new Event('mousedown'),
-                type: 'mousedown'
-            };
-
-            view.dragThumbStart(e as MouseEvent);
-
-            //expect(view.selectObject.elem).toEqual(e.target);
-        })
-    })
-
-    describe('method dragThumbMove()', () => {
-        var e = {
-            target: view.sliderThumb,
-            ... new Event('mousemove')
-        };
-
-        test('return undefined if no dragObject', ()=>{
-            view.selectObject = {};
-
-            let check = view.dragThumbMove(e as MouseEvent);
-
-            expect(check).toBeFalsy();
-        })
-
-        test('notify subscribers if dragObject exists', ()=>{
-            let spyNotify = jest.spyOn(view.fromViewDragThumb, 'notify');
-            view.selectObject.elem = view.sliderThumb;
-
-            view.dragThumbMove(e as MouseEvent);
-
-            expect(spyNotify).toHaveBeenCalledTimes(1);
-        })
-    })
-
-    describe('method dragThumbEnd', ()=>{
-        test('clear dragObject data',()=>{
-            let clearedObject = {};
-
-            view.dragThumbEnd();
-
-            expect(view.dragObject).toEqual(clearedObject);
+            expect(view.scale.classList.contains('disabled')).toBe(true);
+            expect(view.tooltipSecond.classList.contains('disabled')).toBe(true);
         })
     })
 })
