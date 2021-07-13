@@ -12,40 +12,12 @@ import { scaleView } from "./subview/scaleView/scaleView"
 import { changeValueToPercents } from "./common"
 
 interface IView {
-    // settings: TSettings;
-
-    // fromViewSelectThumb: EventDispatcher;
-    // fromViewDragThumb: EventDispatcher;
-
-    // parentContainer: HTMLElement;
-    // sliderContainer: HTMLElement;
-    // sliderThumb: HTMLElement;
-    // sliderThumbSecond?: HTMLElement;
-    // sliderRange: HTMLElement;
-    // sliderTrack: HTMLElement;
-    // tooltipRow?: HTMLElement;
-    // tooltipFirst?: HTMLElement;
-    // tooltipSecond?: HTMLElement;
-    // scale?: HTMLElement;
-
-    // selectObject: TDragObject;
-    // dragObject: TDragObject;
-
-    // changeHandler: (object: TDragObject, number: number) => void;
-
-    // init(settings: TSettings): void;
-    // render(): void;
-    // сhange(object: TDragObject, newThumbCurrent: number): void;
-    // dragThumbEnd(): void;
-
     settings: TSettings;
-
     sliderContainer: HTMLElement;
     sliderThumb: HTMLElement;
     sliderThumbSecond?: HTMLElement;
     fromViewSelectThumb: EventDispatcher;
     fromViewDragThumb: EventDispatcher;
-
     selectObject: TDragObject;
     dragObject: TDragObject;
 
