@@ -14,6 +14,12 @@ describe('class SliderModel', ()=>{
         model = new SliderModel(containerClass, data);
     })
 
+    describe('method getContainerId', ()=>{
+        test('should return id, which was passed to constructor', ()=>{
+            expect(model.getContainerId()).toEqual(containerClass);
+        })
+    })
+
     describe('method getData()', ()=>{
         test('should be called', ()=>{
             const spyGetData = jest.spyOn(model, "getData");
@@ -23,7 +29,7 @@ describe('class SliderModel', ()=>{
             expect(spyGetData).toHaveBeenCalledTimes(1);
         })
 
-        test('return object with passed into constructor data', ()=>{
+        test('return object wich were passed into constructor data', ()=>{
             //assertion
             expect(model.getData()).toEqual(data);
         })
@@ -42,13 +48,25 @@ describe('class SliderModel', ()=>{
         })
     })
 
-    describe('method setData()', ()=>{
-        test('replace previous data with passed into method data', ()=>{
-            let newData = { min: 7 };
+    describe('method updateCurrentsWithStep()', ()=>{
+        test('should make currentThumb multiple of step', ()=>{
+            let newCF = { name: "currentFirst", data: 26 };
+            let step = model.getData().step;
+            let multiple = Math.trunc((newCF.data/step)*step);
 
-            model.setData(newData);
+            model.setData(newCF.name, newCF.data);
             
-            expect(model.getData()).toHaveProperty('min', newData.min);
+            expect(model.getData().currentFirst).toBe(multiple);
+        })
+
+        test('should make currentThumbSecond multiple of step', ()=>{
+            let newCF = { name: "currentSecond", data: 35 };
+            let step = model.getData().step;
+            let multiple = Math.trunc((newCF.data/step)*step);
+
+            model.setData(newCF.name, newCF.data);
+            
+            expect(model.getData().currentSecond).toBe(multiple);
         })
     })
 
