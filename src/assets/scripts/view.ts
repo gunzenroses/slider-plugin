@@ -12,46 +12,56 @@ import { scaleView } from "./subview/scaleView/scaleView"
 import { changeValueToPercents } from "./common"
 
 interface IView {
+    // settings: TSettings;
+
+    // fromViewSelectThumb: EventDispatcher;
+    // fromViewDragThumb: EventDispatcher;
+
+    // parentContainer: HTMLElement;
+    // sliderContainer: HTMLElement;
+    // sliderThumb: HTMLElement;
+    // sliderThumbSecond?: HTMLElement;
+    // sliderRange: HTMLElement;
+    // sliderTrack: HTMLElement;
+    // tooltipRow?: HTMLElement;
+    // tooltipFirst?: HTMLElement;
+    // tooltipSecond?: HTMLElement;
+    // scale?: HTMLElement;
+
+    // selectObject: TDragObject;
+    // dragObject: TDragObject;
+
+    // changeHandler: (object: TDragObject, number: number) => void;
+
+    // init(settings: TSettings): void;
+    // render(): void;
+    // сhange(object: TDragObject, newThumbCurrent: number): void;
+    // dragThumbEnd(): void;
+
     settings: TSettings;
 
-    fromViewSelectThumb: EventDispatcher;
-    fromViewDragThumb: EventDispatcher;
-
-    parentContainer: HTMLElement;
     sliderContainer: HTMLElement;
     sliderThumb: HTMLElement;
     sliderThumbSecond?: HTMLElement;
-    sliderRange: HTMLElement;
-    sliderTrack: HTMLElement;
-    tooltipRow?: HTMLElement;
-    tooltipFirst?: HTMLElement;
-    tooltipSecond?: HTMLElement;
-    scale?: HTMLElement;
+    fromViewSelectThumb: EventDispatcher;
+    fromViewDragThumb: EventDispatcher;
 
     selectObject: TDragObject;
     dragObject: TDragObject;
 
-    changeHandler: (object: TDragObject, number: number) => void;
-
     init(settings: TSettings): void;
-    //createChildren(): void;
-    //setupHandlers(): void;
-    //enable(): void;
-    render(): void;
-    
-    // selectThumb(e: MouseEvent): void;
-    // dragThumbStart(e: MouseEvent): void;
     сhange(object: TDragObject, newThumbCurrent: number): void;
     dragThumbEnd(): void;
-    //updateElement(name: string, value: any): void;
 }
 
 class SliderView implements IView {
+    //in constructor
     parentContainer: HTMLElement;
-    settings!: TSettings;
     fromViewSelectThumb: EventDispatcher
     fromViewDragThumb: EventDispatcher
 
+    //to manipulate DOM
+    settings!: TSettings;
     sliderContainer!: HTMLElement;
     sliderThumb!: HTMLElement;
     sliderThumbSecond!: HTMLElement;
@@ -62,17 +72,17 @@ class SliderView implements IView {
     tooltipSecond!: HTMLElement;
     scale!: HTMLElement;
 
-    selectObject!: TDragObject; //{elem: EventTarget, offsetX: number} | {};
+    //maintain select/drag
+    selectObject!: TDragObject;
     dragObject!: TDragObject;
-    thumbSecondPosition!: number;
-    containerWidth!: number;
 
-    selectThumbHandler!: { (ev: MouseEvent): void };
-    dragThumbStartHandler!: { (ev: PointerEvent ): void };
-    dragThumbMoveHandler!: { (ev: PointerEvent ): void };
-    dragThumbEndHandler!: () => void;
+    private selectThumbHandler!: { (ev: MouseEvent): void };
+    private dragThumbStartHandler!: { (ev: PointerEvent ): void };
+    private dragThumbMoveHandler!: { (ev: PointerEvent ): void };
+    private dragThumbEndHandler!: () => void;
     changeHandler!: (object: TDragObject, number: number) => void;
 
+    //conditions to render 
     ifHorizontal!: boolean;
     ifRange!: boolean;
     currentFirstInPercents!: number;
@@ -84,11 +94,6 @@ class SliderView implements IView {
     min!: number;
 
     stepPerDiv!: number;
-
-    sliderRangeClass!: string;
-    sliderTrackClass!: string;
-    sliderThumbFirstClass!: string;
-    sliderThumbSecondClass!: string;
     stepValue!: number;
     maxValue!: number;
     minValue!: number;
@@ -107,19 +112,16 @@ class SliderView implements IView {
         this.enable();
     }
 
-    createChildren(){
+    private createChildren(){
         this.selectObject = {};
-
         //booleans
         this.ifHorizontal = this.settings.orientation === "horizontal";
         this.ifRange = this.settings.range;
         this.ifTooltip = this.settings.tooltip;
         this.ifScale = this.settings.scale;
-
          //values in percents (comes from model with applied step)
         this.currentFirstInPercents = changeValueToPercents(this.settings.currentFirst, this.settings.max, this.settings.min);
         this.currentSecondInPercents = changeValueToPercents(this.settings.currentSecond, this.settings.max, this.settings.min);
-        
         //actual values
         this.stepValue = this.settings.step;
         this.stepPerDiv = (this.stepPerDiv) 
@@ -129,7 +131,7 @@ class SliderView implements IView {
         this.minValue = this.settings.min;
     }
 
-    setupHandlers(){
+    private setupHandlers(){
         this.selectThumbHandler = this.selectThumb.bind(this);
         this.dragThumbStartHandler = this.dragThumbStart.bind(this);
         this.dragThumbMoveHandler = this.dragThumbMove.bind(this);
@@ -137,7 +139,7 @@ class SliderView implements IView {
         this.changeHandler = this.сhange.bind(this);
     }
 
-    enable(){
+    private enable(){
         this.sliderContainer.addEventListener("click", this.selectThumbHandler);
         this.sliderThumb.addEventListener("pointerdown", this.dragThumbStartHandler);
         if (this.settings.range){ 
@@ -147,13 +149,13 @@ class SliderView implements IView {
         document.addEventListener("pointerup", this.dragThumbEndHandler);
     }
 
-    selectThumb(e: MouseEvent){
+    private selectThumb(e: MouseEvent){
         if (e.target === this.sliderThumb || 
             e.target === this.sliderThumbSecond) return;
         this.fromViewSelectThumb.notify(e);
     }
     
-    dragThumbStart(e: PointerEvent){
+    private dragThumbStart(e: PointerEvent){
         e.preventDefault;
         if (e.target !== this.sliderThumb &&
             e.target !== this.sliderThumbSecond)
@@ -168,7 +170,7 @@ class SliderView implements IView {
 
     }
 
-    dragThumbMove(e: PointerEvent){
+    private dragThumbMove(e: PointerEvent){
         if (this.dragObject === undefined || !this.dragObject.classList) return;
         e.preventDefault;
         this.fromViewDragThumb.notify(e);
@@ -193,7 +195,7 @@ class SliderView implements IView {
         }
     }
 
-    render(){
+    private render(){
         this.parentContainer.innerHTML = "";
         //values in percents
         this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
