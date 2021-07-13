@@ -68,8 +68,8 @@ class SliderView implements IView {
     containerWidth!: number;
 
     selectThumbHandler!: { (ev: MouseEvent): void };
-    dragThumbStartHandler!: { (ev: MouseEvent ): void };
-    dragThumbMoveHandler!: { (ev: MouseEvent ): void };
+    dragThumbStartHandler!: { (ev: PointerEvent ): void };
+    dragThumbMoveHandler!: { (ev: PointerEvent ): void };
     dragThumbEndHandler!: () => void;
     changeHandler!: (object: TDragObject, number: number) => void;
 
@@ -139,16 +139,12 @@ class SliderView implements IView {
 
     enable(){
         this.sliderContainer.addEventListener("click", this.selectThumbHandler);
-        this.sliderThumb.addEventListener("mousedown", this.dragThumbStartHandler);
-        // this.sliderThumb.addEventListener("touchstart", this.dragThumbStartHandler);
+        this.sliderThumb.addEventListener("pointerdown", this.dragThumbStartHandler);
         if (this.settings.range){ 
-            this.sliderThumbSecond.addEventListener("mousedown", this.dragThumbStartHandler); 
-            // this.sliderThumbSecond.addEventListener("touchstart", this.dragThumbStartHandler);
+            this.sliderThumbSecond.addEventListener("pointerdown", this.dragThumbStartHandler);
         };
-        document.addEventListener("mousemove", this.dragThumbMoveHandler);
-        document.addEventListener("mouseup", this.dragThumbEndHandler);
-        // document.addEventListener("touchmove", this.dragThumbMoveHandler);
-        // document.addEventListener("touchend", this.dragThumbEndHandler);
+        document.addEventListener("pointermove", this.dragThumbMoveHandler);
+        document.addEventListener("pointerup", this.dragThumbEndHandler);
     }
 
     selectThumb(e: MouseEvent){
@@ -157,30 +153,22 @@ class SliderView implements IView {
         this.fromViewSelectThumb.notify(e);
     }
     
-    dragThumbStart(e: MouseEvent){
+    dragThumbStart(e: PointerEvent){
         e.preventDefault;
         if (e.target !== this.sliderThumb &&
             e.target !== this.sliderThumbSecond)
             return;
         else {
-            if (e.type === "mousedown"){
-                let mouseEvent = e as MouseEvent;
-                this.dragObject = e.target;
-            // } else {
-            //     let touchEvent = e as TouchEvent;
-            //         let rect  = touchEvent.target!.getBoundingClientRect();
-            //         let offsetX = touchEvent.targetTouches[0].clientX - rect.x;
-            //         let offsetY = touchEvent.targetTouches[0].clientY - rect.y
-                
-            //     this.selectObject = touchEvent.touches[0].target;
-            //     this.ifHorizontal
-            //         ? this.selectObject.offset = offsetX
-            //         : this.selectObject.offset = offsetY;
-            }
+            // (e.target === this.sliderThumb )
+            //     ? this.sliderThumb.setPointerCapture(e.pointerId)
+            //     : this.sliderThumbSecond.setPointerCapture(e.pointerId);
+            
+            this.dragObject = e.target;
         }
+
     }
 
-    dragThumbMove(e: MouseEvent){
+    dragThumbMove(e: PointerEvent){
         if (this.dragObject === undefined || !this.dragObject.classList) return;
         e.preventDefault;
         this.fromViewDragThumb.notify(e);
