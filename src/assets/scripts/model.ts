@@ -27,6 +27,13 @@ class SliderModel implements IModel {
         this.updateCurrentsWithStep();
     }
 
+    private updateCurrentsWithStep(){
+        this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data.max, this.data.min, this.data.step)
+        this.data.currentSecond =  (this.data.range)
+            ? applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
+            : this.data.max;
+    }
+
     getContainerId(){
         return this.containerId;
     }
@@ -50,16 +57,6 @@ class SliderModel implements IModel {
         this.data = mergeData(oldData, newData);
         this.updateCurrentsWithStep();
         this.fromModelUpdateData.notify(); //Object.keys(newData)[0], Object.values(newData)[0]);
-    }
-
-    //here is a mistake! 
-    //when max=11, min 10, 
-    // cf = 30, cs = 140!!
-    updateCurrentsWithStep(){
-        this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data.max, this.data.min, this.data.step)
-        this.data.currentSecond =  (this.data.range)
-            ? applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
-            : this.data.max;
     }
 
     //special cases for setData that changes only thumbValue
