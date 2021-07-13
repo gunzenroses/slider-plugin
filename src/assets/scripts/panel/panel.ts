@@ -1,7 +1,6 @@
 import { throttle } from "throttle-typescript";
 import { IPresenter } from "../presenter"
 import { TSettings } from "../types/types";
-import { adjustCurrentFirst, adjustCurrentSecond, adjustMax, adjustMin, adjustStep } from "./adjustPanel";
 
 interface IPanel {
     presenter: IPresenter;
@@ -79,11 +78,6 @@ class ConfigurationPanel implements IPanel {
 
     setupHandlers(){
         this.changePanelHandler = this.changePanel.bind(this);
-        // this.changeMinHandler = this.changeMin.bind(this);
-        // this.changeMaxHandler = this.changeMax.bind(this);
-        // this.changeStepHandler = this.changeStep.bind(this);
-        // this.changeCurrentFirstHandler = this.changeCurrentFirst.bind(this);;
-        // this.changeCurrentSecondHandler = this.changeCurrentSecond.bind(this);
 
         this.updateHandler = this.updatePanel.bind(this);
         this.updateThumbHandler = this.updateThumb.bind(this);
@@ -98,14 +92,6 @@ class ConfigurationPanel implements IPanel {
         for (let item of this.numberInputs){
             item.addEventListener('change', throttle(this.changePanelHandler, 300))
         };
-
-        // this.panelContainer.addEventListener('change', throttle(this.changePanelHandler, 300));
-        
-        // this.minInput.addEventListener('change', this.changeMinHandler);
-        // this.maxInput.addEventListener('change', this.changeMaxHandler);
-        // this.stepInput.addEventListener('change', this.changeStepHandler);
-        // this.currentFirstInput.addEventListener('change', this.changeCurrentFirstHandler);
-        // this.currentSecondInput.addEventListener('change', this.changeCurrentSecondHandler);
 
         this.presenter.fromPresenterUpdate.add(this.updateHandler);
         this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler);
