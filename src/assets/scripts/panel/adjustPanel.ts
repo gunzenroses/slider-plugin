@@ -13,11 +13,13 @@ function adjustMax(value: number, min: number, step: number){
 }
 
 function adjustStep(step: number, max: number, min: number){
-    return (step < 0)
-        ? 1
-        : ((step > (max - min))
-            ? (max - min)
-            : step)
+    return (step <= 0)
+            ? 1
+            : ((step > (max - min))
+                ? (max - min)
+                : (step < (max - min)
+                    ? step
+                    : 1))
 }
 
 function adjustCurrentFirst(value: number, currentSecond: number, max: number, min: number, step: number){
