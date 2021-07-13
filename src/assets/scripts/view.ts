@@ -54,7 +54,7 @@ class SliderView implements IView {
     private dragThumbEndHandler!: () => void;
     changeHandler!: (object: TDragObject, number: number) => void;
 
-    //conditions to render 
+    //conditional variables for rendering
     ifHorizontal!: boolean;
     ifRange!: boolean;
     currentFirstInPercents!: number;
@@ -65,6 +65,7 @@ class SliderView implements IView {
     max!: number;
     min!: number;
 
+    //actual variables
     stepPerDiv!: number;
     stepValue!: number;
     maxValue!: number;
