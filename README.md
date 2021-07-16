@@ -24,4 +24,4 @@ Run production mode
 >```npm run build```
 
 ### Link to pages
-> [UIKit](https://gunzenroses.github.io/slider-plugin/index.html)
+> [Example of Slider](https://gunzenroses.github.io/slider-plugin/index.html)
