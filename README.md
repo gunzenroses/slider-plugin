@@ -1,7 +1,7 @@
 # slider-plugin
 
 ### Used technologies and libraries
-- webpack (сборщик проекта);
+- webpack (сборщик пакетов);
 - scss (шаблонизатор для стилей);
 - TypeScript;
 - jest (Unit тестирование);
