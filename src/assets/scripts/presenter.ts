@@ -11,6 +11,7 @@ interface IPresenter {
     data: TSettings;
 
     init(): void;
+    updateView(): void;
     setData(name: string, data: any): void;
 
     fromPresenterUpdate: EventDispatcher;
@@ -34,8 +35,8 @@ class SliderPresenter implements IPresenter {
 
     private ifHorizontal!: boolean;
     private ifRange!: boolean;
-    private containerSize!: number;
-    private thumbWidth!: number;
+    containerSize!: number;
+    thumbWidth!: number;
 
     fromModelChangeViewHandler!: { (newThumbValue: number) : void };
     fromModelUpdateDataHandler!: {(data: TSettings): void};
@@ -60,7 +61,7 @@ class SliderPresenter implements IPresenter {
     }
 
     // maybe join with init
-    private updateView(){
+    updateView(){
         this.data = this.model.getData();
         this.view.init(this.data);
         this.createChildren();
@@ -213,7 +214,7 @@ class SliderPresenter implements IPresenter {
         this.model.setData(name, data);
     }
 
-    updateDataEverywhere(){
+    private updateDataEverywhere(){
         this.updateView();
         this.fromPresenterUpdate.notify();
     }
