@@ -15,7 +15,7 @@ interface IView {
     settings: TSettings;
     sliderContainer: HTMLElement;
     sliderThumb: HTMLElement;
-    sliderThumbSecond?: HTMLElement;
+    sliderThumbSecond: HTMLElement;
     fromViewSelectThumb: EventDispatcher;
     fromViewDragThumb: EventDispatcher;
     selectObject: TDragObject;
