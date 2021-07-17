@@ -10,8 +10,8 @@ describe('class SliderModel', ()=>{
     beforeEach(()=>{
         containerClass = 'container1';
         data = sliderData;
-
         model = new SliderModel(containerClass, data);
+        jest.restoreAllMocks();
     })
 
     describe('method getContainerId', ()=>{
