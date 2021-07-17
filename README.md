@@ -25,3 +25,11 @@ Run production mode
 
 ### Link to pages
 [Example of Slider](https://gunzenroses.github.io/slider-plugin/)
+
+
+will be updated soon:
+> eslint
+> unit tests coverage
+> packed as jQuery plugin (with rollup and aglify.js)
+> UML diagram (MVP + Observer)
+
