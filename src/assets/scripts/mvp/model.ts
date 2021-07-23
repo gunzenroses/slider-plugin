@@ -1,7 +1,7 @@
-import { TSettings } from "./types/types"
-import { EventDispatcher } from './eventDispatcher'
-import { applyStepOnValue, mergeData } from "./common"
-import { adjustCurrentFirst, adjustCurrentSecond, adjustMax, adjustMin, adjustStep } from "./panel/adjustPanel";
+import { TSettings } from "../types/types"
+import { EventDispatcher } from '../helpers/eventDispatcher'
+import { applyStepOnValue, mergeData } from "../helpers/common"
+import { adjustCurrentFirst, adjustCurrentSecond, adjustMax, adjustMin, adjustStep } from "../helpers/adjustData";
 
 interface IModel {
     fromModelChangeView: EventDispatcher;
