@@ -1,0 +1,11 @@
+import { TSettings } from "../types/types";
+declare function applyStepOnValue(value: number, max: number, min: number, step: number): number;
+declare function applyRestrictions(value: number): number;
+declare function fromPercentsToValue(valueInPercents: number, max: number, min: number): string;
+declare function changeValueToPercents(value: number, max: number, min: number): number;
+declare function fromValueToPX(value: number, max: number, min: number, containerSize: number): number;
+declare function findPosition(thisElement: HTMLElement, ifHorizontal: boolean, containerSize: number): number;
+declare function mergeData(sliderData: TSettings, options: TSettings): TSettings;
+declare function fromPercentsToValueApplyStep(value: number, max: number, min: number, step: number): number;
+declare function changeValueToPercentsApplyStep(value: number, max: number, min: number, step: number): number;
+export { applyStepOnValue, applyRestrictions, fromPercentsToValue, changeValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentsToValueApplyStep, changeValueToPercentsApplyStep };
