@@ -7,7 +7,12 @@ interface IPanel {
     parentContainer: HTMLElement;
     data: TSettings;
     init(): void;
-}
+    render(data: TSettings): void;
+    changePanel(event: Event): void;
+    updatePanel(): void;
+    updateThumb(): void;
+    updateThumbSecond(): void;
+} 
 
 class ConfigurationPanel implements IPanel {
     presenter: IPresenter;
