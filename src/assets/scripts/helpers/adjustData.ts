@@ -1,4 +1,4 @@
-import { applyStepOnValue } from "../common";
+import { applyStepOnValue } from "./common";
 
 function adjustMin(value: number, max: number, step: number){
     return (value <= (max - step))
