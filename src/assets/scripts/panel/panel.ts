@@ -20,7 +20,7 @@ class ConfigurationPanel implements IPanel {
     data!: TSettings;
 
     panelContainer: HTMLElement;
-    listOfPanelItems!: any;
+    private listOfPanelItems!: any;
 
     checkboxes!: NodeListOf<HTMLElement>;
     minInput!: HTMLInputElement;
@@ -46,7 +46,7 @@ class ConfigurationPanel implements IPanel {
         this.init();
     }
 
-    getData(){
+    private getData(){
         this.data = this.presenter.data;
     }
 
@@ -57,7 +57,7 @@ class ConfigurationPanel implements IPanel {
         this.enable();
     }
 
-    createChildren(){
+    private createChildren(){
         this.checkboxes = this.panelContainer.querySelectorAll("input[type='checkbox']");
         this.orientationInput = <HTMLInputElement>document.querySelector('select[name="orientation"]');
         this.numberInputs = this.panelContainer.querySelectorAll("input[type='number']")
@@ -70,14 +70,14 @@ class ConfigurationPanel implements IPanel {
         if (!this.data.range){ this.currentSecondInput.disabled = true};
     }
 
-    setupHandlers(){
+    private setupHandlers(){
         this.changePanelHandler = this.changePanel.bind(this);
         this.updateHandler = this.updatePanel.bind(this);
         this.updateThumbHandler = this.updateThumb.bind(this);
         this.updateThumbSecondHandler = this.updateThumbSecond.bind(this);
     }
 
-    enable(){
+    private enable(){
         for (let item of this.checkboxes){
             item.addEventListener('change', throttle(this.changePanelHandler, 300))
         };
@@ -201,7 +201,7 @@ class ConfigurationPanel implements IPanel {
         }
     }
 
-    createPanelItem(params: any){
+    private createPanelItem(params: any){
         //name of panelItem
         let panelItemName = `<div class= "panel__name">${params.text}</div>`
 
@@ -232,7 +232,7 @@ class ConfigurationPanel implements IPanel {
         return element;
     }
 
-    selectOption(arg: string){
+    private selectOption(arg: string){
         let selectOption = (arg === this.data.orientation)
             ? `<option selected value="${arg}">${arg}</option> `
             : `<option value="${arg}">${arg}</option> `
