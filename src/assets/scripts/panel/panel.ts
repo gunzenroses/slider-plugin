@@ -1,5 +1,5 @@
 import { throttle } from "throttle-typescript";
-import { IPresenter } from "../presenter"
+import { IPresenter } from "../mvp/presenter"
 import { TSettings } from "../types/types";
 
 interface IPanel {
@@ -24,23 +24,12 @@ class ConfigurationPanel implements IPanel {
     currentFirstInput!: HTMLInputElement;
     currentSecondInput!: HTMLInputElement;
     orientationInput!: HTMLInputElement;
-    rangeInput!: HTMLInputElement;
-    scaleInput!: HTMLInputElement;
-    tooltipInput!: HTMLInputElement;
+    numberInputs!: NodeListOf<Element>;
 
     updateHandler!: {(data: TSettings): void};
-    changeMinHandler!: {(): void};
-    changeMaxHandler!: {(): void};
-    changeStepHandler!: {(): void};
-    changeCurrentFirstHandler!: {(): void};
-    changeCurrentSecondHandler!: {(): void};
-
     changePanelHandler!: {(event: Event): void};
     updateThumbHandler!: {(number: number): void};
     updateThumbSecondHandler!: {(number: number): void};
-    currentFirstActual!: string;
-    currentSecondActual!: string;
-    numberInputs!: NodeListOf<Element>;
 
     constructor(containerId: string, presenter: IPresenter){
         this.parentContainer = document.getElementById(containerId)!;
@@ -78,7 +67,6 @@ class ConfigurationPanel implements IPanel {
 
     setupHandlers(){
         this.changePanelHandler = this.changePanel.bind(this);
-
         this.updateHandler = this.updatePanel.bind(this);
         this.updateThumbHandler = this.updateThumb.bind(this);
         this.updateThumbSecondHandler = this.updateThumbSecond.bind(this);
