@@ -1,5 +1,5 @@
-import { IModel, SliderModel } from "../assets/scripts/model"
-import { sliderData } from "../assets/scripts/data"
+import { IModel, SliderModel } from "../assets/scripts/mvp/model"
+import { sliderData } from "../assets/scripts/mvp/data"
 import { TSettings } from "../assets/scripts/types/types"
 
 describe('class SliderModel', ()=>{

@@ -1,4 +1,4 @@
-import { EventDispatcher } from "../assets/scripts/eventDispatcher";
+import { EventDispatcher } from "../assets/scripts/helpers/eventDispatcher";
 
 describe('EventDispatcher',()=>{
     let ed = new EventDispatcher();

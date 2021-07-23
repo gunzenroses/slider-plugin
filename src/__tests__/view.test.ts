@@ -1,6 +1,6 @@
-import { SliderView } from "../assets/scripts/view"
-import { sliderData } from "../assets/scripts/data"
-import { mergeData } from "../assets/scripts/common";
+import { SliderView } from "../assets/scripts/mvp/view"
+import { sliderData } from "../assets/scripts/mvp/data"
+import { mergeData } from "../assets/scripts/helpers/common";
 
 let data = sliderData;
 let containerId = 'container1';

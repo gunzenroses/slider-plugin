@@ -1,4 +1,4 @@
-import { fromValueToPX } from "../../common"
+import { fromValueToPX } from "../../helpers/common"
 import { scaleItem } from "./scaleItem"
 
 function scaleItemRow (ifHorizontal: boolean, containerSize: number, min: number, max: number, step: number, stepPerDiv: number, heightValue?: number, widthValue?: number){

@@ -1,11 +1,11 @@
 import "../styles/slider.scss"
-import { sliderData } from "./data"
+import { sliderData } from "./mvp/data"
 import { TSettings } from "./types/types"
-import { SliderModel } from "./model"
-import { SliderView } from "./view"
-import { SliderPresenter } from "./presenter"
+import { SliderModel } from "./mvp/model"
+import { SliderView } from "./mvp/view"
+import { SliderPresenter } from "./mvp/presenter"
 import { ConfigurationPanel } from "./panel/panel"
-import { mergeData } from "./common"
+import { mergeData } from "./helpers/common"
 
 function SliderMaker(id: string, options: TSettings, configurationPanel?: boolean){
 
