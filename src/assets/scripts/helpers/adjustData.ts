@@ -23,19 +23,23 @@ function adjustStep(step: number, max: number, min: number){
 }
 
 function adjustCurrentFirst(value: number, currentSecond: number, max: number, min: number, step: number){
-    if (value < min) return min;
-    if (value > currentSecond) return currentSecond;
-    if (value >= min && value <= currentSecond){
-        return applyStepOnValue(value, max, min, step);
-    } else return;
+    return (value < min)
+        ? min
+        : ((value > currentSecond)
+            ? currentSecond
+            : ( (value >= min && value <= currentSecond)
+                ? applyStepOnValue(value, max, min, step)
+                : min ))
 }
 
 function adjustCurrentSecond(value: number, currentFirst: number, max: number, min: number, step: number){
-    if (value < currentFirst) return currentFirst;
-    if (value > max) return max;
-    if (value >= currentFirst && value <= max){
-        return applyStepOnValue(value, max, min, step);
-    } else return;
+    return (value < currentFirst)
+        ? currentFirst
+        : ((value > max)
+            ? max
+            : ((value >= currentFirst && value <= max)
+                ? applyStepOnValue(value, max, min, step)
+                : currentFirst ))
 }
 
 
