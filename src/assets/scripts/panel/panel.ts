@@ -106,19 +106,21 @@ class ConfigurationPanel implements IPanel {
     }
 
     updateThumb(){
-        this.currentFirstInput.min = this.data.min;
         this.currentFirstInput.value = this.data.currentFirst;
+        this.currentFirstInput.min = this.data.min;
+        this.currentFirstInput.max = this.data.currentSecond;
         this.currentFirstInput.step = this.data.step;
     }
 
     updateThumbSecond(){
         this.currentSecondInput.min = this.data.currentFirst;
+        this.currentSecondInput.max = this.data.max;
         this.currentSecondInput.value = this.data.currentSecond;
         this.currentSecondInput.step = this.data.step;
         (this.data.range)
             ? this.currentSecondInput.disabled = false
             : this.currentSecondInput.disabled = true;
-    }
+    }                                           
 
     changePanel(e: Event){
         let element = e.target as HTMLInputElement;
@@ -216,9 +218,15 @@ class ConfigurationPanel implements IPanel {
         //control (input/select/checkbox) of panelItem
         let panelControlAttr;
             switch (params.name){
-                case "currentFirst": panelControlAttr = `min= "${this.data.min}" step= "${this.data.step}"`;
+                case "currentFirst": panelControlAttr = `min= "${this.data.min}" step= "${this.data.step}" max= "${this.data.currentSecond}"`;
                         break;
-                case "currentSecond": panelControlAttr = `min= "${this.data.currentFirst}" step= "${this.data.step}"`;
+                case "currentSecond": panelControlAttr = `min= "${this.data.currentFirst}" step= "${this.data.step}" max= "${this.data.max}"`;
+                        break;
+                case "max": panelControlAttr = `min= "${this.data.min + this.data.step}"`;
+                        break;
+                case "min": panelControlAttr = `min= "0" max="${this.data.max - this.data.step}"`;
+                        break;
+                case "step": panelControlAttr = `min= "1"`;
                         break;
                 default: panelControlAttr = "";
                         break;
