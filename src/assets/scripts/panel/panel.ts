@@ -1,6 +1,7 @@
 import { throttle } from "throttle-typescript";
 import { IPresenter } from "../mvp/presenter"
 import { TSettings } from "../types/types";
+import { checkValidity } from "../helpers/checkValidity";
 
 interface IPanel {
     presenter: IPresenter;
@@ -20,6 +21,7 @@ class ConfigurationPanel implements IPanel {
     data!: TSettings;
 
     panelContainer: HTMLElement;
+    messageContainer: HTMLElement;
     private listOfPanelItems!: any;
 
     checkboxes!: NodeListOf<HTMLElement>;
@@ -41,6 +43,9 @@ class ConfigurationPanel implements IPanel {
         this.panelContainer = document.createElement('div');
         this.panelContainer.classList.add('panel');
         this.parentContainer.after(this.panelContainer);
+        this.messageContainer = document.createElement('div');
+        this.messageContainer.classList.add('error-message');
+        this.panelContainer.after(this.messageContainer);
         this.presenter = presenter;
         this.getData();
         this.init();
@@ -126,7 +131,10 @@ class ConfigurationPanel implements IPanel {
                     : element.value;
         if (name === "currentFirst"){ this.presenter.view.selectObject = this.presenter.view.sliderThumb!; }
         if (name === "currentSecond"){ this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!; }
-        this.presenter.setData(name, data);
+        if (type === "number"){
+            let validation = new checkValidity(element, this.messageContainer);
+            setTimeout(()=>{ this.presenter.setData(name, data); }, 1000);
+        } else { this.presenter.setData(name, data); };
     }
 
     render(data: TSettings){
@@ -218,7 +226,7 @@ class ConfigurationPanel implements IPanel {
 
         let panelControl;
             switch (params.type){
-                case 'number': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} ${panelControlAttr} />`;
+                case 'number': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} ${panelControlAttr} required/>`;
                                 break;
                 case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value} ${panelControlAttr} />`;
                                 break;
