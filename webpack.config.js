@@ -17,7 +17,7 @@ module.exports = (env) => ({
     output: {
         path: path.resolve(__dirname, './dist'),
         filename: 'assets/js/[name].bundle.js',
-        publicPath: "/",
+        publicPath: "https://gunzenroses.github.io/slider-plugin/",
     },
     devServer: {
         contentBase: path.join(__dirname, './dist'),
@@ -85,7 +85,7 @@ module.exports = (env) => ({
         new HtmlWebpackPlugin({
             filename: "index.html",
             minify: true,
-            template: path.resolve(__dirname, "src/index.html"),
+            template: path.resolve(__dirname, "./src/index.html"),
             chunks: ["main"],
             inject: "body",
         }),
