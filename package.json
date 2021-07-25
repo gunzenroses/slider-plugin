@@ -1,17 +1,20 @@
 {
   "name": "jq-slider-mvc",
   "version": "1.0.0",
+  "home": "https://github.com/gunzenroses/slider-plugin",
   "description": "jQuery plugin range-slider with MVC structure",
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
     "build": "rimraf dist && webpack --env production --mode=production",
     "dev": "webpack serve --env development --progress --liveReload",
-    "docs": "jsdoc2md --template ./README.hbs --files ./src/lib/*.ts --configure ./jsdoc2md.json > ./README.md"
+    "docs": "jsdoc2md --template ./README.hbs --files ./src/lib/*.ts --configure ./jsdoc2md.json > ./README.md",
+    "deploy": "gh-pages -d dist",
+    "predeploy": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gunzenroses/jq-range-slider.git"
+    "url": "git+https://github.com/gunzenroses/slider-plugin.git"
   },
   "keywords": [
     "jQuery",
@@ -22,9 +25,8 @@
   "author": "@gunzenroses",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gunzenroses/jq-range-slider/issues"
+    "url": "https://github.com/gunzenroses/slider-plugin/issues"
   },
-  "homepage": "https://github.com/gunzenroses/jq-range-slider#readme",
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/preset-env": "^7.14.1",
@@ -36,6 +38,7 @@
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "copy-webpack-plugin": "^8.1.1",
     "css-loader": "^5.2.4",
+    "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^5.3.1",
     "jest": "^26.6.3",
     "mini-css-extract-plugin": "^1.6.0",
