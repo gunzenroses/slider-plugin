@@ -16,6 +16,7 @@ declare class ConfigurationPanel implements IPanel {
     parentContainer: HTMLElement;
     data: TSettings;
     panelContainer: HTMLElement;
+    panelItems: HTMLElement;
     private listOfPanelItems;
     checkboxes: NodeListOf<HTMLElement>;
     minInput: HTMLInputElement;
