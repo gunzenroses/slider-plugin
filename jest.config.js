@@ -10,7 +10,7 @@ module.exports = {
   //   ['**/I[A-Z]*.{ts}']
   // ],
   collectCoverage: true,
-  coverageReporters: ["html"],
+  //coverageReporters: ["html"],
   //setupFilesAfterEnv: ["<rootDir>/jestSetup.js"],
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   moduleFileExtensions: [
