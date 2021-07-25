@@ -21,7 +21,7 @@ class ConfigurationPanel implements IPanel {
     data!: TSettings;
 
     panelContainer: HTMLElement;
-    messageContainer: HTMLElement;
+    panelItems: HTMLElement;
     private listOfPanelItems!: any;
 
     checkboxes!: NodeListOf<HTMLElement>;
@@ -40,12 +40,15 @@ class ConfigurationPanel implements IPanel {
 
     constructor(containerId: string, presenter: IPresenter){
         this.parentContainer = document.getElementById(containerId)!;
+        
         this.panelContainer = document.createElement('div');
         this.panelContainer.classList.add('panel');
         this.parentContainer.after(this.panelContainer);
-        this.messageContainer = document.createElement('div');
-        this.messageContainer.classList.add('error-message');
-        this.panelContainer.after(this.messageContainer);
+        
+        this.panelItems = document.createElement('div');
+        this.panelItems.classList.add('panel__items');
+        this.panelContainer.prepend(this.panelItems);
+        
         this.presenter = presenter;
         this.getData();
         this.init();
@@ -134,13 +137,13 @@ class ConfigurationPanel implements IPanel {
         if (name === "currentFirst"){ this.presenter.view.selectObject = this.presenter.view.sliderThumb!; }
         if (name === "currentSecond"){ this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!; }
         if (type === "number"){
-            let validation = new checkValidity(element, this.messageContainer);
+            let validation = new checkValidity(element, this.panelContainer);
             setTimeout(()=>{ this.presenter.setData(name, data); }, 1000);
         } else { this.presenter.setData(name, data); };
     }
 
     render(data: TSettings){
-        this.panelContainer.innerHTML = "";
+        this.panelItems.innerHTML = "";
 
         this.listOfPanelItems = [
             {
@@ -207,7 +210,7 @@ class ConfigurationPanel implements IPanel {
         ]
 
         for (let item of this.listOfPanelItems){
-            this.panelContainer.innerHTML += this.createPanelItem(item)
+            this.panelItems.innerHTML += this.createPanelItem(item)
         }
     }
 
@@ -226,7 +229,7 @@ class ConfigurationPanel implements IPanel {
                         break;
                 case "min": panelControlAttr = `min= "0" max="${this.data.max - this.data.step}"`;
                         break;
-                case "step": panelControlAttr = `min= "1"`;
+                case "step": panelControlAttr = `min= "1" max="${this.data.max - this.data.min}"`;
                         break;
                 default: panelControlAttr = "";
                         break;
