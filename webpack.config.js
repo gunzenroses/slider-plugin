@@ -17,7 +17,7 @@ module.exports = (env) => ({
     output: {
         path: path.resolve(__dirname, './dist'),
         filename: 'assets/js/[name].bundle.js',
-        publicPath: "https://gunzenroses.github.io/slider-plugin/",
+        publicPath: env.development ? '/' : 'https://gunzenroses.github.io/slider-plugin/',
     },
     devServer: {
         contentBase: path.join(__dirname, './dist'),
