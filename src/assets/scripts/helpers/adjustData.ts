@@ -27,7 +27,7 @@ function adjustCurrentFirst(value: number, currentSecond: number, max: number, m
     if (value > currentSecond) return currentSecond;
     if (value >= min && value <= currentSecond){
         return applyStepOnValue(value, max, min, step);
-    }
+    } else return;
 }
 
 function adjustCurrentSecond(value: number, currentFirst: number, max: number, min: number, step: number){
@@ -35,7 +35,7 @@ function adjustCurrentSecond(value: number, currentFirst: number, max: number, m
     if (value > max) return max;
     if (value >= currentFirst && value <= max){
         return applyStepOnValue(value, max, min, step);
-    }
+    } else return;
 }
 
 
