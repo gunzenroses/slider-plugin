@@ -67,7 +67,7 @@ class ConfigurationPanel implements IPanel {
 
     private createChildren(){
         this.checkboxes = this.panelContainer.querySelectorAll("input[type='checkbox']");
-        this.orientationInput = <HTMLInputElement>document.querySelector('select[name="orientation"]');
+        this.orientationInput = <HTMLInputElement>this.panelContainer.querySelector('select[name="orientation"]');
         this.numberInputs = this.panelContainer.querySelectorAll("input[type='number']")
 
         this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
