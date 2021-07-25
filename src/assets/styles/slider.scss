@@ -2,7 +2,7 @@ $height-basic: 6px;
 $half-thumb: 8px;
 $width-border: 1px;
 $color-basic: #670042;
-$color-light: #fff;
+$color-light: #ffffff;
 $color-border: #3d3d3d;
 
 * {
@@ -43,4 +43,12 @@ $color-border: #3d3d3d;
 
 .hidden {
     visibility: hidden;
+}
+
+.error-message {
+    width: 100%;
+    height: fit-content;
+    background-color: $color-basic;
+    color: $color-light;
+    text-align: center;
 }
