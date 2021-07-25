@@ -3,23 +3,27 @@ import "./index.css"
 
 window.onload = function() {
     const $ = require('jquery')
-    $("div").toggleClass("active");
+    
 
     // здесь вызывать rangeSlider.ts for every slider
     //$.fn.SliderMaker()
     
     let simpleSlider = SliderMaker("horizontal", {
-        max: 120,
-        step: 7,
+        min: 10,
+        max: 140,
+        step: 20,
         scale: true,
-        range: true,
-    })
+        range: false
+    }, true)
 
     let verticalSlider = SliderMaker("vertical", {
         orientation: "vertical",
         step: 6,
-        max: 120,
-        scale: true,
-        range: false,
-    })
+        max: 140,
+        scale: {
+            stepPerDiv: 2
+        },
+        range: true,
+        tooltip: false
+    }, true)
 }
