@@ -1,4 +1,3 @@
-
 class checkValidity {
     private item: HTMLInputElement;
     private messageContainer!: HTMLElement;
@@ -21,11 +20,6 @@ class checkValidity {
             this.addInvalidity("Should be a number");
         }
 
-        if (validity.typeMismatch){
-            const type = this.item.getAttribute("type");
-            this.addInvalidity("Number should be type " + type);
-        }
-        
         if (validity.rangeOverflow){
             const max = this.item.getAttribute("max");
             this.addInvalidity("Number should be maximum " + max);
@@ -51,22 +45,23 @@ class checkValidity {
         }
     }
 
-    addInvalidity(message: string){
+    private addInvalidity(message: string){
         this.invalidities.push(message);
     }
 
-    getInvalidities(){
+    private getInvalidities(){
         return this.invalidities.join('. \n');
     }
 
-    placeValidityMessages(){
+    private placeValidityMessages(){
         let msg = this.getInvalidities();
         this.messageContainer.classList.remove('hidden');
         this.messageContainer.innerText = msg;
         setTimeout(()=>{ this.deleteValidityMessage()}, 1500);
     }
 
-    deleteValidityMessage(){
+    private deleteValidityMessage(){
+        this.invalidities = [];
         this.messageContainer.innerText = "";
         this.messageContainer.classList.add('hidden');
     }
