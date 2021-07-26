@@ -92,6 +92,56 @@ describe('Panel', ()=>{
 
             expect(spyPresenter).toHaveBeenCalledTimes(1);
         })
+
+        describe('should validate data for input[type="number"]', () => {
+            test('return false when input.value="" ', () => {
+                let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='max']")!;
+                trg.value = "";
+
+                trg.dispatchEvent(new Event('change'));
+
+                expect(trg.checkValidity()).toBeFalsy();
+            })
+            test('add error-message when value is not a number ', () => {
+                let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='max']")!;
+                trg.setAttribute('max', '100');
+                trg.value = "Cat";
+
+                trg.dispatchEvent(new Event('change'));
+
+                expect(panel.validation.invalidities).toContain("Should be a number");
+            })
+
+            test('add error-message when value > max', () => {
+                let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='currentSecond']")!;
+                trg.setAttribute('max', '100');
+                trg.value = '120';
+
+                trg.dispatchEvent(new Event('change'));
+
+                expect(panel.validation.invalidities).toContain("Number should be maximum 100");
+            })
+
+            test('add error-message when value < min', () => {
+                let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='step']")!;
+                trg.value = '0';
+
+                trg.dispatchEvent(new Event('change'));
+
+                expect(panel.validation.invalidities).toContain("Number should be minimum 1");
+            })
+
+            test('add error-message when stepMismatch', () => {
+                let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='currentFirst']")!;
+                trg.setAttribute('min', '10'); 
+                trg.setAttribute('step', '8');
+                trg.value = '32';
+
+                trg.dispatchEvent(new Event('change'));
+
+                expect(panel.validation.invalidities).toContain("Number should be: 10 + multiple of 8");
+            })            
+        })
     })
 
     describe('method updatePanel()', ()=>{        
