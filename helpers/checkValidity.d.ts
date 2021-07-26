@@ -5,9 +5,9 @@ declare class checkValidity {
     invalidities: Array<String>;
     constructor(item: HTMLInputElement, parentContainer: HTMLElement);
     checkValidity(): void;
-    addInvalidity(message: string): void;
-    getInvalidities(): string;
-    placeValidityMessages(): void;
-    deleteValidityMessage(): void;
+    private addInvalidity;
+    private getInvalidities;
+    private placeValidityMessages;
+    private deleteValidityMessage;
 }
 export { checkValidity };
