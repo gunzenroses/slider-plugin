@@ -1,4 +1,4 @@
-import { fromPercentsToValue } from "../../helpers/common"
+import { fromPercentsToValue } from "../../../scripts/helpers/common"
 
 function changeTooltip(object: HTMLElement, newThumbCurrent: number, max: number, min: number){
     object.innerText =  fromPercentsToValue(newThumbCurrent, max, min)   

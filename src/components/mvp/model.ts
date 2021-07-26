@@ -1,7 +1,7 @@
-import { TSettings } from "../types/types"
-import { EventDispatcher } from '../helpers/eventDispatcher'
-import { applyStepOnValue, mergeData } from "../helpers/common"
-import { adjustValue } from "../helpers/adjustData";
+import { TSettings } from "../../scripts/types/types"
+import { EventDispatcher } from '../../scripts/helpers/eventDispatcher'
+import { applyStepOnValue, mergeData } from "../../scripts/helpers/common"
+import { adjustValue } from "../../scripts/helpers/adjustData";
 
 interface IModel {
     fromModelChangeView: EventDispatcher;
