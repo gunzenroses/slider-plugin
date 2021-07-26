@@ -1,7 +1,7 @@
 import { throttle } from "throttle-typescript";
 import { IPresenter } from "../mvp/presenter"
 import { TSettings } from "../types/types";
-import { checkValidity } from "../helpers/checkValidity";
+import { checkValidity } from "./checkValidity";
 
 interface IPanel {
     presenter: IPresenter;
@@ -103,9 +103,9 @@ class ConfigurationPanel implements IPanel {
 
     updatePanel(){
         this.getData();
-        this.stepInput.value = this.data.step;
         this.minInput.value = this.data.min;
         this.maxInput.value = this.data.max;
+        this.updateStep();
         this.updateThumb();
         this.updateThumbSecond();
     }
@@ -125,7 +125,12 @@ class ConfigurationPanel implements IPanel {
         (this.data.range)
             ? this.currentSecondInput.disabled = false
             : this.currentSecondInput.disabled = true;
-    }                                           
+    }
+    
+    private updateStep(){
+        this.stepInput.value = this.data.step;
+        this.stepInput.max = (this.data.max - this.data.min).toString();
+    }
 
     changePanel(e: Event){
         let element = e.target as HTMLInputElement;
