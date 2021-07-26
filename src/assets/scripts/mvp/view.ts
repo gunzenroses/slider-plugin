@@ -29,8 +29,8 @@ interface IView {
 class SliderView implements IView {
     //in constructor
     parentContainer: HTMLElement;
-    fromViewSelectThumb: EventDispatcher
-    fromViewDragThumb: EventDispatcher
+    fromViewSelectThumb: EventDispatcher;
+    fromViewDragThumb: EventDispatcher;
 
     //to manipulate DOM
     settings!: TSettings;
