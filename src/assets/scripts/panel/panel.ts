@@ -13,6 +13,7 @@ interface IPanel {
     updatePanel(): void;
     updateThumb(): void;
     updateThumbSecond(): void;
+    validation: checkValidity;
 } 
 
 class ConfigurationPanel implements IPanel {
@@ -32,6 +33,7 @@ class ConfigurationPanel implements IPanel {
     currentSecondInput!: HTMLInputElement;
     orientationInput!: HTMLInputElement;
     numberInputs!: NodeListOf<Element>;
+    validation!: checkValidity;
 
     updateHandler!: {(data: TSettings): void};
     changePanelHandler!: {(event: Event): void};
@@ -137,8 +139,8 @@ class ConfigurationPanel implements IPanel {
         if (name === "currentFirst"){ this.presenter.view.selectObject = this.presenter.view.sliderThumb!; }
         if (name === "currentSecond"){ this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!; }
         if (type === "number"){
-            let validation = new checkValidity(element, this.panelContainer);
-            setTimeout(()=>{ this.presenter.setData(name, data); }, 1000);
+            this.validation = new checkValidity(element, this.panelContainer);
+            setTimeout(()=>{ this.presenter.setData(name, data); });
         } else { this.presenter.setData(name, data); };
     }
 
