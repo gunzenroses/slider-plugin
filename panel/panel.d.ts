@@ -1,6 +1,6 @@
 import { IPresenter } from "../mvp/presenter";
 import { TSettings } from "../types/types";
-import { checkValidity } from "../helpers/checkValidity";
+import { checkValidity } from "./checkValidity";
 interface IPanel {
     presenter: IPresenter;
     parentContainer: HTMLElement;
@@ -50,6 +50,7 @@ declare class ConfigurationPanel implements IPanel {
     updatePanel(): void;
     updateThumb(): void;
     updateThumbSecond(): void;
+    private updateStep;
     changePanel(e: Event): void;
     render(data: TSettings): void;
     private createPanelItem;
