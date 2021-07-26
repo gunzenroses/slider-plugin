@@ -129,7 +129,7 @@ class SliderView implements IView {
     }
     
     private dragThumbStart(e: PointerEvent){
-        e.preventDefault;
+        e.preventDefault();
         if (e.target !== this.sliderThumb &&
             e.target !== this.sliderThumbSecond)
             return;
@@ -145,7 +145,7 @@ class SliderView implements IView {
 
     private dragThumbMove(e: PointerEvent){
         if (this.dragObject === undefined || !this.dragObject.classList) return;
-        e.preventDefault;
+        e.preventDefault();
         this.fromViewDragThumb.notify(e);
     }
 
