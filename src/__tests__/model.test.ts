@@ -1,6 +1,7 @@
 import { IModel, SliderModel } from "../assets/scripts/mvp/model"
 import { sliderData } from "../assets/scripts/mvp/data"
 import { TSettings } from "../assets/scripts/types/types"
+import { adjustValue } from "../assets/scripts/helpers/adjustData";
 
 describe('class SliderModel', ()=>{
     let containerClass: string;
@@ -14,6 +15,36 @@ describe('class SliderModel', ()=>{
         jest.restoreAllMocks();
     })
 
+    describe('method setData', ()=>{
+        test('should update step, min and max data in model', () => {
+            let step = 10;
+            let min = 2;
+            let max = 200;
+
+            model.setData('step', step);
+            model.setData('min', min);
+            model.setData('max', max);
+
+            expect(model.getData()).toHaveProperty('step', step);
+            expect(model.getData()).toHaveProperty('min', min);
+            expect(model.getData()).toHaveProperty('max', max);
+            
+        })
+
+        test('should update currentFirst and currentSecond data in model', () => {
+            let currentFirst = adjustValue('currentFirst', 11, model.getData());
+            let currentSecond = adjustValue('currentSecond', 35, model.getData());
+
+            model.setData('currentFirst', currentFirst);
+            model.setData('currentSecond', currentSecond);
+
+            expect(model.getData()).toHaveProperty('currentFirst', currentFirst);
+            expect(model.getData()).toHaveProperty('currentSecond', currentSecond);
+        })
+        
+        
+    })
+
     describe('method getContainerId', ()=>{
         test('should return id, which was passed to constructor', ()=>{
             expect(model.getContainerId()).toEqual(containerClass);
@@ -21,14 +52,6 @@ describe('class SliderModel', ()=>{
     })
 
     describe('method getData()', ()=>{
-        test('should be called', ()=>{
-            const spyGetData = jest.spyOn(model, "getData");
-
-            model.getData();
-
-            expect(spyGetData).toHaveBeenCalledTimes(1);
-        })
-
         test('return object wich were passed into constructor data', ()=>{
             //assertion
             expect(model.getData()).toEqual(data);
