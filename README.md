@@ -23,7 +23,7 @@ Run tests
 Run production mode
 >```npm run build```
 
-### Link to pages
+### Link to page
 [Example of Slider](https://gunzenroses.github.io/slider-plugin/)
 
 
