@@ -42,7 +42,12 @@ module.exports = (env) => ({
                 test: /\.tsx?$/,
                 use: [
                     'babel-loader',
-                    'ts-loader',
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            configFile: env.development ? 'tsconfig.json' : 'tsconfig.prod.json',
+                        }
+                    },
                 ],
                 exclude: /node_modules/,
             },
