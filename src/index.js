@@ -4,8 +4,8 @@ import "./index.css";
 window.onload = function() {    
     let simpleSlider = SliderMaker("horizontal", {
         min: 10,
-        max: 140,
-        step: 20,
+        max: 200,
+        step: 120,
         scale: true,
         range: false
     }, true)
