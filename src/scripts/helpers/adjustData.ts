@@ -21,9 +21,11 @@ export default function adjustValue(name: string, value: number|string|boolean, 
     return value;
 
     function adjustMin(value: number){
-        return (value <= (max - step))
-            ? value
-            : (max - step);
+        return (value < 0)
+            ? 0
+            : ((value <= (max - step))
+                ? value
+                : 1);
     }
 
     function adjustMax(value: number){
