@@ -1,6 +1,6 @@
-import { TSettings } from "../../scripts/types/types"
-import { EventDispatcher } from '../../scripts/helpers/eventDispatcher'
-import { applyStepOnValue, mergeData } from "../../scripts/helpers/common"
+import { TSettings } from "../../scripts/utils/types"
+import { EventDispatcher } from './eventDispatcher'
+import { applyStepOnValue, mergeData } from "../../scripts/utils/common"
 import adjustValue from "../../scripts/helpers/adjustData";
 
 interface IModel {
