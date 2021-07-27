@@ -1,4 +1,4 @@
-import { changeRange } from "./changeRange"
+import changeRange from "./changeRange"
 
 //here all values are in %
 function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal: boolean, currentFirst: number, currentSecond: number){
