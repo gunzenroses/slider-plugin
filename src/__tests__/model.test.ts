@@ -1,7 +1,7 @@
 import { IModel, SliderModel } from "../components/mvp/model"
 import { sliderData } from "../components/mvp/data"
-import { TSettings } from "../scripts/types/types"
-import { adjustValue } from "../scripts/helpers/adjustData";
+import { TSettings } from "../scripts/utils/types"
+import adjustValue from "../scripts/helpers/adjustData";
 
 describe('class SliderModel', ()=>{
     let containerClass: string;
