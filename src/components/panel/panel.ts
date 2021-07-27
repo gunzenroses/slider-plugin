@@ -1,7 +1,7 @@
 import { throttle } from "throttle-typescript";
 import { IPresenter } from "../mvp/presenter"
-import { TSettings } from "../../scripts/types/types";
-import checkValidity from "./checkValidity";
+import { TSettings } from "../../scripts/utils/types";
+import checkValidity from "../../scripts/helpers/checkValidity";
 
 interface IPanel {
     presenter: IPresenter;
