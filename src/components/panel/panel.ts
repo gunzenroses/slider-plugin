@@ -103,8 +103,8 @@ export default class ConfigurationPanel implements IPanel {
 
     updatePanel(){
         this.getData();
-        this.minInput.value = this.data.min;
-        this.maxInput.value = this.data.max;
+        this.updateMin();
+        this.updateMax();
         this.updateStep();
         this.updateThumb();
         this.updateThumbSecond();
@@ -129,7 +129,19 @@ export default class ConfigurationPanel implements IPanel {
     
     private updateStep(){
         this.stepInput.value = this.data.step;
+        this.stepInput.min = "1";
         this.stepInput.max = (this.data.max - this.data.min).toString();
+    }
+
+    private updateMin(){
+        this.minInput.value = this.data.min;
+        this.minInput.min = "0";
+        this.minInput.max = this.data.max;
+    }
+
+    private updateMax(){
+        this.maxInput.value = this.data.max;
+        this.maxInput.min = this.data.min + this.data.step;
     }
 
     changePanel(e: Event){
@@ -226,27 +238,27 @@ export default class ConfigurationPanel implements IPanel {
         let panelItemName = `<div class= "panel__name">${params.text}</div>`
 
         //control (input/select/checkbox) of panelItem
-        let panelControlAttr;
-            switch (params.name){
-                case "currentFirst": panelControlAttr = `min= "${this.data.min}" step= "${this.data.step}" max= "${this.data.currentSecond}"`;
-                        break;
-                case "currentSecond": panelControlAttr = `min= "${this.data.currentFirst}" step= "${this.data.step}" max= "${this.data.max}"`;
-                        break;
-                case "max": panelControlAttr = `min= "${this.data.min + this.data.step}"`;
-                        break;
-                case "min": panelControlAttr = `min= "0" max="${this.data.max - this.data.step}"`;
-                        break;
-                case "step": panelControlAttr = `min= "1" max="${this.data.max - this.data.min}"`;
-                        break;
-                default: panelControlAttr = "";
-                        break;
-            }
+        // let panelControlAttr;
+        //     switch (params.name){
+        //         case "currentFirst": panelControlAttr = `min= "${this.data.min}" step= "${this.data.step}" max= "${this.data.currentSecond}"`;
+        //                 break;
+        //         case "currentSecond": panelControlAttr = `min= "${this.data.currentFirst}" step= "${this.data.step}" max= "${this.data.max}"`;
+        //                 break;
+        //         case "max": panelControlAttr = `min= "${this.data.min + this.data.step}"`;
+        //                 break;
+        //         case "min": panelControlAttr = `min= "0" max="${this.data.max - this.data.step}"`;
+        //                 break;
+        //         case "step": panelControlAttr = `min= "1" max="${this.data.max - this.data.min}"`;
+        //                 break;
+        //         default: panelControlAttr = "";
+        //                 break;
+        //     }
 
         let panelControl;
             switch (params.type){
-                case 'number': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} ${panelControlAttr} required/>`;
+                case 'number': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} required/>`;
                                 break;
-                case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value} ${panelControlAttr} />`;
+                case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value}/>`;
                                 break;
                 case 'select': panelControl = `<${params.type} class="panel__input" name= ${params.name}> ${params.options.map((el: string) => this.selectOption(el)).join('')} </${params.type}>`;
                                 break;
