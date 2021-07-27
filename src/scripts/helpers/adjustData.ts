@@ -1,7 +1,7 @@
 import { TSettings } from "../types/types";
 import { applyStepOnValue } from "./common";
 
-function adjustValue(name: string, value: number|string|boolean, data: TSettings){
+export default function adjustValue(name: string, value: number|string|boolean, data: TSettings){
     let info: TSettings = data;
     let max = info.max;
     let min = info.min;
@@ -66,5 +66,3 @@ function adjustValue(name: string, value: number|string|boolean, data: TSettings
         return value;
     }
 }
-
-export { adjustValue }

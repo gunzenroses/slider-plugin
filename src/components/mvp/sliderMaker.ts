@@ -4,7 +4,7 @@ import { TSettings } from "../../scripts/types/types"
 import { SliderModel } from "./model"
 import { SliderView } from "./view"
 import { SliderPresenter } from "./presenter"
-import { ConfigurationPanel } from "../panel/panel"
+import ConfigurationPanel from "../panel/panel"
 import { mergeData } from "../../scripts/helpers/common"
 
 export default function SliderMaker(id: string, options: TSettings, configurationPanel?: boolean){

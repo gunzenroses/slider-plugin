@@ -1,4 +1,4 @@
-import { scaleItemRow} from "./scaleItemRow"
+import scaleItemRow from "./scaleItemRow"
 
 export default function scaleView(parentNode: HTMLElement, ifHorizontal: boolean, max: number, min: number,  step: number, stepPerDiv?: number): HTMLElement {
     let scaleClass: string = ifHorizontal

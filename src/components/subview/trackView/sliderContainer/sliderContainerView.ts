@@ -1,4 +1,4 @@
-function sliderContainerView(parentNode: HTMLElement, ifHorizontal: boolean){
+export default function sliderContainerView(parentNode: HTMLElement, ifHorizontal: boolean){
     let sliderContainerClass = ifHorizontal
                         ? "slider__content" 
                         : "slider__content_vertical";
@@ -7,5 +7,3 @@ function sliderContainerView(parentNode: HTMLElement, ifHorizontal: boolean){
     parentNode.append(sliderContainer);
     return sliderContainer;
 }
-
-export { sliderContainerView }

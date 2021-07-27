@@ -1,4 +1,4 @@
-import { changeTooltip } from "./changeTooltip";
+import changeTooltip from "./changeTooltip";
 
 export default function tooltipItemView(parentNode: HTMLElement, className: string, valueInPercents: number, ifHorizontal: boolean, maxValue: number, minValue: number): HTMLElement {
     let verticalClass = ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";

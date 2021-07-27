@@ -1,7 +1,7 @@
 import changeRange from "./changeRange"
 
 //here all values are in %
-function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal: boolean, currentFirst: number, currentSecond: number){
+export default function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal: boolean, currentFirst: number, currentSecond: number){
     let sliderRangeClass: string = ifHorizontal
                             ? "slider__range"
                             : "slider__range_vertical";
@@ -22,5 +22,3 @@ function sliderRangeView(parentNode: HTMLElement, ifRange: boolean, ifHorizontal
     parentNode.append(sliderRange);
     return sliderRange;
 }
-
-export { sliderRangeView }

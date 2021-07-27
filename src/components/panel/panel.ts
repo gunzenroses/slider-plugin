@@ -1,7 +1,7 @@
 import { throttle } from "throttle-typescript";
 import { IPresenter } from "../mvp/presenter"
 import { TSettings } from "../../scripts/types/types";
-import { checkValidity } from "./checkValidity";
+import checkValidity from "./checkValidity";
 
 interface IPanel {
     presenter: IPresenter;
@@ -16,7 +16,7 @@ interface IPanel {
     validation: checkValidity;
 } 
 
-class ConfigurationPanel implements IPanel {
+export default class ConfigurationPanel implements IPanel {
     presenter: IPresenter;
     parentContainer: HTMLElement;
     data!: TSettings;
@@ -265,5 +265,3 @@ class ConfigurationPanel implements IPanel {
         return selectOption;
     }
 }
-
-export { ConfigurationPanel }

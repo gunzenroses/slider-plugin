@@ -1,6 +1,6 @@
 import changeThumb from "./changeThumb"
 
-function sliderThumbView(parentNode: HTMLElement, className: string, ifHorizontal: boolean, currentNum: number) {
+export default function sliderThumbView(parentNode: HTMLElement, className: string, ifHorizontal: boolean, currentNum: number) {
     let verticalClass = ifHorizontal ? "" : "-vertical"
     let thumbClass = `${className}${verticalClass}`
     let sliderThumbView = document.createElement("div");
@@ -10,5 +10,3 @@ function sliderThumbView(parentNode: HTMLElement, className: string, ifHorizonta
     parentNode.append(sliderThumbView);
     return sliderThumbView;
 }
-
-export { sliderThumbView };
