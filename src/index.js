@@ -1,13 +1,7 @@
-import { SliderMaker } from "./assets/scripts/sliderMaker"
-import "./index.css"
+import SliderMaker from "./components/mvp/sliderMaker.ts";
+import "./index.css";
 
-window.onload = function() {
-    const $ = require('jquery')
-    
-
-    // здесь вызывать rangeSlider.ts for every slider
-    //$.fn.SliderMaker()
-    
+window.onload = function() {    
     let simpleSlider = SliderMaker("horizontal", {
         min: 10,
         max: 140,

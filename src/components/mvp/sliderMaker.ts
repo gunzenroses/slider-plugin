@@ -1,4 +1,4 @@
-import "../styles/slider.scss"
+import "../../assets/styles/slider.scss"
 import { sliderData } from "./data"
 import { TSettings } from "../../scripts/utils/types"
 import { SliderModel } from "./model"
