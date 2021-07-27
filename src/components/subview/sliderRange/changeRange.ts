@@ -1,4 +1,4 @@
-function changeRange(object: HTMLElement, newThumbCurrent: number, ifHorizontal: boolean, ifRange: boolean, ifThumbFirst: boolean){
+export default function changeRange(object: HTMLElement, newThumbCurrent: number, ifHorizontal: boolean, ifRange: boolean, ifThumbFirst: boolean){
     ifRange
         ? ifHorizontal
                 ? (ifThumbFirst 
@@ -12,5 +12,3 @@ function changeRange(object: HTMLElement, newThumbCurrent: number, ifHorizontal:
                 : object.style.top = (100 - newThumbCurrent) + "%";
     return object;
 }
-
-export { changeRange }

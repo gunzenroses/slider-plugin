@@ -1,6 +1,6 @@
 import { scaleItemRow} from "./scaleItemRow"
 
-function scaleView(parentNode: HTMLElement, ifHorizontal: boolean, max: number, min: number,  step: number, stepPerDiv?: number): HTMLElement {
+export default function scaleView(parentNode: HTMLElement, ifHorizontal: boolean, max: number, min: number,  step: number, stepPerDiv?: number): HTMLElement {
     let scaleClass: string = ifHorizontal
                 ? "slider__scale"
                 : "slider__scale_vertical";
@@ -24,5 +24,3 @@ function scaleView(parentNode: HTMLElement, ifHorizontal: boolean, max: number, 
     parentNode.append(scale);
     return scale;
 }
-
-export { scaleView }

@@ -1,6 +1,6 @@
 import { changeTooltip } from "./changeTooltip";
 
-function tooltipItemView(parentNode: HTMLElement, className: string, valueInPercents: number, ifHorizontal: boolean, maxValue: number, minValue: number): HTMLElement {
+export default function tooltipItemView(parentNode: HTMLElement, className: string, valueInPercents: number, ifHorizontal: boolean, maxValue: number, minValue: number): HTMLElement {
     let verticalClass = ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
     let tooltip = document.createElement("span");
     tooltip.classList.add(className, verticalClass);
@@ -10,5 +10,3 @@ function tooltipItemView(parentNode: HTMLElement, className: string, valueInPerc
     parentNode.append(tooltip);
     return tooltip;
 }
-
-export { tooltipItemView }

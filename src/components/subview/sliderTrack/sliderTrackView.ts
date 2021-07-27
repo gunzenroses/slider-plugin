@@ -1,4 +1,4 @@
-function sliderTrackView(parentNode: HTMLElement, ifHorizontal: boolean){
+export default function sliderTrackView(parentNode: HTMLElement, ifHorizontal: boolean){
     let sliderTrackClass: string = ifHorizontal 
                                     ? "slider__track" 
                                     : "slider__track_vertical" ;
@@ -7,5 +7,3 @@ function sliderTrackView(parentNode: HTMLElement, ifHorizontal: boolean){
     parentNode.append(sliderTrack);
     return sliderTrack;
 }
-
-export { sliderTrackView }

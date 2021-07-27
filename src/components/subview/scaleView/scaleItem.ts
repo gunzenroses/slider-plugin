@@ -1,5 +1,5 @@
 
-function scaleItem(item: number, sequenceNum: number, ifHorizontal: boolean, segmentClass: string, spanClass: string, min: number, max: number, step: number){
+export default function scaleItem(item: number, sequenceNum: number, ifHorizontal: boolean, segmentClass: string, spanClass: string, min: number, max: number, step: number){
     let itemClass: string = ifHorizontal ? "scale__point" : "scale__point_vertical";
     
     return (
@@ -8,5 +8,3 @@ function scaleItem(item: number, sequenceNum: number, ifHorizontal: boolean, seg
             : `<div class=${itemClass}></div>`
     )
 }
-
-export { scaleItem }

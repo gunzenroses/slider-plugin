@@ -1,4 +1,4 @@
-class checkValidity {
+export default class checkValidity {
     private item: HTMLInputElement;
     private messageContainer!: HTMLElement;
     private parentContainer: HTMLElement;
@@ -66,5 +66,3 @@ class checkValidity {
         this.messageContainer.classList.add('hidden');
     }
 }
-
-export { checkValidity }
