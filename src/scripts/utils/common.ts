@@ -20,9 +20,12 @@ function applyStepOnValue(value: number, max: number, min: number, step: number)
     let realNumberOfSteps = ((value - min) % step > step/2)
                 ? Math.ceil(numberOfSteps)
                 : Math.floor(numberOfSteps);
+    let valueInSteps = (realNumberOfSteps * step) + min
     let realValue = (value === max)
                     ? value
-                    : (realNumberOfSteps * step) + min;
+                    : (valueInSteps > max)
+                        ? max
+                        : valueInSteps;
     return realValue;
 }
 
@@ -86,6 +89,7 @@ function mergeData(sliderData: TSettings, options: TSettings){
 function fromPercentsToValueApplyStep(value: number, max: number, min: number, step: number){
     let value2 = parseInt(fromPercentsToValue(value, max, min));
     let newValue = applyStepOnValue(value2, max, min, step);
+    console.log(newValue)
     return newValue;
 }
 
