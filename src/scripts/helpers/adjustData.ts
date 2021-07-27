@@ -3,11 +3,7 @@ import { applyStepOnValue } from "../utils/common";
 
 export default function adjustValue(name: string, value: number|string|boolean, data: TSettings){
     let info: TSettings = data;
-    let max = info.max;
-    let min = info.min;
-    let step = info.step;
-    let currentFirst = info.currentFirst;
-    let currentSecond = info.currentSecond;
+    let { max, min, step, currentFirst, currentSecond } = info;
 
     switch (name) {
         case "step": value = adjustStep(value as number); break;
