@@ -14,8 +14,6 @@ export default function adjustValue(name: string, value: number|string|boolean, 
         default: value = adjustAsIs(value as string|boolean); break;
     }
 
-    return value;
-
     function adjustMin(value: number){
         return (value < 0)
             ? 0
@@ -63,4 +61,6 @@ export default function adjustValue(name: string, value: number|string|boolean, 
     function adjustAsIs(value: string | boolean){
         return value;
     }
+
+    return value;
 }
