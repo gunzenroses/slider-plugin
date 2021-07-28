@@ -1,11 +1,11 @@
-import "../../assets/styles/slider.scss"
+import "styles/slider.scss"
 import { sliderData } from "./data"
-import { TSettings } from "../../scripts/utils/types"
+import { TSettings } from "utils/types"
 import { SliderModel } from "./model"
 import { SliderView } from "./view"
 import { SliderPresenter } from "./presenter"
-import ConfigurationPanel from "../panel/panel"
-import { mergeData } from "../../scripts/utils/common"
+import ConfigurationPanel from "panel/panel"
+import { mergeData } from "utils/common"
 
 export default function SliderMaker(id: string, options: TSettings, configurationPanel?: boolean){
 

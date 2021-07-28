@@ -1,7 +1,7 @@
 import { IModel } from "./model"
 import { IView } from "./view"
-import { TSettings } from "../../scripts/utils/types"
-import { applyRestrictions, findPosition, fromPercentsToValueApplyStep, changeValueToPercentsApplyStep } from "../../scripts/utils/common"
+import { TSettings } from "utils/types"
+import { applyRestrictions, findPosition, fromPercentsToValueApplyStep, changeValueToPercentsApplyStep } from "utils/common"
 import { EventDispatcher } from "./eventDispatcher"
 
 interface IPresenter {

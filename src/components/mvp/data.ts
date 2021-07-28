@@ -1,4 +1,4 @@
-import { TSettings } from "../../scripts/utils/types"
+import { TSettings } from "utils/types"
 
 let sliderData: TSettings = {
     min: 0,

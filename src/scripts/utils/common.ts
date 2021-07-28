@@ -1,4 +1,4 @@
-import { TSettings } from "./types";
+import { TSettings } from "utils/types";
 
 //somewhere here the problem is
 //all in %

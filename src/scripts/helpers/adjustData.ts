@@ -1,5 +1,5 @@
-import { TSettings } from "../utils/types";
-import { applyStepOnValue } from "../utils/common";
+import { TSettings } from "utils/types";
+import { applyStepOnValue } from "utils/common";
 
 export default function adjustValue(name: string, value: number|string|boolean, data: TSettings){
     let info: TSettings = data;
