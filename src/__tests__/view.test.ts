@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { SliderView } from "mvp/view"
 import { sliderData } from "mvp/data"
 import { mergeData } from "utils/common";

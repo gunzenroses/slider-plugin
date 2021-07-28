@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { SliderPresenter } from "mvp/presenter";
 import { SliderModel } from "mvp/model";
 import { SliderView } from "mvp/view";

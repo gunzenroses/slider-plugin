@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import ConfigurationPanel from "panel/panel";
 import { SliderPresenter } from "mvp/presenter"
 import { SliderModel } from "mvp/model";
