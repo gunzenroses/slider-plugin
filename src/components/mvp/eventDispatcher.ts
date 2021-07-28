@@ -5,12 +5,7 @@ interface ISender {
 }
 
 class EventDispatcher implements ISender  {
-    private _sender: object;
     listeners = new Array();
-
-    constructor(){
-        this._sender = this;
-    }
 
     add(listener: object): void {
         this.listeners.push(listener);
