@@ -1,4 +1,4 @@
-import { EventDispatcher } from "../components/mvp/eventDispatcher";
+import { EventDispatcher } from "mvp/eventDispatcher";
 
 describe('EventDispatcher',()=>{
     let ed = new EventDispatcher();

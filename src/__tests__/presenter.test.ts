@@ -1,7 +1,7 @@
-import { SliderPresenter } from "../components/mvp/presenter";
-import { SliderModel } from "../components/mvp/model";
-import { SliderView } from "../components/mvp/view";
-import { sliderData } from "../components/mvp/data";
+import { SliderPresenter } from "mvp/presenter";
+import { SliderModel } from "mvp/model";
+import { SliderView } from "mvp/view";
+import { sliderData } from "mvp/data";
 
 let containerId = "container1"
 let initialContainer = document.createElement("div");
