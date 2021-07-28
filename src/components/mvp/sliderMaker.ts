@@ -13,8 +13,7 @@ export default function SliderMaker(id: string, options: TSettings, configuratio
     let aView = new SliderView(id);
     let aPresenter = new SliderPresenter(aModel, aView);
 
-    let aConfigurationPanel = 
-        configurationPanel
-            ? new ConfigurationPanel(id, aPresenter)
+    configurationPanel
+        ? new ConfigurationPanel(id, aPresenter)
             : null;
 }
