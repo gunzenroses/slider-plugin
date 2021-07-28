@@ -126,14 +126,15 @@ describe('Panel', ()=>{
                 expect(panel.validation.invalidities).toContain("Number should be maximum 100");
             })
 
-            // test('add error-message when value < min', () => {
-            //     let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='step']")!;
-            //     trg.value = '0';
+            test('add error-message when value < min', () => {
+                let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='step']")!;
+                trg.min = '1';
+                trg.value = '0';
+                
+                trg.dispatchEvent(new Event('change'));
 
-            //     trg.dispatchEvent(new Event('change'));
-
-            //     expect(panel.validation.invalidities).toContain("Number should be minimum 1");
-            // })
+                expect(panel.validation.invalidities).toContain("Number should be minimum 1");
+            })
 
             test('add error-message when stepMismatch', () => {
                 let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='currentFirst']")!;
