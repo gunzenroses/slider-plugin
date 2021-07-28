@@ -1,6 +1,6 @@
 import { throttle } from "throttle-typescript";
 import { IPresenter } from "mvp/presenter";
-import { TSettings } from "utils/types";
+import { TSettings, TPanelParam } from "utils/types";
 import checkValidity from "helpers/checkValidity";
 
 interface IPanel {
@@ -162,8 +162,6 @@ export default class ConfigurationPanel implements IPanel {
     }
 
     render(data: TSettings){
-        this.panelItems.innerHTML = "";
-
         this.listOfPanelItems = [
             {
                 name: 'min',
@@ -228,52 +226,36 @@ export default class ConfigurationPanel implements IPanel {
             }
         ]
 
+        this.panelItems.innerHTML = "";
         for (let item of this.listOfPanelItems){
             this.panelItems.innerHTML += this.createPanelItem(item)
         }
     }
 
-    private createPanelItem(params: any){
-        //name of panelItem
-        let panelItemName = `<div class= "panel__name">${params.text}</div>`
-
-        //control (input/select/checkbox) of panelItem
-        // let panelControlAttr;
-        //     switch (params.name){
-        //         case "currentFirst": panelControlAttr = `min= "${this.data.min}" step= "${this.data.step}" max= "${this.data.currentSecond}"`;
-        //                 break;
-        //         case "currentSecond": panelControlAttr = `min= "${this.data.currentFirst}" step= "${this.data.step}" max= "${this.data.max}"`;
-        //                 break;
-        //         case "max": panelControlAttr = `min= "${this.data.min + this.data.step}"`;
-        //                 break;
-        //         case "min": panelControlAttr = `min= "0" max="${this.data.max - this.data.step}"`;
-        //                 break;
-        //         case "step": panelControlAttr = `min= "1" max="${this.data.max - this.data.min}"`;
-        //                 break;
-        //         default: panelControlAttr = "";
-        //                 break;
-        //     }
-
-        let panelControl;
-            switch (params.type){
-                case 'number': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} required/>`;
-                                break;
-                case 'checkbox': panelControl = `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value}/>`;
-                                break;
-                case 'select': panelControl = `<${params.type} class="panel__input" name= ${params.name}> ${params.options.map((el: string) => this.selectOption(el)).join('')} </${params.type}>`;
-                                break;
-                default: break;
-            }
-
-        //gathering panelItemName and panelControl
-        let element = `<div class= "panel__item">${panelItemName} ${panelControl}</div>`
+    private createPanelItem(params: TPanelParam){
+        let element = `<div class= "panel__item">${this.panelItemName(params.text)} ${this.panelItemInput(params)}</div>`
         return element;
     }
 
-    private selectOption(arg: string){
-        let selectOption = (arg === this.data.orientation)
+    private panelItemName(text: string){
+        return `<div class= "panel__name">${text}</div>`
+    }
+
+    private panelItemInput(params: TPanelParam){
+        return (params.type === 'number')
+            ? `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} required/>`
+            : ((params.type === 'checkbox')
+                ? `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value}/>`
+                : ((params.type === 'select')
+                    ? `<${params.type} class="panel__input" name= ${params.name}> ${params.options!.map((el: String) => this.selectOptions(el)).join('')} </${params.type}>`
+                    : null
+                )
+            )
+    }
+
+    private selectOptions(arg: String){
+        return (arg === this.data.orientation)
             ? `<option selected value="${arg}">${arg}</option> `
             : `<option value="${arg}">${arg}</option> `
-        return selectOption;
     }
 }
