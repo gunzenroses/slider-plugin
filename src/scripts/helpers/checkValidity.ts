@@ -1,3 +1,5 @@
+import { appendCustomElement } from "utils/common";
+
 export default class checkValidity {
     private item: HTMLInputElement;
     private messageContainer!: HTMLElement;
@@ -7,9 +9,7 @@ export default class checkValidity {
     constructor(item: HTMLInputElement, parentContainer: HTMLElement){
         this.item = item;
         this.parentContainer = parentContainer;
-        this.messageContainer = document.createElement('div');
-        this.messageContainer.classList.add('error-message');
-        this.parentContainer.appendChild(this.messageContainer);
+        this.messageContainer = appendCustomElement('div', 'error-message', this.parentContainer)
         this.invalidities = [];
         this.checkValidity();
     }
