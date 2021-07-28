@@ -1,8 +1,8 @@
-import ConfigurationPanel from "../components/panel/panel";
-import { SliderPresenter } from "../components/mvp/presenter"
-import { SliderModel } from "../components/mvp/model";
-import { SliderView } from "../components/mvp/view";
-import { sliderData } from "../components/mvp/data";
+import ConfigurationPanel from "panel/panel";
+import { SliderPresenter } from "mvp/presenter"
+import { SliderModel } from "mvp/model";
+import { SliderView } from "mvp/view";
+import { sliderData } from "mvp/data";
 
 let containerId = "container1"
 let initialContainer = document.createElement("div");
@@ -122,14 +122,14 @@ describe('Panel', ()=>{
                 expect(panel.validation.invalidities).toContain("Number should be maximum 100");
             })
 
-            test('add error-message when value < min', () => {
-                let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='step']")!;
-                trg.value = '0';
+            // test('add error-message when value < min', () => {
+            //     let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='step']")!;
+            //     trg.value = '0';
 
-                trg.dispatchEvent(new Event('change'));
+            //     trg.dispatchEvent(new Event('change'));
 
-                expect(panel.validation.invalidities).toContain("Number should be minimum 1");
-            })
+            //     expect(panel.validation.invalidities).toContain("Number should be minimum 1");
+            // })
 
             test('add error-message when stepMismatch', () => {
                 let trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='currentFirst']")!;
