@@ -118,7 +118,6 @@ describe('class SliderModel', ()=>{
     })
 
     describe('method changeThumbSecond()', ()=>{
-        let obj = {};
         let num = 5;
 
         test('should be called', ()=>{
