@@ -31,7 +31,7 @@ export default function scaleItemRow (ifHorizontal: boolean, containerSize: numb
     let maxStyle: string = `position: absolute; ${marginType}: 0;`;
     let scaleItemMax: string = `<div class=${segmentClass} style="${maxStyle}""><span class="${spanClass}">${max}</span></div>`
 
-    scaleItems.innerHTML = scaleItemRow.map(item => scaleItem(item, stepPerDiv, ifHorizontal, segmentClass, spanClass, min, max, step)).join(" ") 
+    scaleItems.innerHTML = scaleItemRow.map(item => scaleItem(item, stepPerDiv, ifHorizontal, segmentClass, spanClass, min, step)).join(" ") 
                         + scaleItemMax;
 
     return scaleItems;
