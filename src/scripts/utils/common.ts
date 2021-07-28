@@ -100,4 +100,18 @@ function changeValueToPercentsApplyStep(value: number, max: number, min: number,
     return newValue;
 }
 
-export { applyStepOnValue, applyRestrictions, fromPercentsToValue, changeValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentsToValueApplyStep, changeValueToPercentsApplyStep }
+function appendCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement{
+    let el = document.createElement(`${type}`);
+    el.classList.add(className);
+    parent.append(el);
+    return el;
+}
+
+function afterCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement{
+    let el = document.createElement(`${type}`);
+    el.classList.add(className);
+    parent.after(el);
+    return el;
+}
+
+export { applyStepOnValue, applyRestrictions, fromPercentsToValue, changeValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentsToValueApplyStep, changeValueToPercentsApplyStep, appendCustomElement, afterCustomElement }
