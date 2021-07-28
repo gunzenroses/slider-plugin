@@ -29,7 +29,7 @@ module.exports = (env) => ({
     module: {
         rules: [
             {
-                test: /\.m?js$/,
+                test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
@@ -51,14 +51,6 @@ module.exports = (env) => ({
                 ],
                 exclude: /node_modules/,
             },
-            // {
-            //     test: /\.(ts|js)x$/,
-            //     exclude: /node_modules/,
-            //     use: [
-            //         'babel-loader',
-            //         'ts-loader',
-            //     ]
-            // },
             {
                 test: /\.css$/,
                 exclude: /node_modules/,
@@ -77,9 +69,17 @@ module.exports = (env) => ({
             },
         ],
     },
-    
     resolve: {
+        alias: {
+            styles: path.resolve(__dirname, 'src/assets/styles/'),
+            mvp: path.resolve(__dirname, 'src/components/mvp'),
+            panel: path.resolve(__dirname, "src/components/panel"),
+            subview: path.resolve(__dirname, "src/components/subview"),
+            helpers: path.resolve(__dirname, "src/scripts/helpers"),
+            utils: path.resolve(__dirname, "src/scripts/utils"),
+        },
         extensions: ['.ts', '.tsx', '.js'],
+        modules: 'node_modules',
     },
 
     plugins: [

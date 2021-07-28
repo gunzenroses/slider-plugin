@@ -1,27 +1,29 @@
 module.exports = {
   transform: {
-    //"^.+\\.tsx?$": "ts-jest",
     "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
     "^.+\\.[t|j]sx?$": "babel-jest",
-    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.tsx?$": "ts-jest", //to verify types
   },
-  // testPathIgnorePatterns: [
-  //   ['/node_modules/'],
-  //   ['**/I[A-Z]*.{ts}']
-  // ],
   collectCoverage: true,
-  //coverageReporters: ["html"],
-  //setupFilesAfterEnv: ["<rootDir>/jestSetup.js"],
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  //coverageReporters: ['text'],
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   moduleFileExtensions: [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "node"
+    'ts',
+    'tsx',
+    'js',
+    'jsx',
+    'json',
   ],
-  // "setupFiles": [
-  //   "<rootDir>/test/setupTests.ts"
-  // ]
+  modulePaths: ['.'],
+  testEnvironment: 'node',
+  rootDir: '.',
+  moduleNameMapper: {
+    '^styles/(.*)$': '<rootDir>/src/assets/styles/$1',
+    '^mvp/(.*)$': '<rootDir>/src/components/mvp/$1',
+    '^panel(.*)$': '<rootDir>/src/components/panel/$1',
+    '^subview/(.*)$': '<rootDir>/src/components/subview/$1',
+    '^helpers/(.*)$': '<rootDir>/src/scripts/helpers/$1',
+    '^utils/(.*)$': '<rootDir>/src/scripts/utils/$1',
+  },
+  moduleDirectories: ['node_modules', 'src'],
 }
