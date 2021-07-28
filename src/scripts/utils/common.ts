@@ -89,7 +89,6 @@ function mergeData(sliderData: TSettings, options: TSettings){
 function fromPercentsToValueApplyStep(value: number, max: number, min: number, step: number){
     let value2 = parseInt(fromPercentsToValue(value, max, min));
     let newValue = applyStepOnValue(value2, max, min, step);
-    console.log(newValue)
     return newValue;
 }
 
