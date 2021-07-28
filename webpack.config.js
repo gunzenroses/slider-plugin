@@ -30,18 +30,20 @@ module.exports = (env) => ({
         rules: [
             {
                 test: /\.js$/,
-                exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
                     options: {
                         presets: ['@babel/preset-env'],
                     }
-                }
+                },
+                exclude: /node_modules/,
             },
             {
                 test: /\.tsx?$/,
                 use: [
-                    'babel-loader',
+                    {
+                        loader: 'babel-loader',
+                    },
                     {
                         loader: 'ts-loader',
                         options: {
@@ -53,11 +55,11 @@ module.exports = (env) => ({
             },
             {
                 test: /\.css$/,
-                exclude: /node_modules/,
                 use: [
                     "style-loader",
                     "css-loader",
-                ]
+                ],
+                exclude: /node_modules/,
             },
             {
                 test: /\.s[ac]ss$/,
@@ -79,9 +81,8 @@ module.exports = (env) => ({
             utils: path.resolve(__dirname, "src/scripts/utils"),
         },
         extensions: ['.ts', '.tsx', '.js'],
-        modules: 'node_modules',
+        modules: ['node_modules', 'src'],
     },
-
     plugins: [
         new CleanWebpackPlugin(),
         // new ESLintPlugin({
