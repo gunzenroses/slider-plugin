@@ -1,7 +1,7 @@
 import { fromValueToPX } from "../../../scripts/utils/common"
 import scaleItem from "./scaleItem"
 
-export default function scaleItemRow (ifHorizontal: boolean, containerSize: number, min: number, max: number, step: number, stepPerDiv: number, heightValue?: number, widthValue?: number){
+export default function scaleItemRow (ifHorizontal: boolean, containerSize: number, min: number, max: number, step: number, stepPerDiv: number){
     //find the row of elements (with step)
     let scaleItemRow: number[] = [];
     let i=min;
