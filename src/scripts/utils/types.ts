@@ -25,4 +25,12 @@ type TRangeStyle = {
     ifThumbFirst: boolean
 };
 
-export { TSettings, TDragObject, TRangeStyle }
+type TPanelParam = {
+    name: string,
+    text: string, 
+    value: string,
+    type: string,
+    options?: Array<String>,
+}
+
+export { TSettings, TDragObject, TRangeStyle, TPanelParam }
