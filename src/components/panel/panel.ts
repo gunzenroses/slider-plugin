@@ -2,6 +2,7 @@ import { throttle } from "throttle-typescript";
 import { IPresenter } from "mvp/presenter";
 import { TSettings, TPanelParam } from "utils/types";
 import checkValidity from "helpers/checkValidity";
+import { afterCustomElement, appendCustomElement } from "utils/common";
 
 interface IPanel {
     presenter: IPresenter;
@@ -42,15 +43,8 @@ export default class ConfigurationPanel implements IPanel {
 
     constructor(containerId: string, presenter: IPresenter){
         this.parentContainer = document.getElementById(containerId)!;
-        
-        this.panelContainer = document.createElement('div');
-        this.panelContainer.classList.add('panel');
-        this.parentContainer.after(this.panelContainer);
-        
-        this.panelItems = document.createElement('div');
-        this.panelItems.classList.add('panel__items');
-        this.panelContainer.prepend(this.panelItems);
-        
+        this.panelContainer = afterCustomElement('div', 'panel', this.parentContainer);
+        this.panelItems = appendCustomElement('div', 'panel__items', this.panelContainer);
         this.presenter = presenter;
         this.getData();
         this.init();
@@ -65,13 +59,13 @@ export default class ConfigurationPanel implements IPanel {
         this.createChildren();
         this.setupHandlers();
         this.enable();
+        this.updatePanel();
     }
 
     private createChildren(){
         this.checkboxes = this.panelContainer.querySelectorAll("input[type='checkbox']");
         this.orientationInput = <HTMLInputElement>this.panelContainer.querySelector('select[name="orientation"]');
         this.numberInputs = this.panelContainer.querySelectorAll("input[type='number']")
-
         this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
         this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
         this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
