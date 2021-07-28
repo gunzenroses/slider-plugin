@@ -1,26 +1,38 @@
 import { EventDispatcher } from "mvp/eventDispatcher";
 
+class Listener {
+    msg: number;
+    constructor(msg: number){
+        this.msg = msg;
+    }
+
+    setHandler = this.set.bind(this);
+
+    set(msg: number){
+        this.msg = msg;
+    }
+};
+
 describe('EventDispatcher',()=>{
     let ed = new EventDispatcher();
-    let listener = function(val: number){ return val+1 };
+    let listener = new Listener(1);
 
-    ed.add(listener);
-    
     test('method add(): add listener to listeners', ()=>{
+        ed.add(listener.setHandler);
+
         expect(ed.listeners.length).toBe(1);
     })
 
     test('method notify(): pass arguments when it notifies listeners', ()=>{
-        let message = false;
-        let args = (msg: boolean)=>{ msg = true }
+        let message = 12;
 
-        ed.notify(args(message));
+        ed.notify(message);
 
-        expect(message).toBeTruthy;
+        expect(listener.msg).toBe(message);
     })
 
     test('method remove(): remove listener from listeners', ()=>{
-        ed.remove(listener);
+        ed.remove(listener.setHandler);
 
         expect(ed.listeners.length).toBe(0);
     })
