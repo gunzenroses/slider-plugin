@@ -48,6 +48,7 @@ export default class ConfigurationPanel implements IPanel {
         this.presenter = presenter;
         this.getData();
         this.init();
+        this.updatePanel();
     }
 
     private getData(){
@@ -59,7 +60,6 @@ export default class ConfigurationPanel implements IPanel {
         this.createChildren();
         this.setupHandlers();
         this.enable();
-        this.updatePanel();
     }
 
     private createChildren(){
