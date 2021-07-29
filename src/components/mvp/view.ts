@@ -158,11 +158,9 @@ class SliderView implements IView {
         this.removeListenerPointerDown();
         e.preventDefault();
         this.fromViewDragThumb.notify(e);
-        ;
     }
 
     dragThumbEnd(){
-        this.dragObject = {};
         this.removeListenerPointerMoveAndUp();
         this.addListenerPointerDown();
     }
