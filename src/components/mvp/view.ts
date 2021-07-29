@@ -86,7 +86,6 @@ class SliderView implements IView {
     }
 
     private createChildren(){
-        this.selectObject = {};
         //booleans
         this.ifHorizontal = this.settings.orientation === "horizontal";
         this.ifRange = this.settings.range;
@@ -118,8 +117,6 @@ class SliderView implements IView {
         if (this.settings.range){ 
             this.sliderThumbSecond.addEventListener("pointerdown", this.dragThumbStartHandler);
         };
-        document.addEventListener("pointermove", this.dragThumbMoveHandler);
-        document.addEventListener("pointerup", this.dragThumbEndHandler);
     }
 
     private selectThumb(e: MouseEvent){
@@ -134,24 +131,31 @@ class SliderView implements IView {
             e.target !== this.sliderThumbSecond)
             return;
         else {
-            // (e.target === this.sliderThumb )
-            //     ? this.sliderThumb.setPointerCapture(e.pointerId)
-            //     : this.sliderThumbSecond.setPointerCapture(e.pointerId);
-            
-            this.dragObject = e.target;
+            this.dragObject = <HTMLElement>e.target;
         }
-
+        document.addEventListener("pointermove", this.dragThumbMoveHandler);
+        document.addEventListener("pointerup", this.dragThumbEndHandler);
     }
 
     private dragThumbMove(e: PointerEvent){
         if (this.dragObject === undefined || !this.dragObject.classList) return;
+        this.sliderThumb.removeEventListener("pointerdown", this.dragThumbStartHandler);
+        if (this.settings.range){ 
+            this.sliderThumbSecond.removeEventListener("pointerdown", this.dragThumbStartHandler);
+        };
         e.preventDefault();
         this.fromViewDragThumb.notify(e);
+        ;
     }
 
     dragThumbEnd(){
         this.dragObject = {};
-        this.selectObject = {};
+        document.removeEventListener("pointermove", this.dragThumbMoveHandler)
+        document.removeEventListener("pointerup", this.dragThumbEndHandler);
+        this.sliderThumb.addEventListener("pointerdown", this.dragThumbStartHandler);
+        if (this.settings.range){ 
+            this.sliderThumbSecond.addEventListener("pointerdown", this.dragThumbStartHandler);
+        };
     }
     
     // in % and actual values
@@ -183,7 +187,6 @@ class SliderView implements IView {
         this.tooltipFirst = tooltipItemView(this.sliderThumb, "tooltip_first", this.currentFirstInPercents, this.ifHorizontal, this.maxValue, this.minValue);
         this.tooltipSecond = tooltipItemView(this.sliderThumbSecond, "tooltip_second", this.currentSecondInPercents, this.ifHorizontal, this.maxValue, this.minValue);
         
-
         if (!this.ifScale){
             this.scale.classList.add("disabled");
         }
