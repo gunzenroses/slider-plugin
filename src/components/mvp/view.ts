@@ -113,10 +113,31 @@ class SliderView implements IView {
 
     private enable(){
         this.sliderContainer.addEventListener("click", this.selectThumbHandler);
+        this.addListenerPointerDown();
+    }
+
+    private addListenerPointerDown(){
         this.sliderThumb.addEventListener("pointerdown", this.dragThumbStartHandler);
         if (this.settings.range){ 
             this.sliderThumbSecond.addEventListener("pointerdown", this.dragThumbStartHandler);
         };
+    }
+
+    private removeListenerPointerDown(){
+        this.sliderThumb.removeEventListener("pointerdown", this.dragThumbStartHandler);
+        if (this.settings.range){ 
+            this.sliderThumbSecond.removeEventListener("pointerdown", this.dragThumbStartHandler);
+        };
+    }
+
+    private addListenerPointerMoveAndUp(){
+        document.addEventListener("pointermove", this.dragThumbMoveHandler);
+        document.addEventListener("pointerup", this.dragThumbEndHandler);
+    }
+
+    private removeListenerPointerMoveAndUp(){
+        document.removeEventListener("pointermove", this.dragThumbMoveHandler)
+        document.removeEventListener("pointerup", this.dragThumbEndHandler);
     }
 
     private selectThumb(e: MouseEvent){
@@ -133,16 +154,12 @@ class SliderView implements IView {
         else {
             this.dragObject = <HTMLElement>e.target;
         }
-        document.addEventListener("pointermove", this.dragThumbMoveHandler);
-        document.addEventListener("pointerup", this.dragThumbEndHandler);
+        this.addListenerPointerMoveAndUp();
     }
 
     private dragThumbMove(e: PointerEvent){
         if (this.dragObject === undefined || !this.dragObject.classList) return;
-        this.sliderThumb.removeEventListener("pointerdown", this.dragThumbStartHandler);
-        if (this.settings.range){ 
-            this.sliderThumbSecond.removeEventListener("pointerdown", this.dragThumbStartHandler);
-        };
+        this.removeListenerPointerDown();
         e.preventDefault();
         this.fromViewDragThumb.notify(e);
         ;
@@ -150,12 +167,8 @@ class SliderView implements IView {
 
     dragThumbEnd(){
         this.dragObject = {};
-        document.removeEventListener("pointermove", this.dragThumbMoveHandler)
-        document.removeEventListener("pointerup", this.dragThumbEndHandler);
-        this.sliderThumb.addEventListener("pointerdown", this.dragThumbStartHandler);
-        if (this.settings.range){ 
-            this.sliderThumbSecond.addEventListener("pointerdown", this.dragThumbStartHandler);
-        };
+        this.removeListenerPointerMoveAndUp();
+        this.addListenerPointerDown();
     }
     
     // in % and actual values
