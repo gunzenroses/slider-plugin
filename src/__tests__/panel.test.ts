@@ -85,7 +85,7 @@ describe('Panel', ()=>{
 
     describe('method changePanel()', ()=>{
         test('should call presenter.setData()', ()=>{
-            let spyPresenter = jest.spyOn(panel.presenter, "setData").mockImplementation(()=>{});
+            let spyPresenter = jest.spyOn(panel.presenter, "modelData").mockImplementation(()=>{});
             let trg = panel.panelContainer.querySelector("input[name='range']");
             let evt = {
                 ...new Event('click'),
