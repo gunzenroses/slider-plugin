@@ -18,7 +18,6 @@ interface IView {
     sliderThumbSecond: HTMLElement;
     fromViewSelectThumb: EventDispatcher;
     fromViewDragThumb: EventDispatcher;
-    selectObject: TDragObject;
     dragObject: TDragObject;
 
     init(settings: TSettings): void;
@@ -43,9 +42,6 @@ class SliderView implements IView {
     tooltipFirst!: HTMLElement;
     tooltipSecond!: HTMLElement;
     scale!: HTMLElement;
-
-    //maintain select/drag
-    selectObject!: TDragObject;
     dragObject!: TDragObject;
 
     private selectThumbHandler!: { (ev: MouseEvent): void };
