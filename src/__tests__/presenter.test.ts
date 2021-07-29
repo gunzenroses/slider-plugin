@@ -34,8 +34,7 @@ describe('SliderPresenter', ()=>{
                     clientX: 100,
                     clientY: 100,
                 });
-                presenter.view.selectObject = presenter.view.sliderThumb;
-                presenter.view.dragObject = {};
+                presenter.changingObject = presenter.view.sliderThumb;
                 
                 let spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation(()=>{});
 
@@ -49,8 +48,7 @@ describe('SliderPresenter', ()=>{
                     clientX: 300,
                     clientY: 300,
                 });
-                presenter.view.dragObject = {};
-                presenter.view.selectObject = presenter.view.sliderThumbSecond;
+                presenter.changingObject = presenter.view.sliderThumbSecond;
                 let spyModelUpdate = jest.spyOn(presenter.model, "changeThumbSecond").mockImplementation(()=>{});
 
                 presenter.view.fromViewSelectThumb.notify(event);
@@ -88,7 +86,7 @@ describe('SliderPresenter', ()=>{
         describe('should process events from model', ()=>{
             test('should notify subscribers for changes in currentThumb', ()=>{
                 let value = 18;
-                view.dragObject = view.sliderThumb;
+                presenter.changingObject = presenter.view.sliderThumb;
                 let spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbUpdate, 'notify')
                 let spyFromModelChangeView = jest.spyOn(presenter.view, 'сhange').mockImplementation(()=>{});
 
@@ -100,7 +98,7 @@ describe('SliderPresenter', ()=>{
             
             test('should notify subscribers for changes in currentThumbSecond', ()=>{
                 let value = 18;
-                view.dragObject = view.sliderThumbSecond;
+                presenter.changingObject = view.sliderThumbSecond;
                 let spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbSecondUpdate, 'notify')
                 let spyFromModelChangeView = jest.spyOn(presenter.view, 'сhange').mockImplementation(()=>{});
 
@@ -147,13 +145,13 @@ describe('SliderPresenter', ()=>{
         })
     }) 
 
-    describe('method setData()', ()=>{
-        test('should call model.setData() with provided params', ()=>{
+    describe('method modelData()', ()=>{
+        test('should call model.modelData() with provided params', ()=>{
             let name = 'min';
             let data = 15;
             let spySetDataInModel = jest.spyOn(model, 'setData');
 
-            presenter.setData(name, data);
+            presenter.modelData(name, data);
 
             expect(spySetDataInModel).toHaveBeenCalledTimes(1);
             expect(spySetDataInModel).toHaveBeenCalledWith(name, data);
