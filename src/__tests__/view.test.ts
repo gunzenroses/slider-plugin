@@ -29,7 +29,6 @@ describe('class SliderView', ()=>{
 
     describe('method createChildren()', ()=>{
         test('create children (variables) for class functionality', ()=>{
-            expect(view.selectObject).toBeTruthy;
             expect(view.ifHorizontal).toBeDefined;
             expect(view.ifRange).toBeDefined;
             expect(view.ifTooltip).toBeDefined;
@@ -82,12 +81,6 @@ describe('class SliderView', ()=>{
             document.dispatchEvent(new Event('pointermove'));
 
             expect(spyOnDragMove).toHaveBeenCalledTimes(1);
-        })
-
-        test('clear dragObject when dragged thumb is released', ()=>{
-            document.dispatchEvent(new Event('pointerup'));
-
-            expect(view.dragObject).toEqual({});
         })
     })
 
