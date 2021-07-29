@@ -147,12 +147,12 @@ export default class ConfigurationPanel implements IPanel {
                 : (type === "number")
                     ? parseInt(element.value)
                     : element.value;
-        if (name === "currentFirst"){ this.presenter.view.selectObject = this.presenter.view.sliderThumb!; }
-        if (name === "currentSecond"){ this.presenter.view.selectObject = this.presenter.view.sliderThumbSecond!; }
+        if (name === "currentFirst"){ this.presenter.changingObject = this.presenter.view.sliderThumb!; }
+        if (name === "currentSecond"){ this.presenter.changingObject = this.presenter.view.sliderThumbSecond!; }
         if (type === "number"){
             this.validation = new checkValidity(element, this.panelContainer);
-            setTimeout(()=>{ this.presenter.setData(name, data); });
-        } else { this.presenter.setData(name, data); };
+            setTimeout(()=>{ this.presenter.modelData(name, data); });
+        } else { this.presenter.modelData(name, data); };
     }
 
     render(data: TSettings){
