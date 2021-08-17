@@ -1,39 +1,39 @@
 import { EventDispatcher } from "mvp/eventDispatcher";
 
 class Listener {
-    msg: number;
-    constructor(msg: number){
-        this.msg = msg;
-    }
+  msg: number;
+  constructor(msg: number) {
+    this.msg = msg;
+  }
 
-    setHandler = this.set.bind(this);
+  setHandler = this.set.bind(this);
 
-    set(msg: number){
-        this.msg = msg;
-    }
-};
+  set(msg: number) {
+    this.msg = msg;
+  }
+}
 
-describe('EventDispatcher',()=>{
-    let ed = new EventDispatcher();
-    let listener = new Listener(1);
+describe("EventDispatcher", () => {
+  let ed = new EventDispatcher();
+  let listener = new Listener(1);
 
-    test('method add(): add listener to listeners', ()=>{
-        ed.add(listener.setHandler);
+  test("method add(): add listener to listeners", () => {
+    ed.add(listener.setHandler);
 
-        expect(ed.listeners.length).toBe(1);
-    })
+    expect(ed.listeners.length).toBe(1);
+  });
 
-    test('method notify(): pass arguments when it notifies listeners', ()=>{
-        let message = 12;
+  test("method notify(): pass arguments when it notifies listeners", () => {
+    let message = 12;
 
-        ed.notify(message);
+    ed.notify(message);
 
-        expect(listener.msg).toBe(message);
-    })
+    expect(listener.msg).toBe(message);
+  });
 
-    test('method remove(): remove listener from listeners', ()=>{
-        ed.remove(listener.setHandler);
+  test("method remove(): remove listener from listeners", () => {
+    ed.remove(listener.setHandler);
 
-        expect(ed.listeners.length).toBe(0);
-    })
-})
+    expect(ed.listeners.length).toBe(0);
+  });
+});

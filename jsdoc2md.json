@@ -1,13 +1,18 @@
 {
-    "source": {
-        "includePattern": ".+\\.ts(doc|x)?$"
-    },
-    "plugins": [
-        "node_modules/jsdoc-babel",
-        {"babel": {
-                    "extentions": ["ts"],
-                    "presets": ["@babel/preset-typescript"]
-                }
-        }
-    ]
+  "source": {
+    "includePattern": ".+\\.ts(doc|x)?$"
+  },
+  "plugins": [
+    "node_modules/jsdoc-babel",
+    {
+      "babel": {
+        "extentions": [
+          "ts"
+        ],
+        "presets": [
+          "@babel/preset-typescript"
+        ]
+      }
+    }
+  ]
 }

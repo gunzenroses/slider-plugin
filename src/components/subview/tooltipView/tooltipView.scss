@@ -2,22 +2,23 @@ $width-tooltip: 3rem;
 $height-tooltip: 2rem;
 $color-tooltip: #008000;
 
-.tooltip_first, .tooltip_second {
-    position: absolute;
-    width: $width-tooltip;
-    height: $height-tooltip;
-    border-radius: 3px;
-    background-color: $color-tooltip;
-    text-align: center;
-    line-height: $height-tooltip;
-    z-index: 2;
-    user-select: none;
+.tooltip_first,
+.tooltip_second {
+  position: absolute;
+  width: $width-tooltip;
+  height: $height-tooltip;
+  border-radius: 3px;
+  background-color: $color-tooltip;
+  text-align: center;
+  line-height: $height-tooltip;
+  z-index: 2;
+  user-select: none;
 }
 
 .tooltip_horizontal {
-    transform: translate(-50%, -$height-tooltip);
+  transform: translate(-50%, -$height-tooltip);
 }
 
 .tooltip_vertical {
-    transform: translate(-$width-tooltip, -50%);
+  transform: translate(-$width-tooltip, -50%);
 }

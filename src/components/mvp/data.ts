@@ -1,17 +1,17 @@
-import { TSettings } from "utils/types"
+import { TSettings } from "utils/types";
 
 let sliderData: TSettings = {
-    min: 0,
-    max: 100,
-    range: true,
-    currentFirst: 33,
-    currentSecond: 66,
-    step: 1,
-    orientation: "horizontal",
-    tooltip: true,
-    scale: {
-        stepPerDiv: 10,
-    }
-}
+  min: 0,
+  max: 100,
+  range: true,
+  currentFirst: 33,
+  currentSecond: 66,
+  step: 1,
+  orientation: "horizontal",
+  tooltip: true,
+  scale: {
+    stepPerDiv: 10,
+  },
+};
 
-export { sliderData }
+export { sliderData };

@@ -3,68 +3,68 @@ $smaller-side: 10px;
 $border-width: 1px;
 
 .slider__scale {
+  position: relative;
+  width: $bigger-side;
+  height: $smaller-side;
+  border-bottom: $border-width solid black;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  margin-bottom: 1rem;
+
+  &_vertical {
     position: relative;
-    width: $bigger-side;
-    height: $smaller-side;
-    border-bottom: $border-width solid black;
+    width: $smaller-side;
+    height: $bigger-side;
+    border-right: $border-width solid black;
     display: flex;
     align-items: flex-end;
-    flex-direction: row;
-    margin-bottom: 1rem;
-
-    &_vertical {
-        position: relative;
-        width: $smaller-side;
-        height: $bigger-side;
-        border-right: $border-width solid black;
-        display: flex;
-        align-items: flex-end;
-        flex-direction: column-reverse;
-        margin-right: 1.5rem;
-    }
+    flex-direction: column-reverse;
+    margin-right: 1.5rem;
+  }
 }
 
 .scale__row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
 
-    &_vertical {
-        @extend .scale__row;
-        flex-direction: column-reverse;
-    }
+  &_vertical {
+    @extend .scale__row;
+    flex-direction: column-reverse;
+  }
 }
 
 .scale__point {
-    // position: relative;
-    background: black;
-    width: 1px;
-    height: 3px;
-    flex-shrink: 0;
-    &_vertical {
-        @extend .scale__point;
-        width: 3px;
-        height: 1px;
-    }
+  // position: relative;
+  background: black;
+  width: 1px;
+  height: 3px;
+  flex-shrink: 0;
+  &_vertical {
+    @extend .scale__point;
+    width: 3px;
+    height: 1px;
+  }
 }
 
 .scale__segment {
-    @extend .scale__point;
-    height: 6px;
-    
-    &_vertical {
-        @extend .scale__point_vertical;
-        width: 6px;
-    }
+  @extend .scale__point;
+  height: 6px;
+
+  &_vertical {
+    @extend .scale__point_vertical;
+    width: 6px;
+  }
 }
 
 .scale__number {
-    position: absolute; 
-    transform: translate(-50%, 10px);
-    user-select: none;
-    &_vertical {
-        @extend .scale__number;
-        transform: translate(10px,-50%);
-    }
+  position: absolute;
+  transform: translate(-50%, 10px);
+  user-select: none;
+  &_vertical {
+    @extend .scale__number;
+    transform: translate(10px, -50%);
+  }
 }
