@@ -1,8 +1,9 @@
-const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-//const ESlintPlugin = require('eslint-webpack-plugin');
+const path = require("path");
+const webpack = require("webpack");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+//const ESlintPlugin = require("eslint-webpack-plugin");
 
 module.exports = (env) => ({
   context: path.resolve(__dirname, "./src"),
@@ -10,22 +11,22 @@ module.exports = (env) => ({
     __filename: true,
     __dirname: true,
   },
-  mode: env.development ? 'development' : 'production',
+  mode: env.development ? "development" : "production",
   entry: {
-    main: path.resolve(__dirname, './src/index.js'),
+    main: path.resolve(__dirname, "./src/index.js"),
   },
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: 'assets/js/[name].bundle.js',
-    publicPath: env.development ? '/' : 'https://gunzenroses.github.io/slider-plugin/',
+    path: path.resolve(__dirname, "./dist"),
+    filename: "assets/js/[name].bundle.js",
+    publicPath: env.development ? "/" : "https://gunzenroses.github.io/slider-plugin/",
   },
   devServer: {
-    contentBase: path.join(__dirname, './dist'),
+    contentBase: path.join(__dirname, "./dist"),
     open: true,
     compress: true,
     port: 8081,
   },
-  devtool: env.development ? 'inline-source-map' : false,
+  devtool: env.development ? "inline-source-map" : false,
   module: {
     rules: [
       {
@@ -33,7 +34,7 @@ module.exports = (env) => ({
         use: {
           loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env'],
+            presets: ["@babel/preset-env"],
           }
         },
         exclude: /node_modules/,
@@ -42,35 +43,35 @@ module.exports = (env) => ({
         test: /\.tsx?$/,
         use: [
           {
-            loader: 'babel-loader',
+            loader: "babel-loader",
           },
           {
-            loader: 'ts-loader',
+            loader: "ts-loader",
             options: {
-              configFile: env.development ? 'tsconfig.json' : 'tsconfig.prod.json',
+              configFile: env.development ? "tsconfig.json" : "tsconfig.prod.json",
             }
           },
         ],
         exclude: /node_modules/,
       },
-      {
-        test: /\.(ts|tsx)$/,
-        enforce: 'pre',
-        use: [
-          {
-            options: {
-              eslintPath: require.resolve('eslint'),
+      // {
+      //   test: /\.(ts|tsx)$/,
+      //   enforce: "pre",
+      //   use: [
+      //     {
+      //       options: {
+      //         eslintPath: require.resolve("eslint"),
 
-            },
-            loader: require.resolve('eslint-loader'),
-          },
-        ],
-        exclude: /node_modules/,
-      },
+      //       },
+      //       loader: require.resolve("eslint-loader"),
+      //     },
+      //   ],
+      //   exclude: /node_modules/,
+      // },
       {
         test: /\.css$/,
         use: [
-          "style-loader",
+          env.development ? MiniCssExtractPlugin.loader : "style-loader",
           "css-loader",
         ],
         exclude: /node_modules/,
@@ -78,8 +79,9 @@ module.exports = (env) => ({
       {
         test: /\.s[ac]ss$/,
         use: [
-          "style-loader", // Creates `style` nodes from JS strings
+          env.development ? MiniCssExtractPlugin.loader : "style-loader",
           "css-loader", // Translates CSS into CommonJS
+          "postcss-loader",
           "sass-loader", // Compiles Sass to CSS
         ]
       },
@@ -87,21 +89,28 @@ module.exports = (env) => ({
   },
   resolve: {
     alias: {
-      styles: path.resolve(__dirname, 'src/assets/styles/'),
-      mvp: path.resolve(__dirname, 'src/components/mvp'),
-      panel: path.resolve(__dirname, "src/components/panel"),
-      subview: path.resolve(__dirname, "src/components/subview"),
-      helpers: path.resolve(__dirname, "src/scripts/helpers"),
-      utils: path.resolve(__dirname, "src/scripts/utils"),
+      assets: path.resolve(__dirname, "src/assets/"),
+      mvp: path.resolve(__dirname, "src/components/mvp/"),
+      panel: path.resolve(__dirname, "src/components/panel/"),
+      subview: path.resolve(__dirname, "src/components/subview/"),
+      helpers: path.resolve(__dirname, "src/scripts/helpers/"),
+      utils: path.resolve(__dirname, "src/scripts/utils/"),
     },
-    extensions: ['.ts', '.tsx', '.js'],
-    modules: ['node_modules', 'src'],
+    extensions: [".ts", ".tsx", ".js", ".scss"],
+    modules: ["node_modules", path.resolve(__dirname, 'src')],
   },
   plugins: [
     new CleanWebpackPlugin(),
     // new ESLintPlugin({
-    //     extensions: ['ts']
+    //     extensions: ["ts"]
     // }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
     new HtmlWebpackPlugin({
       filename: "index.html",
       minify: true,
