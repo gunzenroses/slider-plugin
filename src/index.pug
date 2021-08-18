@@ -1,0 +1,23 @@
+block variables
+  - var slidersId = ["horizontal", "vertical", "default"]
+
+doctype html
+html(lang="ru")
+  head
+    //- Meta
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    //- Basic Seo
+    block basicSeo
+      meta(name="description" content="exapmles of range-slider")
+      meta(name="keywords", content="slider, range-slider, js-pluging")
+      meta(name="author" content="gunzenroses")
+    //- Title
+    block title 
+      title demo slider-plugin
+
+  body
+    for slider in slidersId 
+      div.slider-panel
+        div.slider(id= slider)
