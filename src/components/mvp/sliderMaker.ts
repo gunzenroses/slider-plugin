@@ -1,22 +1,24 @@
 import "assets/slider.scss";
 import { sliderData } from "./data";
 import { TSettings } from "utils/types";
-import { SliderModel } from "./model";
-import { SliderView } from "./view";
-import { SliderPresenter } from "./presenter";
-import ConfigurationPanel from "panel/panel";
+import { IModel, SliderModel } from "./model";
+import { IView, SliderView } from "./view";
+import { IPresenter, SliderPresenter } from "./presenter";
+import { IPanel, ConfigurationPanel} from "panel/panel";
 
-export default function sliderMaker(
-  container: HTMLElement,
-  options: TSettings,
-  configurationPanel?: boolean
-) {
-  let aModel = new SliderModel(container, {...sliderData, ...options});
-  let aView = new SliderView(container);
-  let aPresenter = new SliderPresenter(aModel, aView);
-  let cp = configurationPanel ? new ConfigurationPanel(container, aPresenter) : null;
-  return { aPresenter }
+export default class SliderMaker {
+  private model: IModel;
+  private view: IView;
+  private presenter: IPresenter;
+  private panel: IPanel|null;
+
+  constructor(container: HTMLElement, options: TSettings, configurationPanel?: boolean) {
+    this.model = new SliderModel(container, { ...sliderData, ...options });
+    this.view = new SliderView(container);
+    this.presenter = new SliderPresenter(this.model, this.view);
+    this.panel = configurationPanel
+      ? new ConfigurationPanel(container, this.presenter)
+      : null;
+    return this;
+  }
 }
-
-
-//TODO: если ошибка выдать!
