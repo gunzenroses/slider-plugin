@@ -5,6 +5,7 @@ dist
 package-lock.json
 *.orig
 .vscode/
+coverage/
 
 #log files
 npm-debug.log*
