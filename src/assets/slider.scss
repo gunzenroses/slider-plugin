@@ -30,12 +30,12 @@ $color-border: #3d3d3d;
     }
 }
 
-@import "../../components/subview/tooltipView/tooltipView.scss";
-@import "../../components/subview/trackView/sliderRange/sliderRangeView.scss";
-@import "../../components/subview/trackView/sliderThumb/sliderThumbView.scss";
-@import "../../components/subview/trackView/sliderTrack/sliderTrackView.scss";
-@import "../../components/subview/scaleView/scaleView.scss";
-@import "../../components/panel/panel.scss";
+@import "../components/subview/tooltipView/tooltipView.scss";
+@import "../components/subview/trackView/sliderRange/sliderRangeView.scss";
+@import "../components/subview/trackView/sliderThumb/sliderThumbView.scss";
+@import "../components/subview/trackView/sliderTrack/sliderTrackView.scss";
+@import "../components/subview/scaleView/scaleView.scss";
+@import "../components/panel/panel.scss";
 
 .disabled {
     display: none;
