@@ -8,7 +8,7 @@ window.onload = function () {
       step: 120,
       scale: true,
       range: false
-    }, true)
+    }, true);
 
   $("#vertical").sliderPlugin({
     orientation: "vertical",
@@ -20,4 +20,6 @@ window.onload = function () {
     range: true,
     tooltip: false
   });
+
+  $("#default").sliderPlugin({}, true);
 }
