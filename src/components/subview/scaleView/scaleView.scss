@@ -6,7 +6,7 @@ $border-width: 1px;
   position: relative;
   width: $bigger-side;
   height: $smaller-side;
-  border-bottom: $border-width solid black;
+  border-bottom: $border-width solid $color-dark;
   display: flex;
   align-items: flex-end;
   flex-direction: row;
@@ -16,7 +16,7 @@ $border-width: 1px;
     position: relative;
     width: $smaller-side;
     height: $bigger-side;
-    border-right: $border-width solid black;
+    border-right: $border-width solid $color-dark;
     display: flex;
     align-items: flex-end;
     flex-direction: column-reverse;
@@ -37,8 +37,7 @@ $border-width: 1px;
 }
 
 .scale__point {
-  // position: relative;
-  background: black;
+  background: $color-dark;
   width: 1px;
   height: 3px;
   flex-shrink: 0;
