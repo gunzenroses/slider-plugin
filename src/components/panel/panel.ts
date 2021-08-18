@@ -17,7 +17,7 @@ interface IPanel {
   validation: checkValidity;
 }
 
-export default class ConfigurationPanel implements IPanel {
+class ConfigurationPanel implements IPanel {
   presenter: IPresenter;
   parentContainer: HTMLElement;
   data!: TSettings;
@@ -277,3 +277,6 @@ export default class ConfigurationPanel implements IPanel {
       : `<option value="${arg}">${arg}</option> `;
   }
 }
+
+
+export { IPanel, ConfigurationPanel }
