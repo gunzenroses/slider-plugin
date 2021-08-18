@@ -7,14 +7,14 @@ import { SliderPresenter } from "./presenter";
 import ConfigurationPanel from "panel/panel";
 
 export default function SliderMaker(
-  id: string,
+  container: HTMLElement,
   options: TSettings,
   configurationPanel?: boolean
 ) {
-  let aModel = new SliderModel(id, {...sliderData, ...options});
-  let aView = new SliderView(id);
+  let aModel = new SliderModel(container, {...sliderData, ...options});
+  let aView = new SliderView(container);
   let aPresenter = new SliderPresenter(aModel, aView);
-  let cp = configurationPanel ? new ConfigurationPanel(id, aPresenter) : null;
+  let cp = configurationPanel ? new ConfigurationPanel(container, aPresenter) : null;
   return { aPresenter, cp }
 }
 

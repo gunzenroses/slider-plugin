@@ -8,21 +8,21 @@ interface IModel {
   fromModelUpdateData: EventDispatcher;
   setData(name: string, data: any): void;
   getData(): TSettings;
-  getContainerId(): string;
+  getContainer(): HTMLElement;
   changeThumb(value: number): void;
   changeThumbSecond(value: number): void;
 }
 
 class SliderModel implements IModel {
-  private containerId: string;
+  private container: HTMLElement;
   private data: TSettings;
   fromModelChangeView: EventDispatcher;
   fromModelUpdateData: EventDispatcher;
 
-  constructor(containerId: string, settings: TSettings) {
+  constructor(container: HTMLElement, settings: TSettings) {
     this.fromModelChangeView = new EventDispatcher();
     this.fromModelUpdateData = new EventDispatcher();
-    this.containerId = containerId;
+    this.container = container;
     this.data = settings;
     this.updateCurrentsWithStep();
   }
@@ -44,8 +44,8 @@ class SliderModel implements IModel {
       : this.data.max;
   }
 
-  getContainerId() {
-    return this.containerId;
+  getContainer() {
+    return this.container;
   }
 
   getData() {

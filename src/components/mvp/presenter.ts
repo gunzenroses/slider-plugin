@@ -12,7 +12,7 @@ import { EventDispatcher } from "./eventDispatcher";
 interface IPresenter {
   model: IModel;
   view: IView;
-  containerId: string;
+  container: HTMLElement;
   data: TSettings;
   changingObject: HTMLElement;
 
@@ -28,7 +28,7 @@ interface IPresenter {
 class SliderPresenter implements IPresenter {
   model: IModel;
   view: IView;
-  containerId: string;
+  container: HTMLElement;
   data!: TSettings;
   changingObject!: HTMLElement;
 
@@ -54,7 +54,7 @@ class SliderPresenter implements IPresenter {
   constructor(model: IModel, view: IView) {
     this.model = model;
     this.view = view;
-    this.containerId = this.model.getContainerId();
+    this.container = this.model.getContainer();
     this.fromPresenterUpdate = new EventDispatcher();
     this.fromPresenterThumbUpdate = new EventDispatcher();
     this.fromPresenterThumbSecondUpdate = new EventDispatcher();

@@ -67,10 +67,10 @@ class SliderView implements IView {
   maxValue!: number;
   minValue!: number;
 
-  constructor(containerId: string) {
+  constructor(container: HTMLElement) {
     this.fromViewSelectThumb = new EventDispatcher();
     this.fromViewDragThumb = new EventDispatcher();
-    this.parentContainer = document.getElementById(containerId)!;
+    this.parentContainer = container;
   }
 
   init(settings: TSettings) {

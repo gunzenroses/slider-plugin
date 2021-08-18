@@ -41,8 +41,8 @@ export default class ConfigurationPanel implements IPanel {
   updateThumbHandler!: { (number: number): void };
   updateThumbSecondHandler!: { (number: number): void };
 
-  constructor(containerId: string, presenter: IPresenter) {
-    this.parentContainer = document.getElementById(containerId)!;
+  constructor(container: HTMLElement, presenter: IPresenter) {
+    this.parentContainer = container;
     this.panelContainer = afterCustomElement("div", "panel", this.parentContainer);
     this.panelItems = appendCustomElement("div", "panel__items", this.panelContainer);
     this.presenter = presenter;
