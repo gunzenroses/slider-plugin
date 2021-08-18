@@ -92,17 +92,6 @@ function findPosition(
   return newPosition;
 }
 
-function mergeData(sliderData: TSettings, options: TSettings) {
-  var c: TSettings = {};
-  let key: string;
-  for (key in sliderData) {
-    if (sliderData.hasOwnProperty(key)) {
-      c[key] = key in options ? options[key] : sliderData[key];
-    }
-  }
-  return c;
-}
-
 //value %, max, min, step are actual values
 function fromPercentsToValueApplyStep(
   value: number,
@@ -157,7 +146,6 @@ export {
   changeValueToPercents,
   fromValueToPX,
   findPosition,
-  mergeData,
   fromPercentsToValueApplyStep,
   changeValueToPercentsApplyStep,
   appendCustomElement,

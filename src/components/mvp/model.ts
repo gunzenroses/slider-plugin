@@ -1,6 +1,6 @@
 import { TSettings } from "utils/types";
 import { EventDispatcher } from "./eventDispatcher";
-import { applyStepOnValue, mergeData } from "utils/common";
+import { applyStepOnValue } from "utils/common";
 import adjustValue from "helpers/adjustData";
 
 interface IModel {
@@ -58,7 +58,7 @@ class SliderModel implements IModel {
 
     data = adjustValue(name, data, oldData);
     let newData = { [name]: data };
-    this.data = mergeData(oldData, newData);
+    this.data = {...oldData, ...newData};
 
     this.updateCurrentsWithStep();
     this.fromModelUpdateData.notify();

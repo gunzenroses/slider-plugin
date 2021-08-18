@@ -4,7 +4,6 @@
 
 import { SliderView } from "mvp/view";
 import { sliderData } from "mvp/data";
-import { mergeData } from "utils/common";
 
 let data = sliderData;
 let containerId = "container1";
@@ -126,7 +125,7 @@ describe("class SliderView", () => {
         tooltip: false,
         range: false,
       };
-      let updatedData = mergeData(sliderData, newData);
+      let updatedData = { ... sliderData, ...newData };
 
       view.init(updatedData);
       
