@@ -6,7 +6,7 @@ import { SliderView } from "./view";
 import { SliderPresenter } from "./presenter";
 import ConfigurationPanel from "panel/panel";
 
-export function sliderMaker(
+export default function sliderMaker(
   container: HTMLElement,
   options: TSettings,
   configurationPanel?: boolean
