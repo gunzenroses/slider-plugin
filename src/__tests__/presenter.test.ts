@@ -7,13 +7,11 @@ import { SliderModel } from "mvp/model";
 import { SliderView } from "mvp/view";
 import { sliderData } from "mvp/data";
 
-let containerId = "container1";
-let initialContainer = document.createElement("div");
-initialContainer.id = containerId;
-document.body.append(initialContainer);
+let container = document.createElement("div");
+document.body.append(container);
 
-let model = new SliderModel(containerId, sliderData);
-let view = new SliderView(containerId);
+let model = new SliderModel(container, sliderData);
+let view = new SliderView(container);
 let presenter = new SliderPresenter(model, view);
 
 describe("SliderPresenter", () => {

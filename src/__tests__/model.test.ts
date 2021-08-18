@@ -1,17 +1,21 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { IModel, SliderModel } from "mvp/model";
 import { sliderData } from "mvp/data";
 import { TSettings } from "utils/types";
 import adjustValue from "helpers/adjustData";
 
 describe("class SliderModel", () => {
-  let containerClass: string;
+  let container: HTMLElement;
   let data: TSettings;
   let model: IModel;
 
   beforeEach(() => {
-    containerClass = "container1";
+    container = document.createElement("div");
     data = sliderData;
-    model = new SliderModel(containerClass, data);
+    model = new SliderModel(container, data);
     jest.restoreAllMocks();
   });
 
@@ -44,7 +48,7 @@ describe("class SliderModel", () => {
 
   describe("method getContainerId", () => {
     test("should return id, which was passed to constructor", () => {
-      expect(model.getContainerId()).toEqual(containerClass);
+      expect(model.getContainer()).toEqual(container);
     });
   });
 
@@ -92,7 +96,7 @@ describe("class SliderModel", () => {
 
   describe("method getContainerId()", () => {
     test("return string with containerId passed into constructor", () => {
-      expect(model.getContainerId()).toEqual(containerClass);
+      expect(model.getContainer()).toEqual(container);
     });
   });
 

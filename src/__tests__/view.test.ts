@@ -6,14 +6,12 @@ import { SliderView } from "mvp/view";
 import { sliderData } from "mvp/data";
 
 let data = sliderData;
-let containerId = "container1";
 
-let initialContainer = document.createElement("div");
-initialContainer.id = containerId;
-document.body.append(initialContainer);
+let container = document.createElement("div");
+document.body.append(container);
 
 describe("class SliderView", () => {
-  let view = new SliderView(containerId);
+  let view = new SliderView(container);
 
   afterEach(() => {
     jest.restoreAllMocks();
