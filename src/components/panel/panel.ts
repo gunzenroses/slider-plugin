@@ -43,16 +43,8 @@ export default class ConfigurationPanel implements IPanel {
 
   constructor(containerId: string, presenter: IPresenter) {
     this.parentContainer = document.getElementById(containerId)!;
-    this.panelContainer = afterCustomElement(
-      "div",
-      "panel",
-      this.parentContainer
-    );
-    this.panelItems = appendCustomElement(
-      "div",
-      "panel__items",
-      this.panelContainer
-    );
+    this.panelContainer = afterCustomElement("div", "panel", this.parentContainer);
+    this.panelItems = appendCustomElement("div", "panel__items", this.panelContainer);
     this.presenter = presenter;
     this.getData();
     this.init();
@@ -71,12 +63,8 @@ export default class ConfigurationPanel implements IPanel {
   }
 
   private createChildren() {
-    this.checkboxes = this.panelContainer.querySelectorAll(
-      "input[type='checkbox']"
-    );
-    this.numberInputs = this.panelContainer.querySelectorAll(
-      "input[type='number']"
-    );
+    this.checkboxes = this.panelContainer.querySelectorAll("input[type='checkbox']");
+    this.numberInputs = this.panelContainer.querySelectorAll("input[type='number']");
     this.orientationInput = <HTMLInputElement>(
       this.panelContainer.querySelector('select[name="orientation"]')
     );
