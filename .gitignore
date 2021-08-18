@@ -4,6 +4,7 @@ node_modules
 dist
 package-lock.json
 *.orig
+.vscode/
 
 #log files
 npm-debug.log*
