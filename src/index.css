@@ -17,14 +17,10 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-}
-
-#horizontal {
   width: 400px;
   height: 200px;
 }
 
 #vertical {
   height: 400px;
-  width: 400px;
 }
