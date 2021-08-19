@@ -21,7 +21,7 @@ interface IView {
   dragObject: TDragObject;
 
   init(settings: TSettings): void;
-  сhange(object: TDragObject, newThumbCurrent: number): void;
+  change(object: TDragObject, newThumbCurrent: number): void;
   dragThumbEnd(): void;
 }
 
@@ -31,7 +31,7 @@ class SliderView implements IView {
   fromViewSelectThumb: EventDispatcher;
   fromViewDragThumb: EventDispatcher;
 
-  //to manipulate DOM
+  //to manipulate the DOM
   settings!: TSettings;
   sliderContainer!: HTMLElement;
   sliderThumb!: HTMLElement;
@@ -45,9 +45,9 @@ class SliderView implements IView {
   dragObject!: TDragObject;
 
   private selectThumbHandler!: { (ev: MouseEvent): void };
-  private dragThumbStartHandler!: { (ev: PointerEvent): void };
-  private dragThumbMoveHandler!: { (ev: PointerEvent): void };
-  private dragThumbEndHandler!: () => void;
+  private dragThumbHandler!: { (ev: PointerEvent): void };
+  private moveThumbHandler!: { (ev: PointerEvent): void };
+  private dropThumbHandler!: () => void;
   changeHandler!: (object: TDragObject, number: number) => void;
 
   //conditional variables for rendering
@@ -109,10 +109,10 @@ class SliderView implements IView {
 
   private setupHandlers() {
     this.selectThumbHandler = this.selectThumb.bind(this);
-    this.dragThumbStartHandler = this.dragThumbStart.bind(this);
-    this.dragThumbMoveHandler = this.dragThumbMove.bind(this);
-    this.dragThumbEndHandler = this.dragThumbEnd.bind(this);
-    this.changeHandler = this.сhange.bind(this);
+    this.dragThumbHandler = this.dragThumbStart.bind(this);
+    this.moveThumbHandler = this.dragThumbMove.bind(this);
+    this.dropThumbHandler = this.dragThumbEnd.bind(this);
+    this.changeHandler = this.change.bind(this);
   }
 
   private enable() {
@@ -123,37 +123,37 @@ class SliderView implements IView {
   private addListenerPointerDown() {
     this.sliderThumb.addEventListener(
       "pointerdown",
-      this.dragThumbStartHandler
+      this.dragThumbHandler
     );
     if (this.settings.range) {
       this.sliderThumbSecond.addEventListener(
         "pointerdown",
-        this.dragThumbStartHandler
+        this.dragThumbHandler
       );
     }
   }
 
-  private removeListenerPointerDown() {
+  private stopListenDown() {
     this.sliderThumb.removeEventListener(
       "pointerdown",
-      this.dragThumbStartHandler
+      this.dragThumbHandler
     );
     if (this.settings.range) {
       this.sliderThumbSecond.removeEventListener(
         "pointerdown",
-        this.dragThumbStartHandler
+        this.dragThumbHandler
       );
     }
   }
 
-  private addListenerPointerMoveAndUp() {
-    document.addEventListener("pointermove", this.dragThumbMoveHandler);
-    document.addEventListener("pointerup", this.dragThumbEndHandler);
+  private listenMoveAndUp() {
+    document.addEventListener("pointermove", this.moveThumbHandler);
+    document.addEventListener("pointerup", this.dropThumbHandler);
   }
 
   private removeListenerPointerMoveAndUp() {
-    document.removeEventListener("pointermove", this.dragThumbMoveHandler);
-    document.removeEventListener("pointerup", this.dragThumbEndHandler);
+    document.removeEventListener("pointermove", this.moveThumbHandler);
+    document.removeEventListener("pointerup", this.dropThumbHandler);
   }
 
   private selectThumb(e: MouseEvent) {
@@ -169,12 +169,12 @@ class SliderView implements IView {
     else {
       this.dragObject = <HTMLElement>e.target;
     }
-    this.addListenerPointerMoveAndUp();
+    this.listenMoveAndUp();
   }
 
   private dragThumbMove(e: PointerEvent) {
     if (this.dragObject === undefined || !this.dragObject.classList) return;
-    this.removeListenerPointerDown();
+    this.stopListenDown();
     e.preventDefault();
     this.fromViewDragThumb.notify(e);
   }
@@ -185,7 +185,7 @@ class SliderView implements IView {
   }
 
   // in % and actual values
-  сhange(object: TDragObject, newThumbCurrent: number) {
+  change(object: TDragObject, newThumbCurrent: number) {
     changeThumb(object, this.ifHorizontal, newThumbCurrent);
 
     let ifThumbFirst = object === this.sliderThumb;
