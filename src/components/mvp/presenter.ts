@@ -4,8 +4,8 @@ import { TSettings } from "utils/types";
 import {
   applyRestrictions,
   findPosition,
-  fromPercentsToValueApplyStep,
-  changeValueToPercentsApplyStep,
+  percentsToValueApplyStep,
+  valueToPercentsApplyStep,
 } from "utils/common";
 import { EventDispatcher } from "./eventDispatcher";
 
