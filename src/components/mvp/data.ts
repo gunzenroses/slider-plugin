@@ -1,6 +1,6 @@
 import { TSettings } from "utils/types";
 
-let sliderData: TSettings = {
+const sliderData: TSettings = {
   min: 0,
   max: 100,
   range: true,
