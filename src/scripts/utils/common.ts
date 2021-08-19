@@ -93,7 +93,7 @@ function findPosition(
 }
 
 //value %, max, min, step are actual values
-function fromPercentsToValueApplyStep(
+function percentsToValueApplyStep(
   value: number,
   max: number,
   min: number,
@@ -105,7 +105,7 @@ function fromPercentsToValueApplyStep(
 }
 
 //values are actual
-function changeValueToPercentsApplyStep(
+function valueToPercentsApplyStep(
   value: number,
   max: number,
   min: number,
@@ -146,8 +146,8 @@ export {
   changeValueToPercents,
   fromValueToPX,
   findPosition,
-  fromPercentsToValueApplyStep,
-  changeValueToPercentsApplyStep,
+  percentsToValueApplyStep,
+  valueToPercentsApplyStep,
   appendCustomElement,
   afterCustomElement,
 };
