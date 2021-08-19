@@ -114,19 +114,19 @@ class SliderPresenter implements IPresenter {
 
   //all values are in %
   private selectThumb(e: any) {
-    let newThumbCurrentPosition = this.ifHorizontal
+    const newThumbCurrentPosition = this.ifHorizontal
       ? e.clientX -
         this.view.sliderContainer.getBoundingClientRect().left +
         this.thumbWidth / 2
       : e.clientY - this.view.sliderContainer.getBoundingClientRect().top; //+ this.thumbWidth/2;
-    let newThumbCurrentPercent = this.ifHorizontal
+    const newThumbCurrentPercent = this.ifHorizontal
       ? Math.floor((newThumbCurrentPosition / this.containerSize) * 100)
       : Math.floor(
           ((this.containerSize - newThumbCurrentPosition) /
             this.containerSize) *
             100
         );
-    let restrictedThumbCurrent = applyRestrictions(newThumbCurrentPercent);
+    const restrictedThumbCurrent = applyRestrictions(newThumbCurrentPercent);
     this.ifRange
       ? this.selectThumbRangeTrue(restrictedThumbCurrent)
       : this.selectThumbRangeFalse(restrictedThumbCurrent);
@@ -140,24 +140,23 @@ class SliderPresenter implements IPresenter {
 
   //all values are in %
   private selectThumbRangeTrue(newThumbCurrentPercent: number) {
-    let firstThumbPercent: number = findPosition(
+    const firstThumbPercent: number = findPosition(
       this.view.sliderThumb,
       this.ifHorizontal,
       this.containerSize
     );
-    let secondThumbPercent: number = findPosition(
+    const secondThumbPercent: number = findPosition(
       this.view.sliderThumbSecond!,
       this.ifHorizontal,
       this.containerSize
     );
-
-    let firstDiff: number = Math.abs(
+    const firstDiff: number = Math.abs(
       firstThumbPercent - newThumbCurrentPercent
     );
-    let secondDiff: number = Math.abs(
+    const secondDiff: number = Math.abs(
       secondThumbPercent - newThumbCurrentPercent
     );
-
+    
     if (firstDiff < secondDiff) {
       this.setObject(this.view.sliderThumb);
       this.modelThumbFirst(newThumbCurrentPercent);
@@ -180,15 +179,15 @@ class SliderPresenter implements IPresenter {
   //all values are in %
   private dragThumb(e: any) {
     this.setObject(<HTMLElement>this.view.dragObject);
-    let newThumbCurrentPX = this.ifHorizontal
+    const newThumbCurrentPX = this.ifHorizontal
       ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left
       : e.clientY - this.view.sliderContainer.getBoundingClientRect().top;
-    let newThumbCurrent = this.ifHorizontal
+    const newThumbCurrent = this.ifHorizontal
       ? Math.floor((newThumbCurrentPX / this.containerSize) * 100)
       : Math.floor(
           ((this.containerSize - newThumbCurrentPX) / this.containerSize) * 100
         );
-    let restrictedThumbCurrent = applyRestrictions(newThumbCurrent);
+    const restrictedThumbCurrent = applyRestrictions(newThumbCurrent);
     this.ifRange
       ? this.dragThumbRangeTrue(restrictedThumbCurrent)
       : this.dragThumbRangeFalse(restrictedThumbCurrent);
@@ -201,12 +200,12 @@ class SliderPresenter implements IPresenter {
 
   //all values are in %
   private dragThumbRangeTrue(newThumbCurrent: number) {
-    let firstThumbPercent = findPosition(
+    const firstThumbPercent = findPosition(
       this.view.sliderThumb,
       this.ifHorizontal,
       this.containerSize
     );
-    let secondThumbPercent = findPosition(
+    const secondThumbPercent = findPosition(
       this.view.sliderThumbSecond!,
       this.ifHorizontal,
       this.containerSize
@@ -232,7 +231,7 @@ class SliderPresenter implements IPresenter {
 
   //value - %, newValue - actual
   private modelThumbFirst(value: number) {
-    let newValue = fromPercentsToValueApplyStep(
+    const newValue = percentsToValueApplyStep(
       value,
       this.max,
       this.min,
@@ -243,7 +242,7 @@ class SliderPresenter implements IPresenter {
 
   //value - %, newValue - actual
   private modelThumbSecond(value: number) {
-    let newValue = fromPercentsToValueApplyStep(
+    const newValue = percentsToValueApplyStep(
       value,
       this.max,
       this.min,
@@ -264,13 +263,13 @@ class SliderPresenter implements IPresenter {
       ? this.fromPresenterThumbUpdate.notify(value)
       : this.fromPresenterThumbSecondUpdate.notify(value);
 
-    let newValue = changeValueToPercentsApplyStep(
+    const newValue = valueToPercentsApplyStep(
       value,
       this.max,
       this.min,
       this.step
     );
-    this.view.сhange(this.changingObject, newValue);
+    this.view.change(this.changingObject, newValue);
   }
 }
 
