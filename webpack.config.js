@@ -30,6 +30,10 @@ module.exports = (env) => ({
   module: {
     rules: [
       {
+        test: /\.pug$/,
+        loader: "pug-loader",
+      },
+      {
         test: /\.js$/,
         use: {
           loader: "babel-loader",
@@ -114,7 +118,7 @@ module.exports = (env) => ({
     new HtmlWebpackPlugin({
       filename: "index.html",
       minify: true,
-      template: path.resolve(__dirname, "./src/index.html"),
+      template: path.resolve(__dirname, "./src/index.pug"),
       chunks: ["main"],
       inject: "body",
     }),
