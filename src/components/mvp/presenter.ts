@@ -1,5 +1,6 @@
 import { IModel } from "./model";
 import { IView } from "./view";
+import { EventDispatcher } from "./eventDispatcher";
 import { TSettings } from "utils/types";
 import {
   applyRestrictions,
@@ -7,7 +8,6 @@ import {
   percentsToValueApplyStep,
   valueToPercentsApplyStep,
 } from "utils/common";
-import { EventDispatcher } from "./eventDispatcher";
 
 interface IPresenter {
   model: IModel;

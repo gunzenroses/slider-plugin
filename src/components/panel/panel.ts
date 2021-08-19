@@ -1,7 +1,7 @@
 import { throttle } from "throttle-typescript";
 import { IPresenter } from "mvp/presenter";
-import { TSettings, TPanelParam } from "utils/types";
 import checkValidity from "helpers/checkValidity";
+import { TSettings, TPanelParam } from "utils/types";
 import { afterCustomElement, appendCustomElement } from "utils/common";
 
 interface IPanel {

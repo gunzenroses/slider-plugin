@@ -1,5 +1,4 @@
 import { EventDispatcher } from "./eventDispatcher";
-import { TSettings, TDragObject } from "utils/types";
 import sliderContainerView from "subview/trackView/sliderContainer/sliderContainerView";
 import sliderTrackView from "subview/trackView/sliderTrack/sliderTrackView";
 import sliderThumbView from "subview/trackView/sliderThumb/slideThumbView";
@@ -10,6 +9,7 @@ import tooltipItemView from "subview/tooltipView/tooltipItemView";
 import changeTooltip from "subview/tooltipView/changeTooltip";
 import scaleView from "subview/scaleView/scaleView";
 import { changeValueToPercents } from "utils/common";
+import { TSettings, TDragObject } from "utils/types";
 
 interface IView {
   settings: TSettings;

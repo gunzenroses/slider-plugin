@@ -1,5 +1,5 @@
-import { fromValueToPX } from "../../../scripts/utils/common";
 import scaleItem from "./scaleItem";
+import { fromValueToPX } from "utils/common";
 
 export default function scaleItemRow(
   ifHorizontal: boolean,

@@ -1,5 +1,5 @@
-import { TSettings } from "utils/types";
 import { EventDispatcher } from "./eventDispatcher";
+import { TSettings } from "utils/types";
 import { applyStepOnValue } from "utils/common";
 import adjustValue from "helpers/adjustData";
 
