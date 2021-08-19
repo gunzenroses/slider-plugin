@@ -86,7 +86,7 @@ describe("class SliderView", () => {
       let obj = view.sliderThumb;
       let num = 7;
 
-      view.сhange(obj, num);
+      view.change(obj, num);
 
       expect(view.sliderThumb.style.left).toBe(num + "%");
       expect(view.sliderRange.style.left).toBe(num + "%");
@@ -97,7 +97,7 @@ describe("class SliderView", () => {
       let obj = view.sliderThumbSecond;
       let num = 11;
 
-      view.сhange(obj, num);
+      view.change(obj, num);
 
       expect(view.sliderThumbSecond.style.left).toBe(num + "%");
       expect(view.sliderRange.style.right).toBe(100 - num + "%");

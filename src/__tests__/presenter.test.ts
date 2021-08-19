@@ -97,7 +97,7 @@ describe("SliderPresenter", () => {
           "notify"
         );
         let spyFromModelChangeView = jest
-          .spyOn(presenter.view, "сhange")
+          .spyOn(presenter.view, "change")
           .mockImplementation(() => {});
 
         model.fromModelChangeView.notify(value);
@@ -117,7 +117,7 @@ describe("SliderPresenter", () => {
           "notify"
         );
         let spyFromModelChangeView = jest
-          .spyOn(presenter.view, "сhange")
+          .spyOn(presenter.view, "change")
           .mockImplementation(() => {});
 
         model.fromModelChangeView.notify(value);
@@ -139,14 +139,14 @@ describe("SliderPresenter", () => {
         expect(spyUpdateView).toHaveBeenCalledTimes(1);
       });
       test("notify subscribers", () => {
-        let spyFromPresenterUpdate = jest.spyOn(
+        let spyfromPresenterUpdate = jest.spyOn(
           presenter.fromPresenterUpdate,
           "notify"
         );
 
         model.fromModelUpdateData.notify();
 
-        expect(spyFromPresenterUpdate).toHaveBeenCalledTimes(1);
+        expect(spyfromPresenterUpdate).toHaveBeenCalledTimes(1);
       });
     });
   });
