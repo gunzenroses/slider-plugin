@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 //const ESlintPlugin = require("eslint-webpack-plugin");
@@ -25,6 +26,18 @@ module.exports = (env) => ({
     open: true,
     compress: true,
     port: 8081,
+  },
+  resolve: {
+    alias: {
+      assets: path.resolve(__dirname, "src/assets/"),
+      mvp: path.resolve(__dirname, "src/components/mvp/"),
+      panel: path.resolve(__dirname, "src/components/panel/"),
+      subview: path.resolve(__dirname, "src/components/subview/"),
+      helpers: path.resolve(__dirname, "src/scripts/helpers/"),
+      utils: path.resolve(__dirname, "src/scripts/utils/"),
+    },
+    extensions: [".ts", ".tsx", ".js", ".scss"],
+    modules: ["node_modules", path.resolve(__dirname, "src")],
   },
   devtool: env.development ? "inline-source-map" : false,
   module: {
@@ -83,37 +96,33 @@ module.exports = (env) => ({
       {
         test: /\.s[ac]ss$/,
         use: [
-          env.development ? MiniCssExtractPlugin.loader : "style-loader",
-          "css-loader", // Translates CSS into CommonJS
+          env.development ? "style-loader" : MiniCssExtractPlugin.loader,
+          { 
+            loader: "css-loader", 
+            options: { importLoaders: 1 } 
+          },
           "postcss-loader",
-          "sass-loader", // Compiles Sass to CSS
+          "sass-loader",
         ]
       },
     ],
-  },
-  resolve: {
-    alias: {
-      assets: path.resolve(__dirname, "src/assets/"),
-      mvp: path.resolve(__dirname, "src/components/mvp/"),
-      panel: path.resolve(__dirname, "src/components/panel/"),
-      subview: path.resolve(__dirname, "src/components/subview/"),
-      helpers: path.resolve(__dirname, "src/scripts/helpers/"),
-      utils: path.resolve(__dirname, "src/scripts/utils/"),
-    },
-    extensions: [".ts", ".tsx", ".js", ".scss"],
-    modules: ["node_modules", path.resolve(__dirname, 'src')],
   },
   plugins: [
     new CleanWebpackPlugin(),
     // new ESLintPlugin({
     //     extensions: ["ts"]
     // }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: "assets/favicons", to: "assets/favicons" },
+      ],
+    }),
     new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
+      $: "jquery",
+      jQuery: "jquery"
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: "[name].css",
     }),
     new HtmlWebpackPlugin({
       filename: "index.html",
