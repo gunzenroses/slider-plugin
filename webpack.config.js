@@ -21,10 +21,12 @@ module.exports = (env) => ({
     filename: "assets/js/[name].bundle.js",
     publicPath: env.development ? "/" : "https://gunzenroses.github.io/slider-plugin/",
   },
-  devServer: {
-    contentBase: path.join(__dirname, "./dist"),
-    open: true,
+  devServer: { 
+    static: {
+      directory: path.join(__dirname, "./dist"),
+    },
     compress: true,
+    hot: true,
     port: 8081,
   },
   resolve: {
