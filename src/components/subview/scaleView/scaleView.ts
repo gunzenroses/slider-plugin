@@ -21,14 +21,8 @@ export default function scaleView(
     ? Math.ceil(parseFloat(parentNodeStyle.width))
     : Math.ceil(parseFloat(parentNodeStyle.height));
 
-  let stepPerDivValue = stepPerDiv
-    ? stepPerDiv
-    : (scaleItemRow.length + 1) % 2 === 0
-    ? 2
-    : 3;
-
   scale.append(
-    scaleItemRow(ifHorizontal, scaleLength, min, max, step, stepPerDivValue)
+    scaleItemRow(ifHorizontal, scaleLength, min, max, step, stepPerDiv)
   );
   parentNode.append(scale);
   return scale;
