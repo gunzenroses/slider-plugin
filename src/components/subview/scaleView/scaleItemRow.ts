@@ -7,7 +7,7 @@ export default function scaleItemRow(
   min: number,
   max: number,
   step: number,
-  stepPerDiv: number
+  stepPerDiv?: number
 ) {
   //find the row of elements (with step)
   let scaleItemRow: number[] = [];
@@ -16,6 +16,11 @@ export default function scaleItemRow(
     scaleItemRow.push(i);
     i += step;
   }
+
+  let itemWidth = Math.round(containerSize / scaleItemRow.length);
+  let stepPerDivValue = stepPerDiv
+    ? stepPerDiv
+    : 1;
 
   //determine classes for elements
   let segmentClass: string = ifHorizontal
@@ -30,6 +35,7 @@ export default function scaleItemRow(
   let lengthOfLeft = max - scaleItemRow[scaleItemRow.length - 1];
   let newContainerSize =
     containerSize - fromValueToPX(lengthOfLeft, max, min, containerSize) - 1;
+  let tailContainer = Math.floor(containerSize - newContainerSize);
 
   //creation of row of items
   let scaleItems: HTMLElement = document.createElement("div");
@@ -45,15 +51,19 @@ export default function scaleItemRow(
 
   scaleItems.innerHTML =
     scaleItemRow
-      .map((item) =>
+      .map((item, index) =>
         scaleItem(
           item,
-          stepPerDiv,
+          index,
+          stepPerDivValue,
+          itemWidth,
           ifHorizontal,
           segmentClass,
           spanClass,
           min,
-          step
+          scaleItemRow[scaleItemRow.length - 1],
+          step,
+          tailContainer
         )
       )
       .join(" ") + scaleItemMax;
