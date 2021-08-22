@@ -67,3 +67,14 @@ $border-width: 1px;
     transform: translate(10px, -50%);
   }
 }
+
+.scale-last__number {
+  position: absolute;
+  transform: translate(-25%, 10px);
+  user-select: none;
+  &_vertical {
+    @extend .scale__number;
+    transform: translate(10px, -60%);
+  }
+}
+
