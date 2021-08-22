@@ -137,11 +137,19 @@ function afterCustomElement(
   return el;
 }
 
+function commonDivider(basicNum: number, approxNum: number){
+  while (basicNum % approxNum !== 0){
+    approxNum++;
+  }
+  return approxNum;
+}
+
 export {
   applyStepOnValue,
   applyRestrictions,
   fromPercentsToValue,
   changeValueToPercents,
+  commonDivider,
   fromValueToPX,
   findPosition,
   percentsToValueApplyStep,
