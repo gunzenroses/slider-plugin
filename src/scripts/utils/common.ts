@@ -137,11 +137,14 @@ function afterCustomElement(
   return el;
 }
 
-function commonDivider(basicNum: number, approxNum: number){
-  while (basicNum % approxNum !== 0){
-    approxNum++;
+function commonDivider(basicNum: number, approxNum: number): number {
+  let bigger = basicNum;
+  let smaller = approxNum;
+  if (bigger <= smaller) return smaller;
+  while (bigger % smaller !== 0){
+    smaller++;
   }
-  return approxNum;
+  return smaller;
 }
 
 export {
