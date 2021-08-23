@@ -6,9 +6,9 @@ export default function sliderThumbView(
   ifHorizontal: boolean,
   currentNum: number
 ) {
-  let verticalClass = ifHorizontal ? "" : "-vertical";
-  let thumbClass = `${className}${verticalClass}`;
-  let sliderThumbView = document.createElement("div");
+  const verticalClass = ifHorizontal ? "" : "-vertical";
+  const thumbClass = `${className}${verticalClass}`;
+  const sliderThumbView = document.createElement("div");
   sliderThumbView.classList.add("slider__thumb", thumbClass);
 
   changeThumb(sliderThumbView, ifHorizontal, currentNum);

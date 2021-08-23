@@ -8,8 +8,8 @@ export default function tooltipItemView(
   maxValue: number,
   minValue: number
 ): HTMLElement {
-  let verticalClass = ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
-  let tooltip = document.createElement("span");
+  const verticalClass = ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
+  const tooltip = document.createElement("span");
   tooltip.classList.add(className, verticalClass);
   tooltip.dataset.name = "tooltip";
 

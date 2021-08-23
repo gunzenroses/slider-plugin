@@ -1,5 +1,5 @@
 type TSettings = {
-  [settingName: string]: any;
+  [settingName: string]: boolean | number | string;
 };
 
 // type TSettings = {
@@ -15,7 +15,7 @@ type TSettings = {
 // }
 
 type TDragObject = {
-  [settingName: string]: any;
+  [settingName: string]: boolean | number | string;
 };
 
 type TRangeStyle = {
@@ -30,7 +30,7 @@ type TPanelParam = {
   text: string;
   value: string;
   type: string;
-  options?: Array<String>;
+  options?: Array<string>;
 };
 
 export { TSettings, TDragObject, TRangeStyle, TPanelParam };

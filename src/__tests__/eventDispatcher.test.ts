@@ -14,8 +14,8 @@ class Listener {
 }
 
 describe("EventDispatcher", () => {
-  let ed = new EventDispatcher();
-  let listener = new Listener(1);
+  const ed = new EventDispatcher();
+  const listener = new Listener(1);
 
   test("method add(): add listener to listeners", () => {
     ed.add(listener.setHandler);
@@ -24,7 +24,7 @@ describe("EventDispatcher", () => {
   });
 
   test("method notify(): pass arguments when it notifies listeners", () => {
-    let message = 12;
+    const message = 12;
 
     ed.notify(message);
 

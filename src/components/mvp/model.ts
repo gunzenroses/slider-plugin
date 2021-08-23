@@ -35,12 +35,7 @@ class SliderModel implements IModel {
       this.data.step
     );
     this.data.currentSecond = this.data.range
-      ? applyStepOnValue(
-          this.data.currentSecond,
-          this.data.max,
-          this.data.min,
-          this.data.step
-        )
+      ? applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
       : this.data.max;
   }
 
@@ -53,12 +48,12 @@ class SliderModel implements IModel {
   }
 
   setData(name: string, data: any) {
-    let oldData = this.getData();
+    const oldData = this.getData();
     if (oldData[name] === data) return;
 
     data = adjustValue(name, data, oldData);
-    let newData = { [name]: data };
-    this.data = {...oldData, ...newData};
+    const newData = { [name]: data };
+    this.data = { ...oldData, ...newData };
 
     this.updateCurrentsWithStep();
     this.fromModelUpdateData.notify();

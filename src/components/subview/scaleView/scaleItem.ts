@@ -13,30 +13,26 @@ export default function scaleItem(
   step: number,
   tailContainer: number
 ) {
-  const itemClass: string = ifHorizontal
-    ? "scale__point"
-    : "scale__point_vertical";
+  const itemClass: string = ifHorizontal ? "scale__point" : "scale__point_vertical";
 
-  let special: string = (item === max) && (tailContainer < 25)
-      ? `style= "visibility: hidden;"`
-      : "";
+  const special: string = item === max && tailContainer < 25 ? `style= "visibility: hidden;"` : "";
 
   if (itemWidth > 40) {
-    return `<div class=${segmentClass}><span class="${spanClass}" ${special}>${item}</span></div>`
+    return `<div class=${segmentClass}><span class="${spanClass}" ${special}>${item}</span></div>`;
   } else {
-    let temp: number = Math.round(40/itemWidth);
-    let numOfItems: number = (sequenceNum <= temp)
-      ? temp
-      : (sequenceNum % temp === 0)
+    const temp: number = Math.round(40 / itemWidth);
+    const numOfItems: number =
+      sequenceNum <= temp
+        ? temp
+        : sequenceNum % temp === 0
         ? temp
         : commonDivider(sequenceNum, temp);
 
-    return item === min 
-          || 
-            ((item - min) % (sequenceNum * step) === 0) 
-            && (index % numOfItems === 0)
-            && (index % sequenceNum === 0)
+    return item === min ||
+      ((item - min) % (sequenceNum * step) === 0 &&
+        index % numOfItems === 0 &&
+        index % sequenceNum === 0)
       ? `<div class=${segmentClass}><span class="${spanClass}" ${special}>${item}</span></div>`
       : `<div class=${itemClass}></div>`;
-  } 
+  }
 }

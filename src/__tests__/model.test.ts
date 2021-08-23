@@ -21,9 +21,9 @@ describe("class SliderModel", () => {
 
   describe("method setData", () => {
     test("should update step, min and max data in model", () => {
-      let step = 10;
-      let min = 2;
-      let max = 200;
+      const step = 10;
+      const min = 2;
+      const max = 200;
 
       model.setData("step", step);
       model.setData("min", min);
@@ -35,8 +35,8 @@ describe("class SliderModel", () => {
     });
 
     test("should update currentFirst and currentSecond data in model", () => {
-      let currentFirst = adjustValue("currentFirst", 11, model.getData());
-      let currentSecond = adjustValue("currentSecond", 35, model.getData());
+      const currentFirst = adjustValue("currentFirst", 11, model.getData());
+      const currentSecond = adjustValue("currentSecond", 35, model.getData());
 
       model.setData("currentFirst", currentFirst);
       model.setData("currentSecond", currentSecond);
@@ -74,9 +74,9 @@ describe("class SliderModel", () => {
 
   describe("method updateCurrentsWithStep()", () => {
     test("should make currentThumb multiple of step", () => {
-      let newCF = { name: "currentFirst", data: 26 };
-      let step = model.getData().step;
-      let multiple = Math.trunc((newCF.data / step) * step);
+      const newCF = { name: "currentFirst", data: 26 };
+      const step = model.getData().step;
+      const multiple = Math.trunc((newCF.data / step) * step);
 
       model.setData(newCF.name, newCF.data);
 
@@ -84,9 +84,9 @@ describe("class SliderModel", () => {
     });
 
     test("should make currentThumbSecond multiple of step", () => {
-      let newCF = { name: "currentSecond", data: 35 };
-      let step = model.getData().step;
-      let multiple = Math.trunc((newCF.data / step) * step);
+      const newCF = { name: "currentSecond", data: 35 };
+      const step = model.getData().step;
+      const multiple = Math.trunc((newCF.data / step) * step);
 
       model.setData(newCF.name, newCF.data);
 
@@ -101,11 +101,11 @@ describe("class SliderModel", () => {
   });
 
   describe("method changeThumb()", () => {
-    let val = 3;
+    const val = 3;
 
     test("should be called", () => {
       const spyChangeThumb = jest.spyOn(model, "changeThumb");
-      
+
       model.changeThumb(val);
 
       expect(spyChangeThumb).toBeCalledTimes(1);
@@ -119,7 +119,7 @@ describe("class SliderModel", () => {
   });
 
   describe("method changeThumbSecond()", () => {
-    let num = 5;
+    const num = 5;
 
     test("should be called", () => {
       const spyChangeThumbSecond = jest.spyOn(model, "changeThumbSecond");

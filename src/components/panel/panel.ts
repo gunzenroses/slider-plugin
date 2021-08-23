@@ -68,15 +68,9 @@ class ConfigurationPanel implements IPanel {
     this.orientationInput = <HTMLInputElement>(
       this.panelContainer.querySelector('select[name="orientation"]')
     );
-    this.minInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="min"]')
-    );
-    this.maxInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="max"]')
-    );
-    this.stepInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="step"]')
-    );
+    this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
+    this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
+    this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
     this.currentFirstInput = <HTMLInputElement>(
       this.panelContainer.querySelector('input[name="currentFirst"]')
     );
@@ -96,22 +90,17 @@ class ConfigurationPanel implements IPanel {
   }
 
   private enable() {
-    for (let item of this.checkboxes) {
+    for (const item of this.checkboxes) {
       item.addEventListener("change", throttle(this.changePanelHandler, 300));
     }
-    this.orientationInput.addEventListener(
-      "change",
-      throttle(this.changePanelHandler, 300)
-    );
-    for (let item of this.numberInputs) {
+    this.orientationInput.addEventListener("change", throttle(this.changePanelHandler, 300));
+    for (const item of this.numberInputs) {
       item.addEventListener("change", throttle(this.changePanelHandler, 300));
     }
 
     this.presenter.fromPresenterUpdate.add(this.updateHandler);
     this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler);
-    this.presenter.fromPresenterThumbSecondUpdate.add(
-      this.updateThumbSecondHandler
-    );
+    this.presenter.fromPresenterThumbSecondUpdate.add(this.updateThumbSecondHandler);
   }
 
   updatePanel() {
@@ -158,10 +147,10 @@ class ConfigurationPanel implements IPanel {
   }
 
   changePanel(e: Event) {
-    let element = e.target as HTMLInputElement;
-    let name: string = element.getAttribute("name")!;
-    let type = element.getAttribute("type");
-    let data =
+    const element = e.target as HTMLInputElement;
+    const name: string = element.getAttribute("name")!;
+    const type = element.getAttribute("type");
+    const data =
       type === "checkbox"
         ? element.checked
         : type === "number"
@@ -243,13 +232,13 @@ class ConfigurationPanel implements IPanel {
     ];
 
     this.panelItems.innerHTML = "";
-    for (let item of this.listOfPanelItems) {
+    for (const item of this.listOfPanelItems) {
       this.panelItems.innerHTML += this.createPanelItem(item);
     }
   }
 
   private createPanelItem(params: TPanelParam) {
-    let element = `<div class= "panel__item">${this.panelItemName(
+    const element = `<div class= "panel__item">${this.panelItemName(
       params.text
     )} ${this.panelItemInput(params)}</div>`;
     return element;
@@ -266,17 +255,16 @@ class ConfigurationPanel implements IPanel {
       ? `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value}/>`
       : params.type === "select"
       ? `<${params.type} class="panel__input" name= ${params.name}> ${params
-          .options!.map((el: String) => this.selectOptions(el))
+          .options!.map((el: string) => this.selectOptions(el))
           .join("")} </${params.type}>`
       : null;
   }
 
-  private selectOptions(arg: String) {
+  private selectOptions(arg: string) {
     return arg === this.data.orientation
       ? `<option selected value="${arg}">${arg}</option> `
       : `<option value="${arg}">${arg}</option> `;
   }
 }
 
-
-export { IPanel, ConfigurationPanel }
+export { IPanel, ConfigurationPanel };

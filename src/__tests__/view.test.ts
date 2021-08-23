@@ -5,13 +5,13 @@
 import { SliderView } from "mvp/view";
 import { sliderData } from "mvp/data";
 
-let data = sliderData;
+const data = sliderData;
 
-let container = document.createElement("div");
+const container = document.createElement("div");
 document.body.append(container);
 
 describe("class SliderView", () => {
-  let view = new SliderView(container);
+  const view = new SliderView(container);
 
   afterEach(() => {
     jest.restoreAllMocks();
@@ -41,7 +41,7 @@ describe("class SliderView", () => {
 
   describe("method enable()", () => {
     test("notify fromViewSelectThumb subscribers when sliderContainer is clicked", () => {
-      let spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
+      const spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
 
       view.sliderContainer.dispatchEvent(new Event("click"));
 
@@ -49,7 +49,7 @@ describe("class SliderView", () => {
     });
 
     test('should not activate "fromViewSelectThumb" when sliderThumb or sliderThumbSecond is clicked', () => {
-      let spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
+      const spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
 
       view.sliderThumb.dispatchEvent(new Event("click"));
       view.sliderThumbSecond.dispatchEvent(new Event("click"));
@@ -72,7 +72,7 @@ describe("class SliderView", () => {
     });
 
     test("notify fromViewDragThumb subscribers when thumb is moved", () => {
-      let spyOnDragMove = jest.spyOn(view.fromViewDragThumb, "notify");
+      const spyOnDragMove = jest.spyOn(view.fromViewDragThumb, "notify");
 
       view.sliderThumbSecond.dispatchEvent(new Event("pointerdown"));
       document.dispatchEvent(new Event("pointermove"));
@@ -83,8 +83,8 @@ describe("class SliderView", () => {
 
   describe("method change()", () => {
     test("update styles for Thumb, Range and Tooltip when (selectObject === sliderThumb)", () => {
-      let obj = view.sliderThumb;
-      let num = 7;
+      const obj = view.sliderThumb;
+      const num = 7;
 
       view.change(obj, num);
 
@@ -94,8 +94,8 @@ describe("class SliderView", () => {
     });
 
     test("update styles for Thumb, Range and Tooltip when (selectObject === sliderThumbSecond)", () => {
-      let obj = view.sliderThumbSecond;
-      let num = 11;
+      const obj = view.sliderThumbSecond;
+      const num = 11;
 
       view.change(obj, num);
 
@@ -118,15 +118,15 @@ describe("class SliderView", () => {
     });
 
     test("disable elements when !ifScale, !ifTooltip, !ifRange", () => {
-      let newData = {
+      const newData = {
         scale: false,
         tooltip: false,
         range: false,
       };
-      let updatedData = { ... sliderData, ...newData };
+      const updatedData = { ...sliderData, ...newData };
 
       view.init(updatedData);
-      
+
       expect(view.scale.classList.contains("disabled")).toBe(true);
       expect(view.tooltipSecond.classList.contains("disabled")).toBe(true);
     });

@@ -100,9 +100,7 @@ class SliderView implements IView {
     );
     //actual values
     this.stepValue = this.settings.step;
-    this.stepPerDiv = this.stepPerDiv
-      ? this.stepPerDiv
-      : this.settings.scale.stepPerDiv;
+    this.stepPerDiv = this.stepPerDiv ? this.stepPerDiv : this.settings.scale.stepPerDiv;
     this.maxValue = this.settings.max;
     this.minValue = this.settings.min;
   }
@@ -121,28 +119,16 @@ class SliderView implements IView {
   }
 
   private addListenerPointerDown() {
-    this.sliderThumb.addEventListener(
-      "pointerdown",
-      this.dragThumbHandler
-    );
+    this.sliderThumb.addEventListener("pointerdown", this.dragThumbHandler);
     if (this.settings.range) {
-      this.sliderThumbSecond.addEventListener(
-        "pointerdown",
-        this.dragThumbHandler
-      );
+      this.sliderThumbSecond.addEventListener("pointerdown", this.dragThumbHandler);
     }
   }
 
   private stopListenDown() {
-    this.sliderThumb.removeEventListener(
-      "pointerdown",
-      this.dragThumbHandler
-    );
+    this.sliderThumb.removeEventListener("pointerdown", this.dragThumbHandler);
     if (this.settings.range) {
-      this.sliderThumbSecond.removeEventListener(
-        "pointerdown",
-        this.dragThumbHandler
-      );
+      this.sliderThumbSecond.removeEventListener("pointerdown", this.dragThumbHandler);
     }
   }
 
@@ -157,15 +143,13 @@ class SliderView implements IView {
   }
 
   private selectThumb(e: MouseEvent) {
-    if (e.target === this.sliderThumb || e.target === this.sliderThumbSecond)
-      return;
+    if (e.target === this.sliderThumb || e.target === this.sliderThumbSecond) return;
     this.fromViewSelectThumb.notify(e);
   }
 
   private dragThumbStart(e: PointerEvent) {
     e.preventDefault();
-    if (e.target !== this.sliderThumb && e.target !== this.sliderThumbSecond)
-      return;
+    if (e.target !== this.sliderThumb && e.target !== this.sliderThumbSecond) return;
     else {
       this.dragObject = <HTMLElement>e.target;
     }
@@ -188,39 +172,20 @@ class SliderView implements IView {
   change(object: TDragObject, newThumbCurrent: number) {
     changeThumb(object, this.ifHorizontal, newThumbCurrent);
 
-    let ifThumbFirst = object === this.sliderThumb;
-    changeRange(
-      this.sliderRange,
-      newThumbCurrent,
-      this.ifHorizontal,
-      this.ifRange,
-      ifThumbFirst
-    );
+    const ifThumbFirst = object === this.sliderThumb;
+    changeRange(this.sliderRange, newThumbCurrent, this.ifHorizontal, this.ifRange, ifThumbFirst);
 
     if (this.ifTooltip) {
       object.children[0] === this.tooltipFirst
-        ? changeTooltip(
-            this.tooltipFirst,
-            newThumbCurrent,
-            this.maxValue,
-            this.minValue
-          )
-        : changeTooltip(
-            this.tooltipSecond,
-            newThumbCurrent,
-            this.maxValue,
-            this.minValue
-          );
+        ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.maxValue, this.minValue)
+        : changeTooltip(this.tooltipSecond, newThumbCurrent, this.maxValue, this.minValue);
     }
   }
 
   private render() {
     this.parentContainer.innerHTML = "";
     //values in percents
-    this.sliderContainer = sliderContainerView(
-      this.parentContainer,
-      this.ifHorizontal
-    );
+    this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
     this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
     this.sliderRange = sliderRangeView(
       this.sliderTrack,

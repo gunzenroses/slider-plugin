@@ -5,14 +5,14 @@ interface ISender {
 }
 
 class EventDispatcher implements ISender {
-  listeners = new Array();
+  listeners = [];
 
   add(listener: object): void {
     this.listeners.push(listener);
   }
 
   remove(listener: object): void {
-    let index = this.listeners.indexOf(listener);
+    const index = this.listeners.indexOf(listener);
     this.listeners.splice(index, 1);
   }
 

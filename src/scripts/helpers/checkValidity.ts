@@ -4,16 +4,12 @@ export default class checkValidity {
   private item: HTMLInputElement;
   private messageContainer!: HTMLElement;
   private parentContainer: HTMLElement;
-  invalidities: Array<String>;
+  invalidities: Array<string>;
 
   constructor(item: HTMLInputElement, parentContainer: HTMLElement) {
     this.item = item;
     this.parentContainer = parentContainer;
-    this.messageContainer = appendCustomElement(
-      "div",
-      "error-message",
-      this.parentContainer
-    );
+    this.messageContainer = appendCustomElement("div", "error-message", this.parentContainer);
     this.invalidities = [];
     this.checkValidity();
   }
@@ -36,8 +32,8 @@ export default class checkValidity {
 
     if (validity.stepMismatch) {
       const step = this.item.getAttribute("step");
-      const min = parseInt(this.item.getAttribute("min")!);
-      if (min === 0) {
+      let min = this.item.getAttribute("min");
+      if (min === null) {
         this.addInvalidity(`Number should be multiple of ${step}`);
       } else {
         this.addInvalidity(`Number should be: ${min} + multiple of ${step}`);
@@ -58,7 +54,7 @@ export default class checkValidity {
   }
 
   private placeValidityMessages() {
-    let msg = this.getInvalidities();
+    const msg = this.getInvalidities();
     this.messageContainer.classList.remove("hidden");
     this.messageContainer.innerText = msg;
     setTimeout(() => {

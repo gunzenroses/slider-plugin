@@ -6,8 +6,8 @@ export default function adjustValue(
   value: number | string | boolean,
   data: TSettings
 ) {
-  let info: TSettings = data;
-  let { max, min, step, currentFirst, currentSecond } = info;
+  const info: TSettings = data;
+  const { max, min, step, currentFirst, currentSecond } = info;
 
   switch (name) {
     case "step":
@@ -39,13 +39,7 @@ export default function adjustValue(
   }
 
   function adjustStep(value: number) {
-    return value <= 0
-      ? 1
-      : value > max - min
-      ? max - min
-      : value < max - min
-      ? value
-      : 1;
+    return value <= 0 ? 1 : value > max - min ? max - min : value < max - min ? value : 1;
   }
 
   function adjustCurrentFirst(value: number) {

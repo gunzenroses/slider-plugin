@@ -10,44 +10,37 @@ export default function scaleItemRow(
   stepPerDiv?: number
 ) {
   //find the row of elements (with step)
-  let scaleItemRow: number[] = [];
+  const scaleItemRow: number[] = [];
   let i = min;
   while (i < max) {
     scaleItemRow.push(i);
     i += step;
   }
 
-  let itemWidth = Math.round(containerSize / scaleItemRow.length);
-  let stepPerDivValue = stepPerDiv
-    ? stepPerDiv
-    : 1;
+  const itemWidth = Math.round(containerSize / scaleItemRow.length);
+  const stepPerDivValue = stepPerDiv ? stepPerDiv : 1;
 
   //determine classes for elements
-  let segmentClass: string = ifHorizontal
-    ? "scale__segment"
-    : "scale__segment_vertical";
-  let spanClass: string = ifHorizontal
-    ? "scale__number"
-    : "scale__number_vertical";
-  let scaleItemClass = ifHorizontal ? "scale__row" : "scale__row_vertical";
+  const segmentClass: string = ifHorizontal ? "scale__segment" : "scale__segment_vertical";
+  const spanClass: string = ifHorizontal ? "scale__number" : "scale__number_vertical";
+  const scaleItemClass = ifHorizontal ? "scale__row" : "scale__row_vertical";
 
   //to find the length of row of divisions (exc the max value)
-  let lengthOfLeft = max - scaleItemRow[scaleItemRow.length - 1];
-  let newContainerSize =
-    containerSize - fromValueToPX(lengthOfLeft, max, min, containerSize) - 1;
-  let tailContainer = Math.floor(containerSize - newContainerSize);
+  const lengthOfLeft = max - scaleItemRow[scaleItemRow.length - 1];
+  const newContainerSize = containerSize - fromValueToPX(lengthOfLeft, max, min, containerSize) - 1;
+  const tailContainer = Math.floor(containerSize - newContainerSize);
 
   //creation of row of items
-  let scaleItems: HTMLElement = document.createElement("div");
+  const scaleItems: HTMLElement = document.createElement("div");
   scaleItems.classList.add(scaleItemClass);
   ifHorizontal
     ? (scaleItems.style.width = newContainerSize + "px")
     : (scaleItems.style.height = newContainerSize + "px");
 
   //special style for item with max value
-  let marginType: string = ifHorizontal ? "right" : "top";
-  let maxStyle: string = `position: absolute; ${marginType}: 0;`;
-  let scaleItemMax: string = `<div class=${segmentClass} style="${maxStyle}""><span class="${spanClass}">${max}</span></div>`;
+  const marginType: string = ifHorizontal ? "right" : "top";
+  const maxStyle = `position: absolute; ${marginType}: 0;`;
+  const scaleItemMax = `<div class=${segmentClass} style="${maxStyle}""><span class="${spanClass}">${max}</span></div>`;
 
   scaleItems.innerHTML =
     scaleItemRow
