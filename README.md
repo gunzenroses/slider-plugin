@@ -1,11 +1,17 @@
 # slider-plugin
 
+The aim of this project is to get known with:
+- developmental patterns: mvp/c, dependency inversion, observer;
+- low coupling and high cohesion attitude in code;
+- unit-testing and bdd approach;
+- work with webpack.
+
 ### Used technologies and libraries
-- webpack (сборщик пакетов);
-- scss (шаблонизатор для стилей);
+- webpack (path aliases, plugins, rules, development and production modes differences);
+- scss;
 - TypeScript;
-- jest (Unit тестирование);
-- babel (компилятор для преобразования кода на TS в совместимый с более старыми версиями JS).
+- jest (unit-testing);
+- babel.
 
 ### How to
 Clone repository
