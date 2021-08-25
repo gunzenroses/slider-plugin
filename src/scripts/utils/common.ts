@@ -1,4 +1,3 @@
-
 //all in %
 function applyStepOnPercents(value: number, step: number): number {
   const numberOfSteps = (value * 100) / (step * 100);
@@ -49,7 +48,11 @@ function fromValueToPX(value: number, max: number, min: number, containerSize: n
   return valueInPx;
 }
 
-function findPosition(thisElement: HTMLElement, ifHorizontal: boolean, containerSize: number): number {
+function findPosition(
+  thisElement: HTMLElement,
+  ifHorizontal: boolean,
+  containerSize: number
+): number {
   const newPosition = ifHorizontal
     ? thisElement.style.left
       ? parseInt(thisElement.style.left.replace("%", ""))
