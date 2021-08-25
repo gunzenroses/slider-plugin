@@ -5,7 +5,7 @@ export default function changeTooltip(
   newThumbCurrent: number,
   max: number,
   min: number
-) {
+): HTMLElement {
   object.innerText = fromPercentsToValue(newThumbCurrent, max, min);
   return object;
 }

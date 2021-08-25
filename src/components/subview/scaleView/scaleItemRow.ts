@@ -8,7 +8,7 @@ export default function scaleItemRow(
   max: number,
   step: number,
   stepPerDiv?: number
-) {
+): HTMLElement {
   //find the row of elements (with step)
   const scaleItemRow: number[] = [];
   let i = min;

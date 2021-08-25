@@ -12,7 +12,7 @@ export default function scaleItem(
   max: number,
   step: number,
   tailContainer: number
-) {
+): string {
   const itemClass: string = ifHorizontal ? "scale__point" : "scale__point_vertical";
 
   const special: string = item === max && tailContainer < 25 ? `style= "visibility: hidden;"` : "";
