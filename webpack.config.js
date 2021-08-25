@@ -73,25 +73,22 @@ module.exports = (env) => ({
         ],
         exclude: /node_modules/,
       },
-      // {
-      //   test: /\.(ts|tsx)$/,
-      //   enforce: "pre",
-      //   use: [
-      //     {
-      //       options: {
-      //         eslintPath: require.resolve("eslint"),
-
-      //       },
-      //       loader: require.resolve("eslint-loader"),
-      //     },
-      //   ],
-      //   exclude: /node_modules/,
-      // },
       {
         test: /\.css$/,
         use: [
           env.development ? MiniCssExtractPlugin.loader : "style-loader",
           "css-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [
+                  "postcss-preset-env", 
+                  "autoprefixer"
+                ],
+              },
+            },
+          },
         ],
         exclude: /node_modules/,
       },
@@ -103,7 +100,17 @@ module.exports = (env) => ({
             loader: "css-loader", 
             options: { importLoaders: 1 } 
           },
-          "postcss-loader",
+          {
+            loader: 'postcss-loader',
+            options: {
+                postcssOptions: {
+                    plugins: [
+                      "postcss-preset-env", 
+                      "autoprefixer"
+                    ]
+                }
+            }
+          },
           "sass-loader",
         ]
       },
