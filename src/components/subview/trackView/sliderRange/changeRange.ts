@@ -4,7 +4,7 @@ export default function changeRange(
   ifHorizontal: boolean,
   ifRange: boolean,
   ifThumbFirst: boolean
-) {
+): HTMLElement {
   ifRange
     ? ifHorizontal
       ? ifThumbFirst

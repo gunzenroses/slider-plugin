@@ -14,7 +14,7 @@ export default class checkValidity {
     this.checkValidity();
   }
 
-  checkValidity() {
+  checkValidity(): void {
     const validity = this.item.validity;
     if (this.item.value === "") {
       this.addInvalidity("Should be a number");
@@ -32,7 +32,7 @@ export default class checkValidity {
 
     if (validity.stepMismatch) {
       const step = this.item.getAttribute("step");
-      let min = this.item.getAttribute("min");
+      const min = this.item.getAttribute("min");
       if (min === null) {
         this.addInvalidity(`Number should be multiple of ${step}`);
       } else {
@@ -45,15 +45,15 @@ export default class checkValidity {
     }
   }
 
-  private addInvalidity(message: string) {
+  private addInvalidity(message: string): void {
     this.invalidities.push(message);
   }
 
-  private getInvalidities() {
+  private getInvalidities(): string {
     return this.invalidities.join(". \n");
   }
 
-  private placeValidityMessages() {
+  private placeValidityMessages(): void {
     const msg = this.getInvalidities();
     this.messageContainer.classList.remove("hidden");
     this.messageContainer.innerText = msg;
@@ -62,7 +62,7 @@ export default class checkValidity {
     }, 1500);
   }
 
-  private deleteValidityMessage() {
+  private deleteValidityMessage(): void {
     this.invalidities = [];
     this.messageContainer.innerText = "";
     this.messageContainer.classList.add("hidden");

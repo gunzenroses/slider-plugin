@@ -9,19 +9,38 @@ import tooltipItemView from "subview/tooltipView/tooltipItemView";
 import changeTooltip from "subview/tooltipView/changeTooltip";
 import scaleView from "subview/scaleView/scaleView";
 import { changeValueToPercents } from "utils/common";
-import { TSettings, TDragObject } from "utils/types";
+import { TSettings, TScale } from "utils/types";
 
 interface IView {
   settings: TSettings;
   sliderContainer: HTMLElement;
   sliderThumb: HTMLElement;
   sliderThumbSecond: HTMLElement;
+
+  sliderTrack: HTMLElement;
+  sliderRange: HTMLElement;
+  scale: HTMLElement;
+  tooltipFirst: HTMLElement;
+  tooltipSecond: HTMLElement;
+
   fromViewSelectThumb: EventDispatcher;
   fromViewDragThumb: EventDispatcher;
-  dragObject: TDragObject;
+  dragObject: HTMLElement;
+
+  // data for rendering
+  ifHorizontal: boolean;
+  ifRange: boolean;
+  ifTooltip: boolean;
+  ifScale: boolean | TScale;
+  currentFirstInPercents: number;
+  currentSecondInPercents: number;
+  stepValue: number;
+  stepPerDiv: number;
+  maxValue: number;
+  minValue: number;
 
   init(settings: TSettings): void;
-  change(object: TDragObject, newThumbCurrent: number): void;
+  change(object: HTMLElement, newThumbCurrent: number): void;
   dragThumbEnd(): void;
 }
 
@@ -42,13 +61,13 @@ class SliderView implements IView {
   tooltipFirst!: HTMLElement;
   tooltipSecond!: HTMLElement;
   scale!: HTMLElement;
-  dragObject!: TDragObject;
+  dragObject!: HTMLElement;
 
   private selectThumbHandler!: { (ev: MouseEvent): void };
   private dragThumbHandler!: { (ev: PointerEvent): void };
   private moveThumbHandler!: { (ev: PointerEvent): void };
   private dropThumbHandler!: () => void;
-  changeHandler!: (object: TDragObject, number: number) => void;
+  changeHandler!: (object: HTMLElement, number: number) => void;
 
   //conditional variables for rendering
   ifHorizontal!: boolean;
@@ -56,7 +75,7 @@ class SliderView implements IView {
   currentFirstInPercents!: number;
   currentSecondInPercents!: number;
   ifTooltip!: boolean;
-  ifScale!: boolean;
+  ifScale!: boolean | TScale;
   step!: number;
   max!: number;
   min!: number;
@@ -73,7 +92,7 @@ class SliderView implements IView {
     this.parentContainer = container;
   }
 
-  init(settings: TSettings) {
+  init(settings: TSettings): void {
     this.settings = settings;
     this.createChildren();
     this.render();
@@ -81,7 +100,7 @@ class SliderView implements IView {
     this.enable();
   }
 
-  private createChildren() {
+  private createChildren(): void {
     //booleans
     this.ifHorizontal = this.settings.orientation === "horizontal";
     this.ifRange = this.settings.range;
@@ -100,12 +119,15 @@ class SliderView implements IView {
     );
     //actual values
     this.stepValue = this.settings.step;
-    this.stepPerDiv = this.stepPerDiv ? this.stepPerDiv : this.settings.scale.stepPerDiv;
+    if (!this.stepPerDiv) {
+      const scale = <TScale>this.settings.scale;
+      this.stepPerDiv = scale.stepPerDiv;
+    }
     this.maxValue = this.settings.max;
     this.minValue = this.settings.min;
   }
 
-  private setupHandlers() {
+  private setupHandlers(): void {
     this.selectThumbHandler = this.selectThumb.bind(this);
     this.dragThumbHandler = this.dragThumbStart.bind(this);
     this.moveThumbHandler = this.dragThumbMove.bind(this);
@@ -113,41 +135,41 @@ class SliderView implements IView {
     this.changeHandler = this.change.bind(this);
   }
 
-  private enable() {
+  private enable(): void {
     this.sliderContainer.addEventListener("click", this.selectThumbHandler);
     this.addListenerPointerDown();
   }
 
-  private addListenerPointerDown() {
+  private addListenerPointerDown(): void {
     this.sliderThumb.addEventListener("pointerdown", this.dragThumbHandler);
     if (this.settings.range) {
       this.sliderThumbSecond.addEventListener("pointerdown", this.dragThumbHandler);
     }
   }
 
-  private stopListenDown() {
+  private stopListenDown(): void {
     this.sliderThumb.removeEventListener("pointerdown", this.dragThumbHandler);
     if (this.settings.range) {
       this.sliderThumbSecond.removeEventListener("pointerdown", this.dragThumbHandler);
     }
   }
 
-  private listenMoveAndUp() {
+  private listenMoveAndUp(): void {
     document.addEventListener("pointermove", this.moveThumbHandler);
     document.addEventListener("pointerup", this.dropThumbHandler);
   }
 
-  private removeListenerPointerMoveAndUp() {
+  private removeListenerPointerMoveAndUp(): void {
     document.removeEventListener("pointermove", this.moveThumbHandler);
     document.removeEventListener("pointerup", this.dropThumbHandler);
   }
 
-  private selectThumb(e: MouseEvent) {
+  private selectThumb(e: MouseEvent): void {
     if (e.target === this.sliderThumb || e.target === this.sliderThumbSecond) return;
     this.fromViewSelectThumb.notify(e);
   }
 
-  private dragThumbStart(e: PointerEvent) {
+  private dragThumbStart(e: PointerEvent): void {
     e.preventDefault();
     if (e.target !== this.sliderThumb && e.target !== this.sliderThumbSecond) return;
     else {
@@ -156,20 +178,20 @@ class SliderView implements IView {
     this.listenMoveAndUp();
   }
 
-  private dragThumbMove(e: PointerEvent) {
+  private dragThumbMove(e: PointerEvent): void {
     if (this.dragObject === undefined || !this.dragObject.classList) return;
     this.stopListenDown();
     e.preventDefault();
     this.fromViewDragThumb.notify(e);
   }
 
-  dragThumbEnd() {
+  dragThumbEnd(): void {
     this.removeListenerPointerMoveAndUp();
     this.addListenerPointerDown();
   }
 
   // in % and actual values
-  change(object: TDragObject, newThumbCurrent: number) {
+  change(object: HTMLElement, newThumbCurrent: number): void {
     changeThumb(object, this.ifHorizontal, newThumbCurrent);
 
     const ifThumbFirst = object === this.sliderThumb;
@@ -182,7 +204,7 @@ class SliderView implements IView {
     }
   }
 
-  private render() {
+  private render(): void {
     this.parentContainer.innerHTML = "";
     //values in percents
     this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);

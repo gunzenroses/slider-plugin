@@ -5,7 +5,7 @@ export default function adjustValue(
   name: string,
   value: number | string | boolean,
   data: TSettings
-) {
+): number | string | boolean {
   const info: TSettings = data;
   const { max, min, step, currentFirst, currentSecond } = info;
 

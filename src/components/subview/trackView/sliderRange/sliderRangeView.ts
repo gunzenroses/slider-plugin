@@ -7,7 +7,7 @@ export default function sliderRangeView(
   ifHorizontal: boolean,
   currentFirst: number,
   currentSecond: number
-) {
+): HTMLElement {
   const sliderRangeClass: string = ifHorizontal ? "slider__range" : "slider__range_vertical";
   const sliderRange = document.createElement("div");
   sliderRange.classList.add(`${sliderRangeClass}`);
