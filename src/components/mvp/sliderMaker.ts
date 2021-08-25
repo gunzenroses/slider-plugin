@@ -14,7 +14,8 @@ export default class SliderMaker {
   private panel: IPanel | null;
 
   constructor(container: HTMLElement, options: TSettings, configurationPanel?: boolean) {
-    this.model = new SliderModel(container, { ...sliderData, ...options });
+    const data = { ...sliderData, ...options };
+    this.model = new SliderModel(container, data);
     this.view = new SliderView(container);
     this.presenter = new SliderPresenter(this.model, this.view);
     this.panel = configurationPanel ? new ConfigurationPanel(container, this.presenter) : null;
