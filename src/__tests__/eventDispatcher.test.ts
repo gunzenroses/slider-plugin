@@ -1,14 +1,16 @@
 import { EventDispatcher } from "mvp/eventDispatcher";
+import { TFuncArg } from "utils/types";
 
 class Listener {
-  msg: number;
-  constructor(msg: number) {
+  msg: TFuncArg | undefined;
+
+  constructor(msg?: TFuncArg) {
     this.msg = msg;
   }
 
   setHandler = this.set.bind(this);
 
-  set(msg: number) {
+  set(msg?: TFuncArg) {
     this.msg = msg;
   }
 }
