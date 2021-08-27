@@ -35,7 +35,9 @@ export default class SliderTooltip {
       ? [this.className, verticalClass]
       : [this.className, verticalClass, "disabled"];
     this.tooltip = document.createElement("span");
-    this.tooltip.classList.add(...totalClass);
+    totalClass.forEach((item) => {
+      this.tooltip.classList.add(item);
+    });
     this.tooltip.dataset.name = "tooltip";
   }
 
