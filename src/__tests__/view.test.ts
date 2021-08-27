@@ -83,6 +83,35 @@ describe("class SliderView", () => {
     });
   });
 
+  describe("method dragThumbEnd()", () => {
+    test("when pointer is up should end listening to pointermove", () => {
+      const spyOnMoveListener = jest.spyOn(view.fromViewDragThumb, "notify");
+
+      document.dispatchEvent(new Event("pointerup"));
+
+      expect(spyOnMoveListener).toBeCalledTimes(0);
+    });
+  });
+
+  describe("method stopListenDown()", () => {
+    test("do not listen to thumbdown events when thumbmove", () => {
+      const spyOnThumbDowm = jest.spyOn(view, "dragThumbStart");
+
+      document.dispatchEvent(new Event("pointerdown"));
+
+      expect(spyOnThumbDowm).toBeCalledTimes(0);
+    });
+  });
+
+  describe("method dragThumbStart()", () => {
+    test("when pointerdowm determine view.dragObject = e.target", () => {
+      view.dragThumbEnd();
+      view.sliderThumb.dispatchEvent(new Event("pointerdown"));
+
+      expect(view.dragObject).toBe(view.sliderThumb);
+    });
+  });
+
   describe("method change()", () => {
     test("update styles for Thumb, Range and Tooltip when (selectObject === sliderThumb)", () => {
       const obj = view.sliderThumb;
@@ -130,7 +159,7 @@ describe("class SliderView", () => {
       view.init(updatedData);
 
       expect(view.scale.classList.contains("disabled")).toBe(true);
-      expect(view.tooltipSecond.classList.contains("disabled")).toBe(true);
+      expect(view.tooltipFirst.classList.contains("disabled")).toBe(true);
     });
   });
 });
