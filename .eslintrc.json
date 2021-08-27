@@ -22,7 +22,19 @@
         "fsd"
     ],
     "rules": {
-        "@typescript-eslint/ban-ts-comment": "off"
+        "@typescript-eslint/ban-ts-comment": "off",
+        "prettier/prettier": [
+            "error", 
+            { 
+                "endOfLine": "auto" 
+            }
+        ]
+    },
+    "globals": {
+        "page": true,
+        "browser": true,
+        "context": true,
+        "jestPuppeteer": true
     },
     "overrides": [
         {
