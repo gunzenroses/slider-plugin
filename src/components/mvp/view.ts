@@ -4,9 +4,9 @@ import SliderRange from "subview/trackView/sliderRange/sliderRange";
 import SliderTrack from "subview/trackView/sliderTrack/sliderTrack";
 import SliderThumb from "subview/trackView/sliderThumb/sliderThumb";
 import SliderScale from "subview/scaleView/sliderScale";
-import tooltipItemView from "subview/tooltipView/tooltipItemView";
 import { changeValueToPercents } from "utils/common";
 import { TSettings, TScale } from "utils/types";
+import SliderTooltip from "subview/tooltipView/sliderTooltip";
 
 interface IView {
   settings: TSettings;
@@ -193,61 +193,33 @@ class SliderView implements IView {
     object === this.sliderThumb
       ? this.currentFirstInPercents = newThumbCurrent
       : this.currentSecondInPercents = newThumbCurrent
-    
     this.renderElements();
-
-    // if (this.ifTooltip) {
-    //   object.children[0] === this.tooltipFirst
-    //     ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.maxValue, this.minValue)
-    //     : changeTooltip(this.tooltipSecond, newThumbCurrent, this.maxValue, this.minValue);
-    // }
   }
 
   private renderElements(){
     this.sliderTrack.innerHTML = "";
-    new SliderRange(this);
+    this.sliderRange = new SliderRange(this).sliderRange;
+    this.ifRange ? this.renderDouble() : this.renderSingle();
+  }
+
+  private renderSingle() {
+    this.sliderThumb = new SliderThumb(this, "thumb_first").sliderThumb;
+    this.tooltipFirst = new SliderTooltip(this, "tooltip_first").tooltip;
+  }
+
+  private renderDouble() {
     this.sliderThumb = new SliderThumb(this, "thumb_first").sliderThumb;
     this.sliderThumbSecond = new SliderThumb(this, "thumb_second").sliderThumb;
+    this.tooltipFirst = new SliderTooltip(this, "tooltip_first").tooltip;
+    this.tooltipSecond = new SliderTooltip(this, "tooltip_second").tooltip;
   }
 
   private render(): void {
     this.parentContainer.innerHTML = "";
     this.sliderContainer = new SliderContainer(this).sliderContainer;
     this.sliderTrack = new SliderTrack(this).sliderTrack;
-
-    this.renderElements();
-
     this.scale = new SliderScale(this).scale;
-
-    this.tooltipFirst = tooltipItemView(
-      this.sliderThumb,
-      "tooltip_first",
-      this.currentFirstInPercents,
-      this.ifHorizontal,
-      this.maxValue,
-      this.minValue
-    );
-
-    this.tooltipSecond = tooltipItemView(
-      this.sliderThumbSecond,
-      "tooltip_second",
-      this.currentSecondInPercents,
-      this.ifHorizontal,
-      this.maxValue,
-      this.minValue
-    );
-
-    if (!this.ifScale) {
-      this.scale.classList.add("disabled");
-    }
-
-    if (!this.ifTooltip) {
-      this.tooltipFirst.classList.add("disabled");
-      this.tooltipSecond.classList.add("disabled");
-    }
-    if (!this.ifRange) {
-      this.tooltipSecond.classList.add("disabled");
-    }
+    this.renderElements();
   }
 }
 
