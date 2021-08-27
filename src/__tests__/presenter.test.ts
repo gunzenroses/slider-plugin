@@ -8,6 +8,7 @@ import { SliderView } from "mvp/view";
 import { sliderData } from "mvp/data";
 
 const container = document.createElement("div");
+container.innerHTML = "div {width: 400px, height: 400px}";
 document.body.append(container);
 
 const model = new SliderModel(container, sliderData);
@@ -33,9 +34,7 @@ describe("SliderPresenter", () => {
         });
         presenter.changingObject = presenter.view.sliderThumb;
 
-        const spyModelUpdate = jest
-          .spyOn(presenter.model, "changeThumb")
-          .mockImplementation(() => {});
+        const spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
 
         presenter.view.fromViewSelectThumb.notify(event);
 
@@ -50,7 +49,7 @@ describe("SliderPresenter", () => {
         presenter.changingObject = presenter.view.sliderThumbSecond;
         const spyModelUpdate = jest
           .spyOn(presenter.model, "changeThumbSecond")
-          .mockImplementation(() => {});
+          .mockImplementation();
 
         presenter.view.fromViewSelectThumb.notify(event);
 
@@ -63,9 +62,7 @@ describe("SliderPresenter", () => {
           clientY: 100,
         });
         presenter.view.dragObject = presenter.view.sliderThumb;
-        const spyModelUpdate = jest
-          .spyOn(presenter.model, "changeThumb")
-          .mockImplementation(() => {});
+        const spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
 
         presenter.view.fromViewDragThumb.notify(event);
 
@@ -80,7 +77,7 @@ describe("SliderPresenter", () => {
         presenter.view.dragObject = presenter.view.sliderThumbSecond;
         const spyModelUpdate = jest
           .spyOn(presenter.model, "changeThumbSecond")
-          .mockImplementation(() => {});
+          .mockImplementation();
 
         presenter.view.fromViewDragThumb.notify(event);
 
@@ -93,9 +90,7 @@ describe("SliderPresenter", () => {
         const value = 18;
         presenter.changingObject = presenter.view.sliderThumb;
         const spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbUpdate, "notify");
-        const spyFromModelChangeView = jest
-          .spyOn(presenter.view, "change")
-          .mockImplementation(() => {});
+        const spyFromModelChangeView = jest.spyOn(presenter.view, "change").mockImplementation();
 
         model.fromModelChangeView.notify(value);
 
@@ -107,9 +102,7 @@ describe("SliderPresenter", () => {
         const value = 18;
         presenter.changingObject = view.sliderThumbSecond;
         const spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbSecondUpdate, "notify");
-        const spyFromModelChangeView = jest
-          .spyOn(presenter.view, "change")
-          .mockImplementation(() => {});
+        const spyFromModelChangeView = jest.spyOn(presenter.view, "change").mockImplementation();
 
         model.fromModelChangeView.notify(value);
 

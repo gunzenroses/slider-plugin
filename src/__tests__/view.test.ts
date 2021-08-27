@@ -2,23 +2,25 @@
  * @jest-environment jsdom
  */
 
-import { SliderView } from "mvp/view";
+import { IView, SliderView } from "mvp/view";
 import { sliderData } from "mvp/data";
-
-const data = sliderData;
-
-const container = document.createElement("div");
-document.body.append(container);
+import { TSettings } from "utils/types";
 
 describe("class SliderView", () => {
-  const view = new SliderView(container);
+  let data: TSettings;
+  let container: HTMLElement;
+  let view: IView;
 
-  afterEach(() => {
+  beforeEach(() => {
+    data = sliderData;
+    container = document.createElement("div");
+    document.body.append(container);
+    view = new SliderView(container);
+    view.init(data);
     jest.restoreAllMocks();
   });
 
   describe("method init()", () => {
-    view.init(data);
     test("set passed in data as settings", () => {
       expect(view.settings).toEqual(data);
     });
@@ -26,16 +28,16 @@ describe("class SliderView", () => {
 
   describe("method createChildren()", () => {
     test("create children (variables) for class functionality", () => {
-      expect(view.ifHorizontal).toBeDefined;
-      expect(view.ifRange).toBeDefined;
-      expect(view.ifTooltip).toBeDefined;
-      expect(view.ifScale).toBeDefined;
-      expect(view.currentFirstInPercents).toBeTruthy;
-      expect(view.currentSecondInPercents).toBeTruthy;
-      expect(view.stepValue).toBeTruthy;
-      expect(view.stepPerDiv).toBeTruthy;
-      expect(view.maxValue).toBeTruthy;
-      expect(view.minValue).toBeTruthy;
+      expect(view.ifHorizontal).toBeDefined();
+      expect(view.ifRange).toBeDefined();
+      expect(view.ifTooltip).toBeDefined();
+      expect(view.ifScale).toBeDefined();
+      expect(view.currentFirstInPercents).toBeTruthy();
+      expect(view.currentSecondInPercents).toBeTruthy();
+      expect(view.stepValue).toBeTruthy();
+      expect(view.stepPerDiv).toBeTruthy();
+      expect(view.maxValue).toBeTruthy();
+      expect(view.minValue).toBeDefined();
     });
   });
 
@@ -60,7 +62,7 @@ describe("class SliderView", () => {
     test("define dragObject when sliderThumb is started to be dragged", () => {
       view.sliderThumb.dispatchEvent(new Event("pointerdown"));
 
-      expect(view.dragObject).toBeDefined;
+      expect(view.dragObject).toBeDefined();
     });
 
     test("define dragObject when sliderThumbSecond is started to be dragged", () => {
@@ -68,7 +70,7 @@ describe("class SliderView", () => {
 
       view.sliderThumbSecond.dispatchEvent(new Event("pointerdown"));
 
-      expect(view.dragObject).toBeDefined;
+      expect(view.dragObject).toBeDefined();
     });
 
     test("notify fromViewDragThumb subscribers when thumb is moved", () => {
@@ -107,14 +109,14 @@ describe("class SliderView", () => {
 
   describe("method render()", () => {
     test("init rendering of view elements", () => {
-      expect(view.sliderContainer).toBeDefined;
-      expect(view.sliderTrack).toBeDefined;
-      expect(view.sliderRange).toBeDefined;
-      expect(view.sliderThumb).toBeDefined;
-      expect(view.sliderThumbSecond).toBeDefined;
-      expect(view.scale).toBeDefined;
-      expect(view.tooltipFirst).toBeDefined;
-      expect(view.tooltipSecond).toBeDefined;
+      expect(view.sliderContainer).toBeDefined();
+      expect(view.sliderTrack).toBeDefined();
+      expect(view.sliderRange).toBeDefined();
+      expect(view.sliderThumb).toBeDefined();
+      expect(view.sliderThumbSecond).toBeDefined();
+      expect(view.scale).toBeDefined();
+      expect(view.tooltipFirst).toBeDefined();
+      expect(view.tooltipSecond).toBeDefined();
     });
 
     test("disable elements when !ifScale, !ifTooltip, !ifRange", () => {

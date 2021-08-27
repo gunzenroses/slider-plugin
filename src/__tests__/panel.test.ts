@@ -1,4 +1,4 @@
-/**
+/*
  * @jest-environment jsdom
  */
 
@@ -55,7 +55,7 @@ describe("Panel", () => {
   describe("handlers for events", () => {
     describe("presenter.fromPresenterUpdate", () => {
       test("should call updatePanel()", () => {
-        const spyOnUpdatePanel = jest.spyOn(panel, "updatePanel").mockImplementation(() => {});
+        const spyOnUpdatePanel = jest.spyOn(panel, "updatePanel").mockImplementation();
 
         panel.init();
         panel.presenter.fromPresenterUpdate.notify();
@@ -89,8 +89,8 @@ describe("Panel", () => {
 
   describe("method changePanel()", () => {
     test("should call presenter.setData()", () => {
-      const spyPresenter = jest.spyOn(panel.presenter, "modelData").mockImplementation(() => {});
-      const trg = panel.panelContainer.querySelector("input[name='range']");
+      const spyPresenter = jest.spyOn(panel.presenter, "modelData").mockImplementation();
+      const trg = panel.panelContainer.querySelector("input[name='range']") as HTMLInputElement;
       const evt = {
         ...new Event("click"),
         target: trg,
@@ -102,16 +102,20 @@ describe("Panel", () => {
     });
 
     describe('should validate data for input[type="number"]', () => {
-      test('return false when input.value="" ', () => {
-        const trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='max']")!;
+      test('return false when input.value=""', () => {
+        const trg: HTMLInputElement = panel.panelContainer.querySelector(
+          "input[name='max']"
+        ) as HTMLInputElement;
         trg.value = "";
 
         trg.dispatchEvent(new Event("change"));
 
         expect(trg.checkValidity()).toBeFalsy();
       });
-      test("add error-message when value is not a number ", () => {
-        const trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='max']")!;
+      test("add error-message when value is not a number", () => {
+        const trg: HTMLInputElement = panel.panelContainer.querySelector(
+          "input[name='max']"
+        ) as HTMLInputElement;
         trg.setAttribute("max", "100");
         trg.value = "Cat";
 
@@ -123,7 +127,7 @@ describe("Panel", () => {
       test("add error-message when value > max", () => {
         const trg: HTMLInputElement = panel.panelContainer.querySelector(
           "input[name='currentSecond']"
-        )!;
+        ) as HTMLInputElement;
         trg.setAttribute("max", "100");
         trg.value = "120";
 
@@ -133,7 +137,9 @@ describe("Panel", () => {
       });
 
       test("add error-message when value < min", () => {
-        const trg: HTMLInputElement = panel.panelContainer.querySelector("input[name='step']")!;
+        const trg: HTMLInputElement = panel.panelContainer.querySelector(
+          "input[name='step']"
+        ) as HTMLInputElement;
         trg.min = "1";
         trg.value = "0";
 
@@ -143,9 +149,9 @@ describe("Panel", () => {
       });
 
       test("add error-message when stepMismatch", () => {
-        const trg: HTMLInputElement = panel.panelContainer.querySelector(
-          "input[name='currentFirst']"
-        )!;
+        const trg: HTMLInputElement = <HTMLInputElement>(
+          panel.panelContainer.querySelector("input[name='currentFirst']")
+        );
         trg.setAttribute("min", "10");
         trg.setAttribute("step", "8");
         trg.value = "32";

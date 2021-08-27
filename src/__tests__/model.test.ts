@@ -53,7 +53,7 @@ describe("class SliderModel", () => {
   });
 
   describe("method getData()", () => {
-    test("return object wich were passed into constructor data", () => {
+    test("return object which were passed into constructor data", () => {
       //assertion
       expect(model.getData()).toEqual(data);
     });
