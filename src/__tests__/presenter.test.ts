@@ -33,7 +33,6 @@ describe("SliderPresenter", () => {
           clientY: 100,
         });
         presenter.changingObject = presenter.view.sliderThumb;
-
         const spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
 
         presenter.view.fromViewSelectThumb.notify(event);
