@@ -3,7 +3,7 @@ import { commonDivider } from "utils/common";
 export default function scaleItem(
   item: number,
   index: number,
-  sequenceNum: number,
+  stepPerDivValue: number,
   itemWidth: number,
   ifHorizontal: boolean,
   segmentClass: string,
@@ -20,18 +20,18 @@ export default function scaleItem(
   if (itemWidth > 40) {
     return `<div class=${segmentClass}><span class="${spanClass}" ${special}>${item}</span></div>`;
   } else {
-    const temp: number = Math.round(40 / itemWidth);
-    const numOfItems: number =
-      sequenceNum <= temp
-        ? temp
-        : sequenceNum % temp === 0
-        ? temp
-        : commonDivider(sequenceNum, temp);
+    const temp: number = Math.floor(50 / itemWidth);
+    let numOfItems;
+    if (stepPerDivValue <= temp || stepPerDivValue % temp === 0) {
+      numOfItems = temp;
+    } else {
+      numOfItems = commonDivider(stepPerDivValue, temp);
+    }
 
     return item === min ||
-      ((item - min) % (sequenceNum * step) === 0 &&
+      ((item - min) % (stepPerDivValue * step) === 0 &&
         index % numOfItems === 0 &&
-        index % sequenceNum === 0)
+        index % stepPerDivValue === 0)
       ? `<div class=${segmentClass}><span class="${spanClass}" ${special}>${item}</span></div>`
       : `<div class=${itemClass}></div>`;
   }
