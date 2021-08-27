@@ -43,9 +43,10 @@ export default class SliderScale {
 
   make(that: IView): void {
     const scaleClass: string = that.ifHorizontal ? "slider__scale" : "slider__scale_vertical";
+    const totalClass = that.ifScale ? `${scaleClass}` : `${scaleClass} disable`;
     this.scale = document.createElement("div");
     this.scale.dataset.name = "scale";
-    this.scale.classList.add(scaleClass);
+    this.scale.classList.add(totalClass);
   }
 
   changeScale(that: IView): void {
