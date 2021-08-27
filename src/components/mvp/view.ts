@@ -1,18 +1,16 @@
 import { EventDispatcher } from "./eventDispatcher";
-import sliderContainerView from "subview/trackView/sliderContainer/sliderContainerView";
-import sliderTrackView from "subview/trackView/sliderTrack/sliderTrackView";
-import sliderThumbView from "subview/trackView/sliderThumb/slideThumbView";
-import changeThumb from "subview/trackView/sliderThumb/changeThumb";
-import sliderRangeView from "subview/trackView/sliderRange/sliderRangeView";
-import changeRange from "subview/trackView/sliderRange/changeRange";
+import SliderContainer from "subview/trackView/sliderContainer/sliderContainer";
+import SliderRange from "subview/trackView/sliderRange/sliderRange";
+import SliderTrack from "subview/trackView/sliderTrack/sliderTrack";
+import SliderThumb from "subview/trackView/sliderThumb/sliderThumb";
+import SliderScale from "subview/scaleView/sliderScale";
 import tooltipItemView from "subview/tooltipView/tooltipItemView";
-import changeTooltip from "subview/tooltipView/changeTooltip";
-import scaleView from "subview/scaleView/scaleView";
 import { changeValueToPercents } from "utils/common";
 import { TSettings, TScale } from "utils/types";
 
 interface IView {
   settings: TSettings;
+  parentContainer: HTMLElement;
   sliderContainer: HTMLElement;
   sliderThumb: HTMLElement;
   sliderThumbSecond: HTMLElement;
@@ -192,55 +190,35 @@ class SliderView implements IView {
 
   // in % and actual values
   change(object: HTMLElement, newThumbCurrent: number): void {
-    changeThumb(object, this.ifHorizontal, newThumbCurrent);
+    object === this.sliderThumb
+      ? this.currentFirstInPercents = newThumbCurrent
+      : this.currentSecondInPercents = newThumbCurrent
+    
+    this.renderElements();
 
-    const ifThumbFirst = object === this.sliderThumb;
-    changeRange(this.sliderRange, newThumbCurrent, this.ifHorizontal, this.ifRange, ifThumbFirst);
+    // if (this.ifTooltip) {
+    //   object.children[0] === this.tooltipFirst
+    //     ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.maxValue, this.minValue)
+    //     : changeTooltip(this.tooltipSecond, newThumbCurrent, this.maxValue, this.minValue);
+    // }
+  }
 
-    if (this.ifTooltip) {
-      object.children[0] === this.tooltipFirst
-        ? changeTooltip(this.tooltipFirst, newThumbCurrent, this.maxValue, this.minValue)
-        : changeTooltip(this.tooltipSecond, newThumbCurrent, this.maxValue, this.minValue);
-    }
+  private renderElements(){
+    this.sliderTrack.innerHTML = "";
+    new SliderRange(this);
+    this.sliderThumb = new SliderThumb(this, "thumb_first").sliderThumb;
+    this.sliderThumbSecond = new SliderThumb(this, "thumb_second").sliderThumb;
   }
 
   private render(): void {
     this.parentContainer.innerHTML = "";
-    //values in percents
-    this.sliderContainer = sliderContainerView(this.parentContainer, this.ifHorizontal);
-    this.sliderTrack = sliderTrackView(this.sliderContainer, this.ifHorizontal);
-    this.sliderRange = sliderRangeView(
-      this.sliderTrack,
-      this.ifRange,
-      this.ifHorizontal,
-      this.currentFirstInPercents,
-      this.currentSecondInPercents
-    );
-    (this.sliderThumb = sliderThumbView(
-      this.sliderTrack,
-      "thumb_first",
-      this.ifHorizontal,
-      this.currentFirstInPercents
-    )),
-      (this.sliderThumbSecond = sliderThumbView(
-        this.sliderTrack,
-        "thumb_second",
-        this.ifHorizontal,
-        this.currentSecondInPercents
-      ));
-    if (!this.ifRange) {
-      this.sliderThumbSecond.classList.add("disabled");
-    }
+    this.sliderContainer = new SliderContainer(this).sliderContainer;
+    this.sliderTrack = new SliderTrack(this).sliderTrack;
 
-    //actual values
-    this.scale = scaleView(
-      this.sliderContainer,
-      this.ifHorizontal,
-      this.maxValue,
-      this.minValue,
-      this.stepValue,
-      this.stepPerDiv
-    );
+    this.renderElements();
+
+    this.scale = new SliderScale(this).scale;
+
     this.tooltipFirst = tooltipItemView(
       this.sliderThumb,
       "tooltip_first",
@@ -249,6 +227,7 @@ class SliderView implements IView {
       this.maxValue,
       this.minValue
     );
+
     this.tooltipSecond = tooltipItemView(
       this.sliderThumbSecond,
       "tooltip_second",
