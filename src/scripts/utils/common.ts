@@ -94,8 +94,8 @@ function afterCustomElement(type: string, className: string, parent: HTMLElement
 
 function commonDivider(basicNum: number, changeNum: number): number {
   const bigger = basicNum;
-  let smaller = changeNum;
-  //let smaller = changeNum > 1 ? changeNum : 1;
+  //let smaller = changeNum;
+  let smaller = changeNum > 1 ? changeNum : 1;
   if (bigger <= smaller) {
     return smaller;
   } else {
