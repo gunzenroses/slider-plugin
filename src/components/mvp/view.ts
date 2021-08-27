@@ -39,6 +39,7 @@ interface IView {
 
   init(settings: TSettings): void;
   change(object: HTMLElement, newThumbCurrent: number): void;
+  dragThumbStart(e: PointerEvent): void;
   dragThumbEnd(): void;
 }
 
@@ -139,9 +140,11 @@ class SliderView implements IView {
   }
 
   private addListenerPointerDown(): void {
-    this.sliderThumb.addEventListener("pointerdown", this.dragThumbHandler);
     if (this.settings.range) {
+      this.sliderThumb.addEventListener("pointerdown", this.dragThumbHandler);
       this.sliderThumbSecond.addEventListener("pointerdown", this.dragThumbHandler);
+    } else {
+      this.sliderThumb.addEventListener("pointerdown", this.dragThumbHandler);
     }
   }
 
@@ -167,7 +170,7 @@ class SliderView implements IView {
     this.fromViewSelectThumb.notify(e);
   }
 
-  private dragThumbStart(e: PointerEvent): void {
+  dragThumbStart(e: PointerEvent): void {
     e.preventDefault();
     if (e.target !== this.sliderThumb && e.target !== this.sliderThumbSecond) return;
     else {
@@ -191,12 +194,12 @@ class SliderView implements IView {
   // in % and actual values
   change(object: HTMLElement, newThumbCurrent: number): void {
     object === this.sliderThumb
-      ? this.currentFirstInPercents = newThumbCurrent
-      : this.currentSecondInPercents = newThumbCurrent
+      ? (this.currentFirstInPercents = newThumbCurrent)
+      : (this.currentSecondInPercents = newThumbCurrent);
     this.renderElements();
   }
 
-  private renderElements(){
+  private renderElements() {
     this.sliderTrack.innerHTML = "";
     this.sliderRange = new SliderRange(this).sliderRange;
     this.ifRange ? this.renderDouble() : this.renderSingle();
