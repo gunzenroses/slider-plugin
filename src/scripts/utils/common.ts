@@ -92,14 +92,18 @@ function afterCustomElement(type: string, className: string, parent: HTMLElement
   return el;
 }
 
-function commonDivider(basicNum: number, approxNum: number): number {
+function commonDivider(basicNum: number, changeNum: number): number {
   const bigger = basicNum;
-  let smaller = approxNum;
-  if (bigger <= smaller) return smaller;
-  while (bigger % smaller !== 0) {
-    smaller++;
+  let smaller = changeNum;
+  //let smaller = changeNum > 1 ? changeNum : 1;
+  if (bigger <= smaller) {
+    return smaller;
+  } else {
+    while (bigger % smaller !== 0) {
+      smaller++;
+    }
+    return smaller;
   }
-  return smaller;
 }
 
 export {
