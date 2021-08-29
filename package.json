@@ -12,7 +12,8 @@
     "deploy": "gh-pages -d dist",
     "predeploy": "npm run build",
     "eslint": "eslint --ext .ts,.tsx src --fix",
-    "test-eslint": "jest-runner-eslint"
+    "test-eslint": "jest-runner-eslint",
+    "debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand"
   },
   "repository": {
     "type": "git",
