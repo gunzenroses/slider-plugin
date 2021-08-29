@@ -77,9 +77,9 @@ class ConfigurationPanel implements IPanel {
     this.currentSecondInput = <HTMLInputElement>(
       this.panelContainer.querySelector('input[name="currentSecond"]')
     );
-    if (!this.data.range) {
-      this.currentSecondInput.disabled = true;
-    }
+    this.data.range
+      ? (this.currentSecondInput.disabled = false)
+      : (this.currentSecondInput.disabled = true);
   }
 
   private setupHandlers(): void {
