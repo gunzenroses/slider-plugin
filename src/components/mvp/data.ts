@@ -5,7 +5,7 @@ const sliderData: TSettings = {
   max: 100,
   range: true,
   currentFirst: 33,
-  currentSecond: 66,
+  currentSecond: 65,
   step: 1,
   orientation: "horizontal",
   tooltip: true,
