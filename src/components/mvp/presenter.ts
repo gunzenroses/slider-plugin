@@ -106,16 +106,18 @@ class SliderPresenter implements IPresenter {
 
   //all values are in %
   private selectThumb(e: PointerEvent): void {
+    const position = this.countPosition(e);
+    this.ifRange ? this.selectThumbRangeTrue(position) : this.selectThumbRangeFalse(position);
+  }
+
+  private countPosition(e: PointerEvent) {
     const newThumbCurrentPosition = this.ifHorizontal
       ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left + this.thumbWidth / 2
-      : e.clientY - this.view.sliderContainer.getBoundingClientRect().top; //+ this.thumbWidth/2;
-    const newThumbCurrentPercent = this.ifHorizontal
+      : e.clientY - this.view.sliderContainer.getBoundingClientRect().top;
+    const newThumbCurrent = this.ifHorizontal
       ? Math.floor((newThumbCurrentPosition / this.containerSize) * 100)
       : Math.floor(((this.containerSize - newThumbCurrentPosition) / this.containerSize) * 100);
-    const restrictedThumbCurrent = applyRestrictions(newThumbCurrentPercent);
-    this.ifRange
-      ? this.selectThumbRangeTrue(restrictedThumbCurrent)
-      : this.selectThumbRangeFalse(restrictedThumbCurrent);
+    return applyRestrictions(newThumbCurrent);
   }
 
   //all values are in %
@@ -125,7 +127,25 @@ class SliderPresenter implements IPresenter {
   }
 
   //all values are in %
-  private selectThumbRangeTrue(newThumbCurrentPercent: number): void {
+  private selectThumbRangeTrue(newPercent: number): void {
+    const { firstThumbPercent, secondThumbPercent } = this.countPercents();
+    const firstDiff: number = Math.abs(firstThumbPercent - newPercent);
+    const secondDiff: number = Math.abs(secondThumbPercent - newPercent);
+
+    if (firstDiff < secondDiff) {
+      this.setObject(this.view.sliderThumb);
+      this.modelThumbFirst(newPercent);
+    }
+    if (firstDiff > secondDiff) {
+      this.setObject(this.view.sliderThumbSecond);
+      this.modelThumbSecond(newPercent);
+    }
+    if (firstDiff === secondDiff) {
+      this.findClosestThumb(newPercent, firstThumbPercent);
+    }
+  }
+
+  private countPercents() {
     const firstThumbPercent: number = findPosition(
       this.view.sliderThumb,
       this.ifHorizontal,
@@ -136,40 +156,19 @@ class SliderPresenter implements IPresenter {
       this.ifHorizontal,
       this.containerSize
     );
-    const firstDiff: number = Math.abs(firstThumbPercent - newThumbCurrentPercent);
-    const secondDiff: number = Math.abs(secondThumbPercent - newThumbCurrentPercent);
+    return { firstThumbPercent, secondThumbPercent };
+  }
 
-    if (firstDiff < secondDiff) {
-      this.setObject(this.view.sliderThumb);
-      this.modelThumbFirst(newThumbCurrentPercent);
-    }
-    if (firstDiff > secondDiff) {
-      this.setObject(this.view.sliderThumbSecond);
-      this.modelThumbSecond(newThumbCurrentPercent);
-    }
-    if (firstDiff === secondDiff) {
-      newThumbCurrentPercent < firstThumbPercent
-        ? (this.setObject(this.view.sliderThumb), this.modelThumbFirst(newThumbCurrentPercent))
-        : newThumbCurrentPercent > firstThumbPercent
-        ? (this.setObject(this.view.sliderThumbSecond),
-          this.modelThumbSecond(newThumbCurrentPercent))
-        : null;
-    }
+  private findClosestThumb(newPlace: number, firstThumbPlace: number): void {
+    newPlace < firstThumbPlace
+      ? (this.setObject(this.view.sliderThumb), this.modelThumbFirst(newPlace))
+      : (this.setObject(this.view.sliderThumbSecond), this.modelThumbSecond(newPlace));
   }
 
   //all values are in %
   private dragThumb(e: PointerEvent): void {
-    this.setObject(<HTMLElement>this.view.dragObject);
-    const newThumbCurrentPX = this.ifHorizontal
-      ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left
-      : e.clientY - this.view.sliderContainer.getBoundingClientRect().top;
-    const newThumbCurrent = this.ifHorizontal
-      ? Math.floor((newThumbCurrentPX / this.containerSize) * 100)
-      : Math.floor(((this.containerSize - newThumbCurrentPX) / this.containerSize) * 100);
-    const restrictedThumbCurrent = applyRestrictions(newThumbCurrent);
-    this.ifRange
-      ? this.dragThumbRangeTrue(restrictedThumbCurrent)
-      : this.dragThumbRangeFalse(restrictedThumbCurrent);
+    const position = this.countPosition(e);
+    this.ifRange ? this.dragThumbRangeTrue(position) : this.dragThumbRangeFalse(position);
   }
 
   //all values are in %
@@ -179,17 +178,7 @@ class SliderPresenter implements IPresenter {
 
   //all values are in %
   private dragThumbRangeTrue(newThumbCurrent: number): void {
-    const firstThumbPercent = findPosition(
-      this.view.sliderThumb,
-      this.ifHorizontal,
-      this.containerSize
-    );
-    const secondThumbPercent = findPosition(
-      this.view.sliderThumbSecond,
-      this.ifHorizontal,
-      this.containerSize
-    );
-
+    const { firstThumbPercent, secondThumbPercent } = this.countPercents();
     if (
       this.view.dragObject === this.view.sliderThumb &&
       newThumbCurrent <= secondThumbPercent + 1
