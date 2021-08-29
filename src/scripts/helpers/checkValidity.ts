@@ -32,17 +32,15 @@ export default class checkValidity {
 
     if (validity.stepMismatch) {
       const step = this.item.getAttribute("step");
-      const min = this.item.getAttribute("min");
-      if (min === null) {
+      const min: number = parseInt(this.item.getAttribute("min") as string);
+      if (min < 1) {
         this.addInvalidity(`Number should be multiple of ${step}`);
       } else {
         this.addInvalidity(`Number should be: ${min} + multiple of ${step}`);
       }
     }
 
-    if (this.item.checkValidity() === false) {
-      this.placeValidityMessages();
-    }
+    this.item.checkValidity() === false ? this.placeValidityMessages() : null;
   }
 
   private addInvalidity(message: string): void {
