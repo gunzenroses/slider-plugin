@@ -103,15 +103,6 @@ describe("class SliderView", () => {
     });
   });
 
-  describe("method dragThumbStart()", () => {
-    test("when pointerdowm determine view.dragObject = e.target", () => {
-      view.dragThumbEnd();
-      view.sliderThumb.dispatchEvent(new Event("pointerdown"));
-
-      expect(view.dragObject).toBe(view.sliderThumb);
-    });
-  });
-
   describe("method change()", () => {
     test("update styles for Thumb, Range and Tooltip when (selectObject === sliderThumb)", () => {
       const obj = view.sliderThumb;
@@ -160,6 +151,30 @@ describe("class SliderView", () => {
 
       expect(view.scale.classList.contains("disabled")).toBe(true);
       expect(view.tooltipFirst.classList.contains("disabled")).toBe(true);
+    });
+  });
+
+  describe("method dragThumbStart()", () => {
+    test("when pointerdowm determine view.dragObject = e.target", () => {
+      view.dragThumbEnd();
+      view.sliderThumb.dispatchEvent(new Event("pointerdown"));
+
+      expect(view.dragObject).toBe(view.sliderThumb);
+    });
+
+    test("disable pointerdowm eventListener", () => {
+      const newSet = {
+        ...data,
+        range: false,
+      };
+      view.init(newSet);
+      view.sliderThumb.dispatchEvent(new Event("pointerdown"));
+      document.dispatchEvent(new Event("pointermove"));
+      const spyOnDragStart = jest.spyOn(view, "dragThumbStart");
+
+      view.sliderThumb.dispatchEvent(new Event("pointerdowm"));
+
+      expect(spyOnDragStart).toHaveBeenCalledTimes(0);
     });
   });
 });

@@ -16,31 +16,13 @@ const view = new SliderView(container);
 const presenter = new SliderPresenter(model, view);
 const panel = new ConfigurationPanel(container, presenter);
 
-describe("Panel", () => {
+describe("Panel for double slider", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
   });
 
-  describe("method render()", () => {
+  describe("method init()", () => {
     test("should create panel items", () => {
-      panel.checkboxes = panel.panelContainer.querySelectorAll("input[type='checkbox']");
-      panel.orientationInput = <HTMLInputElement>(
-        panel.panelContainer.querySelector('select[name="orientation"]')
-      );
-      panel.numberInputs = panel.panelContainer.querySelectorAll("input[type='number']");
-
-      panel.minInput = <HTMLInputElement>panel.panelContainer.querySelector('input[name="min"]');
-      panel.maxInput = <HTMLInputElement>panel.panelContainer.querySelector('input[name="max"]');
-      panel.stepInput = <HTMLInputElement>panel.panelContainer.querySelector('input[name="step"]');
-      panel.currentFirstInput = <HTMLInputElement>(
-        panel.panelContainer.querySelector('input[name="currentFirst"]')
-      );
-      panel.currentSecondInput = <HTMLInputElement>(
-        panel.panelContainer.querySelector('input[name="currentSecond"]')
-      );
-
-      panel.render(panel.presenter.data);
-
       expect(panel.checkboxes).toBeTruthy();
       expect(panel.orientationInput).toBeTruthy();
       expect(panel.numberInputs).toBeTruthy();
@@ -53,42 +35,36 @@ describe("Panel", () => {
   });
 
   describe("handlers for events", () => {
-    describe("presenter.fromPresenterUpdate", () => {
-      test("should call updatePanel()", () => {
-        const spyOnUpdatePanel = jest.spyOn(panel, "updatePanel").mockImplementation();
+    test("changes in presenter should trigger panel to update", () => {
+      const spyOnUpdatePanel = jest.spyOn(panel, "updatePanel").mockImplementation();
 
-        panel.init();
-        panel.presenter.fromPresenterUpdate.notify();
+      panel.init();
+      panel.presenter.fromPresenterUpdate.notify();
 
-        expect(spyOnUpdatePanel).toHaveBeenCalledTimes(1);
-      });
+      expect(spyOnUpdatePanel).toHaveBeenCalledTimes(1);
     });
 
-    describe("presenter.fromPresenterThumbUpdate", () => {
-      test("should call updateThumb()", () => {
-        const spyOnUpdateThumb = jest.spyOn(panel, "updateThumb").mockImplementation();
+    test("change of thumb in presenter should update data in panel", () => {
+      const spyOnUpdateThumb = jest.spyOn(panel, "updateThumb").mockImplementation();
 
-        panel.init();
-        panel.presenter.fromPresenterThumbUpdate.notify();
+      panel.init();
+      panel.presenter.fromPresenterThumbUpdate.notify();
 
-        expect(spyOnUpdateThumb).toHaveBeenCalledTimes(1);
-      });
+      expect(spyOnUpdateThumb).toHaveBeenCalledTimes(1);
     });
 
-    describe("presenter.fromPresenterThumbSecondUpdate", () => {
-      test("should call updateThumbSecond()", () => {
-        const spyOnUpdateThumbSecond = jest.spyOn(panel, "updateThumbSecond").mockImplementation();
+    test("change of thumbSecond in presenter should thumbSecond data in panel", () => {
+      const spyOnUpdateThumbSecond = jest.spyOn(panel, "updateThumbSecond").mockImplementation();
 
-        panel.init();
-        panel.presenter.fromPresenterThumbSecondUpdate.notify();
+      panel.init();
+      panel.presenter.fromPresenterThumbSecondUpdate.notify();
 
-        expect(spyOnUpdateThumbSecond).toHaveBeenCalledTimes(1);
-      });
+      expect(spyOnUpdateThumbSecond).toHaveBeenCalledTimes(1);
     });
   });
 
   describe("method changePanel()", () => {
-    test("should call presenter.setData()", () => {
+    test("should update data", () => {
       const spyPresenter = jest.spyOn(panel.presenter, "modelData").mockImplementation();
       const trg = panel.panelContainer.querySelector("input[name='range']") as HTMLInputElement;
       const evt = {
@@ -101,8 +77,28 @@ describe("Panel", () => {
       expect(spyPresenter).toHaveBeenCalledTimes(1);
     });
 
-    describe('should validate data for input[type="number"]', () => {
-      test('return false when input.value=""', () => {
+    test("should use setTimeout to update data with type 'number'", async () => {
+      jest.useFakeTimers();
+      const spyPresenter = jest.spyOn(panel.presenter, "modelData").mockImplementation();
+      const trg: HTMLInputElement = panel.panelContainer.querySelector(
+        "input[name='max']"
+      ) as HTMLInputElement;
+      trg.value = "";
+
+      trg.dispatchEvent(new Event("change"));
+      jest.runAllTimers();
+
+      expect(spyPresenter).toHaveBeenCalledTimes(1);
+    });
+
+    describe("should validate data for input[type='number']", () => {
+      beforeEach(() => {
+        jest.useFakeTimers();
+        jest.runAllTimers();
+        panel.validation.invalidities = [];
+      });
+
+      test("return false when input.value=''", () => {
         const trg: HTMLInputElement = panel.panelContainer.querySelector(
           "input[name='max']"
         ) as HTMLInputElement;
@@ -112,6 +108,18 @@ describe("Panel", () => {
 
         expect(trg.checkValidity()).toBeFalsy();
       });
+
+      test("return nothing when input has a proper value", () => {
+        const trg: HTMLInputElement = panel.panelContainer.querySelector(
+          "input[name='max']"
+        ) as HTMLInputElement;
+        trg.value = "200";
+
+        trg.dispatchEvent(new Event("change"));
+
+        expect(panel.validation.invalidities).toEqual([]);
+      });
+
       test("add error-message when value is not a number", () => {
         const trg: HTMLInputElement = panel.panelContainer.querySelector(
           "input[name='max']"
@@ -148,7 +156,7 @@ describe("Panel", () => {
         expect(panel.validation.invalidities).toContain("Number should be minimum 1");
       });
 
-      test("add error-message when stepMismatch", () => {
+      test("add error-message when stepMismatch and min>0", () => {
         const trg: HTMLInputElement = <HTMLInputElement>(
           panel.panelContainer.querySelector("input[name='currentFirst']")
         );
@@ -156,10 +164,23 @@ describe("Panel", () => {
         trg.setAttribute("step", "8");
         trg.value = "32";
 
-        trg.dispatchEvent(new Event("change"));
+        trg.dispatchEvent(new Event("change", { bubbles: true }));
 
         expect(panel.validation.invalidities).toContain("Number should be: 10 + multiple of 8");
       });
+    });
+
+    test("add error-message when stepMismatch and min=0", () => {
+      const trg: HTMLInputElement = <HTMLInputElement>(
+        panel.panelContainer.querySelector("input[name='currentSecond']")
+      );
+      trg.setAttribute("min", "0");
+      trg.setAttribute("step", "3");
+      trg.value = "31";
+
+      trg.dispatchEvent(new Event("change"));
+
+      expect(panel.validation.invalidities).toContain("Number should be multiple of 3");
     });
   });
 
@@ -180,5 +201,16 @@ describe("Panel", () => {
       expect(parseInt(panel.currentSecondInput.value)).toBe(panel.data.currentSecond);
       expect(parseInt(panel.currentSecondInput.step)).toBe(panel.data.step);
     });
+  });
+});
+
+const newData = { ...sliderData, range: false, tooltip: false, scale: false };
+const modelS = new SliderModel(container, newData);
+const viewS = new SliderView(container);
+const presenterS = new SliderPresenter(modelS, viewS);
+const panelS = new ConfigurationPanel(container, presenterS);
+describe("Panel for single slider", () => {
+  test("should disable input for currentSecond", () => {
+    expect(panelS.currentSecondInput.disabled).toBe(true);
   });
 });
