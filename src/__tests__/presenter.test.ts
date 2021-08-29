@@ -32,7 +32,7 @@ describe("SliderPresenter", () => {
           clientX: 100,
           clientY: 100,
         });
-        presenter.changingObject = presenter.view.sliderThumb;
+        presenter.changingObject = presenter.view.sliderThumb.element;
         const spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
 
         presenter.view.fromViewSelectThumb.notify(event);
@@ -45,7 +45,7 @@ describe("SliderPresenter", () => {
           clientX: 300,
           clientY: 300,
         });
-        presenter.changingObject = presenter.view.sliderThumbSecond;
+        presenter.changingObject = presenter.view.sliderThumbSecond.element;
         const spyModelUpdate = jest
           .spyOn(presenter.model, "changeThumbSecond")
           .mockImplementation();
@@ -76,7 +76,7 @@ describe("SliderPresenter", () => {
           clientX: 100,
           clientY: 100,
         });
-        presenter.view.dragObject = presenter.view.sliderThumb;
+        presenter.view.dragObject = presenter.view.sliderThumb.element;
         const spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
 
         presenter.view.fromViewDragThumb.notify(event);
@@ -90,7 +90,7 @@ describe("SliderPresenter", () => {
           clientX: 300,
           clientY: 300,
         });
-        presenter.view.dragObject = presenter.view.sliderThumbSecond;
+        presenter.view.dragObject = presenter.view.sliderThumbSecond.element;
         const spyModelUpdate = jest
           .spyOn(presenter.model, "changeThumbSecond")
           .mockImplementation();
@@ -105,7 +105,7 @@ describe("SliderPresenter", () => {
           clientX: 50,
           clientY: 50,
         });
-        presenter.view.dragObject = presenter.view.sliderThumbSecond;
+        presenter.view.dragObject = presenter.view.sliderThumbSecond.element;
         const spyModelFirstUpd = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
         const spyModelSecondUpd = jest
           .spyOn(presenter.model, "changeThumbSecond")
@@ -121,19 +121,22 @@ describe("SliderPresenter", () => {
     describe("should process events from model", () => {
       test("should notify subscribers for changes in currentThumb", () => {
         const value = 18;
-        presenter.changingObject = presenter.view.sliderThumb;
+        presenter.changingObject = presenter.view.sliderThumb.element;
         const spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbUpdate, "notify");
         const spyFromModelChangeView = jest.spyOn(presenter.view, "change").mockImplementation();
 
         model.fromModelChangeView.notify(value);
 
         expect(spyfromModelUpdate).toHaveBeenCalledWith(value);
-        expect(spyFromModelChangeView).toHaveBeenCalledWith(presenter.view.sliderThumb, value);
+        expect(spyFromModelChangeView).toHaveBeenCalledWith(
+          presenter.view.sliderThumb.element,
+          value
+        );
       });
 
       test("should notify subscribers for changes in currentThumbSecond", () => {
         const value = 18;
-        presenter.changingObject = view.sliderThumbSecond;
+        presenter.changingObject = view.sliderThumbSecond.element;
         const spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbSecondUpdate, "notify");
         const spyFromModelChangeView = jest.spyOn(presenter.view, "change").mockImplementation();
 
@@ -141,7 +144,7 @@ describe("SliderPresenter", () => {
 
         expect(spyfromModelUpdate).toHaveBeenCalledWith(value);
         expect(spyFromModelChangeView).toHaveBeenCalledWith(
-          presenter.view.sliderThumbSecond,
+          presenter.view.sliderThumbSecond.element,
           value
         );
       });
@@ -212,7 +215,7 @@ describe("should work for single and vertical sliders", () => {
       clientX: 100,
       clientY: 100,
     });
-    presenterVS.changingObject = presenterVS.view.sliderThumb;
+    presenterVS.changingObject = presenterVS.view.sliderThumb.element;
     const spyModelUpdate = jest.spyOn(presenterVS.model, "changeThumb").mockImplementation();
 
     presenterVS.view.fromViewSelectThumb.notify(event);

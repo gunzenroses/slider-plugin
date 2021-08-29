@@ -1,11 +1,11 @@
 import { IView } from "mvp/view";
+import ISubview from "subview/subviewElement";
 import { fromPercentsToValue } from "utils/common";
 
-export default class SliderTooltip {
+export default class SliderTooltip implements ISubview {
   className: string;
-  tooltip!: HTMLElement;
+  element!: HTMLElement;
   parentNode!: HTMLElement;
-  value!: number;
 
   constructor(that: IView, className: string) {
     this.className = className;
@@ -17,35 +17,39 @@ export default class SliderTooltip {
     this.make(that);
     this.change(that);
     this.append();
-    return this.tooltip;
+    return this.element;
   }
 
   createChildren(that: IView): void {
     this.parentNode =
-      this.className === "tooltip_first" ? that.sliderThumb : that.sliderThumbSecond;
-    this.value =
       this.className === "tooltip_first"
-        ? that.currentFirstInPercents
-        : that.currentSecondInPercents;
+        ? that.sliderThumb.element
+        : that.sliderThumbSecond.element;
   }
 
-  make(that: IView): void {
+  make(that: IView): HTMLElement {
     const verticalClass = that.ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
     const totalClass = that.ifTooltip
       ? [this.className, verticalClass]
       : [this.className, verticalClass, "disabled"];
-    this.tooltip = document.createElement("span");
+    this.element = document.createElement("span");
     totalClass.forEach((item) => {
-      this.tooltip.classList.add(item);
+      this.element.classList.add(item);
     });
-    this.tooltip.dataset.name = "tooltip";
+    this.element.dataset.name = "tooltip";
+    return this.element;
   }
 
-  change(that: IView): void {
-    this.tooltip.innerText = fromPercentsToValue(this.value, that.maxValue, that.minValue);
+  change(that: IView): HTMLElement {
+    const value =
+      this.className === "tooltip_first"
+        ? that.currentFirstInPercents
+        : that.currentSecondInPercents;
+    this.element.innerText = fromPercentsToValue(value, that.maxValue, that.minValue);
+    return this.element;
   }
 
   append(): void {
-    this.parentNode.append(this.tooltip);
+    this.parentNode.append(this.element);
   }
 }

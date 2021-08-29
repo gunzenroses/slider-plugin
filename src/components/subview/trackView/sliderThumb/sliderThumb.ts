@@ -1,38 +1,42 @@
 import { IView } from "mvp/view";
+import ISubview from "subview/subviewElement";
 
-export default class SliderThumb {
-  sliderThumb!: HTMLElement;
+export default class SliderThumb implements ISubview {
+  element!: HTMLElement;
+  className: string;
 
   constructor(that: IView, className: string) {
-    this.init(that, className);
+    this.className = className;
+    this.init(that);
   }
 
-  init(that: IView, className: string): HTMLElement {
-    this.make(that, className);
-    this.change(that, className);
-    that.sliderTrack.append(this.sliderThumb);
-    return this.sliderThumb;
+  init(that: IView): HTMLElement {
+    this.make(that);
+    this.change(that);
+    that.sliderTrack.append(this.element);
+    return this.element;
   }
 
-  make(that: IView, className: string): HTMLElement {
-    this.sliderThumb = document.createElement("div");
-    const verticalClass = that.ifHorizontal ? "" : "-vertical";
+  make(that: IView): HTMLElement {
+    this.element = document.createElement("div");
+    const typeClass = that.ifHorizontal ? this.className : `${this.className}-vertical`;
     const totalClass =
-      className === "thumb_first" || that.ifRange
-        ? ["slider__thumb", `${className}${verticalClass}`]
-        : ["slider__thumb", `${className}${verticalClass}`, "disabled"];
+      this.className === "thumb_first" || that.ifRange
+        ? ["slider__thumb", typeClass]
+        : ["slider__thumb", typeClass, "disabled"];
     totalClass.forEach((item: string) => {
-      this.sliderThumb.classList.add(item);
+      console.log(item);
+      this.element.classList.add(item);
     });
-    return this.sliderThumb;
+    return this.element;
   }
 
-  change(that: IView, className: string): HTMLElement {
+  change(that: IView): HTMLElement {
     const num =
-      className === "thumb_first" ? that.currentFirstInPercents : that.currentSecondInPercents;
+      this.className === "thumb_first" ? that.currentFirstInPercents : that.currentSecondInPercents;
     that.ifHorizontal
-      ? (this.sliderThumb.style.left = num + "%")
-      : (this.sliderThumb.style.bottom = num + "%");
-    return this.sliderThumb;
+      ? (this.element.style.left = num + "%")
+      : (this.element.style.bottom = num + "%");
+    return this.element;
   }
 }

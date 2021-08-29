@@ -157,10 +157,10 @@ class ConfigurationPanel implements IPanel {
         ? parseInt(element.value)
         : element.value;
     if (name === "currentFirst") {
-      this.presenter.changingObject = this.presenter.view.sliderThumb;
+      this.presenter.changingObject = this.presenter.view.sliderThumb.element;
     }
     if (name === "currentSecond") {
-      this.presenter.changingObject = this.presenter.view.sliderThumbSecond;
+      this.presenter.changingObject = this.presenter.view.sliderThumbSecond.element;
     }
     if (type === "number") {
       this.validation = new checkValidity(element, this.panelContainer);

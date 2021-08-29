@@ -1,8 +1,9 @@
 import { IView } from "mvp/view";
+import ISubview from "subview/subviewElement";
 
 //here all values are in %
-export default class SliderRange {
-  sliderRange!: HTMLElement;
+export default class SliderRange implements ISubview {
+  element!: HTMLElement;
 
   constructor(that: IView) {
     this.init(that);
@@ -11,35 +12,35 @@ export default class SliderRange {
   init(that: IView): HTMLElement {
     this.make(that);
     this.change(that);
-    that.sliderTrack.append(this.sliderRange);
-    return this.sliderRange;
+    that.sliderTrack.append(this.element);
+    return this.element;
   }
 
-  private make(that: IView): HTMLElement {
-    this.sliderRange = document.createElement("div");
-    const sliderRangeClass: string = that.ifHorizontal ? "slider__range" : "slider__range_vertical";
-    this.sliderRange.classList.add(`${sliderRangeClass}`);
-    return this.sliderRange;
+  make(that: IView): HTMLElement {
+    this.element = document.createElement("div");
+    const elementClass: string = that.ifHorizontal ? "slider__range" : "slider__range_vertical";
+    this.element.classList.add(`${elementClass}`);
+    return this.element;
   }
 
   change(that: IView): HTMLElement {
     that.ifRange ? (this.changeFirst(that), this.changeSecond(that)) : this.changeFirst(that);
-    return this.sliderRange;
+    return this.element;
   }
 
   private changeFirst(that: IView): void {
     that.ifRange
       ? that.ifHorizontal
-        ? (this.sliderRange.style.left = that.currentFirstInPercents + "%")
-        : (this.sliderRange.style.bottom = that.currentFirstInPercents + "%")
+        ? (this.element.style.left = that.currentFirstInPercents + "%")
+        : (this.element.style.bottom = that.currentFirstInPercents + "%")
       : that.ifHorizontal
-      ? (this.sliderRange.style.right = 100 - that.currentFirstInPercents + "%")
-      : (this.sliderRange.style.top = 100 - that.currentFirstInPercents + "%");
+      ? (this.element.style.right = 100 - that.currentFirstInPercents + "%")
+      : (this.element.style.top = 100 - that.currentFirstInPercents + "%");
   }
 
   private changeSecond(that: IView): void {
     that.ifHorizontal
-      ? (this.sliderRange.style.right = 100 - that.currentSecondInPercents + "%")
-      : (this.sliderRange.style.top = 100 - that.currentSecondInPercents + "%");
+      ? (this.element.style.right = 100 - that.currentSecondInPercents + "%")
+      : (this.element.style.top = 100 - that.currentSecondInPercents + "%");
   }
 }

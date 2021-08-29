@@ -53,14 +53,14 @@ describe("class SliderView", () => {
     test('should not activate "fromViewSelectThumb" when sliderThumb or sliderThumbSecond is clicked', () => {
       const spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
 
-      view.sliderThumb.dispatchEvent(new Event("click"));
-      view.sliderThumbSecond.dispatchEvent(new Event("click"));
+      view.sliderThumb.element.dispatchEvent(new Event("click"));
+      view.sliderThumbSecond.element.dispatchEvent(new Event("click"));
 
       expect(spyOnClick).toHaveBeenCalledTimes(0);
     });
 
     test("define dragObject when sliderThumb is started to be dragged", () => {
-      view.sliderThumb.dispatchEvent(new Event("pointerdown"));
+      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
 
       expect(view.dragObject).toBeDefined();
     });
@@ -68,7 +68,7 @@ describe("class SliderView", () => {
     test("define dragObject when sliderThumbSecond is started to be dragged", () => {
       view.settings.range = true;
 
-      view.sliderThumbSecond.dispatchEvent(new Event("pointerdown"));
+      view.sliderThumbSecond.element.dispatchEvent(new Event("pointerdown"));
 
       expect(view.dragObject).toBeDefined();
     });
@@ -76,7 +76,7 @@ describe("class SliderView", () => {
     test("notify fromViewDragThumb subscribers when thumb is moved", () => {
       const spyOnDragMove = jest.spyOn(view.fromViewDragThumb, "notify");
 
-      view.sliderThumbSecond.dispatchEvent(new Event("pointerdown"));
+      view.sliderThumbSecond.element.dispatchEvent(new Event("pointerdown"));
       document.dispatchEvent(new Event("pointermove"));
 
       expect(spyOnDragMove).toHaveBeenCalledTimes(1);
@@ -105,25 +105,25 @@ describe("class SliderView", () => {
 
   describe("method change()", () => {
     test("update styles for Thumb, Range and Tooltip when (selectObject === sliderThumb)", () => {
-      const obj = view.sliderThumb;
+      const obj = view.sliderThumb.element;
       const num = 7;
 
       view.change(obj, num);
 
-      expect(view.sliderThumb.style.left).toBe(num + "%");
-      expect(view.sliderRange.style.left).toBe(num + "%");
-      expect(parseInt(view.tooltipFirst.innerText)).toBe(num);
+      expect(view.sliderThumb.element.style.left).toBe(num + "%");
+      expect(view.sliderRange.element.style.left).toBe(num + "%");
+      expect(parseInt(view.tooltipFirst.element.innerText)).toBe(num);
     });
 
     test("update styles for Thumb, Range and Tooltip when (selectObject === sliderThumbSecond)", () => {
-      const obj = view.sliderThumbSecond;
+      const obj = view.sliderThumbSecond.element;
       const num = 11;
 
       view.change(obj, num);
 
-      expect(view.sliderThumbSecond.style.left).toBe(num + "%");
-      expect(view.sliderRange.style.right).toBe(100 - num + "%");
-      expect(parseInt(view.tooltipSecond.innerText)).toBe(num);
+      expect(view.sliderThumbSecond.element.style.left).toBe(num + "%");
+      expect(view.sliderRange.element.style.right).toBe(100 - num + "%");
+      expect(parseInt(view.tooltipSecond.element.innerText)).toBe(num);
     });
   });
 
@@ -150,16 +150,16 @@ describe("class SliderView", () => {
       view.init(updatedData);
 
       expect(view.scale.classList.contains("disabled")).toBe(true);
-      expect(view.tooltipFirst.classList.contains("disabled")).toBe(true);
+      expect(view.tooltipFirst.element.classList.contains("disabled")).toBe(true);
     });
   });
 
   describe("method dragThumbStart()", () => {
     test("when pointerdowm determine view.dragObject = e.target", () => {
       view.dragThumbEnd();
-      view.sliderThumb.dispatchEvent(new Event("pointerdown"));
+      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
 
-      expect(view.dragObject).toBe(view.sliderThumb);
+      expect(view.dragObject).toBe(view.sliderThumb.element);
     });
 
     test("disable pointerdowm eventListener", () => {
@@ -168,11 +168,11 @@ describe("class SliderView", () => {
         range: false,
       };
       view.init(newSet);
-      view.sliderThumb.dispatchEvent(new Event("pointerdown"));
+      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
       document.dispatchEvent(new Event("pointermove"));
       const spyOnDragStart = jest.spyOn(view, "dragThumbStart");
 
-      view.sliderThumb.dispatchEvent(new Event("pointerdowm"));
+      view.sliderThumb.element.dispatchEvent(new Event("pointerdowm"));
 
       expect(spyOnDragStart).toHaveBeenCalledTimes(0);
     });
