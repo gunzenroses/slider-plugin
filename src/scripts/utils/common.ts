@@ -108,6 +108,7 @@ function commonDivider(basicNum: number, changeNum: number): number {
 
 export {
   applyStepOnValue,
+  applyStepOnPercents,
   applyRestrictions,
   fromPercentsToValue,
   changeValueToPercents,
