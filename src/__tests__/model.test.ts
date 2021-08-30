@@ -20,10 +20,10 @@ describe("class SliderModel", () => {
   });
 
   describe("method setData", () => {
-    test("should update step, min and max data in model", () => {
-      const step = 10;
-      const min = 2;
-      const max = 200;
+    test("should update data in model", () => {
+      const min = adjustValue("min", 2, model.getData());
+      const max = adjustValue("max", 130, model.getData());
+      const step = adjustValue("step", 2, model.getData());
 
       model.setData("step", step);
       model.setData("min", min);
@@ -32,17 +32,6 @@ describe("class SliderModel", () => {
       expect(model.getData()).toHaveProperty("step", step);
       expect(model.getData()).toHaveProperty("min", min);
       expect(model.getData()).toHaveProperty("max", max);
-    });
-
-    test("should update currentFirst and currentSecond data in model", () => {
-      const currentFirst = adjustValue("currentFirst", 11, model.getData());
-      const currentSecond = adjustValue("currentSecond", 35, model.getData());
-
-      model.setData("currentFirst", currentFirst);
-      model.setData("currentSecond", currentSecond);
-
-      expect(model.getData()).toHaveProperty("currentFirst", currentFirst);
-      expect(model.getData()).toHaveProperty("currentSecond", currentSecond);
     });
   });
 
@@ -58,7 +47,7 @@ describe("class SliderModel", () => {
       expect(model.getData()).toEqual(data);
     });
 
-    test("have valid properties(min, max, range, currentFirst, currentSecond, step, orientation, tooltip, scale)", () => {
+    test("have valid properties('min', 'max', 'range', 'currentFirst', 'currentSecond', 'step', 'orientation', 'tooltip', 'scale')", () => {
       //assertion
       expect(model.getData()).toHaveProperty("min");
       expect(model.getData()).toHaveProperty("max");
@@ -83,7 +72,7 @@ describe("class SliderModel", () => {
       expect(model.getData().currentFirst).toBe(multiple);
     });
 
-    test("should make currentThumbSecond multiple of step, when range=true", () => {
+    test("should make currentThumbSecond multiple of 'step', when 'range'=true", () => {
       const newCF = { name: "currentSecond", data: 35 };
       const step = model.getData().step;
       const multiple = Math.trunc((newCF.data / step) * step);
@@ -94,7 +83,7 @@ describe("class SliderModel", () => {
       expect(model.getData().currentSecond).toBe(multiple);
     });
 
-    test("should make currentThumbSecond=max, when range=false", () => {
+    test("should make 'currentThumbSecond'='max', when 'range'=false", () => {
       model.setData("range", false);
 
       expect(model.getData().currentSecond).toBe(model.getData().max);
