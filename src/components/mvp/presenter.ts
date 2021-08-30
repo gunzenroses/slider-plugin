@@ -1,223 +1,232 @@
-import { IModel } from "./model"
-import { IView } from "./view"
-import { TSettings } from "utils/types"
-import { applyRestrictions, findPosition, fromPercentsToValueApplyStep, changeValueToPercentsApplyStep } from "utils/common"
-import { EventDispatcher } from "./eventDispatcher"
+import { IModel } from "./model";
+import { IView } from "./view";
+import { EventDispatcher } from "./eventDispatcher";
+import { IModelData, TFunc, TSettings } from "utils/types";
+import {
+  applyRestrictions,
+  findPosition,
+  percentsToValueApplyStep,
+  valueToPercentsApplyStep,
+} from "utils/common";
 
 interface IPresenter {
-    model: IModel;
-    view: IView;
-    containerId: string;
-    data: TSettings;
+  model: IModel;
+  view: IView;
+  container: HTMLElement;
+  data: TSettings;
+  changingObject: HTMLElement;
 
-    init(): void;
-    updateView(): void;
-    setData(name: string, data: any): void;
+  init(): void;
+  updateView(): void;
+  modelData(name: string, data: IModelData): void;
 
-    fromPresenterUpdate: EventDispatcher;
-    fromPresenterThumbUpdate: EventDispatcher;
-    fromPresenterThumbSecondUpdate: EventDispatcher;
+  fromPresenterUpdate: EventDispatcher;
+  fromPresenterThumbUpdate: EventDispatcher;
+  fromPresenterThumbSecondUpdate: EventDispatcher;
 }
 
 class SliderPresenter implements IPresenter {
-    model:IModel;
-    view: IView;
-    containerId: string;
-    data!: TSettings;
+  model: IModel;
+  view: IView;
+  container: HTMLElement;
+  data!: TSettings;
+  changingObject!: HTMLElement;
 
-    fromPresenterUpdate!: EventDispatcher;
-    fromPresenterThumbUpdate!: EventDispatcher;
-    fromPresenterThumbSecondUpdate!: EventDispatcher;
+  fromPresenterUpdate!: EventDispatcher;
+  fromPresenterThumbUpdate!: EventDispatcher;
+  fromPresenterThumbSecondUpdate!: EventDispatcher;
 
-    private min!:number;
-    private max!: number;
-    private step!: number;
+  private min!: number;
+  private max!: number;
+  private step!: number;
 
-    private ifHorizontal!: boolean;
-    private ifRange!: boolean;
-    containerSize!: number;
-    thumbWidth!: number;
+  private ifHorizontal!: boolean;
+  private ifRange!: boolean;
+  containerSize!: number;
+  thumbWidth!: number;
 
-    fromModelChangeViewHandler!: { (newThumbValue: number) : void };
-    fromModelUpdateDataHandler!: {(data: TSettings): void};
-    fromViewSelectThumbHandler!: { (newThumbValue: number) : void };
-    fromViewDragThumbHandler!: { (newThumbValue: number) : void };
-    fromViewSortActionsHandler!: {(flag: string, event: Event) : void };
-    
-    constructor(model: IModel, view: IView){
-        this.model = model;
-        this.view = view;
-        this.containerId = this.model.getContainerId();
-        this.fromPresenterUpdate = new EventDispatcher();
-        this.fromPresenterThumbUpdate = new EventDispatcher();
-        this.fromPresenterThumbSecondUpdate = new EventDispatcher();
-        this.init();
+  fromModelChangeViewHandler!: { (newThumbValue: number): void };
+  fromModelUpdateDataHandler!: { (data: TSettings): void };
+  fromViewSelectThumbHandler!: { (e: PointerEvent): void };
+  fromViewDragThumbHandler!: { (e: PointerEvent): void };
+  fromViewSortActionsHandler!: { (flag: string, event: Event): void };
+
+  constructor(model: IModel, view: IView) {
+    this.model = model;
+    this.view = view;
+    this.container = this.model.getContainer();
+    this.fromPresenterUpdate = new EventDispatcher();
+    this.fromPresenterThumbUpdate = new EventDispatcher();
+    this.fromPresenterThumbSecondUpdate = new EventDispatcher();
+    this.init();
+  }
+
+  init(): void {
+    this.updateView();
+    this.setupHandlers();
+    this.enable();
+  }
+
+  // maybe join with init
+  updateView(): void {
+    this.data = this.model.getData();
+    this.view.init(this.data);
+    this.createChildren();
+  }
+
+  private createChildren(): void {
+    this.min = this.data.min;
+    this.max = this.data.max;
+    this.step = this.data.step;
+    this.ifHorizontal = this.data.orientation === "horizontal";
+    this.ifRange = this.data.range;
+    this.containerSize = this.ifHorizontal
+      ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px", ""))
+      : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px", ""));
+    this.thumbWidth = parseInt(
+      getComputedStyle(this.view.sliderThumb.element).width.replace("px", "")
+    );
+  }
+
+  private setupHandlers(): void {
+    this.fromViewSelectThumbHandler = this.selectThumb.bind(this);
+    this.fromViewDragThumbHandler = this.dragThumb.bind(this);
+    this.fromModelChangeViewHandler = this.updateThumbs.bind(this);
+    this.fromModelUpdateDataHandler = this.updateData.bind(this);
+  }
+
+  private enable(): void {
+    this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler as TFunc);
+    this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler as TFunc);
+    this.model.fromModelChangeView.add(this.fromModelChangeViewHandler as TFunc);
+    this.model.fromModelUpdateData.add(this.fromModelUpdateDataHandler as TFunc);
+  }
+
+  private setObject(object: HTMLElement): void {
+    this.changingObject = object;
+  }
+
+  //all values are in %
+  private selectThumb(e: PointerEvent): void {
+    const position = this.countPosition(e);
+    this.ifRange ? this.selectThumbRangeTrue(position) : this.selectThumbRangeFalse(position);
+  }
+
+  private countPosition(e: PointerEvent) {
+    const newThumbCurrentPosition = this.ifHorizontal
+      ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left + this.thumbWidth / 2
+      : e.clientY - this.view.sliderContainer.getBoundingClientRect().top;
+    const newThumbCurrent = this.ifHorizontal
+      ? Math.floor((newThumbCurrentPosition / this.containerSize) * 100)
+      : Math.floor(((this.containerSize - newThumbCurrentPosition) / this.containerSize) * 100);
+    return applyRestrictions(newThumbCurrent);
+  }
+
+  //all values are in %
+  private selectThumbRangeFalse(newThumbCurrentPercent: number): void {
+    this.setObject(this.view.sliderThumb.element);
+    this.modelThumbFirst(newThumbCurrentPercent);
+  }
+
+  //all values are in %
+  private selectThumbRangeTrue(newPercent: number): void {
+    const { firstThumbPercent, secondThumbPercent } = this.countPercents();
+    const firstDiff: number = Math.abs(firstThumbPercent - newPercent);
+    const secondDiff: number = Math.abs(secondThumbPercent - newPercent);
+
+    if (firstDiff < secondDiff && newPercent < secondThumbPercent) {
+      this.setObject(this.view.sliderThumb.element);
+      this.modelThumbFirst(newPercent);
     }
-
-    init(){
-        this.updateView();
-        this.setupHandlers();
-        this.enable();
+    if (firstDiff > secondDiff && newPercent > firstThumbPercent) {
+      this.setObject(this.view.sliderThumbSecond.element);
+      this.modelThumbSecond(newPercent);
     }
-
-    // maybe join with init
-    updateView(){
-        this.data = this.model.getData();
-        this.view.init(this.data);
-        this.createChildren();
+    if (firstDiff === secondDiff) {
+      this.findClosestThumb(newPercent, firstThumbPercent);
     }
+  }
 
-    private createChildren(){
-        this.min = this.data.min;
-        this.max = this.data.max;
-        this.step = this.data.step;
-        this.ifHorizontal = this.data.orientation === "horizontal";
-        this.ifRange = this.data.range;
-        this.containerSize = (this.ifHorizontal)
-                            ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px",""))
-                            : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px",""));
-        this.thumbWidth = parseInt(getComputedStyle(this.view.sliderThumb).width.replace("px",""));
+  private countPercents() {
+    const firstThumbPercent: number = findPosition(
+      this.view.sliderThumb.element,
+      this.ifHorizontal,
+      this.containerSize
+    );
+    const secondThumbPercent: number = findPosition(
+      this.view.sliderThumbSecond.element,
+      this.ifHorizontal,
+      this.containerSize
+    );
+    return { firstThumbPercent, secondThumbPercent };
+  }
+
+  private findClosestThumb(newPlace: number, firstThumbPlace: number): void {
+    newPlace < firstThumbPlace
+      ? (this.setObject(this.view.sliderThumb.element), this.modelThumbFirst(newPlace))
+      : newPlace > firstThumbPlace
+      ? (this.setObject(this.view.sliderThumbSecond.element), this.modelThumbSecond(newPlace))
+      : null;
+  }
+
+  //all values are in %
+  private dragThumb(e: PointerEvent): void {
+    const position = this.countPosition(e);
+    this.ifRange ? this.dragThumbRangeTrue(position) : this.dragThumbRangeFalse(position);
+  }
+
+  //all values are in %
+  private dragThumbRangeFalse(newThumbCurrent: number): void {
+    this.modelThumbFirst(newThumbCurrent);
+  }
+
+  //all values are in %
+  private dragThumbRangeTrue(newThumbCurrent: number): void {
+    const { firstThumbPercent, secondThumbPercent } = this.countPercents();
+    if (
+      this.view.dragObject === this.view.sliderThumb.element &&
+      newThumbCurrent <= secondThumbPercent - 1
+    ) {
+      this.modelThumbFirst(newThumbCurrent);
+    } else if (
+      this.view.dragObject === this.view.sliderThumbSecond.element &&
+      newThumbCurrent >= firstThumbPercent + 1
+    ) {
+      this.modelThumbSecond(newThumbCurrent);
     }
+  }
 
-    private setupHandlers(){
-        this.fromViewSelectThumbHandler = this.selectThumb.bind(this);
-        this.fromViewDragThumbHandler = this.dragThumb.bind(this);
-        this.fromModelChangeViewHandler = this.changeThumbs.bind(this);
-        this.fromModelUpdateDataHandler = this.updateDataEverywhere.bind(this);
-        return this;
-    }
+  //to update all kinds of data
+  modelData(name: string, data: IModelData): void {
+    this.model.setData(name, data);
+  }
 
-    private enable(){
-        this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler);
-        this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler);
-        this.model.fromModelChangeView.add(this.fromModelChangeViewHandler);
-        this.model.fromModelUpdateData.add(this.fromModelUpdateDataHandler);
-        return this;
-    }
+  //value - %, newValue - actual
+  private modelThumbFirst(value: number): void {
+    const newValue = percentsToValueApplyStep(value, this.max, this.min, this.step);
+    this.model.changeThumb(newValue);
+  }
 
-    //all values are in %
-    private selectThumb(e: any){
-        let newThumbCurrentPosition = this.ifHorizontal
-                    ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left + this.thumbWidth/2
-                    : e.clientY - this.view.sliderContainer.getBoundingClientRect().top //+ this.thumbWidth/2;
-        let newThumbCurrentPercent = this.ifHorizontal
-                    ? Math.floor(newThumbCurrentPosition/this.containerSize*100)
-                    : Math.floor((this.containerSize - newThumbCurrentPosition)/this.containerSize*100);
-        let restrictedThumbCurrent = applyRestrictions(newThumbCurrentPercent)
-        this.ifRange 
-            ? this.selectThumbRangeTrue(restrictedThumbCurrent)
-            : this.selectThumbRangeFalse(restrictedThumbCurrent);
-    }
+  //value - %, newValue - actual
+  private modelThumbSecond(value: number): void {
+    const newValue = percentsToValueApplyStep(value, this.max, this.min, this.step);
+    this.model.changeThumbSecond(newValue);
+  }
 
-    //all values are in %
-    private selectThumbRangeFalse(newThumbCurrentPercent: number){
-        // this.view.selectObject = this.view.sliderThumb;
-        // this.changeThumbInModel(this.view.selectObject, newThumbCurrentPercent);
-        this.view.selectObject = this.view.sliderThumb;
-        this.changeThumbInModel(newThumbCurrentPercent);
-        this.view.selectObject = {};
-    }
+  private updateData(): void {
+    this.updateView();
+    this.fromPresenterUpdate.notify();
+  }
 
-    //all values are in %
-    private selectThumbRangeTrue(newThumbCurrentPercent: number){
-        let firstThumbPercent: number = findPosition(this.view.sliderThumb, this.ifHorizontal, this.containerSize);
-        let secondThumbPercent: number = findPosition(this.view.sliderThumbSecond!, this.ifHorizontal, this.containerSize);
+  //value - actual, newValue - %
+  private updateThumbs(value: number): void {
+    this.changingObject === this.view.sliderThumb.element
+      ? this.fromPresenterThumbUpdate.notify(value)
+      : this.fromPresenterThumbSecondUpdate.notify(value);
 
-        let firstDiff: number = Math.abs(firstThumbPercent - newThumbCurrentPercent);
-        let secondDiff: number = Math.abs(secondThumbPercent - newThumbCurrentPercent);
-
-        if (firstDiff < secondDiff){ 
-            this.view.selectObject = this.view.sliderThumb;
-            this.changeThumbInModel(newThumbCurrentPercent); 
-        } if (firstDiff > secondDiff){
-            this.view.selectObject = this.view.sliderThumbSecond!;
-            this.changeThumbSecondInModel(newThumbCurrentPercent);
-        } if (firstDiff === secondDiff){
-            (newThumbCurrentPercent < firstThumbPercent)
-                ? (this.view.selectObject = this.view.sliderThumb,
-                    this.changeThumbInModel(newThumbCurrentPercent))
-                : (newThumbCurrentPercent > firstThumbPercent
-                    ? (this.view.selectObject = this.view.sliderThumbSecond!,
-                    this.changeThumbSecondInModel(newThumbCurrentPercent))
-                    : null );
-        }
-        this.view.selectObject = {};
-    }
-
-    //all values are in %
-    private dragThumb(e: any){
-        let newThumbCurrentPX = this.ifHorizontal
-            ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left
-            : e.clientY - this.view.sliderContainer.getBoundingClientRect().top;
-        let newThumbCurrent= this.ifHorizontal
-                ? Math.floor(newThumbCurrentPX/this.containerSize*100)
-                : Math.floor((this.containerSize - newThumbCurrentPX)/this.containerSize*100);
-        let restrictedThumbCurrent = applyRestrictions(newThumbCurrent) 
-        this.ifRange
-                ? this.dragThumbRangeTrue(restrictedThumbCurrent)
-                : this.dragThumbRangeFalse(restrictedThumbCurrent);
-    }
-
-    //all values are in %
-    private dragThumbRangeFalse(newThumbCurrent: number){
-        this.changeThumbInModel(newThumbCurrent);
-    }
-
-    //all values are in %
-    private dragThumbRangeTrue(newThumbCurrent: number){
-        let firstThumbPercent = findPosition(this.view.sliderThumb, this.ifHorizontal, this.containerSize);
-        let secondThumbPercent = findPosition(this.view.sliderThumbSecond!, this.ifHorizontal, this.containerSize);
-
-        if (this.view.dragObject === this.view.sliderThumb &&
-            newThumbCurrent<= secondThumbPercent + 1){
-            this.changeThumbInModel(newThumbCurrent);
-        } 
-        else if (this.view.dragObject === this.view.sliderThumbSecond &&
-            newThumbCurrent>= firstThumbPercent + 1){
-            this.changeThumbSecondInModel(newThumbCurrent);
-        }
-    }
-
-    //value - %, newValue - actual
-    private changeThumbInModel(value: number){
-        //this.changeThumbs(value); //in percents
-        let newValue = fromPercentsToValueApplyStep(value, this.max, this.min, this.step);
-        this.model.changeThumb(newValue); //as value
-    }
-
-    //value - %, newValue - actual
-    private changeThumbSecondInModel(value: number){
-        let newValue = fromPercentsToValueApplyStep(value, this.max, this.min, this.step);
-        this.model.changeThumbSecond(newValue);
-    }
-
-    //value - actual, newValue - %
-    private changeThumbs(value: number){
-        // //rewrite with eventDispatcher?
-        let object = (this.view.dragObject.classList !== undefined)
-            ? this.view.dragObject 
-            : this.view.selectObject;
-
-        //change thumbs in panel
-        (object === this.view.sliderThumb)
-            ? this.fromPresenterThumbUpdate.notify(value)
-            : this.fromPresenterThumbSecondUpdate.notify(value);
-
-        //change thumbs in view
-        let newValue = changeValueToPercentsApplyStep(value, this.max, this.min, this.step);
-        this.view.сhange(object, newValue);
-    }
-
-    // this part manages external changes
-
-    setData(name: string, data: any){
-        this.model.setData(name, data);
-    }
-
-    private updateDataEverywhere(){
-        this.updateView();
-        this.fromPresenterUpdate.notify();
-    }
+    const newValue = valueToPercentsApplyStep(value, this.max, this.min, this.step);
+    this.view.change(this.changingObject, newValue);
+  }
 }
 
-export { IPresenter, SliderPresenter }
+export { IPresenter, SliderPresenter };

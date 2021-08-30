@@ -1,103 +1,122 @@
-import { TSettings } from "utils/types";
-
-//somewhere here the problem is
 //all in %
 function applyStepOnPercents(value: number, step: number): number {
-    let numberOfSteps = (value * 100) / (step * 100);
-    let realNumberOfSteps = (value % step >= step/2)
-                ? Math.ceil(numberOfSteps)
-                : Math.floor(numberOfSteps);
-    let realValue = (value === 100)
-                    ? value
-                    : parseFloat((realNumberOfSteps * step).toFixed(2));
-    return realValue;
+  const numberOfSteps = (value * 100) / (step * 100);
+  const realNumberOfSteps =
+    value % step >= step / 2 ? Math.ceil(numberOfSteps) : Math.floor(numberOfSteps);
+  const realValue = value === 100 ? value : parseFloat((realNumberOfSteps * step).toFixed(2));
+  return realValue;
 }
 
 //checked: all values are actual
 function applyStepOnValue(value: number, max: number, min: number, step: number): number {
-    if ((value - min) <= 0) return min;
-    let numberOfSteps = (value - min) * 100 / (step * 100);
-    let realNumberOfSteps = ((value - min) % step > step/2)
-                ? Math.ceil(numberOfSteps)
-                : Math.floor(numberOfSteps);
-    let valueInSteps = (realNumberOfSteps * step) + min
-    let realValue = (value === max)
-                    ? value
-                    : (valueInSteps > max)
-                        ? max
-                        : valueInSteps;
-    return realValue;
+  if (value - min <= 0) return min;
+  const numberOfSteps = ((value - min) * 100) / (step * 100);
+  const realNumberOfSteps =
+    (value - min) % step > step / 2 ? Math.ceil(numberOfSteps) : Math.floor(numberOfSteps);
+  const valueInSteps = realNumberOfSteps * step + min;
+  const realValue = value === max ? value : valueInSteps > max ? max : valueInSteps;
+  return realValue;
 }
 
 //checked
-function applyRestrictions(value: number){
-    let newValue = value > 100
-                    ? 100
-                    : value < 0
-                        ? 0
-                        : value;
-    return newValue;
+function applyRestrictions(value: number): number {
+  const newValue = value > 100 ? 100 : value < 0 ? 0 : value;
+  return newValue;
 }
 
 // checked: value in %, others are actual
-function fromPercentsToValue(valueInPercents: number, max: number, min: number){
-    let newValue = (Math.round(valueInPercents * (max - min) / 100) + min).toString();
-    return newValue;
+function fromPercentsToValue(valueInPercents: number, max: number, min: number): string {
+  const newValue = (Math.round((valueInPercents * (max - min)) / 100) + min).toString();
+  return newValue;
 }
 
 //done: initial values are actual, return %
-function changeValueToPercents(value: number, max: number, min: number){
-    let newValue = parseFloat( ((value - min) / (max - min) * 100).toFixed(2) );
-    return newValue;
+function changeValueToPercents(value: number, max: number, min: number): number {
+  const newValue = parseFloat((((value - min) / (max - min)) * 100).toFixed(2));
+  return newValue;
 }
 
 //done: initial values are actual, return %
-function changeStepToPercents(step: number, max: number, min: number){
-    let newValue = parseFloat(( step / (max - min) * 100).toFixed(2));
-    return newValue;
+function changeStepToPercents(step: number, max: number, min: number): number {
+  const newValue = parseFloat(((step / (max - min)) * 100).toFixed(2));
+  return newValue;
 }
 
-function fromValueToPX(value: number, max: number, min: number, containerSize: number){
-    let pxPerDivis = containerSize / (max - min);
-    let valueInPx = value*pxPerDivis;
-    return valueInPx;
+function fromValueToPX(value: number, max: number, min: number, containerSize: number): number {
+  const pxPerDivis = containerSize / (max - min);
+  const valueInPx = value * pxPerDivis;
+  return valueInPx;
 }
 
-function findPosition(thisElement: HTMLElement, ifHorizontal: boolean, containerSize: number){
-    let newPosition = ifHorizontal
-            ? (thisElement.style.left)
-                ? parseInt(thisElement.style.left.replace("%",""))
-                : parseInt(getComputedStyle(thisElement).left.replace("px",""))/containerSize*100
-            : (thisElement.style.bottom)
-                ? parseInt(thisElement.style.bottom.replace("%",""))
-                : parseInt(getComputedStyle(thisElement).bottom.replace("px",""))/containerSize*100;
-    return newPosition;
-}
-
-function mergeData(sliderData: TSettings, options: TSettings){
-    var c: TSettings = {};
-    let key: string;
-    for (key in sliderData){
-        if (sliderData.hasOwnProperty(key)){
-            c[key] = key in options ? options[key] : sliderData[key]
-        }
-    };
-    return c;
+function findPosition(
+  thisElement: HTMLElement,
+  ifHorizontal: boolean,
+  containerSize: number
+): number {
+  const newPosition = ifHorizontal
+    ? thisElement.style.left
+      ? parseInt(thisElement.style.left.replace("%", ""))
+      : (parseInt(getComputedStyle(thisElement).left.replace("px", "")) / containerSize) * 100
+    : thisElement.style.bottom
+    ? parseInt(thisElement.style.bottom.replace("%", ""))
+    : (parseInt(getComputedStyle(thisElement).bottom.replace("px", "")) / containerSize) * 100;
+  return newPosition;
 }
 
 //value %, max, min, step are actual values
-function fromPercentsToValueApplyStep(value: number, max: number, min: number, step: number){
-    let value2 = parseInt(fromPercentsToValue(value, max, min));
-    let newValue = applyStepOnValue(value2, max, min, step);
-    return newValue;
+function percentsToValueApplyStep(value: number, max: number, min: number, step: number): number {
+  const value2 = parseInt(fromPercentsToValue(value, max, min));
+  const newValue = applyStepOnValue(value2, max, min, step);
+  return newValue;
 }
 
-//values are actual 
-function changeValueToPercentsApplyStep(value: number, max: number, min: number, step: number){
-    let valuePerc = changeValueToPercents(value, max, min);
-    let stepPerc = changeStepToPercents(step, max, min);
-    let newValue = applyStepOnPercents(valuePerc, stepPerc);
-    return newValue;
+//values are actual
+function valueToPercentsApplyStep(value: number, max: number, min: number, step: number): number {
+  const valuePerc = changeValueToPercents(value, max, min);
+  const stepPerc = changeStepToPercents(step, max, min);
+  const newValue = applyStepOnPercents(valuePerc, stepPerc);
+  return newValue;
 }
 
-export { applyStepOnValue, applyRestrictions, fromPercentsToValue, changeValueToPercents, fromValueToPX, findPosition, mergeData, fromPercentsToValueApplyStep, changeValueToPercentsApplyStep }
+function appendCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement {
+  const el = document.createElement(`${type}`);
+  el.classList.add(className);
+  parent.append(el);
+  return el;
+}
+
+function afterCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement {
+  const el = document.createElement(`${type}`);
+  el.classList.add(className);
+  parent.after(el);
+  return el;
+}
+
+function commonDivider(basicNum: number, changeNum: number): number {
+  const bigger = basicNum;
+  //let smaller = changeNum;
+  let smaller = changeNum > 1 ? changeNum : 1;
+  if (bigger <= smaller) {
+    return smaller;
+  } else {
+    while (bigger % smaller !== 0) {
+      smaller++;
+    }
+    return smaller;
+  }
+}
+
+export {
+  applyStepOnValue,
+  applyStepOnPercents,
+  applyRestrictions,
+  fromPercentsToValue,
+  changeValueToPercents,
+  commonDivider,
+  fromValueToPX,
+  findPosition,
+  percentsToValueApplyStep,
+  valueToPercentsApplyStep,
+  appendCustomElement,
+  afterCustomElement,
+};

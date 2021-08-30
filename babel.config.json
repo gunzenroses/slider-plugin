@@ -1,10 +1,28 @@
 {
-    "presets": [
-        ["@babel/preset-env", {
-            "targets": {
-                "node": "current"
-            }
-        }],
-        "@babel/preset-typescript"
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ],
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      { 
+        "alias": {
+          "assets": "./src/assets/",
+          "mvp": "./src/components/mvp/",
+          "panel": "./src/components/panel/",
+          "subview": "./src/components/subview/",
+          "helpers": "./src/scripts/helpers/",
+          "utils": "./src/scripts/utils/"
+        }
+      }
     ]
+  ]
 }

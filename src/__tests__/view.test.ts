@@ -1,144 +1,177 @@
 /**
  * @jest-environment jsdom
  */
+import { IView, SliderView } from "mvp/view";
+import { sliderData } from "mvp/data";
 
-import { SliderView } from "mvp/view"
-import { sliderData } from "mvp/data"
-import { mergeData } from "utils/common";
+describe("class SliderView", () => {
+  const data = sliderData;
+  const container = document.createElement("div");
+  document.body.append(container);
+  let view: IView;
 
-let data = sliderData;
-let containerId = 'container1';
+  beforeEach(() => {
+    container.innerHTML = "";
+    view = new SliderView(container);
+    view.init(data);
+    jest.restoreAllMocks();
+  });
 
-let initialContainer = document.createElement("div");
-initialContainer.id = containerId;
-document.body.append(initialContainer);
+  describe("method init()", () => {
+    test("set passed in data as settings", () => {
+      expect(view.settings).toEqual(data);
+    });
+  });
 
-describe('class SliderView', ()=>{
-    let view = new SliderView(containerId);
+  describe("method createChildren()", () => {
+    test("create children (variables) for class functionality", () => {
+      expect(view.ifHorizontal).toBeDefined();
+      expect(view.ifRange).toBeDefined();
+      expect(view.ifTooltip).toBeDefined();
+      expect(view.ifScale).toBeDefined();
+      expect(view.currentFirstInPercents).toBeTruthy();
+      expect(view.currentSecondInPercents).toBeTruthy();
+      expect(view.stepValue).toBeTruthy();
+      expect(view.stepPerDiv).toBeTruthy();
+      expect(view.maxValue).toBeTruthy();
+      expect(view.minValue).toBeDefined();
+    });
+  });
 
-    afterEach (()=>{
-        jest.restoreAllMocks();
-    })
+  describe("method enable()", () => {
+    test("notify fromViewSelectThumb subscribers when sliderContainer is clicked", () => {
+      const spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
 
-    describe('method init()', ()=>{
-        view.init(data);
-        test('set passed in data as settings', ()=>{
-            expect(view.settings).toEqual(data);
-        })
-    })
+      view.sliderContainer.dispatchEvent(new Event("click"));
 
-    describe('method createChildren()', ()=>{
-        test('create children (variables) for class functionality', ()=>{
-            expect(view.selectObject).toBeTruthy;
-            expect(view.ifHorizontal).toBeDefined;
-            expect(view.ifRange).toBeDefined;
-            expect(view.ifTooltip).toBeDefined;
-            expect(view.ifScale).toBeDefined;
-            expect(view.currentFirstInPercents).toBeTruthy;
-            expect(view.currentSecondInPercents).toBeTruthy;
-            expect(view.stepValue ).toBeTruthy;
-            expect(view.stepPerDiv).toBeTruthy;
-            expect(view.maxValue).toBeTruthy;
-            expect(view.minValue).toBeTruthy;
-        })
-    })
+      expect(spyOnClick).toHaveBeenCalledTimes(1);
+    });
 
-    describe('method enable()', ()=>{
-        test('notify fromViewSelectThumb subscribers when sliderContainer is clicked', ()=>{
-            let spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
+    test('should not activate "fromViewSelectThumb" when sliderThumb or sliderThumbSecond is clicked', () => {
+      const spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
 
-            view.sliderContainer.dispatchEvent(new Event('click'));
+      view.sliderThumb.element.dispatchEvent(new Event("click"));
+      view.sliderThumbSecond.element.dispatchEvent(new Event("click"));
 
-            expect(spyOnClick).toHaveBeenCalledTimes(1);
-        })
+      expect(spyOnClick).toHaveBeenCalledTimes(0);
+    });
 
-        test('should not activate "fromViewSelectThumb" when sliderThumb or sliderThumbSecond is clicked', ()=>{
-            let spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
+    test("define dragObject when sliderThumb is started to be dragged", () => {
+      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
 
-            view.sliderThumb.dispatchEvent(new Event('click'));
-            view.sliderThumbSecond.dispatchEvent(new Event('click'));
+      expect(view.dragObject).toBeDefined();
+    });
 
-            expect(spyOnClick).toHaveBeenCalledTimes(0);
-        })
+    test("define dragObject when sliderThumbSecond is started to be dragged", () => {
+      view.settings.range = true;
 
-        test('define dragObject when sliderThumb is started to be dragged', ()=>{
-            view.sliderThumb.dispatchEvent(new Event('pointerdown'));
+      view.sliderThumbSecond.element.dispatchEvent(new Event("pointerdown"));
 
-            expect(view.dragObject).toBeDefined;
-        })
+      expect(view.dragObject).toBeDefined();
+    });
 
-        test('define dragObject when sliderThumbSecond is started to be dragged', ()=>{
-            view.settings.range = true;
+    test("notify fromViewDragThumb subscribers when thumb is moved", () => {
+      const spyOnDragMove = jest.spyOn(view.fromViewDragThumb, "notify");
 
-            view.sliderThumbSecond.dispatchEvent(new Event('pointerdown'));
+      view.sliderThumbSecond.element.dispatchEvent(new Event("pointerdown"));
+      document.dispatchEvent(new Event("pointermove"));
 
-            expect(view.dragObject).toBeDefined;
-        })
+      expect(spyOnDragMove).toHaveBeenCalledTimes(1);
+    });
+  });
 
-        test('notify fromViewDragThumb subscribers when thumb is moved', ()=>{
-            let spyOnDragMove = jest.spyOn(view.fromViewDragThumb, "notify");
+  describe("method dragThumbEnd()", () => {
+    test("when pointer is up should end listening to pointermove", () => {
+      const spyOnMoveListener = jest.spyOn(view.fromViewDragThumb, "notify");
 
-            view.sliderThumbSecond.dispatchEvent(new Event('pointerdown'));
-            document.dispatchEvent(new Event('pointermove'));
+      document.dispatchEvent(new Event("pointerup"));
 
-            expect(spyOnDragMove).toHaveBeenCalledTimes(1);
-        })
+      expect(spyOnMoveListener).toBeCalledTimes(0);
+    });
+  });
 
-        test('clear dragObject when dragged thumb is released', ()=>{
-            document.dispatchEvent(new Event('pointerup'));
+  describe("method stopListenDown()", () => {
+    test("do not listen to thumbdown events when thumbmove", () => {
+      const spyOnThumbDowm = jest.spyOn(view, "dragThumbStart");
 
-            expect(view.dragObject).toEqual({});
-        })
-    })
+      document.dispatchEvent(new Event("pointerdown"));
 
-    describe('method change()', ()=>{
-        test ('update styles for Thumb, Range and Tooltip when (selectObject === sliderThumb)', ()=>{
-            let obj = view.sliderThumb;
-            let num = 7;
+      expect(spyOnThumbDowm).toBeCalledTimes(0);
+    });
+  });
 
-            view.сhange(obj, num);
+  describe("method change()", () => {
+    test("update styles for Thumb, Range and Tooltip when (selectObject === sliderThumb)", () => {
+      const obj = view.sliderThumb.element;
+      const num = 7;
 
-            expect(view.sliderThumb.style.left).toBe(num + '%');
-            expect(view.sliderRange.style.left).toBe(num + '%');
-            expect(parseInt(view.tooltipFirst.innerText)).toBe(num);
-        })
+      view.change(obj, num);
 
-        test ('update styles for Thumb, Range and Tooltip when (selectObject === sliderThumbSecond)', ()=>{
-            let obj = view.sliderThumbSecond;
-            let num = 11;
+      expect(view.sliderThumb.element.style.left).toBe(num + "%");
+      expect(view.sliderRange.element.style.left).toBe(num + "%");
+      expect(parseInt(view.tooltipFirst.element.innerText)).toBe(num);
+    });
 
-            view.сhange(obj, num);
+    test("update styles for Thumb, Range and Tooltip when (selectObject === sliderThumbSecond)", () => {
+      const obj = view.sliderThumbSecond.element;
+      const num = 11;
 
-            expect(view.sliderThumbSecond.style.left).toBe(num + '%');
-            expect(view.sliderRange.style.right).toBe((100 - num) + '%');
-            expect(parseInt(view.tooltipSecond.innerText)).toBe(num);
-        })
-    })
+      view.change(obj, num);
 
-    describe('method render()', ()=>{
-        test('init rendering of view elements', ()=>{
-            expect(view.sliderContainer).toBeDefined;
-            expect(view.sliderTrack).toBeDefined;
-            expect(view.sliderRange).toBeDefined;
-            expect(view.sliderThumb).toBeDefined;
-            expect(view.sliderThumbSecond).toBeDefined;
-            expect(view.scale).toBeDefined;
-            expect(view.tooltipFirst).toBeDefined;
-            expect(view.tooltipSecond).toBeDefined;
-        })
+      expect(view.sliderThumbSecond.element.style.left).toBe(num + "%");
+      expect(view.sliderRange.element.style.right).toBe(100 - num + "%");
+      expect(parseInt(view.tooltipSecond.element.innerText)).toBe(num);
+    });
+  });
 
-        test('disable elements when !ifScale, !ifTooltip, !ifRange', ()=>{
-            let newData = {
-                scale: false,
-                tooltip: false,
-                range: false
-            }
-            let updatedData = mergeData(sliderData, newData);
-            
-            view.init(updatedData);
+  describe("method render()", () => {
+    test("init rendering of view elements", () => {
+      expect(view.sliderContainer).toBeDefined();
+      expect(view.sliderTrack).toBeDefined();
+      expect(view.sliderRange).toBeDefined();
+      expect(view.sliderThumb).toBeDefined();
+      expect(view.sliderThumbSecond).toBeDefined();
+      expect(view.scale).toBeDefined();
+      expect(view.tooltipFirst).toBeDefined();
+      expect(view.tooltipSecond).toBeDefined();
+    });
 
-            expect(view.scale.classList.contains('disabled')).toBe(true);
-            expect(view.tooltipSecond.classList.contains('disabled')).toBe(true);
-        })
-    })
-})
+    test("disable elements when !ifScale, !ifTooltip, !ifRange", () => {
+      const newData = {
+        scale: false,
+        tooltip: false,
+        range: false,
+      };
+      const updatedData = { ...sliderData, ...newData };
+
+      view.init(updatedData);
+
+      expect(view.scale.classList.contains("disabled")).toBe(true);
+      expect(view.tooltipFirst.element.classList.contains("disabled")).toBe(true);
+    });
+  });
+
+  describe("method dragThumbStart()", () => {
+    test("when pointerdowm determine view.dragObject = e.target", () => {
+      view.dragThumbEnd();
+      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
+
+      expect(view.dragObject).toBe(view.sliderThumb.element);
+    });
+
+    test("disable pointerdowm eventListener", () => {
+      const newSet = {
+        ...data,
+        range: false,
+      };
+      view.init(newSet);
+      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
+      document.dispatchEvent(new Event("pointermove"));
+      const spyOnDragStart = jest.spyOn(view, "dragThumbStart");
+
+      view.sliderThumb.element.dispatchEvent(new Event("pointerdowm"));
+
+      expect(spyOnDragStart).toHaveBeenCalledTimes(0);
+    });
+  });
+});

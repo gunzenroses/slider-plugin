@@ -1,9 +1,7 @@
 {   
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "sourceMap": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-    },
-    
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": true,
+    "noUnusedParameters": true,
+  },
 }

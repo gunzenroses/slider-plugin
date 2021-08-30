@@ -1,69 +1,74 @@
-import { TSettings } from "utils/types"
-import { EventDispatcher } from './eventDispatcher'
-import { applyStepOnValue, mergeData } from "utils/common"
+import { EventDispatcher } from "./eventDispatcher";
+import { IModelData, TSettings } from "utils/types";
+import { applyStepOnValue } from "utils/common";
 import adjustValue from "helpers/adjustData";
 
 interface IModel {
-    fromModelChangeView: EventDispatcher;
-    fromModelUpdateData: EventDispatcher;
-    setData(name: string, data: any): void;
-    getData(): TSettings;
-    getContainerId(): string;
-    changeThumb(value: number): void;
-    changeThumbSecond(value: number): void;
+  fromModelChangeView: EventDispatcher;
+  fromModelUpdateData: EventDispatcher;
+  setData(name: string, data: IModelData): void;
+  getData(): TSettings;
+  getContainer(): HTMLElement;
+  changeThumb(value: number): void;
+  changeThumbSecond(value: number): void;
 }
 
 class SliderModel implements IModel {
-    private containerId: string;
-    private data: TSettings;
-    fromModelChangeView: EventDispatcher;
-    fromModelUpdateData: EventDispatcher;
+  private container: HTMLElement;
+  private data: TSettings;
+  fromModelChangeView: EventDispatcher;
+  fromModelUpdateData: EventDispatcher;
 
-    constructor(containerId: string, settings: TSettings){
-        this.fromModelChangeView = new EventDispatcher();
-        this.fromModelUpdateData = new EventDispatcher();
-        this.containerId = containerId;
-        this.data = settings;
-        this.updateCurrentsWithStep();
-    }
+  constructor(container: HTMLElement, settings: TSettings) {
+    this.fromModelChangeView = new EventDispatcher();
+    this.fromModelUpdateData = new EventDispatcher();
+    this.container = container;
+    this.data = settings;
+    this.updateCurrentsWithStep();
+  }
 
-    private updateCurrentsWithStep(){
-        this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data.max, this.data.min, this.data.step)
-        this.data.currentSecond =  (this.data.range)
-            ? applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
-            : this.data.max;
-    }
+  private updateCurrentsWithStep(): void {
+    this.data.currentFirst = applyStepOnValue(
+      this.data.currentFirst,
+      this.data.max,
+      this.data.min,
+      this.data.step
+    );
+    this.data.currentSecond = this.data.range
+      ? applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
+      : this.data.max;
+  }
 
-    getContainerId(){
-        return this.containerId;
-    }
+  getContainer(): HTMLElement {
+    return this.container;
+  }
 
-    getData(){
-        return this.data;
-    }
+  getData(): TSettings {
+    return this.data;
+  }
 
-    setData(name: string, data: any){
-        let oldData = this.getData();
-        if ((oldData[name]) === data) return;
-        
-        data = adjustValue(name, data, oldData);
-        let newData = { [name]: data };
-        this.data = mergeData(oldData, newData);
+  setData(name: string, data: IModelData): void {
+    const oldData = this.getData();
+    if (oldData[name] === data) return;
 
-        this.updateCurrentsWithStep();
-        this.fromModelUpdateData.notify();
-    }
+    data = adjustValue(name, data, oldData);
+    const newData = { [name]: data };
+    this.data = { ...oldData, ...newData };
 
-    //special cases for setData that changes only thumbValue
-    changeThumb(value: number) {
-        this.data.currentFirst = value;
-        this.fromModelChangeView.notify(value);
-    }
+    this.updateCurrentsWithStep();
+    this.fromModelUpdateData.notify();
+  }
 
-    changeThumbSecond(value: number) {
-        this.data.currentSecond = value;
-        this.fromModelChangeView.notify(value);
-    }
+  //special cases for setData that changes only thumbValue
+  changeThumb(value: number): void {
+    this.data.currentFirst = value;
+    this.fromModelChangeView.notify(value);
+  }
+
+  changeThumbSecond(value: number): void {
+    this.data.currentSecond = value;
+    this.fromModelChangeView.notify(value);
+  }
 }
 
-export { IModel, SliderModel }
+export { IModel, SliderModel };

@@ -1,23 +1,28 @@
-import SliderMaker from "./components/mvp/sliderMaker.ts";
+import sliderPlugin from "./jquery.slider-plugin";
 import "./index.css";
 
-window.onload = function() {    
-    let simpleSlider = SliderMaker("horizontal", {
-        min: 10,
-        max: 200,
-        step: 120,
-        scale: true,
-        range: false
-    }, true)
+window.onload = function () {
+  $("#horizontal").sliderPlugin(
+    {
+      min: 10,
+      max: 200,
+      step: 120,
+      scale: true,
+      range: false,
+    },
+    true
+  );
 
-    let verticalSlider = SliderMaker("vertical", {
-        orientation: "vertical",
-        step: 6,
-        max: 140,
-        scale: {
-            stepPerDiv: 2
-        },
-        range: true,
-        tooltip: false
-    }, true)
+  $("#vertical").sliderPlugin({
+    orientation: "vertical",
+    step: 6,
+    max: 140,
+    scale: {
+      stepPerDiv: 2,
+    },
+    range: true,
+    tooltip: false,
+  });
+
+  $("#default").sliderPlugin({}, true);
 }

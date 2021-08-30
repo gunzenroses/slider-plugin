@@ -1,28 +1,33 @@
-type TSettings = {
-    [settingName: string]: any;
-}
+type IModelData = boolean | number | string;
 
-// type TSettings = {
-//     min: number,
-//     max: number,
-//     range: boolean,
-//     currentFirst: number,
-//     currentSecond: number,
-//     step: number,
-//     orientation: string,
-//     tooltip: boolean,
-//     scale: boolean,
-// }
-
-type TDragObject = {
-    [settingName: string]: any;
-}
-
-type TRangeStyle = {
-    newThumbCurrent: number, 
-    ifHorizontal: boolean, 
-    ifRange: boolean, 
-    ifThumbFirst: boolean
+type TScale = {
+  stepPerDiv: number;
 };
 
-export { TSettings, TDragObject, TRangeStyle }
+type TSettings = {
+  [key: string]: any;
+};
+
+type TRangeStyle = {
+  newThumbCurrent: number;
+  ifHorizontal: boolean;
+  ifRange: boolean;
+  ifThumbFirst: boolean;
+};
+
+type TListType = number | PointerEvent | null;
+
+type TListener = (arg1: TListType) => void;
+
+type TPanelParam = {
+  name: string;
+  text: string;
+  value: string | number;
+  type: string;
+  options?: Array<string>;
+};
+
+type TFuncArg = PointerEvent | number;
+type TFunc = (arg1?: TFuncArg) => void;
+
+export { TScale, TSettings, IModelData, TRangeStyle, TListener, TPanelParam, TFuncArg, TFunc };

@@ -1,39 +1,41 @@
 import { EventDispatcher } from "mvp/eventDispatcher";
+import { TFuncArg } from "utils/types";
 
 class Listener {
-    msg: number;
-    constructor(msg: number){
-        this.msg = msg;
-    }
+  msg: TFuncArg | undefined;
 
-    setHandler = this.set.bind(this);
+  constructor(msg?: TFuncArg) {
+    this.msg = msg;
+  }
 
-    set(msg: number){
-        this.msg = msg;
-    }
-};
+  setHandler = this.set.bind(this);
 
-describe('EventDispatcher',()=>{
-    let ed = new EventDispatcher();
-    let listener = new Listener(1);
+  set(msg?: TFuncArg) {
+    this.msg = msg;
+  }
+}
 
-    test('method add(): add listener to listeners', ()=>{
-        ed.add(listener.setHandler);
+describe("EventDispatcher", () => {
+  const ed = new EventDispatcher();
+  const listener = new Listener(1);
 
-        expect(ed.listeners.length).toBe(1);
-    })
+  test("method add(): add listener to listeners", () => {
+    ed.add(listener.setHandler);
 
-    test('method notify(): pass arguments when it notifies listeners', ()=>{
-        let message = 12;
+    expect(ed.listeners.length).toBe(1);
+  });
 
-        ed.notify(message);
+  test("method notify(): pass arguments when it notifies listeners", () => {
+    const message = 12;
 
-        expect(listener.msg).toBe(message);
-    })
+    ed.notify(message);
 
-    test('method remove(): remove listener from listeners', ()=>{
-        ed.remove(listener.setHandler);
+    expect(listener.msg).toBe(message);
+  });
 
-        expect(ed.listeners.length).toBe(0);
-    })
-})
+  test("method remove(): remove listener from listeners", () => {
+    ed.remove(listener.setHandler);
+
+    expect(ed.listeners.length).toBe(0);
+  });
+});

@@ -1,18 +1,18 @@
 .slider__track {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: $height-basic;
-    margin-top: 2rem;
-    border-radius: 3px;
-    background-color: $color-light;
-    border: $width-border solid $color-border;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: $height-basic;
+  margin-top: 2rem;
+  border-radius: 3px;
+  background-color: $color-light;
+  border: $width-border solid $color-border;
 
-    &_vertical {
-        @extend .slider__track;
-        width: $height-basic;
-        height: 100%;
-        margin-top: 0;
-        margin-left: 3rem;
-    }
+  &_vertical {
+    @extend .slider__track;
+    width: $height-basic;
+    height: 100%;
+    margin-top: 0;
+    margin-left: 3rem;
+  }
 }

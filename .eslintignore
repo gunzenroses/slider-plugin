@@ -1,0 +1,11 @@
+node_modules
+/.vscode
+/dist
+/coverage
+/.git
+jest.config.js
+babel.config.js
+tsconfig.json
+tscondif.prod.js
+webpack.config.js
+index.js

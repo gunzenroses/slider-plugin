@@ -7,156 +7,233 @@ import { SliderModel } from "mvp/model";
 import { SliderView } from "mvp/view";
 import { sliderData } from "mvp/data";
 
-let containerId = "container1"
-let initialContainer = document.createElement("div");
-initialContainer.id = containerId;
-document.body.append(initialContainer);
+const container = document.createElement("div");
+container.innerHTML = "div {width: 400px, height: 400px}";
+document.body.append(container);
 
-let model = new SliderModel(containerId, sliderData);
-let view = new SliderView(containerId);
-let presenter = new SliderPresenter(model, view);
+const model = new SliderModel(container, sliderData);
+const view = new SliderView(container);
+const presenter = new SliderPresenter(model, view);
 
-describe('SliderPresenter', ()=>{
-    beforeEach(()=>{
-        jest.restoreAllMocks();
-    })
+describe("SliderPresenter", () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+  });
 
-    describe('method init()', ()=>{
-        
-        describe('should process events from view', ()=>{
-            presenter.containerSize = 400;
-            presenter.thumbWidth = 20;
+  describe("method init()", () => {
+    describe("should process events from view", () => {
+      presenter.containerSize = 400;
+      presenter.thumbWidth = 20;
 
-            test('should notify model.changeThumb() to change thumbFirst', ()=>{
-                let event = new MouseEvent("click", {
-                    bubbles: true,
-                    cancelable: true,
-                    clientX: 100,
-                    clientY: 100,
-                });
-                presenter.view.selectObject = presenter.view.sliderThumb;
-                presenter.view.dragObject = {};
-                
-                let spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation(()=>{});
+      test("click closer to thumbFirst -> nofity Model.changeThumb()", () => {
+        const event = new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          clientX: 100,
+          clientY: 100,
+        });
+        presenter.changingObject = presenter.view.sliderThumb.element;
+        const spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
 
-                presenter.view.fromViewSelectThumb.notify(event);
+        presenter.view.fromViewSelectThumb.notify(event);
 
-                expect(spyModelUpdate).toHaveBeenCalledTimes(1);
-            })
+        expect(spyModelUpdate).toHaveBeenCalledTimes(1);
+      });
 
-            test('should notify model.changeThumb() to change thumbSecond', ()=>{
-                let event = new MouseEvent("click", {
-                    clientX: 300,
-                    clientY: 300,
-                });
-                presenter.view.dragObject = {};
-                presenter.view.selectObject = presenter.view.sliderThumbSecond;
-                let spyModelUpdate = jest.spyOn(presenter.model, "changeThumbSecond").mockImplementation(()=>{});
+      test("click closer to thumbSecond -> notify model.changeThumbSecond()", () => {
+        const event = new MouseEvent("click", {
+          clientX: 300,
+          clientY: 300,
+        });
+        presenter.changingObject = presenter.view.sliderThumbSecond.element;
+        const spyModelUpdate = jest
+          .spyOn(presenter.model, "changeThumbSecond")
+          .mockImplementation();
 
-                presenter.view.fromViewSelectThumb.notify(event);
+        presenter.view.fromViewSelectThumb.notify(event);
 
-                expect(spyModelUpdate).toHaveBeenCalledTimes(1);
-            })
+        expect(spyModelUpdate).toHaveBeenCalledTimes(1);
+      });
 
-            test('should notify model.changeThumb() to chang thumbFirst, when it was dragged', ()=>{
-                let event = new MouseEvent("mousemove", {
-                    clientX: 100,
-                    clientY: 100,
-                });
-                presenter.view.dragObject = presenter.view.sliderThumb;
-                let spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation(()=>{});
+      test("click on equal distance from thumbs -> change defined thumb in model", () => {
+        const event = new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          clientX: 188,
+          clientY: 188,
+        });
+        const spyOnModelThumbSecond = jest
+          .spyOn(presenter.model, "changeThumbSecond")
+          .mockImplementation();
 
-                presenter.view.fromViewDragThumb.notify(event);
+        presenter.view.fromViewSelectThumb.notify(event);
 
-                expect(spyModelUpdate).toHaveBeenCalledTimes(1);
-            })
+        expect(spyOnModelThumbSecond).toHaveBeenCalledTimes(1);
+      });
 
-            test('should notify model.changeThumb() to chang thumbSecond, when it was dragged', ()=>{
-                let event = new MouseEvent("mousemove", {
-                    clientX: 300,
-                    clientY: 300
-                });
-                presenter.view.dragObject = presenter.view.sliderThumbSecond;
-                let spyModelUpdate = jest.spyOn(presenter.model, "changeThumbSecond").mockImplementation(()=>{});
+      test("drag thumbFirst -> notify model to change thumbFirst", () => {
+        const event = new MouseEvent("mousemove", {
+          clientX: 100,
+          clientY: 100,
+        });
+        presenter.view.dragObject = presenter.view.sliderThumb.element;
+        const spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
 
-                presenter.view.fromViewDragThumb.notify(event);
+        presenter.view.fromViewDragThumb.notify(event);
 
-                expect(spyModelUpdate).toHaveBeenCalledTimes(1);
-            })
-        })
-        
-        describe('should process events from model', ()=>{
-            test('should notify subscribers for changes in currentThumb', ()=>{
-                let value = 18;
-                view.dragObject = view.sliderThumb;
-                let spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbUpdate, 'notify')
-                let spyFromModelChangeView = jest.spyOn(presenter.view, 'сhange').mockImplementation(()=>{});
+        expect(spyModelUpdate).toHaveBeenCalledTimes(1);
+      });
 
-                model.fromModelChangeView.notify(value);
+      test("drag thumbSecond -> notify model to change thumbSecond", () => {
+        presenter.model.setData("range", true);
+        const event = new MouseEvent("mousemove", {
+          clientX: 300,
+          clientY: 300,
+        });
+        presenter.view.dragObject = presenter.view.sliderThumbSecond.element;
+        const spyModelUpdate = jest
+          .spyOn(presenter.model, "changeThumbSecond")
+          .mockImplementation();
 
-                expect(spyfromModelUpdate).toHaveBeenCalledWith(value);
-                expect(spyFromModelChangeView).toHaveBeenCalledWith(presenter.view.sliderThumb, value);
-            })
-            
-            test('should notify subscribers for changes in currentThumbSecond', ()=>{
-                let value = 18;
-                view.dragObject = view.sliderThumbSecond;
-                let spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbSecondUpdate, 'notify')
-                let spyFromModelChangeView = jest.spyOn(presenter.view, 'сhange').mockImplementation(()=>{});
+        presenter.view.fromViewDragThumb.notify(event);
 
-                model.fromModelChangeView.notify(value);
+        expect(spyModelUpdate).toHaveBeenCalledTimes(1);
+      });
 
-                expect(spyfromModelUpdate).toHaveBeenCalledWith(value);
-                expect(spyFromModelChangeView).toHaveBeenCalledWith(presenter.view.sliderThumbSecond, value);
-            })
-        })
+      test("drag thumbSecond + new position is not in the range -> no changes", () => {
+        const event = new MouseEvent("mousemove", {
+          clientX: 50,
+          clientY: 50,
+        });
+        presenter.view.dragObject = presenter.view.sliderThumbSecond.element;
+        const spyModelFirstUpd = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
+        const spyModelSecondUpd = jest
+          .spyOn(presenter.model, "changeThumbSecond")
+          .mockImplementation();
 
-        describe('should process full data updates in model', ()=>{
-            test('calls updateView method', ()=>{
-                let spyUpdateView = jest.spyOn(presenter, 'updateView');
-    
-                model.fromModelUpdateData.notify();
-    
-                expect(spyUpdateView).toHaveBeenCalledTimes(1);
-            })
-            test('notify subscribers', () => {
-                let spyFromPresenterUpdate = jest.spyOn(presenter.fromPresenterUpdate, 'notify');
-    
-                model.fromModelUpdateData.notify();
-    
-                expect(spyFromPresenterUpdate).toHaveBeenCalledTimes(1);
-            })
-        })
-    })
+        presenter.view.fromViewDragThumb.notify(event);
 
-    describe('method updateView()', ()=>{
+        expect(spyModelFirstUpd).toHaveBeenCalledTimes(0);
+        expect(spyModelSecondUpd).toHaveBeenCalledTimes(0);
+      });
+    });
 
-        test('should get data from model', ()=>{
-            presenter.init();
+    describe("should process events from model", () => {
+      test("should notify subscribers for changes in currentThumb", () => {
+        const value = 18;
+        presenter.changingObject = presenter.view.sliderThumb.element;
+        const spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbUpdate, "notify");
+        const spyFromModelChangeView = jest.spyOn(presenter.view, "change").mockImplementation();
 
-            expect(presenter.data).toEqual(model.getData());
-        })
+        model.fromModelChangeView.notify(value);
 
-        test('should initiate view', ()=>{
-            let spyOnView = jest.spyOn(view, 'init');
+        expect(spyfromModelUpdate).toHaveBeenCalledWith(value);
+        expect(spyFromModelChangeView).toHaveBeenCalledWith(
+          presenter.view.sliderThumb.element,
+          value
+        );
+      });
 
-            presenter.init();
+      test("should notify subscribers for changes in currentThumbSecond", () => {
+        const value = 18;
+        presenter.changingObject = view.sliderThumbSecond.element;
+        const spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbSecondUpdate, "notify");
+        const spyFromModelChangeView = jest.spyOn(presenter.view, "change").mockImplementation();
 
-            expect(spyOnView).toHaveBeenCalledTimes(1);
-            expect(spyOnView).toHaveBeenCalledWith(model.getData());
-        })
-    }) 
+        model.fromModelChangeView.notify(value);
 
-    describe('method setData()', ()=>{
-        test('should call model.setData() with provided params', ()=>{
-            let name = 'min';
-            let data = 15;
-            let spySetDataInModel = jest.spyOn(model, 'setData');
+        expect(spyfromModelUpdate).toHaveBeenCalledWith(value);
+        expect(spyFromModelChangeView).toHaveBeenCalledWith(
+          presenter.view.sliderThumbSecond.element,
+          value
+        );
+      });
+    });
 
-            presenter.setData(name, data);
+    describe("should process full data updates in model", () => {
+      test("calls updateView method", () => {
+        const spyUpdateView = jest.spyOn(presenter, "updateView");
 
-            expect(spySetDataInModel).toHaveBeenCalledTimes(1);
-            expect(spySetDataInModel).toHaveBeenCalledWith(name, data);
-        })
-    })
-})
+        model.fromModelUpdateData.notify();
+
+        expect(spyUpdateView).toHaveBeenCalledTimes(1);
+      });
+      test("notify subscribers", () => {
+        const spyfromPresenterUpdate = jest.spyOn(presenter.fromPresenterUpdate, "notify");
+
+        model.fromModelUpdateData.notify();
+
+        expect(spyfromPresenterUpdate).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe("method updateView()", () => {
+    test("should get data from model", () => {
+      presenter.init();
+
+      expect(presenter.data).toEqual(model.getData());
+    });
+
+    test("should initiate view", () => {
+      const spyOnView = jest.spyOn(view, "init");
+
+      presenter.init();
+
+      expect(spyOnView).toHaveBeenCalledTimes(1);
+      expect(spyOnView).toHaveBeenCalledWith(model.getData());
+    });
+  });
+
+  describe("method modelData()", () => {
+    test("should call model.modelData() with provided params", () => {
+      const name = "min";
+      const data = 15;
+      const spySetDataInModel = jest.spyOn(model, "setData");
+
+      presenter.modelData(name, data);
+      expect(spySetDataInModel).toHaveBeenCalledTimes(1);
+      expect(spySetDataInModel).toHaveBeenCalledWith(name, data);
+    });
+  });
+});
+
+const VS = {
+  orientation: "vertical",
+  range: false,
+};
+const sliderDataVS = { ...sliderData, ...VS };
+const modelVS = new SliderModel(container, sliderDataVS);
+const viewVS = new SliderView(container);
+const presenterVS = new SliderPresenter(modelVS, viewVS);
+
+describe("should work for single and vertical sliders", () => {
+  test("method selectThumb()", () => {
+    const event = new MouseEvent("click", {
+      bubbles: true,
+      cancelable: true,
+      clientX: 100,
+      clientY: 100,
+    });
+    presenterVS.changingObject = presenterVS.view.sliderThumb.element;
+    const spyModelUpdate = jest.spyOn(presenterVS.model, "changeThumb").mockImplementation();
+
+    presenterVS.view.fromViewSelectThumb.notify(event);
+
+    expect(spyModelUpdate).toHaveBeenCalledTimes(1);
+  });
+
+  test("method dragThumb()", () => {
+    const event = new MouseEvent("pointermove", {
+      bubbles: true,
+      cancelable: true,
+      clientX: 100,
+      clientY: 100,
+    });
+    const spyOnModelChange = jest.spyOn(presenterVS.model, "changeThumb");
+
+    presenterVS.view.fromViewDragThumb.notify(event);
+
+    expect(spyOnModelChange).toHaveBeenCalled();
+  });
+});

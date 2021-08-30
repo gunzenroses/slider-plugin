@@ -1,24 +1,26 @@
+import { TFunc, TFuncArg } from "utils/types";
+
 interface ISender {
-    add(listener: object): void;
-    remove(listener: object): void;
-    notify(args: any): void;
+  add(listener: TFunc): void;
+  remove(listener: TFunc): void;
+  notify(args: number | Event): void;
 }
 
-class EventDispatcher implements ISender  {
-    listeners = new Array();
+class EventDispatcher implements ISender {
+  listeners: Array<TFunc> = [];
 
-    add(listener: object): void {
-        this.listeners.push(listener);
-    }
+  add(listener: TFunc): void {
+    this.listeners.push(listener);
+  }
 
-    remove(listener: object): void {
-        let index = this.listeners.indexOf(listener);
-        this.listeners.splice(index,1);
-    }
+  remove(listener: TFunc): void {
+    const index = this.listeners.indexOf(listener);
+    this.listeners.splice(index, 1);
+  }
 
-    notify(...args: any): void {
-        this.listeners.forEach(listener => listener(...args));
-    }
+  notify(args?: Event | number): void {
+    this.listeners.forEach((listener) => listener(args as TFuncArg));
+  }
 }
 
-export { ISender, EventDispatcher }
+export { ISender, EventDispatcher };
