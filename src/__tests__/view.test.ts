@@ -1,20 +1,17 @@
 /**
  * @jest-environment jsdom
  */
-
 import { IView, SliderView } from "mvp/view";
 import { sliderData } from "mvp/data";
-import { TSettings } from "utils/types";
 
 describe("class SliderView", () => {
-  let data: TSettings;
-  let container: HTMLElement;
+  const data = sliderData;
+  const container = document.createElement("div");
+  document.body.append(container);
   let view: IView;
 
   beforeEach(() => {
-    data = sliderData;
-    container = document.createElement("div");
-    document.body.append(container);
+    container.innerHTML = "";
     view = new SliderView(container);
     view.init(data);
     jest.restoreAllMocks();
