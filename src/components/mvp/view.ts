@@ -159,11 +159,13 @@ class SliderView implements IView {
   }
 
   private listenMoveAndUp(): void {
+    this.sliderContainer.removeEventListener("click", this.selectThumbHandler);
     document.addEventListener("pointermove", this.moveThumbHandler);
     document.addEventListener("pointerup", this.dropThumbHandler);
   }
 
   private removeListenerPointerMoveAndUp(): void {
+    this.sliderContainer.addEventListener("click", this.selectThumbHandler);
     document.removeEventListener("pointermove", this.moveThumbHandler);
     document.removeEventListener("pointerup", this.dropThumbHandler);
   }
@@ -183,7 +185,7 @@ class SliderView implements IView {
   }
 
   private dragThumbMove(e: PointerEvent): void {
-    if (this.dragObject === undefined || !this.dragObject.classList) return;
+    if (this.dragObject === undefined || !(this.dragObject as HTMLElement).classList) return;
     this.stopListenDown();
     e.preventDefault();
     this.fromViewDragThumb.notify(e);
@@ -213,7 +215,6 @@ class SliderView implements IView {
   }
 
   private renderDouble() {
-    this.sliderTrack;
     this.sliderThumb.change(this);
     this.sliderThumbSecond.change(this);
     this.tooltipFirst.change(this);
