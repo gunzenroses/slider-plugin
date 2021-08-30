@@ -25,7 +25,6 @@ export default class SliderThumb implements ISubview {
         ? ["slider__thumb", typeClass]
         : ["slider__thumb", typeClass, "disabled"];
     totalClass.forEach((item: string) => {
-      console.log(item);
       this.element.classList.add(item);
     });
     return this.element;
