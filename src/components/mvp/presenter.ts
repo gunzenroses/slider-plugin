@@ -14,7 +14,7 @@ interface IPresenter {
   view: IView;
   container: HTMLElement;
   data: TSettings;
-  changingObject: HTMLElement;
+  changingObject: HTMLElement | null;
 
   init(): void;
   updateView(): void;
@@ -30,7 +30,7 @@ class SliderPresenter implements IPresenter {
   view: IView;
   container: HTMLElement;
   data!: TSettings;
-  changingObject!: HTMLElement;
+  changingObject!: HTMLElement | null;
 
   fromPresenterUpdate!: EventDispatcher;
   fromPresenterThumbUpdate!: EventDispatcher;
@@ -102,7 +102,7 @@ class SliderPresenter implements IPresenter {
     this.model.fromModelUpdateData.add(this.fromModelUpdateDataHandler as TFunc);
   }
 
-  private setObject(object: HTMLElement): void {
+  private setObject(object: HTMLElement | null): void {
     this.changingObject = object;
   }
 
@@ -213,6 +213,7 @@ class SliderPresenter implements IPresenter {
   private updateData(): void {
     this.updateView();
     this.fromPresenterUpdate.notify();
+    this.setObject(null);
   }
 
   //value - actual, newValue - %
@@ -222,7 +223,7 @@ class SliderPresenter implements IPresenter {
       : this.fromPresenterThumbSecondUpdate.notify(value);
 
     const newValue = valueToPercentsApplyStep(value, this.max, this.min, this.step);
-    this.view.change(this.changingObject, newValue);
+    this.view.change(<HTMLElement>this.changingObject, newValue);
   }
 }
 
