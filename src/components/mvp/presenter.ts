@@ -102,8 +102,9 @@ class SliderPresenter implements IPresenter {
     this.model.fromModelUpdateData.add(this.fromModelUpdateDataHandler as TFunc);
   }
 
-  private setObject(object: HTMLElement | null): void {
+  private setObject(object: HTMLElement): void {
     this.changingObject = object;
+    object.style.zIndex = "4";
   }
 
   //all values are in %
@@ -169,8 +170,7 @@ class SliderPresenter implements IPresenter {
   //all values are in %
   private dragThumb(e: PointerEvent): void {
     const position = this.countPosition(e);
-    const dragobj = e.target as EventTarget;
-    this.ifRange ? this.dragThumbRangeTrue(position, dragobj) : this.dragThumbRangeFalse(position);
+    this.ifRange ? this.dragThumbRangeTrue(position) : this.dragThumbRangeFalse(position);
   }
 
   //all values are in %
@@ -179,12 +179,15 @@ class SliderPresenter implements IPresenter {
   }
 
   //all values are in %
-  private dragThumbRangeTrue(newThumbCurrent: number, dragobj: EventTarget): void {
+  private dragThumbRangeTrue(newThumbCurrent: number): void {
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
-    if (dragobj === this.view.sliderThumb.element && newThumbCurrent <= secondThumbPercent - 1) {
+    if (
+      this.view.dragObj === this.view.sliderThumb.element &&
+      newThumbCurrent <= secondThumbPercent - 1
+    ) {
       this.modelThumbFirst(newThumbCurrent);
     } else if (
-      dragobj === this.view.sliderThumbSecond.element &&
+      this.view.dragObj === this.view.sliderThumbSecond.element &&
       newThumbCurrent >= firstThumbPercent + 1
     ) {
       this.modelThumbSecond(newThumbCurrent);
@@ -213,7 +216,6 @@ class SliderPresenter implements IPresenter {
   private updateData(): void {
     this.updateView();
     this.fromPresenterUpdate.notify();
-    this.setObject(null);
   }
 
   //value - actual, newValue - %
