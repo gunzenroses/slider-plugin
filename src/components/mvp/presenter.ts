@@ -169,7 +169,8 @@ class SliderPresenter implements IPresenter {
   //all values are in %
   private dragThumb(e: PointerEvent): void {
     const position = this.countPosition(e);
-    this.ifRange ? this.dragThumbRangeTrue(position) : this.dragThumbRangeFalse(position);
+    const dragobj = e.target as EventTarget;
+    this.ifRange ? this.dragThumbRangeTrue(position, dragobj) : this.dragThumbRangeFalse(position);
   }
 
   //all values are in %
@@ -178,15 +179,12 @@ class SliderPresenter implements IPresenter {
   }
 
   //all values are in %
-  private dragThumbRangeTrue(newThumbCurrent: number): void {
+  private dragThumbRangeTrue(newThumbCurrent: number, dragobj: EventTarget): void {
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
-    if (
-      this.view.dragObject === this.view.sliderThumb.element &&
-      newThumbCurrent <= secondThumbPercent - 1
-    ) {
+    if (dragobj === this.view.sliderThumb.element && newThumbCurrent <= secondThumbPercent - 1) {
       this.modelThumbFirst(newThumbCurrent);
     } else if (
-      this.view.dragObject === this.view.sliderThumbSecond.element &&
+      dragobj === this.view.sliderThumbSecond.element &&
       newThumbCurrent >= firstThumbPercent + 1
     ) {
       this.modelThumbSecond(newThumbCurrent);

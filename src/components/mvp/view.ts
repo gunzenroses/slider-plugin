@@ -20,7 +20,6 @@ interface IView {
   scale: HTMLElement;
   tooltipFirst: ISubview;
   tooltipSecond: ISubview;
-  dragObject: HTMLElement;
 
   fromViewSelectThumb: EventDispatcher;
   fromViewDragThumb: EventDispatcher;
@@ -48,7 +47,6 @@ class SliderView implements IView {
   tooltipFirst!: ISubview;
   tooltipSecond!: ISubview;
   scale!: HTMLElement;
-  dragObject!: HTMLElement;
 
   private selectThumbHandler!: { (ev: MouseEvent): void };
   private dragThumbHandler!: { (ev: PointerEvent): void };
@@ -136,14 +134,10 @@ class SliderView implements IView {
 
   dragThumbStart(e: PointerEvent): void {
     e.preventDefault();
-    e.target === this.sliderThumb.element || e.target === this.sliderThumbSecond.element
-      ? (this.dragObject = <HTMLElement>e.target)
-      : null;
     this.listenMoveAndUp();
   }
 
   private dragThumbMove(e: PointerEvent): void {
-    if (this.dragObject === undefined || !(this.dragObject as HTMLElement).classList) return;
     this.stopListenDown();
     e.preventDefault();
     this.fromViewDragThumb.notify(e);

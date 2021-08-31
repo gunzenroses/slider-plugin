@@ -23,18 +23,18 @@ describe("class SliderView", () => {
     });
   });
 
-  describe("method createChildren()", () => {
-    test("create children (variables) for class functionality", () => {
-      expect(view.ifHorizontal).toBeDefined();
-      expect(view.ifRange).toBeDefined();
-      expect(view.ifTooltip).toBeDefined();
-      expect(view.ifScale).toBeDefined();
-      expect(view.currentFirstInPercents).toBeTruthy();
-      expect(view.currentSecondInPercents).toBeTruthy();
-      expect(view.stepValue).toBeTruthy();
-      expect(view.stepPerDiv).toBeTruthy();
-      expect(view.maxValue).toBeTruthy();
-      expect(view.minValue).toBeDefined();
+  describe("method createSettings()", () => {
+    test("create settings for class functionality", () => {
+      expect(view.settings.ifHorizontal).toBeDefined();
+      expect(view.settings.range).toBeDefined();
+      expect(view.settings.tooltip).toBeDefined();
+      expect(view.settings.scale).toBeDefined();
+      expect(view.settings.currentFirst).toBeTruthy();
+      expect(view.settings.currentSecond).toBeTruthy();
+      expect(view.settings.step).toBeTruthy();
+      expect(view.settings.stepPerDiv).toBeTruthy();
+      expect(view.settings.max).toBeTruthy();
+      expect(view.settings.min).toBeDefined();
     });
   });
 
@@ -54,20 +54,6 @@ describe("class SliderView", () => {
       view.sliderThumbSecond.element.dispatchEvent(new Event("click"));
 
       expect(spyOnClick).toHaveBeenCalledTimes(0);
-    });
-
-    test("define dragObject when sliderThumb is started to be dragged", () => {
-      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
-
-      expect(view.dragObject).toBeDefined();
-    });
-
-    test("define dragObject when sliderThumbSecond is started to be dragged", () => {
-      view.settings.range = true;
-
-      view.sliderThumbSecond.element.dispatchEvent(new Event("pointerdown"));
-
-      expect(view.dragObject).toBeDefined();
     });
 
     test("notify fromViewDragThumb subscribers when thumb is moved", () => {
@@ -152,13 +138,6 @@ describe("class SliderView", () => {
   });
 
   describe("method dragThumbStart()", () => {
-    test("when pointerdowm determine view.dragObject = e.target", () => {
-      view.dragThumbEnd();
-      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
-
-      expect(view.dragObject).toBe(view.sliderThumb.element);
-    });
-
     test("disable pointerdowm eventListener", () => {
       const newSet = {
         ...data,
