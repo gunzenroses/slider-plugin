@@ -69,12 +69,12 @@ class SliderView implements IView {
 
   private createSettings(settings: TSettings): void {
     this.settings = settings;
-    this.settings.currentFirst = changeValueToPercents(
+    this.settings.firstPosition = changeValueToPercents(
       settings.currentFirst,
       settings.max,
       settings.min
     );
-    this.settings.currentSecond = changeValueToPercents(
+    this.settings.secondPosition = changeValueToPercents(
       settings.currentSecond,
       settings.max,
       settings.min
@@ -151,8 +151,8 @@ class SliderView implements IView {
   // in % and actual values
   change(object: HTMLElement, newThumbCurrent: number): void {
     object === this.sliderThumb.element
-      ? (this.settings.currentFirst = newThumbCurrent)
-      : (this.settings.currentSecond = newThumbCurrent);
+      ? (this.settings.firstPosition = newThumbCurrent)
+      : (this.settings.secondPosition = newThumbCurrent);
     this.updateElements();
   }
 
