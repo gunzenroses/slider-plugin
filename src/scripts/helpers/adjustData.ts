@@ -38,7 +38,7 @@ export default function adjustValue(
   }
 
   function adjustStep(value: number) {
-    return value <= 0 ? 1 : value > max - min ? max - min : value;
+    return value <= 0 ? 1 : value > max - min ? max - min : value < max - min ? value : 1;
   }
 
   function adjustCurrentFirst(value: number) {
