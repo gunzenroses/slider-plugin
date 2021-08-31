@@ -35,16 +35,16 @@ export default class SliderRange implements ISubview {
   private changeFirst(that: IView): void {
     that.settings.range
       ? that.settings.ifHorizontal
-        ? (this.element.style.left = that.settings.currentFirst + "%")
-        : (this.element.style.bottom = that.settings.currentFirst + "%")
+        ? (this.element.style.left = that.settings.firstPosition + "%")
+        : (this.element.style.bottom = that.settings.firstPosition + "%")
       : that.settings.ifHorizontal
-      ? (this.element.style.right = 100 - that.settings.currentFirst + "%")
-      : (this.element.style.top = 100 - that.settings.currentFirst + "%");
+      ? (this.element.style.right = 100 - that.settings.firstPosition + "%")
+      : (this.element.style.top = 100 - that.settings.firstPosition + "%");
   }
 
   private changeSecond(that: IView): void {
     that.settings.ifHorizontal
-      ? (this.element.style.right = 100 - that.settings.currentSecond + "%")
-      : (this.element.style.top = 100 - that.settings.currentSecond + "%");
+      ? (this.element.style.right = 100 - that.settings.secondPosition + "%")
+      : (this.element.style.top = 100 - that.settings.secondPosition + "%");
   }
 }

@@ -32,7 +32,7 @@ export default class SliderThumb implements ISubview {
 
   change(that: IView): HTMLElement {
     const num =
-      this.className === "thumb_first" ? that.settings.currentFirst : that.settings.currentSecond;
+      this.className === "thumb_first" ? that.settings.firstPosition : that.settings.secondPosition;
     that.settings.ifHorizontal
       ? (this.element.style.left = num + "%")
       : (this.element.style.bottom = num + "%");

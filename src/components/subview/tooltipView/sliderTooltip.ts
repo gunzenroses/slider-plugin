@@ -42,7 +42,9 @@ export default class SliderTooltip implements ISubview {
 
   change(that: IView): HTMLElement {
     const value =
-      this.className === "tooltip_first" ? that.settings.currentFirst : that.settings.currentSecond;
+      this.className === "tooltip_first"
+        ? that.settings.firstPosition
+        : that.settings.secondPosition;
     this.element.innerText = fromPercentsToValue(value, that.settings.max, that.settings.min);
     return this.element;
   }
