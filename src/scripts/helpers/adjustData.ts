@@ -1,13 +1,12 @@
 import { TSettings } from "utils/types";
 import { applyStepOnValue } from "utils/common";
-import { sliderData } from "mvp/data";
 
 export default function adjustValue(
   name: string,
   value: number | string | boolean,
   data: TSettings
 ): number | string | boolean {
-  const { max, min, step, currentFirst, currentSecond }: TSettings = sliderData;
+  const { max, min, step, currentFirst, currentSecond }: TSettings = data;
 
   switch (name) {
     case "step":
