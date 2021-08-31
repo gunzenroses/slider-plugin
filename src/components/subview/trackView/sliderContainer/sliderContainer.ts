@@ -8,7 +8,9 @@ export default class SliderContainer {
   }
 
   init(that: IView): HTMLElement {
-    const sliderContainerClass = that.ifHorizontal ? "slider__content" : "slider__content_vertical";
+    const sliderContainerClass = that.settings.ifHorizontal
+      ? "slider__content"
+      : "slider__content_vertical";
     this.sliderContainer = document.createElement("div");
     this.sliderContainer.classList.add(sliderContainerClass);
     that.parentContainer.append(this.sliderContainer);

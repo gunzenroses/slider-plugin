@@ -18,29 +18,33 @@ export default class SliderRange implements ISubview {
 
   make(that: IView): HTMLElement {
     this.element = document.createElement("div");
-    const elementClass: string = that.ifHorizontal ? "slider__range" : "slider__range_vertical";
+    const elementClass: string = that.settings.ifHorizontal
+      ? "slider__range"
+      : "slider__range_vertical";
     this.element.classList.add(`${elementClass}`);
     return this.element;
   }
 
   change(that: IView): HTMLElement {
-    that.ifRange ? (this.changeFirst(that), this.changeSecond(that)) : this.changeFirst(that);
+    that.settings.range
+      ? (this.changeFirst(that), this.changeSecond(that))
+      : this.changeFirst(that);
     return this.element;
   }
 
   private changeFirst(that: IView): void {
-    that.ifRange
-      ? that.ifHorizontal
-        ? (this.element.style.left = that.currentFirstInPercents + "%")
-        : (this.element.style.bottom = that.currentFirstInPercents + "%")
-      : that.ifHorizontal
-      ? (this.element.style.right = 100 - that.currentFirstInPercents + "%")
-      : (this.element.style.top = 100 - that.currentFirstInPercents + "%");
+    that.settings.range
+      ? that.settings.ifHorizontal
+        ? (this.element.style.left = that.settings.currentFirst + "%")
+        : (this.element.style.bottom = that.settings.currentFirst + "%")
+      : that.settings.ifHorizontal
+      ? (this.element.style.right = 100 - that.settings.currentFirst + "%")
+      : (this.element.style.top = 100 - that.settings.currentFirst + "%");
   }
 
   private changeSecond(that: IView): void {
-    that.ifHorizontal
-      ? (this.element.style.right = 100 - that.currentSecondInPercents + "%")
-      : (this.element.style.top = 100 - that.currentSecondInPercents + "%");
+    that.settings.ifHorizontal
+      ? (this.element.style.right = 100 - that.settings.currentSecond + "%")
+      : (this.element.style.top = 100 - that.settings.currentSecond + "%");
   }
 }

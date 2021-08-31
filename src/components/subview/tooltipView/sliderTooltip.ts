@@ -28,8 +28,8 @@ export default class SliderTooltip implements ISubview {
   }
 
   make(that: IView): HTMLElement {
-    const verticalClass = that.ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
-    const totalClass = that.ifTooltip
+    const verticalClass = that.settings.ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
+    const totalClass = that.settings.tooltip
       ? [this.className, verticalClass]
       : [this.className, verticalClass, "disabled"];
     this.element = document.createElement("span");
@@ -42,10 +42,8 @@ export default class SliderTooltip implements ISubview {
 
   change(that: IView): HTMLElement {
     const value =
-      this.className === "tooltip_first"
-        ? that.currentFirstInPercents
-        : that.currentSecondInPercents;
-    this.element.innerText = fromPercentsToValue(value, that.maxValue, that.minValue);
+      this.className === "tooltip_first" ? that.settings.currentFirst : that.settings.currentSecond;
+    this.element.innerText = fromPercentsToValue(value, that.settings.max, that.settings.min);
     return this.element;
   }
 

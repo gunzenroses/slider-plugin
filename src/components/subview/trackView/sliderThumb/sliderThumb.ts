@@ -19,9 +19,9 @@ export default class SliderThumb implements ISubview {
 
   make(that: IView): HTMLElement {
     this.element = document.createElement("div");
-    const typeClass = that.ifHorizontal ? this.className : `${this.className}-vertical`;
+    const typeClass = that.settings.ifHorizontal ? this.className : `${this.className}-vertical`;
     const totalClass =
-      this.className === "thumb_first" || that.ifRange
+      this.className === "thumb_first" || that.settings.range
         ? ["slider__thumb", typeClass]
         : ["slider__thumb", typeClass, "disabled"];
     totalClass.forEach((item: string) => {
@@ -32,8 +32,8 @@ export default class SliderThumb implements ISubview {
 
   change(that: IView): HTMLElement {
     const num =
-      this.className === "thumb_first" ? that.currentFirstInPercents : that.currentSecondInPercents;
-    that.ifHorizontal
+      this.className === "thumb_first" ? that.settings.currentFirst : that.settings.currentSecond;
+    that.settings.ifHorizontal
       ? (this.element.style.left = num + "%")
       : (this.element.style.bottom = num + "%");
     return this.element;
