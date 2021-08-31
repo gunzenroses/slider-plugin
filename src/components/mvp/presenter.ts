@@ -124,7 +124,6 @@ class SliderPresenter implements IPresenter {
 
   //all values are in %
   private selectThumbRangeFalse(newThumbCurrentPercent: number): void {
-    this.setObject(this.view.sliderThumb.element);
     this.modelThumbFirst(newThumbCurrentPercent);
   }
 
@@ -135,11 +134,9 @@ class SliderPresenter implements IPresenter {
     const secondDiff: number = Math.abs(secondThumbPercent - newPercent);
 
     if (firstDiff < secondDiff && newPercent < secondThumbPercent) {
-      this.setObject(this.view.sliderThumb.element);
       this.modelThumbFirst(newPercent);
     }
     if (firstDiff > secondDiff && newPercent > firstThumbPercent) {
-      this.setObject(this.view.sliderThumbSecond.element);
       this.modelThumbSecond(newPercent);
     }
     if (firstDiff === secondDiff) {
@@ -163,9 +160,9 @@ class SliderPresenter implements IPresenter {
 
   private findClosestThumb(newPlace: number, firstThumbPlace: number): void {
     newPlace < firstThumbPlace
-      ? (this.setObject(this.view.sliderThumb.element), this.modelThumbFirst(newPlace))
+      ? this.modelThumbFirst(newPlace)
       : newPlace > firstThumbPlace
-      ? (this.setObject(this.view.sliderThumbSecond.element), this.modelThumbSecond(newPlace))
+      ? this.modelThumbSecond(newPlace)
       : null;
   }
 
@@ -203,12 +200,14 @@ class SliderPresenter implements IPresenter {
 
   //value - %, newValue - actual
   private modelThumbFirst(value: number): void {
+    this.setObject(this.view.sliderThumb.element);
     const newValue = percentsToValueApplyStep(value, this.max, this.min, this.step);
     this.model.changeThumb(newValue);
   }
 
   //value - %, newValue - actual
   private modelThumbSecond(value: number): void {
+    this.setObject(this.view.sliderThumbSecond.element);
     const newValue = percentsToValueApplyStep(value, this.max, this.min, this.step);
     this.model.changeThumbSecond(newValue);
   }
