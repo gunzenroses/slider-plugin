@@ -90,13 +90,7 @@ class ConfigurationPanel implements IPanel {
   }
 
   private enable(): void {
-    for (const item of this.checkboxes) {
-      item.addEventListener("change", throttle(this.changePanelHandler, 300));
-    }
-    this.orientationInput.addEventListener("change", throttle(this.changePanelHandler, 300));
-    for (const item of this.numberInputs) {
-      item.addEventListener("change", throttle(this.changePanelHandler, 300));
-    }
+    this.panelItems.addEventListener("change", throttle(this.changePanelHandler, 300));
 
     this.presenter.fromPresenterUpdate.add(this.updateHandler as TFunc);
     this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler as TFunc);
@@ -126,7 +120,8 @@ class ConfigurationPanel implements IPanel {
     this.currentSecondInput.step = this.data.step.toString();
     this.data.range
       ? (this.currentSecondInput.disabled = false)
-      : (this.currentSecondInput.disabled = true);
+      : ((this.currentSecondInput.disabled = true),
+        (this.currentSecondInput.value = this.data.max.toString()));
   }
 
   private updateStep(): void {
@@ -143,27 +138,35 @@ class ConfigurationPanel implements IPanel {
 
   private updateMax(): void {
     this.maxInput.value = this.data.max.toString();
-    this.maxInput.min = this.data.min + this.data.step.toString();
+    this.maxInput.min = (this.data.min + this.data.step).toString();
   }
 
   changePanel(e: Event): void {
     const element = e.target as HTMLInputElement;
     const name = element.getAttribute("name") as string;
-    const type = element.getAttribute("type");
+    const type = element.getAttribute("type") as string;
     const data =
       type === "checkbox"
         ? element.checked
         : type === "number"
         ? parseInt(element.value)
         : element.value;
+    this.assignChangingObject(name);
+    this.modelData(type, name, data);
+  }
+
+  assignChangingObject(name: string): void {
     if (name === "currentFirst") {
       this.presenter.changingObject = this.presenter.view.sliderThumb.element;
     }
     if (name === "currentSecond") {
       this.presenter.changingObject = this.presenter.view.sliderThumbSecond.element;
     }
+  }
+
+  modelData(type: string, name: string, data: string | boolean | number): void {
     if (type === "number") {
-      this.validation = new checkValidity(element, this.panelContainer);
+      //this.validation = new checkValidity(element, this.panelContainer);
       setTimeout(() => {
         this.presenter.modelData(name, data);
       });
