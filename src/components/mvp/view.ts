@@ -54,7 +54,6 @@ class SliderView implements IView {
   private dragThumbHandler!: { (ev: PointerEvent): void };
   private moveThumbHandler!: { (ev: PointerEvent): void };
   private dropThumbHandler!: () => void;
-  changeHandler!: (object: HTMLElement, number: number) => void;
 
   constructor(container: HTMLElement) {
     this.fromViewSelectThumb = new EventDispatcher();
@@ -90,7 +89,6 @@ class SliderView implements IView {
     this.dragThumbHandler = this.dragThumbStart.bind(this);
     this.moveThumbHandler = this.dragThumbMove.bind(this);
     this.dropThumbHandler = this.dragThumbEnd.bind(this);
-    this.changeHandler = this.change.bind(this);
   }
 
   private enable(): void {

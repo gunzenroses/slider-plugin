@@ -17,7 +17,6 @@ interface IPresenter {
   changingObject: HTMLElement | null;
 
   init(): void;
-  updateView(): void;
   modelData(name: string, data: IModelData): void;
 
   fromPresenterUpdate: EventDispatcher;
@@ -31,6 +30,8 @@ class SliderPresenter implements IPresenter {
   container: HTMLElement;
   data!: TSettings;
   changingObject!: HTMLElement | null;
+  containerSize!: number;
+  thumbWidth!: number;
 
   fromPresenterUpdate!: EventDispatcher;
   fromPresenterThumbUpdate!: EventDispatcher;
@@ -42,14 +43,11 @@ class SliderPresenter implements IPresenter {
 
   private ifHorizontal!: boolean;
   private ifRange!: boolean;
-  containerSize!: number;
-  thumbWidth!: number;
 
   fromModelChangeViewHandler!: { (newThumbValue: number): void };
   fromModelUpdateDataHandler!: { (data: TSettings): void };
   fromViewSelectThumbHandler!: { (e: PointerEvent): void };
   fromViewDragThumbHandler!: { (e: PointerEvent): void };
-  fromViewSortActionsHandler!: { (flag: string, event: Event): void };
 
   constructor(model: IModel, view: IView) {
     this.model = model;
