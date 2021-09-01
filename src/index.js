@@ -6,9 +6,10 @@ window.onload = function () {
     {
       min: 10,
       max: 200,
-      step: 120,
+      currentSecond: 150,
+      step: 12,
       scale: true,
-      range: false,
+      range: true,
     },
     true
   );
@@ -24,5 +25,7 @@ window.onload = function () {
     tooltip: false,
   });
 
-  $("#default").sliderPlugin({}, true);
+  $("#default").sliderPlugin({
+    range: false,
+  }, true);
 }

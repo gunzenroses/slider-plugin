@@ -1,7 +1,7 @@
 import { EventDispatcher } from "./eventDispatcher";
 import { IModelData, TSettings } from "utils/types";
 import { applyStepOnValue } from "utils/common";
-import adjustValue from "helpers/adjustData";
+import adjustValue from "helpers/adjustValue";
 
 interface IModel {
   fromModelChangeView: EventDispatcher;
@@ -9,8 +9,6 @@ interface IModel {
   setData(name: string, data: IModelData): void;
   getData(): TSettings;
   getContainer(): HTMLElement;
-  changeThumb(value: number): void;
-  changeThumbSecond(value: number): void;
 }
 
 class SliderModel implements IModel {
@@ -48,6 +46,24 @@ class SliderModel implements IModel {
   }
 
   setData(name: string, data: IModelData): void {
+    name === "currentFirst"
+      ? this.changeThumb(data as number)
+      : name === "currentSecond"
+      ? this.changeThumbSecond(data as number)
+      : this.changeAll(name, data);
+  }
+
+  private changeThumb(value: number): void {
+    this.data.currentFirst = applyStepOnValue(value, this.data.max, this.data.min, this.data.step);
+    this.fromModelChangeView.notify(this.data.currentFirst);
+  }
+
+  private changeThumbSecond(value: number): void {
+    this.data.currentSecond = applyStepOnValue(value, this.data.max, this.data.min, this.data.step);
+    this.fromModelChangeView.notify(this.data.currentSecond);
+  }
+
+  private changeAll(name: string, data: IModelData): void {
     const oldData = this.getData();
     if (oldData[name] === data) return;
 
@@ -57,17 +73,6 @@ class SliderModel implements IModel {
 
     this.updateCurrentsWithStep();
     this.fromModelUpdateData.notify();
-  }
-
-  //special cases for setData that changes only thumbValue
-  changeThumb(value: number): void {
-    this.data.currentFirst = value;
-    this.fromModelChangeView.notify(value);
-  }
-
-  changeThumbSecond(value: number): void {
-    this.data.currentSecond = value;
-    this.fromModelChangeView.notify(value);
   }
 }
 

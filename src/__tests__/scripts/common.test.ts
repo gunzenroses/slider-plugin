@@ -1,24 +1,10 @@
-import { applyRestrictions, applyStepOnPercents, commonDivider, findPosition } from "utils/common";
-
-describe("commonDivider", () => {
-  test("basicNum > changeNum", () => {
-    const bn = 20;
-    const cn = 8;
-
-    const newNum = commonDivider(bn, cn);
-
-    expect(newNum).toBe(10);
-  });
-
-  test("bacisNum < changeNum", () => {
-    const bn = 20;
-    const cn = 50;
-
-    const newNum = commonDivider(bn, cn);
-
-    expect(newNum).toBe(cn);
-  });
-});
+import {
+  applyRestrictions,
+  applyStepOnPercents,
+  applyStepOnValue,
+  commonDivider,
+  findPosition,
+} from "utils/common";
 
 describe("applyStepOnPercents()", () => {
   test("casual case for value and step", () => {
@@ -50,6 +36,79 @@ describe("applyRestrictions", () => {
     expect(newArr[0]).toBe(100);
     expect(newArr[1]).toBe(11);
     expect(newArr[2]).toBe(0);
+  });
+});
+
+describe("applyStepOnValue", () => {
+  const max = 122;
+  const step = 3;
+  const min = 8;
+
+  test("return 'min' when (value - min) <= 0", () => {
+    const value = 6;
+
+    const rtn = applyStepOnValue(value, 100, min, step);
+
+    expect(rtn).toBe(min);
+  });
+
+  test("return 'max' when (value > max)", () => {
+    const value = 130;
+
+    const rtn = applyStepOnValue(value, max, min, step);
+
+    expect(rtn).toBe(max);
+  });
+
+  describe("when value % step != 0", () => {
+    test("return smaller closest stepMatching number", () => {
+      const value = 30;
+      const less = Math.floor((value - min) / step);
+      const exp = less * step + min;
+
+      const rtn = applyStepOnValue(value, max, min, step);
+
+      expect(rtn).toBe(exp);
+    });
+
+    test("return closest bigger stepMatching number", () => {
+      const value = 31;
+      const less = Math.ceil((value - min) / step);
+      const exp = less * step + min;
+
+      const rtn = applyStepOnValue(value, max, min, step);
+
+      expect(rtn).toBe(exp);
+    });
+
+    test("return max when closest stepMatching number is bigger than max", () => {
+      const max = 31;
+      const value = 31;
+
+      const rtn = applyStepOnValue(value, max, min, step);
+
+      expect(rtn).toBe(max);
+    });
+  });
+});
+
+describe("commonDivider", () => {
+  test("basicNum > changeNum", () => {
+    const bn = 20;
+    const cn = 8;
+
+    const newNum = commonDivider(bn, cn);
+
+    expect(newNum).toBe(10);
+  });
+
+  test("bacisNum < changeNum", () => {
+    const bn = 20;
+    const cn = 50;
+
+    const newNum = commonDivider(bn, cn);
+
+    expect(newNum).toBe(cn);
   });
 });
 

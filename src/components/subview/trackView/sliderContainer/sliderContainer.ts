@@ -3,15 +3,17 @@ import { IView } from "mvp/view";
 export default class SliderContainer {
   sliderContainer!: HTMLElement;
 
-  constructor(that: IView) {
-    this.init(that);
+  constructor(that: IView, container: HTMLElement) {
+    this.init(that, container);
   }
 
-  init(that: IView): HTMLElement {
-    const sliderContainerClass = that.ifHorizontal ? "slider__content" : "slider__content_vertical";
+  init(that: IView, container: HTMLElement): HTMLElement {
+    const sliderContainerClass = that.settings.ifHorizontal
+      ? "slider__content"
+      : "slider__content_vertical";
     this.sliderContainer = document.createElement("div");
     this.sliderContainer.classList.add(sliderContainerClass);
-    that.parentContainer.append(this.sliderContainer);
+    container.append(this.sliderContainer);
     return this.sliderContainer;
   }
 }

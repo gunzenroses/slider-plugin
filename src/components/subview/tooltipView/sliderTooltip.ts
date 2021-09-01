@@ -1,6 +1,6 @@
 import { IView } from "mvp/view";
 import ISubview from "subview/subviewElement";
-import { fromPercentsToValue } from "utils/common";
+import { percentsToValue } from "utils/common";
 
 export default class SliderTooltip implements ISubview {
   className: string;
@@ -28,8 +28,8 @@ export default class SliderTooltip implements ISubview {
   }
 
   make(that: IView): HTMLElement {
-    const verticalClass = that.ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
-    const totalClass = that.ifTooltip
+    const verticalClass = that.settings.ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
+    const totalClass = that.settings.tooltip
       ? [this.className, verticalClass]
       : [this.className, verticalClass, "disabled"];
     this.element = document.createElement("span");
@@ -43,9 +43,9 @@ export default class SliderTooltip implements ISubview {
   change(that: IView): HTMLElement {
     const value =
       this.className === "tooltip_first"
-        ? that.currentFirstInPercents
-        : that.currentSecondInPercents;
-    this.element.innerText = fromPercentsToValue(value, that.maxValue, that.minValue);
+        ? that.settings.firstPosition
+        : that.settings.secondPosition;
+    this.element.innerText = percentsToValue(value, that.settings.max, that.settings.min);
     return this.element;
   }
 

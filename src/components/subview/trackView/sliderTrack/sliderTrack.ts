@@ -8,7 +8,9 @@ export default class SliderTrack {
   }
 
   init(that: IView): HTMLElement {
-    const sliderTrackClass: string = that.ifHorizontal ? "slider__track" : "slider__track_vertical";
+    const sliderTrackClass: string = that.settings.ifHorizontal
+      ? "slider__track"
+      : "slider__track_vertical";
     this.sliderTrack = document.createElement("div");
     this.sliderTrack.classList.add(sliderTrackClass);
     that.sliderContainer.append(this.sliderTrack);

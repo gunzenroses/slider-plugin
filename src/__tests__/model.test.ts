@@ -5,7 +5,7 @@
 import { IModel, SliderModel } from "mvp/model";
 import { sliderData } from "mvp/data";
 import { TSettings } from "utils/types";
-import adjustValue from "helpers/adjustData";
+import adjustValue from "helpers/adjustValue";
 
 describe("class SliderModel", () => {
   let container: HTMLElement;
@@ -32,6 +32,22 @@ describe("class SliderModel", () => {
       expect(model.getData()).toHaveProperty("step", step);
       expect(model.getData()).toHaveProperty("min", min);
       expect(model.getData()).toHaveProperty("max", max);
+    });
+
+    test("should change data.currentFirst", () => {
+      const val = 3;
+
+      model.setData("currentFirst", val);
+
+      expect(model.getData()).toHaveProperty("currentFirst", val);
+    });
+
+    test("should change data.CurrentSecond", () => {
+      const num = 5;
+
+      model.setData("currentSecond", num);
+
+      expect(model.getData()).toHaveProperty("currentSecond", num);
     });
   });
 
@@ -93,42 +109,6 @@ describe("class SliderModel", () => {
   describe("method getContainerId()", () => {
     test("return string with containerId passed into constructor", () => {
       expect(model.getContainer()).toEqual(container);
-    });
-  });
-
-  describe("method changeThumb()", () => {
-    const val = 3;
-
-    test("should be called", () => {
-      const spyChangeThumb = jest.spyOn(model, "changeThumb");
-
-      model.changeThumb(val);
-
-      expect(spyChangeThumb).toBeCalledTimes(1);
-    });
-
-    test("should change data.currentFirst", () => {
-      model.changeThumb(val);
-
-      expect(model.getData()).toHaveProperty("currentFirst", val);
-    });
-  });
-
-  describe("method changeThumbSecond()", () => {
-    const num = 5;
-
-    test("should be called", () => {
-      const spyChangeThumbSecond = jest.spyOn(model, "changeThumbSecond");
-
-      model.changeThumbSecond(num);
-
-      expect(spyChangeThumbSecond).toBeCalledTimes(1);
-    });
-
-    test("should change the value of data.CurrentSecond", () => {
-      model.changeThumbSecond(num);
-
-      expect(model.getData()).toHaveProperty("currentSecond", num);
     });
   });
 });

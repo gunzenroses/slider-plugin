@@ -15,9 +15,6 @@ module.exports = {
     'json',
   ],
   modulePaths: ['.'],
-  globalSetup: "jest-environment-puppeteer/setup",
-  globalTeardown: "jest-environment-puppeteer/teardown",
-  testEnvironment: "jest-environment-puppeteer",
   rootDir: '.',
   moduleNameMapper: {
     '^styles/(.*)$': '<rootDir>/src/assets/styles/$1',
