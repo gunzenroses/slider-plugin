@@ -1,25 +1,25 @@
 import { IModelData, TSettings } from "utils/types";
 import { applyStepOnValue } from "utils/common";
 
-export default function adjustValue(name: string, value: IModelData, data: TSettings): number {
+export default function adjustValue(name: string, value: IModelData, data: TSettings): IModelData {
   const { max, min, step, currentFirst, currentSecond }: TSettings = data;
-  const val = parseInt(value as string);
+  const val = value as string;
 
   switch (name) {
     case "step":
-      value = adjustStep(val);
+      value = adjustStep(parseInt(val));
       break;
     case "min":
-      value = adjustMin(val);
+      value = adjustMin(parseInt(val));
       break;
     case "max":
-      value = adjustMax(val);
+      value = adjustMax(parseInt(val));
       break;
     case "currentFirst":
-      value = adjustCurrentFirst(val);
+      value = adjustCurrentFirst(parseInt(val));
       break;
     case "currentSecond":
-      value = adjustCurrentSecond(val);
+      value = adjustCurrentSecond(parseInt(val));
       break;
     default:
       value = adjustAsIs(val);
@@ -58,7 +58,7 @@ export default function adjustValue(name: string, value: IModelData, data: TSett
       : currentFirst;
   }
 
-  function adjustAsIs(value: number) {
+  function adjustAsIs(value: IModelData): IModelData {
     return value;
   }
 
