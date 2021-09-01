@@ -67,6 +67,35 @@ describe("class SliderView", () => {
     });
   });
 
+  describe("method selectThumb()", () => {
+    test("should not notify subscribers if e.target is selectThumb or selectThumbSecond", () => {
+      const evt = new Event("pointerup") as PointerEvent;
+      view.sliderThumb.element.dispatchEvent(evt);
+      const spyOnSm = jest.spyOn(view.fromViewSelectThumb, "notify");
+
+      view.selectThumb(evt);
+
+      expect(spyOnSm).toBeCalledTimes(0);
+    });
+  });
+
+  describe("method dragThumbStart()", () => {
+    test("disable pointerdowm eventListener", () => {
+      const newSet = {
+        ...data,
+        range: false,
+      };
+      view.init(newSet);
+      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
+      document.dispatchEvent(new Event("pointermove"));
+      const spyOnDragStart = jest.spyOn(view, "dragThumbStart");
+
+      view.sliderThumb.element.dispatchEvent(new Event("pointerdowm"));
+
+      expect(spyOnDragStart).toHaveBeenCalledTimes(0);
+    });
+  });
+
   describe("method dragThumbEnd()", () => {
     test("when pointer is up should end listening to pointermove", () => {
       const spyOnMoveListener = jest.spyOn(view.fromViewDragThumb, "notify");
@@ -135,23 +164,6 @@ describe("class SliderView", () => {
 
       expect(view.scale.classList.contains("disabled")).toBe(true);
       expect(view.tooltipFirst.element.classList.contains("disabled")).toBe(true);
-    });
-  });
-
-  describe("method dragThumbStart()", () => {
-    test("disable pointerdowm eventListener", () => {
-      const newSet = {
-        ...data,
-        range: false,
-      };
-      view.init(newSet);
-      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
-      document.dispatchEvent(new Event("pointermove"));
-      const spyOnDragStart = jest.spyOn(view, "dragThumbStart");
-
-      view.sliderThumb.element.dispatchEvent(new Event("pointerdowm"));
-
-      expect(spyOnDragStart).toHaveBeenCalledTimes(0);
     });
   });
 });
