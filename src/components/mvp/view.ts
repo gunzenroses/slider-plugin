@@ -11,7 +11,6 @@ import ISubview from "subview/subviewElement";
 
 interface IView {
   settings: TSettings;
-  parentContainer: HTMLElement;
   sliderContainer: HTMLElement;
   sliderThumb: ISubview;
   sliderThumbSecond: ISubview;
