@@ -5,7 +5,7 @@ import { IModelData, TFunc, TSettings } from "utils/types";
 import {
   applyRestrictions,
   findPosition,
-  percentsToValueApplyStep,
+  percentsToValue,
   valueToPercentsApplyStep,
 } from "utils/common";
 
@@ -202,15 +202,15 @@ class SliderPresenter implements IPresenter {
   //value - %, newValue - actual
   private modelThumbFirst(value: number): void {
     this.setObject(this.view.sliderThumb.element);
-    const newValue = percentsToValueApplyStep(value, this.max, this.min, this.step);
-    this.model.changeThumb(newValue);
+    const newValue = percentsToValue(value, this.max, this.min);
+    this.model.setData("currentFirst", newValue);
   }
 
   //value - %, newValue - actual
   private modelThumbSecond(value: number): void {
     this.setObject(this.view.sliderThumbSecond.element);
-    const newValue = percentsToValueApplyStep(value, this.max, this.min, this.step);
-    this.model.changeThumbSecond(newValue);
+    const newValue = percentsToValue(value, this.max, this.min);
+    this.model.setData("currentSecond", newValue);
   }
 
   private updateData(): void {
