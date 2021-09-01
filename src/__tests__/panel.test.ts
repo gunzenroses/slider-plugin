@@ -23,14 +23,11 @@ describe("Panel for double slider", () => {
 
   describe("method init()", () => {
     test("should create panel items", () => {
-      expect(panel.checkboxes).toBeTruthy();
-      expect(panel.orientationInput).toBeTruthy();
-      expect(panel.numberInputs).toBeTruthy();
-      expect(panel.minInput).toBeTruthy();
-      expect(panel.maxInput).toBeTruthy();
-      expect(panel.stepInput).toBeTruthy();
-      expect(panel.currentFirstInput).toBeTruthy();
-      expect(panel.currentSecondInput).toBeTruthy();
+      const spyRender = jest.spyOn(panel, "render");
+
+      panel.init();
+
+      expect(spyRender).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -45,21 +42,17 @@ describe("Panel for double slider", () => {
     });
 
     test("change of thumb in presenter should update data in panel", () => {
-      const spyOnUpdateThumb = jest.spyOn(panel, "updateThumb").mockImplementation();
-
       panel.init();
       panel.presenter.fromPresenterThumbUpdate.notify();
 
-      expect(spyOnUpdateThumb).toHaveBeenCalledTimes(1);
+      expect(panel.data.currentFirst).toBe(panel.presenter.data.currentFirst);
     });
 
     test("change of thumbSecond in presenter should thumbSecond data in panel", () => {
-      const spyOnUpdateThumbSecond = jest.spyOn(panel, "updateThumbSecond").mockImplementation();
-
       panel.init();
       panel.presenter.fromPresenterThumbSecondUpdate.notify();
 
-      expect(spyOnUpdateThumbSecond).toHaveBeenCalledTimes(1);
+      expect(panel.data.currentSecond).toBe(panel.presenter.data.currentSecond);
     });
   });
 
@@ -204,20 +197,15 @@ describe("Panel for double slider", () => {
 
   describe("method updatePanel()", () => {
     test("should update data", () => {
-      panel.data.step = 8;
-      panel.data.min = 10;
-      panel.data.max = 100;
+      presenter.data.step = 8;
+      presenter.data.min = 10;
+      presenter.data.max = 100;
+
       panel.updatePanel();
 
-      expect(parseInt(panel.stepInput.value)).toBe(panel.data.step);
-      expect(parseInt(panel.minInput.value)).toBe(panel.data.min);
-      expect(parseInt(panel.maxInput.value)).toBe(panel.data.max);
-      expect(parseInt(panel.currentFirstInput.min)).toBe(panel.data.min);
-      expect(parseInt(panel.currentFirstInput.value)).toBe(panel.data.currentFirst);
-      expect(parseInt(panel.currentFirstInput.step)).toBe(panel.data.step);
-      expect(parseInt(panel.currentSecondInput.min)).toBe(panel.data.currentFirst);
-      expect(parseInt(panel.currentSecondInput.value)).toBe(panel.data.currentSecond);
-      expect(parseInt(panel.currentSecondInput.step)).toBe(panel.data.step);
+      expect(parseInt(panel.data.step)).toBe(presenter.data.step);
+      expect(parseInt(panel.data.min)).toBe(presenter.data.min);
+      expect(parseInt(panel.data.max)).toBe(presenter.data.max);
     });
   });
 });
@@ -229,6 +217,10 @@ const presenterS = new SliderPresenter(modelS, viewS);
 const panelS = new ConfigurationPanel(container, presenterS);
 describe("Panel for single slider", () => {
   test("should disable input for currentSecond", () => {
-    expect(panelS.currentSecondInput.disabled).toBe(true);
+    const currentSecondInput = <HTMLInputElement>(
+      panelS.panelContainer.querySelector('input[name="currentSecond"]')
+    );
+
+    expect(currentSecondInput.disabled).toBe(true);
   });
 });

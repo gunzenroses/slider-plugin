@@ -6,35 +6,30 @@ import { afterCustomElement, appendCustomElement } from "utils/common";
 
 interface IPanel {
   presenter: IPresenter;
-  parentContainer: HTMLElement;
+  panelContainer: HTMLElement;
   data: TSettings;
+  validation: checkValidity;
+
   init(): void;
   render(data: TSettings): void;
   changePanel(event: Event): void;
   updatePanel(): void;
-  updateThumb(): void;
-  updateThumbSecond(): void;
-  validation: checkValidity;
 }
 
 class ConfigurationPanel implements IPanel {
   presenter: IPresenter;
-  parentContainer: HTMLElement;
-  data!: TSettings;
-
   panelContainer: HTMLElement;
-  panelItems: HTMLElement;
-  private listOfPanelItems!: Array<TPanelParam>;
+  private parentContainer: HTMLElement;
+  private panelItems: HTMLElement;
 
-  checkboxes!: NodeListOf<HTMLElement>;
-  minInput!: HTMLInputElement;
-  maxInput!: HTMLInputElement;
-  stepInput!: HTMLInputElement;
-  currentFirstInput!: HTMLInputElement;
-  currentSecondInput!: HTMLInputElement;
-  orientationInput!: HTMLInputElement;
-  numberInputs!: NodeListOf<Element>;
+  data!: TSettings;
   validation!: checkValidity;
+  private listOfPanelItems!: Array<TPanelParam>;
+  private minInput!: HTMLInputElement;
+  private maxInput!: HTMLInputElement;
+  private stepInput!: HTMLInputElement;
+  private currentFirstInput!: HTMLInputElement;
+  private currentSecondInput!: HTMLInputElement;
 
   updateHandler!: { (data: TSettings): void };
   changePanelHandler!: { (event: Event): void };
@@ -46,28 +41,23 @@ class ConfigurationPanel implements IPanel {
     this.panelContainer = afterCustomElement("div", "panel", this.parentContainer);
     this.panelItems = appendCustomElement("div", "panel__items", this.panelContainer);
     this.presenter = presenter;
-    this.assignData();
     this.init();
     this.updatePanel();
   }
 
-  private assignData(): void {
-    this.data = this.presenter.data;
-  }
-
   init(): void {
+    this.assignData();
     this.render(this.data);
     this.createChildren();
     this.setupHandlers();
     this.enable();
   }
 
+  private assignData(): void {
+    this.data = this.presenter.data;
+  }
+
   private createChildren(): void {
-    this.checkboxes = this.panelContainer.querySelectorAll("input[type='checkbox']");
-    this.numberInputs = this.panelContainer.querySelectorAll("input[type='number']");
-    this.orientationInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('select[name="orientation"]')
-    );
     this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
     this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
     this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
@@ -106,14 +96,14 @@ class ConfigurationPanel implements IPanel {
     this.updateThumbSecond();
   }
 
-  updateThumb(): void {
+  private updateThumb(): void {
     this.currentFirstInput.value = this.data.currentFirst.toString();
     this.currentFirstInput.min = this.data.min.toString();
     this.currentFirstInput.max = this.data.currentSecond.toString();
     this.currentFirstInput.step = this.data.step.toString();
   }
 
-  updateThumbSecond(): void {
+  private updateThumbSecond(): void {
     this.currentSecondInput.min = this.data.currentFirst.toString();
     this.currentSecondInput.max = this.data.max.toString();
     this.currentSecondInput.value = this.data.currentSecond.toString();
@@ -158,7 +148,7 @@ class ConfigurationPanel implements IPanel {
     this.modelData(type, name, data);
   }
 
-  assignChangingObject(name: string): void {
+  private assignChangingObject(name: string): void {
     this.presenter.changingObject =
       name === "currentFirst"
         ? this.presenter.view.sliderThumb.element
@@ -167,7 +157,7 @@ class ConfigurationPanel implements IPanel {
         : null;
   }
 
-  modelData(type: string, name: string, data: string | boolean | number): void {
+  private modelData(type: string, name: string, data: string | boolean | number): void {
     type === "number"
       ? setTimeout(() => {
           this.presenter.modelData(name, data);
