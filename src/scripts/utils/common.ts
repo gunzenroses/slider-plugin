@@ -1,3 +1,23 @@
+function appendCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement {
+  const el = document.createElement(`${type}`);
+  el.classList.add(className);
+  parent.append(el);
+  return el;
+}
+
+function afterCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement {
+  const el = document.createElement(`${type}`);
+  el.classList.add(className);
+  parent.after(el);
+  return el;
+}
+
+//checked
+function applyRestrictions(value: number): number {
+  const newValue = value > 100 ? 100 : value < 0 ? 0 : value;
+  return newValue;
+}
+
 //all in %
 function applyStepOnPercents(value: number, step: number): number {
   const numberOfSteps = (value * 100) / (step * 100);
@@ -10,24 +30,27 @@ function applyStepOnPercents(value: number, step: number): number {
 //checked: all values are actual
 function applyStepOnValue(value: number, max: number, min: number, step: number): number {
   if (value - min <= 0) return min;
+  if (value >= max) return max;
   const numberOfSteps = ((value - min) * 100) / (step * 100);
   const realNumberOfSteps =
     (value - min) % step > step / 2 ? Math.ceil(numberOfSteps) : Math.floor(numberOfSteps);
   const valueInSteps = realNumberOfSteps * step + min;
-  const realValue = value === max ? value : valueInSteps > max ? max : valueInSteps;
+  const realValue = valueInSteps > max ? max : valueInSteps;
   return realValue;
 }
 
-//checked
-function applyRestrictions(value: number): number {
-  const newValue = value > 100 ? 100 : value < 0 ? 0 : value;
-  return newValue;
-}
-
-// checked: value in %, others are actual
-function percentsToValue(valueInPercents: number, max: number, min: number): string {
-  const newValue = (Math.round((valueInPercents * (max - min)) / 100) + min).toString();
-  return newValue;
+function commonDivider(basicNum: number, changeNum: number): number {
+  const bigger = basicNum;
+  //let smaller = changeNum;
+  let smaller = changeNum > 1 ? changeNum : 1;
+  if (bigger <= smaller) {
+    return smaller;
+  } else {
+    while (bigger % smaller !== 0) {
+      smaller++;
+    }
+    return smaller;
+  }
 }
 
 //done: initial values are actual, return %
@@ -63,10 +86,9 @@ function findPosition(
   return newPosition;
 }
 
-//value %, max, min, step are actual values
-function percentsToValueApplyStep(value: number, max: number, min: number, step: number): number {
-  const value2 = parseInt(percentsToValue(value, max, min));
-  const newValue = applyStepOnValue(value2, max, min, step);
+// checked: value in %, others are actual
+function percentsToValue(valueInPercents: number, max: number, min: number): string {
+  const newValue = (Math.round((valueInPercents * (max - min)) / 100) + min).toString();
   return newValue;
 }
 
@@ -78,45 +100,16 @@ function valueToPercentsApplyStep(value: number, max: number, min: number, step:
   return newValue;
 }
 
-function appendCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement {
-  const el = document.createElement(`${type}`);
-  el.classList.add(className);
-  parent.append(el);
-  return el;
-}
-
-function afterCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement {
-  const el = document.createElement(`${type}`);
-  el.classList.add(className);
-  parent.after(el);
-  return el;
-}
-
-function commonDivider(basicNum: number, changeNum: number): number {
-  const bigger = basicNum;
-  //let smaller = changeNum;
-  let smaller = changeNum > 1 ? changeNum : 1;
-  if (bigger <= smaller) {
-    return smaller;
-  } else {
-    while (bigger % smaller !== 0) {
-      smaller++;
-    }
-    return smaller;
-  }
-}
-
 export {
-  applyStepOnValue,
-  applyStepOnPercents,
+  afterCustomElement,
+  appendCustomElement,
   applyRestrictions,
-  percentsToValue,
+  applyStepOnPercents,
+  applyStepOnValue,
   changeValueToPercents,
   commonDivider,
-  fromValueToPX,
   findPosition,
-  percentsToValueApplyStep,
+  fromValueToPX,
+  percentsToValue,
   valueToPercentsApplyStep,
-  appendCustomElement,
-  afterCustomElement,
 };
