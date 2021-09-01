@@ -8,4 +8,5 @@ babel.config.js
 tsconfig.json
 tscondif.prod.js
 webpack.config.js
+webpack.dev.js
 index.js

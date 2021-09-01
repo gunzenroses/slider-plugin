@@ -21,14 +21,6 @@ module.exports = (env) => ({
     filename: "assets/js/[name].bundle.js",
     publicPath: env.development ? "/" : "https://gunzenroses.github.io/slider-plugin/",
   },
-  devServer: env.production ? null : { 
-    static: {
-      directory: path.join(__dirname, "./dist"),
-    },
-    compress: true,
-    hot: true,
-    port: 8081,
-  },
   resolve: {
     alias: {
       assets: path.resolve(__dirname, "src/assets/"),
