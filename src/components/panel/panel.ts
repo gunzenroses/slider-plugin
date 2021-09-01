@@ -8,7 +8,6 @@ interface IPanel {
   presenter: IPresenter;
   panelContainer: HTMLElement;
   data: TSettings;
-  validation: checkValidity;
 
   init(): void;
   render(data: TSettings): void;
@@ -23,7 +22,6 @@ class ConfigurationPanel implements IPanel {
   private panelItems: HTMLElement;
 
   data!: TSettings;
-  validation!: checkValidity;
   private listOfPanelItems!: Array<TPanelParam>;
   private minInput!: HTMLInputElement;
   private maxInput!: HTMLInputElement;
@@ -80,7 +78,7 @@ class ConfigurationPanel implements IPanel {
   }
 
   private enable(): void {
-    this.panelItems.addEventListener("change", throttle(this.changePanelHandler, 300));
+    this.panelItems.addEventListener("change", throttle(this.changePanelHandler, 200));
 
     this.presenter.fromPresenterUpdate.add(this.updateHandler as TFunc);
     this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler as TFunc);
@@ -96,17 +94,17 @@ class ConfigurationPanel implements IPanel {
     this.updateThumbSecond();
   }
 
-  private updateThumb(): void {
-    this.currentFirstInput.value = this.data.currentFirst.toString();
+  private updateThumb(val?: number): void {
+    this.currentFirstInput.value = val ? val : this.data.currentFirst.toString();
     this.currentFirstInput.min = this.data.min.toString();
     this.currentFirstInput.max = this.data.currentSecond.toString();
     this.currentFirstInput.step = this.data.step.toString();
   }
 
-  private updateThumbSecond(): void {
+  private updateThumbSecond(val?: number): void {
+    this.currentSecondInput.value = val ? val : this.data.currentSecond.toString();
     this.currentSecondInput.min = this.data.currentFirst.toString();
     this.currentSecondInput.max = this.data.max.toString();
-    this.currentSecondInput.value = this.data.currentSecond.toString();
     this.currentSecondInput.step = this.data.step.toString();
     this.data.range
       ? (this.currentSecondInput.disabled = false)
@@ -135,14 +133,9 @@ class ConfigurationPanel implements IPanel {
     const element = e.target as HTMLInputElement;
     const name = element.getAttribute("name") as string;
     const type = element.getAttribute("type") as string;
-    const data =
-      type === "checkbox"
-        ? element.checked
-        : type === "number"
-        ? parseInt(element.value)
-        : element.value;
+    const data = type === "checkbox" ? element.checked : element.value;
     if (type === "number") {
-      this.validation = new checkValidity(element, this.panelContainer);
+      new checkValidity(element, this.panelContainer);
     }
     this.assignChangingObject(name);
     this.modelData(type, name, data);
