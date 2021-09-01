@@ -1,9 +1,9 @@
 import { sliderData } from "mvp/data";
-import adjustValue from "helpers/adjustData";
+import adjustValue from "helpers/adjustValue";
 
 const data = sliderData;
 
-describe("adjustData", () => {
+describe("adjustValue", () => {
   test("should adjust and update negative 'step', 'min' and 'max' data in model", () => {
     const step = adjustValue("step", -2, data);
     const min = adjustValue("min", -2, data);
