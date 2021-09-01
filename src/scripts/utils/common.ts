@@ -25,7 +25,7 @@ function applyRestrictions(value: number): number {
 }
 
 // checked: value in %, others are actual
-function fromPercentsToValue(valueInPercents: number, max: number, min: number): string {
+function percentsToValue(valueInPercents: number, max: number, min: number): string {
   const newValue = (Math.round((valueInPercents * (max - min)) / 100) + min).toString();
   return newValue;
 }
@@ -65,7 +65,7 @@ function findPosition(
 
 //value %, max, min, step are actual values
 function percentsToValueApplyStep(value: number, max: number, min: number, step: number): number {
-  const value2 = parseInt(fromPercentsToValue(value, max, min));
+  const value2 = parseInt(percentsToValue(value, max, min));
   const newValue = applyStepOnValue(value2, max, min, step);
   return newValue;
 }
@@ -110,7 +110,7 @@ export {
   applyStepOnValue,
   applyStepOnPercents,
   applyRestrictions,
-  fromPercentsToValue,
+  percentsToValue,
   changeValueToPercents,
   commonDivider,
   fromValueToPX,

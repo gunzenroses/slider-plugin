@@ -1,6 +1,6 @@
 import { IView } from "mvp/view";
 import ISubview from "subview/subviewElement";
-import { fromPercentsToValue } from "utils/common";
+import { percentsToValue } from "utils/common";
 
 export default class SliderTooltip implements ISubview {
   className: string;
@@ -45,7 +45,7 @@ export default class SliderTooltip implements ISubview {
       this.className === "tooltip_first"
         ? that.settings.firstPosition
         : that.settings.secondPosition;
-    this.element.innerText = fromPercentsToValue(value, that.settings.max, that.settings.min);
+    this.element.innerText = percentsToValue(value, that.settings.max, that.settings.min);
     return this.element;
   }
 
