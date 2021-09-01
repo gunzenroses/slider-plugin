@@ -83,9 +83,11 @@ describe("Panel for double slider", () => {
       const trg: HTMLInputElement = panel.panelContainer.querySelector(
         "input[name='max']"
       ) as HTMLInputElement;
+      const event = new Event("change");
       trg.value = "";
 
-      trg.dispatchEvent(new Event("change"));
+      trg.dispatchEvent(event);
+      panel.changePanel(event);
       jest.runAllTimers();
 
       expect(spyPresenter).toHaveBeenCalledTimes(1);
@@ -126,8 +128,12 @@ describe("Panel for double slider", () => {
         ) as HTMLInputElement;
         trg.setAttribute("max", "100");
         trg.value = "Cat";
+        const evt = {
+          ...new Event("change"),
+          target: trg,
+        };
 
-        trg.dispatchEvent(new Event("change"));
+        panel.changePanel(evt);
 
         expect(panel.validation.invalidities).toContain("Should be a number");
       });
@@ -138,8 +144,12 @@ describe("Panel for double slider", () => {
         ) as HTMLInputElement;
         trg.setAttribute("max", "100");
         trg.value = "120";
+        const evt = {
+          ...new Event("change"),
+          target: trg,
+        };
 
-        trg.dispatchEvent(new Event("change"));
+        panel.changePanel(evt);
 
         expect(panel.validation.invalidities).toContain("Number should be maximum 100");
       });
@@ -150,8 +160,12 @@ describe("Panel for double slider", () => {
         ) as HTMLInputElement;
         trg.min = "1";
         trg.value = "0";
+        const evt = {
+          ...new Event("change"),
+          target: trg,
+        };
 
-        trg.dispatchEvent(new Event("change"));
+        panel.changePanel(evt);
 
         expect(panel.validation.invalidities).toContain("Number should be minimum 1");
       });
@@ -177,8 +191,12 @@ describe("Panel for double slider", () => {
       trg.setAttribute("min", "0");
       trg.setAttribute("step", "3");
       trg.value = "31";
+      const evt = {
+        ...new Event("change"),
+        target: trg,
+      };
 
-      trg.dispatchEvent(new Event("change"));
+      panel.changePanel(evt);
 
       expect(panel.validation.invalidities).toContain("Number should be multiple of 3");
     });
