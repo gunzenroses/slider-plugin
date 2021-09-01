@@ -1,7 +1,7 @@
 import { EventDispatcher } from "./eventDispatcher";
 import { IModelData, TSettings } from "utils/types";
 import { applyStepOnValue } from "utils/common";
-import adjustValue from "helpers/adjustData";
+import adjustValue from "helpers/adjustValue";
 
 interface IModel {
   fromModelChangeView: EventDispatcher;

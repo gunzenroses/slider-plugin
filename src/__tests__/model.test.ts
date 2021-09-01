@@ -5,7 +5,7 @@
 import { IModel, SliderModel } from "mvp/model";
 import { sliderData } from "mvp/data";
 import { TSettings } from "utils/types";
-import adjustValue from "helpers/adjustData";
+import adjustValue from "helpers/adjustValue";
 
 describe("class SliderModel", () => {
   let container: HTMLElement;
