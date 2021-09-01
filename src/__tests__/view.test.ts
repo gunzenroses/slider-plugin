@@ -42,7 +42,8 @@ describe("class SliderView", () => {
     test("notify fromViewSelectThumb subscribers when sliderContainer is clicked", () => {
       const spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
 
-      view.sliderContainer.dispatchEvent(new Event("click"));
+      view.sliderContainer.dispatchEvent(new Event("pointerdown"));
+      view.sliderContainer.dispatchEvent(new Event("pointerup"));
 
       expect(spyOnClick).toHaveBeenCalledTimes(1);
     });
@@ -111,7 +112,7 @@ describe("class SliderView", () => {
   });
 
   describe("method render()", () => {
-    test("init rendering of view elements", () => {
+    test("init rendering view elements", () => {
       expect(view.sliderContainer).toBeDefined();
       expect(view.sliderTrack).toBeDefined();
       expect(view.sliderRange).toBeDefined();

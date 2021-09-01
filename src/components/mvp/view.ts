@@ -27,13 +27,14 @@ interface IView {
 
   init(settings: TSettings): void;
   change(object: HTMLElement, newThumbCurrent: number): void;
+  selectThumb(e: PointerEvent): void;
   dragThumbStart(e: PointerEvent): void;
   dragThumbEnd(): void;
 }
 
 class SliderView implements IView {
   //in constructor
-  parentContainer: HTMLElement;
+  private parentContainer: HTMLElement;
   fromViewSelectThumb: EventDispatcher;
   fromViewDragThumb: EventDispatcher;
 
@@ -50,7 +51,7 @@ class SliderView implements IView {
   scale!: HTMLElement;
   dragObj!: EventTarget | null;
 
-  private selectThumbHandler!: { (ev: MouseEvent): void };
+  private selectThumbHandler!: { (ev: PointerEvent): void };
   private dragThumbHandler!: { (ev: PointerEvent): void };
   private moveThumbHandler!: { (ev: PointerEvent): void };
   private dropThumbHandler!: () => void;
@@ -94,7 +95,7 @@ class SliderView implements IView {
   }
 
   private enable(): void {
-    this.sliderContainer.addEventListener("click", this.selectThumbHandler);
+    this.sliderContainer.addEventListener("pointerup", this.selectThumbHandler);
     this.addListenerPointerDown();
   }
 
@@ -117,18 +118,18 @@ class SliderView implements IView {
   }
 
   private listenMoveAndUp(): void {
-    this.sliderContainer.removeEventListener("click", this.selectThumbHandler);
+    this.sliderContainer.removeEventListener("pointerup", this.selectThumbHandler);
     document.addEventListener("pointermove", this.moveThumbHandler);
     document.addEventListener("pointerup", this.dropThumbHandler);
   }
 
   private removeListenerPointerMoveAndUp(): void {
-    this.sliderContainer.addEventListener("click", this.selectThumbHandler);
+    this.sliderContainer.addEventListener("pointerup", this.selectThumbHandler);
     document.removeEventListener("pointermove", this.moveThumbHandler);
     document.removeEventListener("pointerup", this.dropThumbHandler);
   }
 
-  private selectThumb(e: MouseEvent): void {
+  selectThumb(e: PointerEvent): void {
     e.target !== this.sliderThumb.element && e.target !== this.sliderThumbSecond.element
       ? this.fromViewSelectThumb.notify(e)
       : null;
@@ -180,7 +181,7 @@ class SliderView implements IView {
 
   private render(): void {
     this.parentContainer.innerHTML = "";
-    this.sliderContainer = new SliderContainer(this).sliderContainer;
+    this.sliderContainer = new SliderContainer(this, this.parentContainer).sliderContainer;
     this.sliderTrack = new SliderTrack(this).sliderTrack;
     this.scale = new SliderScale(this).scale;
 

@@ -72,10 +72,8 @@ describe("SliderPresenter", () => {
       });
 
       test("drag thumbFirst -> notify model to change thumbFirst", () => {
-        const event = new MouseEvent("mousemove", {
-          clientX: 100,
-          clientY: 100,
-        });
+        const event = new MouseEvent("mousemove", { clientX: 100, clientY: 100 });
+        presenter.view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
         presenter.view.sliderThumb.element.dispatchEvent(event);
         const spyModelUpdate = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
 
@@ -86,10 +84,8 @@ describe("SliderPresenter", () => {
 
       test("drag thumbSecond -> notify model to change thumbSecond", () => {
         presenter.model.setData("range", true);
-        const event = new MouseEvent("mousemove", {
-          clientX: 300,
-          clientY: 300,
-        });
+        const event = new MouseEvent("mousemove", { clientX: 300, clientY: 300 });
+        presenter.view.sliderThumbSecond.element.dispatchEvent(new Event("pointerdown"));
         presenter.view.sliderThumbSecond.element.dispatchEvent(event);
         const spyModelUpdate = jest
           .spyOn(presenter.model, "changeThumbSecond")
@@ -101,11 +97,10 @@ describe("SliderPresenter", () => {
       });
 
       test("drag thumbSecond + new position not in the range -> no changes", () => {
-        const event = new MouseEvent("mousemove", {
-          clientX: 50,
-          clientY: 50,
-        });
+        const event = new MouseEvent("mousemove", { clientX: 50, clientY: 50 });
+        presenter.view.sliderThumbSecond.element.dispatchEvent(new Event("pointerdown"));
         presenter.view.sliderThumbSecond.element.dispatchEvent(event);
+
         const spyModelFirstUpd = jest.spyOn(presenter.model, "changeThumb").mockImplementation();
         const spyModelSecondUpd = jest
           .spyOn(presenter.model, "changeThumbSecond")

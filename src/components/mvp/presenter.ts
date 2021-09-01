@@ -168,7 +168,7 @@ class SliderPresenter implements IPresenter {
   }
 
   //all values are in %
-  private dragThumb(e: PointerEvent): void {
+  dragThumb(e: PointerEvent): void {
     const position = this.countPosition(e);
     this.ifRange ? this.dragThumbRangeTrue(position) : this.dragThumbRangeFalse(position);
   }
