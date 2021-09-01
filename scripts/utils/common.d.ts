@@ -1,0 +1,12 @@
+declare function appendCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement;
+declare function afterCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement;
+declare function applyRestrictions(value: number): number;
+declare function applyStepOnPercents(value: number, step: number): number;
+declare function applyStepOnValue(value: number, max: number, min: number, step: number): number;
+declare function commonDivider(basicNum: number, changeNum: number): number;
+declare function changeValueToPercents(value: number, max: number, min: number): number;
+declare function fromValueToPX(value: number, max: number, min: number, containerSize: number): number;
+declare function findPosition(thisElement: HTMLElement, ifHorizontal: boolean, containerSize: number): number;
+declare function percentsToValue(valueInPercents: number, max: number, min: number): string;
+declare function valueToPercentsApplyStep(value: number, max: number, min: number, step: number): number;
+export { afterCustomElement, appendCustomElement, applyRestrictions, applyStepOnPercents, applyStepOnValue, changeValueToPercents, commonDivider, findPosition, fromValueToPX, percentsToValue, valueToPercentsApplyStep, };
