@@ -1,4 +1,3 @@
-import { throttle } from "throttle-typescript";
 import { IPresenter } from "mvp/presenter";
 import checkValidity from "helpers/checkValidity";
 import { TSettings, TPanelParam, TFunc } from "utils/types";
@@ -78,7 +77,7 @@ class ConfigurationPanel implements IPanel {
   }
 
   private enable(): void {
-    this.panelItems.addEventListener("change", throttle(this.changePanelHandler, 200));
+    this.panelItems.addEventListener("change", this.changePanelHandler);
 
     this.presenter.fromPresenterUpdate.add(this.updateHandler as TFunc);
     this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler as TFunc);
