@@ -178,8 +178,8 @@ class SliderView implements IView {
   private render(): void {
     this.parentContainer.innerHTML = "";
     this.sliderContainer = new SliderContainer(this, this.parentContainer).sliderContainer;
-    this.sliderTrack = new SliderTrack(this).sliderTrack;
-    this.scale = new SliderScale(this).scale;
+    this.sliderTrack = new SliderTrack(this).element;
+    this.scale = new SliderScale(this).element;
 
     this.sliderRange = new SliderRange(this);
     this.sliderThumb = new SliderThumb(this, "thumb_first");
