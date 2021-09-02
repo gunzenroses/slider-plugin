@@ -7,6 +7,8 @@ jest.config.js
 babel.config.js
 tsconfig.json
 tscondif.prod.js
-webpack.config.js
+webpack.common.js
+webpack.dev.js
+webpack.prod.js
 index.js
-/src/jquery.slider-plugin.js
+/src/slider-plugin.js
