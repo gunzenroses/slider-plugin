@@ -3,16 +3,16 @@ import ISubview from "subview/subviewElement";
 import { percentsToValue } from "utils/common";
 
 export default class SliderTooltip implements ISubview {
-  className: string;
+  private className: string;
+  private parentNode!: HTMLElement;
   element!: HTMLElement;
-  parentNode!: HTMLElement;
 
   constructor(that: IView, className: string) {
     this.className = className;
     this.init(that);
   }
 
-  init(that: IView): HTMLElement {
+  private init(that: IView): HTMLElement {
     this.createChildren(that);
     this.make(that);
     this.change(that);
@@ -20,7 +20,7 @@ export default class SliderTooltip implements ISubview {
     return this.element;
   }
 
-  createChildren(that: IView): void {
+  private createChildren(that: IView): void {
     this.parentNode =
       this.className === "tooltip_first"
         ? that.sliderThumb.element
@@ -49,7 +49,7 @@ export default class SliderTooltip implements ISubview {
     return this.element;
   }
 
-  append(): void {
+  private append(): void {
     this.parentNode.append(this.element);
   }
 }

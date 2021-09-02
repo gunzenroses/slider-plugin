@@ -3,14 +3,14 @@ import ISubview from "subview/subviewElement";
 
 export default class SliderThumb implements ISubview {
   element!: HTMLElement;
-  className: string;
+  private className: string;
 
   constructor(that: IView, className: string) {
     this.className = className;
     this.init(that);
   }
 
-  init(that: IView): HTMLElement {
+  private init(that: IView): HTMLElement {
     this.make(that);
     this.change(that);
     that.sliderTrack.append(this.element);

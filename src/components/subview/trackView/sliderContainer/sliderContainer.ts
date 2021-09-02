@@ -7,7 +7,7 @@ export default class SliderContainer {
     this.init(that, container);
   }
 
-  init(that: IView, container: HTMLElement): HTMLElement {
+  private init(that: IView, container: HTMLElement): HTMLElement {
     const sliderContainerClass = that.settings.ifHorizontal
       ? "slider__content"
       : "slider__content_vertical";

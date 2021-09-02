@@ -1,21 +1,10 @@
 import { IView } from "mvp/view";
+import ISubview from "subview/subviewElement";
 import { commonDivider, fromValueToPX } from "utils/common";
+import { TScaleItem, TScaleOptions } from "utils/types";
 
-type TScaleItem = {
-  width: number;
-  stepPerDiv: number;
-  segmentClass: string;
-  spanClass: string;
-};
-
-type TOptionsItem = {
-  item: number;
-  index: number;
-  that: IView;
-};
-
-export default class SliderScale {
-  scale!: HTMLElement;
+export default class SliderScale implements ISubview {
+  element!: HTMLElement;
   scaleItemRow!: number[];
   containerSize!: number;
   tailContainer!: number;
@@ -35,30 +24,32 @@ export default class SliderScale {
 
   init(that: IView): HTMLElement {
     this.make(that);
-    this.changeScale(that);
-    this.scale.append(this.scaleItems);
-    that.sliderContainer.append(this.scale);
-    return this.scale;
+    this.change(that);
+    this.element.append(this.scaleItems);
+    that.sliderContainer.append(this.element);
+    return this.element;
   }
 
-  make(that: IView): void {
+  make(that: IView): HTMLElement {
     const scaleClass: string = that.settings.ifHorizontal
       ? "slider__scale"
       : "slider__scale_vertical";
     const totalClass = that.settings.scale ? [scaleClass] : [scaleClass, "disabled"];
-    this.scale = document.createElement("div");
-    this.scale.dataset.name = "scale";
+    this.element = document.createElement("div");
+    this.element.dataset.name = "scale";
     totalClass.forEach((item) => {
-      this.scale.classList.add(item);
+      this.element.classList.add(item);
     });
+    return this.element;
   }
 
-  changeScale(that: IView): void {
+  change(that: IView): HTMLElement {
     this.countContainerSize(that);
     this.makeScaleRow(that);
     this.makeScaleContainer(that);
     this.makeElementClasses(that);
     this.scaleItems.innerHTML = this.makeScaleItems(that) + this.makeMaxItem(that);
+    return this.element;
   }
 
   private countContainerSize(that: IView): void {
@@ -108,7 +99,7 @@ export default class SliderScale {
       .join(" ");
   }
 
-  createScaleItem(options: TOptionsItem): string {
+  createScaleItem(options: TScaleOptions): string {
     const { item, index, that } = options;
     const itemClass: string = that.settings.ifHorizontal ? "scale__point" : "scale__point_vertical";
     const special: string =
