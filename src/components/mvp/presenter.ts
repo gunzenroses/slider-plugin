@@ -180,12 +180,13 @@ class SliderPresenter implements IPresenter {
   private dragThumbRangeTrue(newThumbCurrent: number): void {
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
     if (
-      (this.view.dragObj as HTMLElement).classList.contains("thumb_first") &&
+      (this.view.dragObj as HTMLElement).classList === this.view.sliderThumb.element.classList &&
       newThumbCurrent <= secondThumbPercent - 1
     ) {
       this.modelThumbFirst(newThumbCurrent);
     } else if (
-      (this.view.dragObj as HTMLElement).classList.contains("thumb_second") &&
+      (this.view.dragObj as HTMLElement).classList ===
+        this.view.sliderThumbSecond.element.classList &&
       newThumbCurrent >= firstThumbPercent + 1
     ) {
       this.modelThumbSecond(newThumbCurrent);
