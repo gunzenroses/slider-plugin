@@ -34,8 +34,7 @@ Run production mode
 
 
 will be updated soon:
-- eslint
 - unit tests coverage
-- packed as jQuery plugin (with rollup and aglify.js)
+- documentation
 - UML diagram (MVP + Observer)
 
