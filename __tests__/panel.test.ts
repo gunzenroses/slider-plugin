@@ -41,18 +41,16 @@ describe("Panel for double slider", () => {
       expect(spyOnUpdatePanel).toHaveBeenCalledTimes(1);
     });
 
-    test("change of thumb in presenter should update data in panel", () => {
-      panel.init();
-      panel.presenter.fromPresenterThumbUpdate.notify();
+    test("change of thumbFirst in presenter -> change thumbFirst in panel", () => {
+      panel.presenter.fromPresenterThumbUpdate.notify(18);
 
-      expect(panel.data.currentFirst).toBe(panel.presenter.data.currentFirst);
+      expect(panel.data.currentFirst).toBe(18);
     });
 
-    test("change of thumbSecond in presenter should thumbSecond data in panel", () => {
-      panel.init();
-      panel.presenter.fromPresenterThumbSecondUpdate.notify();
+    test("change of thumbSecond in presenter -> change thumbSecond in panel", () => {
+      panel.presenter.fromPresenterThumbSecondUpdate.notify(53);
 
-      expect(panel.data.currentSecond).toBe(panel.presenter.data.currentSecond);
+      expect(panel.data.currentSecond).toBe(53);
     });
   });
 
@@ -84,6 +82,40 @@ describe("Panel for double slider", () => {
       jest.runAllTimers();
 
       expect(spyPresenter).toHaveBeenCalledTimes(1);
+    });
+
+    describe("should assign changingObject", () => {
+      test("case currentFirst", () => {
+        const elm = document.createElement("input");
+        elm.setAttribute("name", "currentFirst");
+        elm.setAttribute("type", "number");
+        elm.setAttribute("value", "33%");
+
+        const evt = {
+          ...new Event("change"),
+          target: elm,
+        };
+
+        panel.changePanel(evt);
+
+        expect(panel.presenter.changingObject).toBe(panel.presenter.view.sliderThumb.element);
+      });
+
+      test("case currentSecond", () => {
+        const elm = document.createElement("input");
+        elm.setAttribute("name", "currentSecond");
+        elm.setAttribute("type", "number");
+        elm.setAttribute("value", "66%");
+
+        const evt = {
+          ...new Event("change"),
+          target: elm,
+        };
+
+        panel.changePanel(evt);
+
+        expect(panel.presenter.changingObject).toBe(panel.presenter.view.sliderThumbSecond.element);
+      });
     });
   });
 
