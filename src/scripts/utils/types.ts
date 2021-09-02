@@ -1,12 +1,10 @@
+import { IView } from "mvp/view";
+
 type IModelData = boolean | number | string;
 
-type TScale = {
-  stepPerDiv: number;
-};
+type TListType = number | PointerEvent | null;
 
-type TSettings = {
-  [key: string]: any;
-};
+type TListener = (arg1: TListType) => void;
 
 type TRangeStyle = {
   newThumbCurrent: number;
@@ -14,10 +12,6 @@ type TRangeStyle = {
   ifRange: boolean;
   ifThumbFirst: boolean;
 };
-
-type TListType = number | PointerEvent | null;
-
-type TListener = (arg1: TListType) => void;
 
 type TPanelParam = {
   name: string;
@@ -27,7 +21,39 @@ type TPanelParam = {
   options?: Array<string>;
 };
 
+type TSettings = {
+  [key: string]: any;
+};
+
+type TScale = {
+  stepPerDiv: number;
+};
+
+type TScaleItem = {
+  width: number;
+  stepPerDiv: number;
+  segmentClass: string;
+  spanClass: string;
+};
+
+type TScaleOptions = {
+  item: number;
+  index: number;
+  that: IView;
+};
+
 type TFuncArg = PointerEvent | number;
 type TFunc = (arg1?: TFuncArg) => void;
 
-export { TScale, TSettings, IModelData, TRangeStyle, TListener, TPanelParam, TFuncArg, TFunc };
+export {
+  TScale,
+  TSettings,
+  IModelData,
+  TRangeStyle,
+  TListener,
+  TPanelParam,
+  TScaleOptions,
+  TScaleItem,
+  TFuncArg,
+  TFunc,
+};
