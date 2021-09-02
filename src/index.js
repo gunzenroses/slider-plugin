@@ -1,8 +1,8 @@
-import sliderPlugin from "./jquery.slider-plugin";
+import sliderMaker from "./slider-plugin";
 import "./index.css";
 
 window.onload = function () {
-  $("#horizontal").sliderPlugin(
+  $("#horizontal").sliderMaker(
     {
       min: 10,
       max: 200,
@@ -14,7 +14,7 @@ window.onload = function () {
     true
   );
 
-  $("#vertical").sliderPlugin({
+  $("#vertical").sliderMaker({
     orientation: "vertical",
     step: 6,
     max: 140,
@@ -25,7 +25,7 @@ window.onload = function () {
     tooltip: false,
   });
 
-  $("#default").sliderPlugin({
+  $("#default").sliderMaker({
     range: false,
   }, true);
 }
