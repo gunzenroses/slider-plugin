@@ -94,14 +94,18 @@ class ConfigurationPanel implements IPanel {
   }
 
   private updateThumb(val?: number): void {
-    this.currentFirstInput.value = val ? val : this.data.currentFirst.toString();
+    val
+      ? ((this.currentFirstInput.value = val.toString()), (this.data.currentFirst = val))
+      : (this.currentFirstInput.value = this.data.currentFirst.toString());
     this.currentFirstInput.min = this.data.min.toString();
     this.currentFirstInput.max = this.data.currentSecond.toString();
     this.currentFirstInput.step = this.data.step.toString();
   }
 
   private updateThumbSecond(val?: number): void {
-    this.currentSecondInput.value = val ? val : this.data.currentSecond.toString();
+    val
+      ? ((this.currentSecondInput.value = val.toString()), (this.data.currentSecond = val))
+      : (this.currentSecondInput.value = this.data.currentSecond.toString());
     this.currentSecondInput.min = this.data.currentFirst.toString();
     this.currentSecondInput.max = this.data.max.toString();
     this.currentSecondInput.step = this.data.step.toString();
