@@ -7,7 +7,7 @@ import {
 } from "utils/common";
 
 describe("applyStepOnPercents()", () => {
-  test("casual case for value and step", () => {
+  test("casual case for 'value' and 'step'", () => {
     const val = 38;
     const step = 3;
 
@@ -17,7 +17,7 @@ describe("applyStepOnPercents()", () => {
     expect(num).toBe(0);
   });
 
-  test("case when value = 100", () => {
+  test("case when 'value' = 100", () => {
     const val = 100;
     const step = 3;
 
@@ -52,7 +52,7 @@ describe("applyStepOnValue", () => {
     expect(rtn).toBe(min);
   });
 
-  test("return 'max' when (value > max)", () => {
+  test("return 'max' when ('value' > 'max')", () => {
     const value = 130;
 
     const rtn = applyStepOnValue(value, max, min, step);
@@ -60,7 +60,7 @@ describe("applyStepOnValue", () => {
     expect(rtn).toBe(max);
   });
 
-  describe("when value % step != 0", () => {
+  describe("when 'value' % 'step' != 0", () => {
     test("return smaller closest stepMatching number", () => {
       const value = 30;
       const less = Math.floor((value - min) / step);
@@ -81,9 +81,20 @@ describe("applyStepOnValue", () => {
       expect(rtn).toBe(exp);
     });
 
-    test("return max when closest stepMatching number is bigger than max", () => {
+    test("return 'max' when closest stepMatching number is bigger than 'max'", () => {
       const max = 31;
       const value = 31;
+
+      const rtn = applyStepOnValue(value, max, min, step);
+
+      expect(rtn).toBe(max);
+    });
+
+    test("return 'max' when  closest stepMatching number is 'max'", () => {
+      const step = 3;
+      const min = 1;
+      const max = 100;
+      const value = 99;
 
       const rtn = applyStepOnValue(value, max, min, step);
 
@@ -120,17 +131,35 @@ describe("findPosition()", () => {
     },
   } as HTMLElement;
 
+  const element2 = document.createElement("div");
+
   const container = 400;
 
-  test("find position of thumb element for horizontal slider", () => {
-    const pos = findPosition(element, true, container);
+  describe("for horizontal slider", () => {
+    test("thumb element", () => {
+      const pos = findPosition(element, true, container);
 
-    expect(pos).toBeDefined();
+      expect(pos).toBeDefined();
+    });
+
+    test("thumb element without style", () => {
+      const pos = findPosition(element2, true, container);
+
+      expect(pos).toBeDefined();
+    });
   });
 
-  test("find position of thumb element for vertical slider", () => {
-    const pos = findPosition(element, false, container);
+  describe("for vertical slider", () => {
+    test("thumb element", () => {
+      const pos = findPosition(element, false, container);
 
-    expect(pos).toBeDefined();
+      expect(pos).toBeDefined();
+    });
+
+    test("thumb element without style", () => {
+      const pos = findPosition(element2, false, container);
+
+      expect(pos).toBeDefined();
+    });
   });
 });

@@ -35,7 +35,7 @@ function applyStepOnValue(value: number, max: number, min: number, step: number)
   const realNumberOfSteps =
     (value - min) % step > step / 2 ? Math.ceil(numberOfSteps) : Math.floor(numberOfSteps);
   const valueInSteps = realNumberOfSteps * step + min;
-  const realValue = valueInSteps > max ? max : valueInSteps;
+  const realValue = valueInSteps >= max ? max : valueInSteps;
   return realValue;
 }
 
