@@ -51,7 +51,7 @@ export default function adjustValue(name: string, value: IModelData, data: TSett
       ? min
       : value > currentSecond
       ? currentSecond
-      : value >= min && value <= currentSecond
+      : value <= currentSecond
       ? applyStepOnValue(value, max, min, step)
       : min;
   }
@@ -61,7 +61,7 @@ export default function adjustValue(name: string, value: IModelData, data: TSett
       ? currentFirst
       : value > max
       ? max
-      : value >= currentFirst && value <= max
+      : value <= max
       ? applyStepOnValue(value, max, min, step)
       : currentFirst;
   }
