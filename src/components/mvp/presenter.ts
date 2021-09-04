@@ -155,11 +155,7 @@ class SliderPresenter implements IPresenter {
   }
 
   private findClosestThumb(newPlace: number, thumbPlace: number): void {
-    newPlace < thumbPlace
-      ? this.modelThumbFirst(newPlace)
-      : newPlace > thumbPlace
-      ? this.modelThumbSecond(newPlace)
-      : null;
+    newPlace < thumbPlace ? this.modelThumbFirst(newPlace) : this.modelThumbSecond(newPlace);
   }
 
   //all values are in %
