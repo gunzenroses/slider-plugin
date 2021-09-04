@@ -17,7 +17,6 @@ interface IPanel {
 class ConfigurationPanel implements IPanel {
   presenter: IPresenter;
   panelContainer: HTMLElement;
-  private parentContainer: HTMLElement;
   private panelItems: HTMLElement;
 
   data!: TSettings;
@@ -34,8 +33,7 @@ class ConfigurationPanel implements IPanel {
   updateThumbSecondHandler!: { (number: number): void };
 
   constructor(container: HTMLElement, presenter: IPresenter) {
-    this.parentContainer = container;
-    this.panelContainer = afterCustomElement("div", "panel", this.parentContainer);
+    this.panelContainer = afterCustomElement("div", "panel", container);
     this.panelItems = appendCustomElement("div", "panel__items", this.panelContainer);
     this.presenter = presenter;
     this.init();
@@ -95,7 +93,9 @@ class ConfigurationPanel implements IPanel {
 
   private updateThumb(val?: number): void {
     val
-      ? ((this.currentFirstInput.value = val.toString()), (this.data.currentFirst = val))
+      ? ((this.currentFirstInput.value = val.toString()),
+        (this.data.currentFirst = val),
+        (this.currentSecondInput.min = val.toString()))
       : (this.currentFirstInput.value = this.data.currentFirst.toString());
     this.currentFirstInput.min = this.data.min.toString();
     this.currentFirstInput.max = this.data.currentSecond.toString();
@@ -104,7 +104,9 @@ class ConfigurationPanel implements IPanel {
 
   private updateThumbSecond(val?: number): void {
     val
-      ? ((this.currentSecondInput.value = val.toString()), (this.data.currentSecond = val))
+      ? ((this.currentSecondInput.value = val.toString()),
+        (this.data.currentSecond = val),
+        (this.currentFirstInput.max = val.toString()))
       : (this.currentSecondInput.value = this.data.currentSecond.toString());
     this.currentSecondInput.min = this.data.currentFirst.toString();
     this.currentSecondInput.max = this.data.max.toString();
