@@ -4,16 +4,12 @@
 
 import { ConfigurationPanel } from "panel/panel";
 import { SliderPresenter } from "mvp/presenter";
-import { SliderModel } from "mvp/model";
-import { SliderView } from "mvp/view";
 import { sliderData } from "mvp/data";
 
 const container = document.createElement("div");
 document.body.append(container);
 
-const model = new SliderModel(container, sliderData);
-const view = new SliderView(container);
-const presenter = new SliderPresenter(model, view);
+const presenter = new SliderPresenter(container, sliderData);
 const panel = new ConfigurationPanel(container, presenter);
 
 describe("Panel for double slider", () => {
@@ -135,9 +131,7 @@ describe("Panel for double slider", () => {
 });
 
 const newData = { ...sliderData, range: false, tooltip: false, scale: false };
-const modelS = new SliderModel(container, newData);
-const viewS = new SliderView(container);
-const presenterS = new SliderPresenter(modelS, viewS);
+const presenterS = new SliderPresenter(container, newData);
 const panelS = new ConfigurationPanel(container, presenterS);
 describe("Panel for single slider", () => {
   test("should disable input for currentSecond", () => {
