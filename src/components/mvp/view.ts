@@ -1,4 +1,4 @@
-import { EventDispatcher } from "./eventDispatcher";
+import { EventDispatcher, ISender } from "./eventDispatcher";
 import SliderContainer from "subview/trackView/sliderContainer/sliderContainer";
 import SliderRange from "subview/trackView/sliderRange/sliderRange";
 import SliderTrack from "subview/trackView/sliderTrack/sliderTrack";
@@ -21,8 +21,8 @@ interface IView {
   tooltipSecond: ISubview;
   dragObj: HTMLElement | null;
 
-  fromViewSelectThumb: EventDispatcher;
-  fromViewDragThumb: EventDispatcher;
+  fromViewSelectThumb: ISender;
+  fromViewDragThumb: ISender;
 
   init(settings: TSettings): void;
   change(object: HTMLElement, newThumbCurrent: number): void;
@@ -34,8 +34,8 @@ interface IView {
 class SliderView implements IView {
   //in constructor
   private parentContainer: HTMLElement;
-  fromViewSelectThumb: EventDispatcher;
-  fromViewDragThumb: EventDispatcher;
+  fromViewSelectThumb: ISender;
+  fromViewDragThumb: ISender;
 
   //to manipulate the DOM
   settings!: TSettings;
@@ -158,17 +158,17 @@ class SliderView implements IView {
     this.updateElements();
   }
 
-  private updateElements() {
+  private updateElements(): void {
     this.sliderRange.change(this);
     this.settings.range ? this.renderDouble() : this.renderSingle();
   }
 
-  private renderSingle() {
+  private renderSingle(): void {
     this.sliderThumb.change(this);
     this.tooltipFirst.change(this);
   }
 
-  private renderDouble() {
+  private renderDouble(): void {
     this.sliderThumb.change(this);
     this.sliderThumbSecond.change(this);
     this.tooltipFirst.change(this);
