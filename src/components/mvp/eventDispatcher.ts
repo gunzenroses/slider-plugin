@@ -3,7 +3,7 @@ import { TFunc, TFuncArg } from "utils/types";
 interface ISender {
   add(listener: TFunc): void;
   remove(listener: TFunc): void;
-  notify(args: number | Event): void;
+  notify(args?: number | Event): void;
 }
 
 class EventDispatcher implements ISender {
