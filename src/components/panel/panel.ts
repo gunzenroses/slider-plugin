@@ -1,6 +1,6 @@
 import { IPresenter } from "mvp/presenter";
 import checkValidity from "helpers/checkValidity";
-import { TSettings, TPanelParam, TFunc } from "utils/types";
+import { TSettings, TPanelParam, TFunc, IModelData } from "utils/types";
 import { afterCustomElement, appendCustomElement } from "utils/common";
 
 interface IPanel {
@@ -10,14 +10,13 @@ interface IPanel {
 
   init(): void;
   render(data: TSettings): void;
-  changePanel(event: Event): void;
+  changePanel(e: Event): void;
   updatePanel(): void;
 }
 
 class ConfigurationPanel implements IPanel {
   presenter: IPresenter;
   panelContainer: HTMLElement;
-  private parentContainer: HTMLElement;
   private panelItems: HTMLElement;
 
   data!: TSettings;
@@ -29,13 +28,12 @@ class ConfigurationPanel implements IPanel {
   private currentSecondInput!: HTMLInputElement;
 
   updateHandler!: { (data: TSettings): void };
-  changePanelHandler!: { (event: Event): void };
-  updateThumbHandler!: { (number: number): void };
-  updateThumbSecondHandler!: { (number: number): void };
+  changePanelHandler!: { (evt: Event): void };
+  updateThumbHandler!: { (num: string): void };
+  updateThumbSecondHandler!: { (num: string): void };
 
   constructor(container: HTMLElement, presenter: IPresenter) {
-    this.parentContainer = container;
-    this.panelContainer = afterCustomElement("div", "panel", this.parentContainer);
+    this.panelContainer = afterCustomElement("div", "panel", container);
     this.panelItems = appendCustomElement("div", "panel__items", this.panelContainer);
     this.presenter = presenter;
     this.init();
@@ -93,22 +91,31 @@ class ConfigurationPanel implements IPanel {
     this.updateThumbSecond();
   }
 
-  private updateThumb(val?: number): void {
-    this.currentFirstInput.value = val ? val : this.data.currentFirst.toString();
-    this.currentFirstInput.min = this.data.min.toString();
-    this.currentFirstInput.max = this.data.currentSecond.toString();
-    this.currentFirstInput.step = this.data.step.toString();
+  private updateThumb(val?: string): void {
+    val
+      ? ((this.currentFirstInput.value = val),
+        (this.data.currentFirst = parseInt(val)),
+        (this.currentSecondInput.min = val))
+      : (this.currentFirstInput.value = this.data.currentFirst);
+    console.log(this.currentFirstInput.value);
+    this.currentFirstInput.min = this.data.min;
+    this.currentFirstInput.max = this.data.currentSecond;
+    this.currentFirstInput.step = this.data.step;
   }
 
-  private updateThumbSecond(val?: number): void {
-    this.currentSecondInput.value = val ? val : this.data.currentSecond.toString();
-    this.currentSecondInput.min = this.data.currentFirst.toString();
-    this.currentSecondInput.max = this.data.max.toString();
-    this.currentSecondInput.step = this.data.step.toString();
+  private updateThumbSecond(val?: string): void {
+    val
+      ? ((this.currentSecondInput.value = val),
+        (this.data.currentSecond = val),
+        (this.currentFirstInput.max = val))
+      : (this.currentSecondInput.value = this.data.currentSecond);
+    this.currentSecondInput.min = this.data.currentFirst;
+    this.currentSecondInput.max = this.data.max;
+    this.currentSecondInput.step = this.data.step;
     this.data.range
       ? (this.currentSecondInput.disabled = false)
       : ((this.currentSecondInput.disabled = true),
-        (this.currentSecondInput.value = this.data.max.toString()));
+        (this.currentSecondInput.value = this.data.max));
   }
 
   private updateStep(): void {
@@ -149,7 +156,7 @@ class ConfigurationPanel implements IPanel {
         : null;
   }
 
-  private modelData(type: string, name: string, data: string | boolean | number): void {
+  private modelData(type: string, name: string, data: IModelData): void {
     type === "number"
       ? setTimeout(() => {
           this.presenter.modelData(name, data);

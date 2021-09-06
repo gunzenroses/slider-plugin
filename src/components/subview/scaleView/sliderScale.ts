@@ -6,9 +6,7 @@ import { TScaleItem, TScaleOptions } from "utils/types";
 export default class SliderScale implements ISubview {
   element!: HTMLElement;
   scaleItemRow!: number[];
-  containerSize!: number;
   tailContainer!: number;
-  scaleContainer!: HTMLDivElement;
   item!: TScaleItem;
   scaleLength!: number;
   scaleItems!: HTMLDivElement;
@@ -71,9 +69,7 @@ export default class SliderScale implements ISubview {
   private makeScaleContainer(that: IView) {
     const lengthOfLeft = that.settings.max - this.scaleItemRow[this.scaleItemRow.length - 1];
     const newContainerSize =
-      this.scaleLength -
-      fromValueToPX(lengthOfLeft, that.settings.max, that.settings.min, this.scaleLength) -
-      1;
+      this.scaleLength - fromValueToPX(lengthOfLeft, that.settings, this.scaleLength) - 1;
     this.tailContainer = Math.floor(this.scaleLength - newContainerSize);
 
     const scaleItemClass = that.settings.ifHorizontal ? "scale__row" : "scale__row_vertical";
@@ -84,12 +80,12 @@ export default class SliderScale implements ISubview {
       : (this.scaleItems.style.height = newContainerSize + "px");
   }
 
-  makeElementClasses(that: IView): void {
+  private makeElementClasses(that: IView): void {
     this.segmentClass = that.settings.ifHorizontal ? "scale__segment" : "scale__segment_vertical";
     this.spanClass = that.settings.ifHorizontal ? "scale__number" : "scale__number_vertical";
   }
 
-  makeScaleItems(that: IView): string {
+  private makeScaleItems(that: IView): string {
     this.itemWidth = Math.round(this.scaleLength / this.scaleItemRow.length);
     this.stepPerDivValue = that.settings.stepPerDiv ? that.settings.stepPerDiv : 1;
     this.maxItem = this.scaleItemRow[this.scaleItemRow.length - 1];
@@ -99,7 +95,7 @@ export default class SliderScale implements ISubview {
       .join(" ");
   }
 
-  createScaleItem(options: TScaleOptions): string {
+  private createScaleItem(options: TScaleOptions): string {
     const { item, index, that } = options;
     const itemClass: string = that.settings.ifHorizontal ? "scale__point" : "scale__point_vertical";
     const special: string =
@@ -125,7 +121,7 @@ export default class SliderScale implements ISubview {
     }
   }
 
-  makeMaxItem(that: IView): string {
+  private makeMaxItem(that: IView): string {
     const maxType: string = that.settings.ifHorizontal ? "right" : "top";
     const maxStyle = `position: absolute; ${maxType}: 0;`;
     const scaleItemMax = `<div class=${this.segmentClass} style="${maxStyle}""><span class="${this.spanClass}">${that.settings.max}</span></div>`;

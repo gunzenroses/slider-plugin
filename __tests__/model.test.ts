@@ -8,14 +8,12 @@ import { TSettings } from "utils/types";
 import adjustValue from "helpers/adjustValue";
 
 describe("class SliderModel", () => {
-  let container: HTMLElement;
   let data: TSettings;
   let model: IModel;
 
   beforeEach(() => {
-    container = document.createElement("div");
     data = sliderData;
-    model = new SliderModel(container, data);
+    model = new SliderModel(data);
     jest.restoreAllMocks();
   });
 
@@ -43,17 +41,12 @@ describe("class SliderModel", () => {
     });
 
     test("should change data.CurrentSecond", () => {
-      const num = 5;
+      const currentFirst = data.currentFirst;
+      const num = currentFirst - 5;
 
       model.setData("currentSecond", num);
 
-      expect(model.getData()).toHaveProperty("currentSecond", num);
-    });
-  });
-
-  describe("method getContainerId", () => {
-    test("should return id, which was passed to constructor", () => {
-      expect(model.getContainer()).toEqual(container);
+      expect(model.getData()).toHaveProperty("currentSecond", currentFirst);
     });
   });
 
@@ -103,12 +96,6 @@ describe("class SliderModel", () => {
       model.setData("range", false);
 
       expect(model.getData().currentSecond).toBe(model.getData().max);
-    });
-  });
-
-  describe("method getContainerId()", () => {
-    test("return string with containerId passed into constructor", () => {
-      expect(model.getContainer()).toEqual(container);
     });
   });
 });

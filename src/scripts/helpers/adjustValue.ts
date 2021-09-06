@@ -27,7 +27,7 @@ export default function adjustValue(name: string, value: IModelData, data: TSett
   }
 
   function adjustMin(value: number): number {
-    return value < 0 ? 0 : value <= max - step ? value : 1;
+    return value < 0 ? 0 : value <= max - step ? value : 0;
   }
 
   function adjustMax(value: number): number {
@@ -51,8 +51,8 @@ export default function adjustValue(name: string, value: IModelData, data: TSett
       ? min
       : value > currentSecond
       ? currentSecond
-      : value >= min && value <= currentSecond
-      ? applyStepOnValue(value, max, min, step)
+      : value <= currentSecond
+      ? applyStepOnValue(value, data)
       : min;
   }
 
@@ -61,8 +61,8 @@ export default function adjustValue(name: string, value: IModelData, data: TSett
       ? currentFirst
       : value > max
       ? max
-      : value >= currentFirst && value <= max
-      ? applyStepOnValue(value, max, min, step)
+      : value <= max
+      ? applyStepOnValue(value, data)
       : currentFirst;
   }
 

@@ -1,4 +1,4 @@
-import { EventDispatcher } from "./eventDispatcher";
+import { EventDispatcher, ISender } from "./eventDispatcher";
 import SliderContainer from "subview/trackView/sliderContainer/sliderContainer";
 import SliderRange from "subview/trackView/sliderRange/sliderRange";
 import SliderTrack from "subview/trackView/sliderTrack/sliderTrack";
@@ -21,8 +21,8 @@ interface IView {
   tooltipSecond: ISubview;
   dragObj: HTMLElement | null;
 
-  fromViewSelectThumb: EventDispatcher;
-  fromViewDragThumb: EventDispatcher;
+  fromViewSelectThumb: ISender;
+  fromViewDragThumb: ISender;
 
   init(settings: TSettings): void;
   change(object: HTMLElement, newThumbCurrent: number): void;
@@ -34,8 +34,8 @@ interface IView {
 class SliderView implements IView {
   //in constructor
   private parentContainer: HTMLElement;
-  fromViewSelectThumb: EventDispatcher;
-  fromViewDragThumb: EventDispatcher;
+  fromViewSelectThumb: ISender;
+  fromViewDragThumb: ISender;
 
   //to manipulate the DOM
   settings!: TSettings;
@@ -44,7 +44,6 @@ class SliderView implements IView {
   sliderThumbSecond!: ISubview;
   sliderRange!: ISubview;
   sliderTrack!: HTMLElement;
-  tooltipRow!: ISubview;
   tooltipFirst!: ISubview;
   tooltipSecond!: ISubview;
   scale!: HTMLElement;
@@ -70,16 +69,8 @@ class SliderView implements IView {
 
   private createSettings(settings: TSettings): void {
     this.settings = settings;
-    this.settings.firstPosition = changeValueToPercents(
-      settings.currentFirst,
-      settings.max,
-      settings.min
-    );
-    this.settings.secondPosition = changeValueToPercents(
-      settings.currentSecond,
-      settings.max,
-      settings.min
-    );
+    this.settings.firstPosition = changeValueToPercents(settings.currentFirst, settings);
+    this.settings.secondPosition = changeValueToPercents(settings.currentSecond, settings);
     this.settings.stepPerDiv = this.settings.scale.stepPerDiv;
     this.settings.ifHorizontal = this.settings.orientation === "horizontal";
   }
@@ -120,7 +111,7 @@ class SliderView implements IView {
     document.addEventListener("pointerup", this.dropThumbHandler);
   }
 
-  private removeListenerPointerMoveAndUp(): void {
+  private removeListenerMoveAndUp(): void {
     this.sliderContainer.addEventListener("pointerup", this.selectThumbHandler);
     document.removeEventListener("pointermove", this.moveThumbHandler);
     document.removeEventListener("pointerup", this.dropThumbHandler);
@@ -146,7 +137,7 @@ class SliderView implements IView {
 
   dragThumbEnd(): void {
     (this.dragObj as HTMLElement).style.zIndex = "3";
-    this.removeListenerPointerMoveAndUp();
+    this.removeListenerMoveAndUp();
     this.addListenerPointerDown();
   }
 
@@ -158,17 +149,17 @@ class SliderView implements IView {
     this.updateElements();
   }
 
-  private updateElements() {
+  private updateElements(): void {
     this.sliderRange.change(this);
     this.settings.range ? this.renderDouble() : this.renderSingle();
   }
 
-  private renderSingle() {
+  private renderSingle(): void {
     this.sliderThumb.change(this);
     this.tooltipFirst.change(this);
   }
 
-  private renderDouble() {
+  private renderDouble(): void {
     this.sliderThumb.change(this);
     this.sliderThumbSecond.change(this);
     this.tooltipFirst.change(this);

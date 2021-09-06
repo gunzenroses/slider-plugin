@@ -1,44 +1,32 @@
-import { EventDispatcher } from "./eventDispatcher";
+import { EventDispatcher, ISender } from "./eventDispatcher";
 import { IModelData, TSettings } from "utils/types";
 import { applyStepOnValue } from "utils/common";
 import adjustValue from "helpers/adjustValue";
 
 interface IModel {
-  fromModelChangeView: EventDispatcher;
-  fromModelUpdateData: EventDispatcher;
+  fromModelChangeView: ISender;
+  fromModelUpdateData: ISender;
   setData(name: string, data: IModelData): void;
   getData(): TSettings;
-  getContainer(): HTMLElement;
 }
 
 class SliderModel implements IModel {
-  private container: HTMLElement;
   private data: TSettings;
-  fromModelChangeView: EventDispatcher;
-  fromModelUpdateData: EventDispatcher;
+  fromModelChangeView: ISender;
+  fromModelUpdateData: ISender;
 
-  constructor(container: HTMLElement, settings: TSettings) {
+  constructor(settings: TSettings) {
     this.fromModelChangeView = new EventDispatcher();
     this.fromModelUpdateData = new EventDispatcher();
-    this.container = container;
     this.data = settings;
     this.updateCurrentsWithStep();
   }
 
   private updateCurrentsWithStep(): void {
-    this.data.currentFirst = applyStepOnValue(
-      this.data.currentFirst,
-      this.data.max,
-      this.data.min,
-      this.data.step
-    );
+    this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data);
     this.data.currentSecond = this.data.range
-      ? applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
+      ? applyStepOnValue(this.data.currentSecond, this.data)
       : this.data.max;
-  }
-
-  getContainer(): HTMLElement {
-    return this.container;
   }
 
   getData(): TSettings {
@@ -46,33 +34,25 @@ class SliderModel implements IModel {
   }
 
   setData(name: string, data: IModelData): void {
-    name === "currentFirst"
-      ? this.changeThumb(data as number)
-      : name === "currentSecond"
-      ? this.changeThumbSecond(data as number)
-      : this.changeAll(name, data);
+    this.updateData(name, data);
+    this.updateCurrentsWithStep();
+    this.changeData(name);
   }
 
-  private changeThumb(value: number): void {
-    this.data.currentFirst = applyStepOnValue(value, this.data.max, this.data.min, this.data.step);
-    this.fromModelChangeView.notify(this.data.currentFirst);
-  }
-
-  private changeThumbSecond(value: number): void {
-    this.data.currentSecond = applyStepOnValue(value, this.data.max, this.data.min, this.data.step);
-    this.fromModelChangeView.notify(this.data.currentSecond);
-  }
-
-  private changeAll(name: string, data: IModelData): void {
+  private updateData(name: string, data: IModelData): void {
     const oldData = this.getData();
     if (oldData[name] === data) return;
-
     data = adjustValue(name, data, oldData);
     const newData = { [name]: data };
     this.data = { ...oldData, ...newData };
+  }
 
-    this.updateCurrentsWithStep();
-    this.fromModelUpdateData.notify();
+  private changeData(name: string): void {
+    name === "currentFirst"
+      ? this.fromModelChangeView.notify(this.data.currentFirst)
+      : name === "currentSecond"
+      ? this.fromModelChangeView.notify(this.data.currentSecond)
+      : this.fromModelUpdateData.notify();
   }
 }
 

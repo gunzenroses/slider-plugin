@@ -3,17 +3,13 @@
  */
 
 import { SliderPresenter } from "mvp/presenter";
-import { SliderModel } from "mvp/model";
-import { SliderView } from "mvp/view";
 import { sliderData } from "mvp/data";
 
 const container = document.createElement("div");
 container.innerHTML = "div {width: 400px, height: 400px}";
 document.body.append(container);
 
-const model = new SliderModel(container, sliderData);
-const view = new SliderView(container);
-const presenter = new SliderPresenter(model, view);
+const presenter = new SliderPresenter(container, sliderData);
 
 describe("SliderPresenter", () => {
   beforeEach(() => {
@@ -79,8 +75,7 @@ describe("SliderPresenter", () => {
       });
 
       test("drag thumbSecond -> notify model to change thumbSecond", () => {
-        presenter.model.setData("range", true);
-        const event = new MouseEvent("mousemove", { clientX: 300, clientY: 300 });
+        const event = new MouseEvent("mousemove", { clientX: 250, clientY: 250 });
         presenter.view.sliderThumbSecond.element.dispatchEvent(new Event("pointerdown"));
         presenter.view.sliderThumbSecond.element.dispatchEvent(event);
         const spyModelUpdate = jest.spyOn(presenter.model, "setData").mockImplementation();
@@ -110,7 +105,7 @@ describe("SliderPresenter", () => {
         const spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbUpdate, "notify");
         const spyFromModelChangeView = jest.spyOn(presenter.view, "change").mockImplementation();
 
-        model.fromModelChangeView.notify(value);
+        presenter.model.fromModelChangeView.notify(value);
 
         expect(spyfromModelUpdate).toHaveBeenCalledWith(value);
         expect(spyFromModelChangeView).toHaveBeenCalledWith(
@@ -121,11 +116,11 @@ describe("SliderPresenter", () => {
 
       test("should notify subscribers for changes in currentThumbSecond", () => {
         const value = 18;
-        presenter.changingObject = view.sliderThumbSecond.element;
+        presenter.changingObject = presenter.view.sliderThumbSecond.element;
         const spyfromModelUpdate = jest.spyOn(presenter.fromPresenterThumbSecondUpdate, "notify");
         const spyFromModelChangeView = jest.spyOn(presenter.view, "change").mockImplementation();
 
-        model.fromModelChangeView.notify(value);
+        presenter.model.fromModelChangeView.notify(value);
 
         expect(spyfromModelUpdate).toHaveBeenCalledWith(value);
         expect(spyFromModelChangeView).toHaveBeenCalledWith(
@@ -139,14 +134,14 @@ describe("SliderPresenter", () => {
       test("calls updateView method", () => {
         const spyUpdateView = jest.spyOn(presenter, "updateView");
 
-        model.fromModelUpdateData.notify();
+        presenter.model.fromModelUpdateData.notify();
 
         expect(spyUpdateView).toHaveBeenCalledTimes(1);
       });
       test("notify subscribers", () => {
         const spyfromPresenterUpdate = jest.spyOn(presenter.fromPresenterUpdate, "notify");
 
-        model.fromModelUpdateData.notify();
+        presenter.model.fromModelUpdateData.notify();
 
         expect(spyfromPresenterUpdate).toHaveBeenCalledTimes(1);
       });
@@ -157,16 +152,16 @@ describe("SliderPresenter", () => {
     test("should get data from model", () => {
       presenter.init();
 
-      expect(presenter.data).toEqual(model.getData());
+      expect(presenter.data).toEqual(presenter.model.getData());
     });
 
     test("should initiate view", () => {
-      const spyOnView = jest.spyOn(view, "init");
+      const spyOnView = jest.spyOn(presenter.view, "init");
 
       presenter.init();
 
       expect(spyOnView).toHaveBeenCalledTimes(1);
-      expect(spyOnView).toHaveBeenCalledWith(model.getData());
+      expect(spyOnView).toHaveBeenCalledWith(presenter.model.getData());
     });
   });
 
@@ -174,7 +169,7 @@ describe("SliderPresenter", () => {
     test("should call model.modelData() with provided params", () => {
       const name = "min";
       const data = 15;
-      const spySetDataInModel = jest.spyOn(model, "setData");
+      const spySetDataInModel = jest.spyOn(presenter.model, "setData");
 
       presenter.modelData(name, data);
       expect(spySetDataInModel).toHaveBeenCalledTimes(1);
@@ -188,9 +183,7 @@ const VS = {
   range: false,
 };
 const sliderDataVS = { ...sliderData, ...VS };
-const modelVS = new SliderModel(container, sliderDataVS);
-const viewVS = new SliderView(container);
-const presenterVS = new SliderPresenter(modelVS, viewVS);
+const presenterVS = new SliderPresenter(container, sliderDataVS);
 
 describe("should work for single and vertical sliders", () => {
   test("method selectThumb()", () => {

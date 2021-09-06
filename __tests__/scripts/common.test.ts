@@ -7,7 +7,7 @@ import {
 } from "utils/common";
 
 describe("applyStepOnPercents()", () => {
-  test("casual case for value and step", () => {
+  test("casual case for 'value' and 'step'", () => {
     const val = 38;
     const step = 3;
 
@@ -17,7 +17,7 @@ describe("applyStepOnPercents()", () => {
     expect(num).toBe(0);
   });
 
-  test("case when value = 100", () => {
+  test("case when 'value' = 100", () => {
     const val = 100;
     const step = 3;
 
@@ -40,54 +40,70 @@ describe("applyRestrictions", () => {
 });
 
 describe("applyStepOnValue", () => {
-  const max = 122;
-  const step = 3;
-  const min = 8;
+  const data = {
+    max: 122,
+    min: 8,
+    step: 3,
+  };
 
   test("return 'min' when (value - min) <= 0", () => {
+    data.max = 100;
     const value = 6;
 
-    const rtn = applyStepOnValue(value, 100, min, step);
+    const rtn = applyStepOnValue(value, data);
 
-    expect(rtn).toBe(min);
+    expect(rtn).toBe(data.min);
   });
 
-  test("return 'max' when (value > max)", () => {
+  test("return 'max' when ('value' > 'max')", () => {
     const value = 130;
 
-    const rtn = applyStepOnValue(value, max, min, step);
+    const rtn = applyStepOnValue(value, data);
 
-    expect(rtn).toBe(max);
+    expect(rtn).toBe(data.max);
   });
 
-  describe("when value % step != 0", () => {
+  describe("when 'value' % 'step' != 0", () => {
     test("return smaller closest stepMatching number", () => {
+      const { min, step } = data;
       const value = 30;
       const less = Math.floor((value - min) / step);
       const exp = less * step + min;
 
-      const rtn = applyStepOnValue(value, max, min, step);
+      const rtn = applyStepOnValue(value, data);
 
       expect(rtn).toBe(exp);
     });
 
     test("return closest bigger stepMatching number", () => {
+      const { min, step } = data;
       const value = 31;
       const less = Math.ceil((value - min) / step);
       const exp = less * step + min;
 
-      const rtn = applyStepOnValue(value, max, min, step);
+      const rtn = applyStepOnValue(value, data);
 
       expect(rtn).toBe(exp);
     });
 
-    test("return max when closest stepMatching number is bigger than max", () => {
-      const max = 31;
+    test("return 'max' when closest stepMatching number is bigger than 'max'", () => {
+      data.max = 31;
       const value = 31;
 
-      const rtn = applyStepOnValue(value, max, min, step);
+      const rtn = applyStepOnValue(value, data);
 
-      expect(rtn).toBe(max);
+      expect(rtn).toBe(data.max);
+    });
+
+    test("return 'max' when  closest stepMatching number is 'max'", () => {
+      data.step = 3;
+      data.min = 1;
+      data.max = 100;
+      const value = 99;
+
+      const rtn = applyStepOnValue(value, data);
+
+      expect(rtn).toBe(data.max);
     });
   });
 });
@@ -120,17 +136,35 @@ describe("findPosition()", () => {
     },
   } as HTMLElement;
 
+  const element2 = document.createElement("div");
+
   const container = 400;
 
-  test("find position of thumb element for horizontal slider", () => {
-    const pos = findPosition(element, true, container);
+  describe("for horizontal slider", () => {
+    test("thumb element", () => {
+      const pos = findPosition(element, true, container);
 
-    expect(pos).toBeDefined();
+      expect(pos).toBeDefined();
+    });
+
+    test("thumb element without style", () => {
+      const pos = findPosition(element2, true, container);
+
+      expect(pos).toBeDefined();
+    });
   });
 
-  test("find position of thumb element for vertical slider", () => {
-    const pos = findPosition(element, false, container);
+  describe("for vertical slider", () => {
+    test("thumb element", () => {
+      const pos = findPosition(element, false, container);
 
-    expect(pos).toBeDefined();
+      expect(pos).toBeDefined();
+    });
+
+    test("thumb element without style", () => {
+      const pos = findPosition(element2, false, container);
+
+      expect(pos).toBeDefined();
+    });
   });
 });

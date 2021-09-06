@@ -22,7 +22,7 @@ describe("EventDispatcher", () => {
   test("method add(): add listener to listeners", () => {
     ed.add(listener.setHandler);
 
-    expect(ed.listeners.length).toBe(1);
+    expect(ed.get().length).toBe(1);
   });
 
   test("method notify(): pass arguments when it notifies listeners", () => {
@@ -36,6 +36,6 @@ describe("EventDispatcher", () => {
   test("method remove(): remove listener from listeners", () => {
     ed.remove(listener.setHandler);
 
-    expect(ed.listeners.length).toBe(0);
+    expect(ed.get().length).toBe(0);
   });
 });
