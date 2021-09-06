@@ -36,7 +36,7 @@ describe("adjustValue", () => {
     test("=== NaN", () => {
       const min = adjustValue("min", NaN, data);
 
-      expect(min).toBe(1);
+      expect(min).toBe(0);
     });
   });
 
@@ -101,7 +101,7 @@ describe("adjustValue", () => {
     test("in a right range", () => {
       const val = 35;
       const currentSecond = adjustValue("currentSecond", val, data);
-      const temp = applyStepOnValue(val, data.max, data.min, data.step);
+      const temp = applyStepOnValue(val, data);
 
       expect(currentSecond).toBe(temp);
     });
