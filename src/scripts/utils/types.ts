@@ -42,7 +42,8 @@ type TScaleOptions = {
   that: IView;
 };
 
-type TFuncArg = PointerEvent | number;
+type TFuncArg = Event | string | number;
+
 type TFunc = (arg1?: TFuncArg) => void;
 
 export {
