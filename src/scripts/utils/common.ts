@@ -1,3 +1,5 @@
+import { TSettings } from "./types";
+
 function appendCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement {
   const el = document.createElement(`${type}`);
   el.classList.add(className);
@@ -28,7 +30,8 @@ function applyStepOnPercents(value: number, step: number): number {
 }
 
 //checked: all values are actual
-function applyStepOnValue(value: number, max: number, min: number, step: number): number {
+function applyStepOnValue(value: number, data: TSettings): number {
+  const { max, min, step } = data;
   if (value - min <= 0) return min;
   if (value >= max) return max;
   const numberOfSteps = ((value - min) * 100) / (step * 100);
@@ -54,18 +57,21 @@ function commonDivider(basicNum: number, changeNum: number): number {
 }
 
 //done: initial values are actual, return %
-function changeValueToPercents(value: number, max: number, min: number): number {
+function changeValueToPercents(value: number, data: TSettings): number {
+  const { max, min } = data;
   const newValue = parseFloat((((value - min) / (max - min)) * 100).toFixed(2));
   return newValue;
 }
 
 //done: initial values are actual, return %
-function changeStepToPercents(step: number, max: number, min: number): number {
+function changeStepToPercents(data: TSettings): number {
+  const { max, min, step } = data;
   const newValue = parseFloat(((step / (max - min)) * 100).toFixed(2));
   return newValue;
 }
 
-function fromValueToPX(value: number, max: number, min: number, containerSize: number): number {
+function fromValueToPX(value: number, data: TSettings, containerSize: number): number {
+  const { max, min } = data;
   const pxPerDivis = containerSize / (max - min);
   const valueInPx = value * pxPerDivis;
   return valueInPx;
@@ -87,15 +93,16 @@ function findPosition(
 }
 
 // checked: value in %, others are actual
-function percentsToValue(valueInPercents: number, max: number, min: number): string {
+function percentsToValue(valueInPercents: number, data: TSettings): string {
+  const { max, min } = data;
   const newValue = (Math.round((valueInPercents * (max - min)) / 100) + min).toString();
   return newValue;
 }
 
 //values are actual
-function valueToPercentsApplyStep(value: number, max: number, min: number, step: number): number {
-  const valuePerc = changeValueToPercents(value, max, min);
-  const stepPerc = changeStepToPercents(step, max, min);
+function valueToPercentsApplyStep(value: number, data: TSettings): number {
+  const valuePerc = changeValueToPercents(value, data);
+  const stepPerc = changeStepToPercents(data);
   const newValue = applyStepOnPercents(valuePerc, stepPerc);
   return newValue;
 }
