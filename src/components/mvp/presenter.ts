@@ -35,12 +35,7 @@ class SliderPresenter implements IPresenter {
   fromPresenterThumbUpdate!: ISender;
   fromPresenterThumbSecondUpdate!: ISender;
 
-  private min!: number;
-  private max!: number;
-  private step!: number;
-
   private ifHorizontal!: boolean;
-  private ifRange!: boolean;
 
   fromModelChangeViewHandler!: { (value: number): void };
   fromModelUpdateDataHandler!: { (data: TSettings): void };
@@ -70,11 +65,7 @@ class SliderPresenter implements IPresenter {
   }
 
   private createChildren(): void {
-    this.min = this.data.min;
-    this.max = this.data.max;
-    this.step = this.data.step;
     this.ifHorizontal = this.data.orientation === "horizontal";
-    this.ifRange = this.data.range;
     this.containerSize = this.ifHorizontal
       ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px", ""))
       : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px", ""));
@@ -105,7 +96,7 @@ class SliderPresenter implements IPresenter {
   //all values are in %
   private selectThumb(e: PointerEvent): void {
     const pos = this.countPosition(e);
-    this.ifRange ? this.selectRangeTrue(pos) : this.selectThumbRangeFalse(pos);
+    this.data.range ? this.selectRangeTrue(pos) : this.selectThumbRangeFalse(pos);
   }
 
   private countPosition(e: PointerEvent) {
@@ -159,9 +150,9 @@ class SliderPresenter implements IPresenter {
   }
 
   //all values are in %
-  dragThumb(e: PointerEvent): void {
+  private dragThumb(e: PointerEvent): void {
     const position = this.countPosition(e);
-    this.ifRange ? this.dragThumbRangeTrue(position) : this.dragThumbRangeFalse(position);
+    this.data.range ? this.dragThumbRangeTrue(position) : this.dragThumbRangeFalse(position);
   }
 
   //all values are in %
@@ -189,14 +180,14 @@ class SliderPresenter implements IPresenter {
   //value - %, newValue - actual
   private modelThumbFirst(value: number): void {
     this.setObject(this.view.sliderThumb.element);
-    const newValue = percentsToValue(value, this.max, this.min);
+    const newValue = percentsToValue(value, this.data);
     this.model.setData("currentFirst", newValue);
   }
 
   //value - %, newValue - actual
   private modelThumbSecond(value: number): void {
     this.setObject(this.view.sliderThumbSecond.element);
-    const newValue = percentsToValue(value, this.max, this.min);
+    const newValue = percentsToValue(value, this.data);
     this.model.setData("currentSecond", newValue);
   }
 
@@ -213,10 +204,10 @@ class SliderPresenter implements IPresenter {
   //value - actual, newValue - %
   private updateThumbs(value: number): void {
     this.changingObject === this.view.sliderThumb.element
-      ? this.fromPresenterThumbUpdate.notify(value)
-      : this.fromPresenterThumbSecondUpdate.notify(value);
+      ? this.fromPresenterThumbUpdate.notify(value.toString())
+      : this.fromPresenterThumbSecondUpdate.notify(value.toString());
 
-    const newValue = valueToPercentsApplyStep(value, this.max, this.min, this.step);
+    const newValue = valueToPercentsApplyStep(value, this.data);
     this.view.change(<HTMLElement>this.changingObject, newValue);
   }
 }

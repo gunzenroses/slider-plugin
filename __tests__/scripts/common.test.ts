@@ -40,65 +40,70 @@ describe("applyRestrictions", () => {
 });
 
 describe("applyStepOnValue", () => {
-  const max = 122;
-  const step = 3;
-  const min = 8;
+  const data = {
+    max: 122,
+    min: 8,
+    step: 3,
+  };
 
   test("return 'min' when (value - min) <= 0", () => {
+    data.max = 100;
     const value = 6;
 
-    const rtn = applyStepOnValue(value, 100, min, step);
+    const rtn = applyStepOnValue(value, data);
 
-    expect(rtn).toBe(min);
+    expect(rtn).toBe(data.min);
   });
 
   test("return 'max' when ('value' > 'max')", () => {
     const value = 130;
 
-    const rtn = applyStepOnValue(value, max, min, step);
+    const rtn = applyStepOnValue(value, data);
 
-    expect(rtn).toBe(max);
+    expect(rtn).toBe(data.max);
   });
 
   describe("when 'value' % 'step' != 0", () => {
     test("return smaller closest stepMatching number", () => {
+      const { min, step } = data;
       const value = 30;
       const less = Math.floor((value - min) / step);
       const exp = less * step + min;
 
-      const rtn = applyStepOnValue(value, max, min, step);
+      const rtn = applyStepOnValue(value, data);
 
       expect(rtn).toBe(exp);
     });
 
     test("return closest bigger stepMatching number", () => {
+      const { min, step } = data;
       const value = 31;
       const less = Math.ceil((value - min) / step);
       const exp = less * step + min;
 
-      const rtn = applyStepOnValue(value, max, min, step);
+      const rtn = applyStepOnValue(value, data);
 
       expect(rtn).toBe(exp);
     });
 
     test("return 'max' when closest stepMatching number is bigger than 'max'", () => {
-      const max = 31;
+      data.max = 31;
       const value = 31;
 
-      const rtn = applyStepOnValue(value, max, min, step);
+      const rtn = applyStepOnValue(value, data);
 
-      expect(rtn).toBe(max);
+      expect(rtn).toBe(data.max);
     });
 
     test("return 'max' when  closest stepMatching number is 'max'", () => {
-      const step = 3;
-      const min = 1;
-      const max = 100;
+      data.step = 3;
+      data.min = 1;
+      data.max = 100;
       const value = 99;
 
-      const rtn = applyStepOnValue(value, max, min, step);
+      const rtn = applyStepOnValue(value, data);
 
-      expect(rtn).toBe(max);
+      expect(rtn).toBe(data.max);
     });
   });
 });

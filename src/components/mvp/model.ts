@@ -23,14 +23,9 @@ class SliderModel implements IModel {
   }
 
   private updateCurrentsWithStep(): void {
-    this.data.currentFirst = applyStepOnValue(
-      this.data.currentFirst,
-      this.data.max,
-      this.data.min,
-      this.data.step
-    );
+    this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data);
     this.data.currentSecond = this.data.range
-      ? applyStepOnValue(this.data.currentSecond, this.data.max, this.data.min, this.data.step)
+      ? applyStepOnValue(this.data.currentSecond, this.data)
       : this.data.max;
   }
 
