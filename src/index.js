@@ -23,7 +23,9 @@ window.onload = function () {
     },
     range: true,
     tooltip: false,
-  });
+  }, 
+    true
+  );
 
   $("#default").sliderMaker({
     range: false,
