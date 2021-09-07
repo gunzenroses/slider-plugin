@@ -25,7 +25,7 @@ Presenter:
 - serves as mediator between data and UI;
 - manipulates instances of SliderModel and SliderView classes using methods of IModel and IView interfaces;
 - handles user input using methods defined by the IView interface;
-- update Model and View settings (using methods of their interfaces).
+- updates Model and View settings (using methods of their interfaces).
 
 Contract:
 The interaction between Presenter, its View and Model is based on Contract (IPresenter, IView and IModel interfaces).
@@ -47,7 +47,7 @@ According interfaces we have the following streams:
 - eslint, prettier;
 - babel.
 
-### How to clone project files
+### How to work with project files
 Clone repository
 >`git clone https://github.com/gunzenroses/slider-plugin.git`
 
@@ -67,15 +67,15 @@ Run debug mode
 >`npm run debug`
 
 ### How to use plugin
-Copy css-file `dist/slider-plugin/slider-plugin.min.css` to your project folder and add link in the <head> of the page:
+Copy css-file `dist/slider-plugin/slider-plugin.min.css` to your project folder, add link in the `<head>`.
 ```html
 <head>
     <link rel="stylesheet" href="slider-plugin.min.css">
 <head>
 ```
 
-Install jQuery 3.6.0 `npm install jquery@3.6.0` or link to it directly at the end of <body> tag.
-Copy `dist/slider-plugin/slider-plugin.min.js` to your project folder and add after jQuery.
+Install jQuery 3.6.0 `npm install jquery@3.6.0` or link to it directly at the end of `<body>`.
+Copy `dist/slider-plugin/slider-plugin.min.js` to your project folder, add after jQuery.
 
 ```html
 <body>
@@ -99,8 +99,7 @@ Initiate slider in js-file with your parameters
 |tooptip|true|boolean|*true* - enable tooltips with value of handle; *false* - hide tooltips;|
 |scale|{stepPerDiv: 10}|boolean / object|enable grid of values: *true* - sets automatic numbering of grid sections; *false* - hides grid; *{stepPerDiv: number}* - put number at every Nth division of grid|
 
-Extended API
-If you want to see configuration panel next to your slider
+Extended API. If you want to see configuration panel next to your slider
 >`$(`selector`).sliderMaker({` *your parameters* `},`true`)`
 
 ### Example of slider-plugin usage
