@@ -6,34 +6,34 @@ const data = sliderData;
 
 describe("adjustValue", () => {
   describe("should adjust 'min'", () => {
-    test("< 0", () => {
+    test("smaller 0", () => {
       const min = adjustValue("min", -2, data);
 
       expect(min).toBe(0);
     });
 
-    test("< 'max' - 'step'", () => {
+    test("smaller 'max' - 'step'", () => {
       const temp = data.max - data.step - 1;
       const min = adjustValue("min", temp, data);
 
       expect(min).toBe(temp);
     });
 
-    test("=== 'max' - 'step'", () => {
+    test("equals 'max' - 'step'", () => {
       const temp = data.max - data.step;
       const min = adjustValue("min", temp, data);
 
       expect(min).toBe(temp);
     });
 
-    test("> 'max' - 'step'", () => {
-      const temp = data.max - data.step + 1;
-      const min = adjustValue("min", temp, data);
+    test("grater 'max' - 'step'", () => {
+      const temp = data.max - data.step;
+      const min = adjustValue("min", temp + 1, data);
 
-      expect(min).toBe(1);
+      expect(min).toBe(0);
     });
 
-    test("=== NaN", () => {
+    test("equals NaN", () => {
       const min = adjustValue("min", NaN, data);
 
       expect(min).toBe(0);
@@ -41,28 +41,28 @@ describe("adjustValue", () => {
   });
 
   describe("should adjust 'max'", () => {
-    test("< 0", () => {
+    test("smaller 0", () => {
       const max = adjustValue("max", -130, data);
 
       expect(max).toBe(data.min + data.step);
     });
 
-    test("> (step + min) make no changes", () => {
+    test("grater (step + min) make no changes", () => {
       const temp = data.min + data.step + 3;
       const max = adjustValue("max", temp, data);
 
       expect(max).toBe(temp);
     });
 
-    test("=== (step + min) make no changes", () => {
+    test("equals (step + min) make no changes", () => {
       const temp = data.step + data.min;
       const max = adjustValue("max", temp, data);
 
       expect(max).toBe(temp);
     });
 
-    test("=== NaN", () => {
-      const max = adjustValue("min", " ", data);
+    test("equals NaN", () => {
+      const max = adjustValue("max", " ", data);
 
       expect(max).toBe(data.min + data.step);
     });
@@ -75,7 +75,7 @@ describe("adjustValue", () => {
       expect(currentFirst).toBe(11);
     });
 
-    test("< 0", () => {
+    test("smaller 0", () => {
       const currentFirst = adjustValue("currentFirst", -11, data);
 
       expect(currentFirst).toBe(0);
@@ -89,7 +89,7 @@ describe("adjustValue", () => {
       expect(currentFirst).toBe(currentSecond);
     });
 
-    test("=== NaN", () => {
+    test("equals NaN", () => {
       const min = data.min;
       const currentFirst = adjustValue("currentFirst", NaN, data);
 
@@ -106,13 +106,13 @@ describe("adjustValue", () => {
       expect(currentSecond).toBe(temp);
     });
 
-    test("< 0", () => {
+    test("smaller 0", () => {
       const currentSecond = adjustValue("currentSecond", -35, data);
 
       expect(currentSecond).toBe(33);
     });
 
-    test("< 'currentFirst'", () => {
+    test("smaller 'currentFirst'", () => {
       const currentFirst = data.currentFirst;
       const lessThanCF = currentFirst - 10;
       const currentSecond = adjustValue("currentSecond", lessThanCF, data);
@@ -120,14 +120,14 @@ describe("adjustValue", () => {
       expect(currentSecond).toBe(currentFirst);
     });
 
-    test("=== NaN", () => {
+    test("equals NaN", () => {
       const temp = data.currentFirst;
       const currentSecond = adjustValue("currentSecond", NaN, data);
 
       expect(currentSecond).toBe(temp);
     });
 
-    test("> 'max'", () => {
+    test("grater 'max'", () => {
       const max = data.max;
       const temp = max + 1;
       const currentSecond = adjustValue("currentSecond", temp, data);
@@ -137,33 +137,33 @@ describe("adjustValue", () => {
   });
 
   describe("should adjust 'step'", () => {
-    test("> (max - min)", () => {
+    test("grater (max - min)", () => {
       const step = adjustValue("step", 108, data);
 
       expect(step).toBe(100);
     });
 
-    test("< (max - min)", () => {
+    test("smaller (max - min)", () => {
       const temp = data.max - data.min - 1;
       const step = adjustValue("step", temp, data);
 
       expect(step).toBe(temp);
     });
 
-    test("=== (max-min)", () => {
+    test("equals (max-min)", () => {
       const temp = data.max - data.min;
       const step = adjustValue("step", temp, data);
 
       expect(step).toBe(temp);
     });
 
-    test("=== NaN", () => {
+    test("equals NaN", () => {
       const step = adjustValue("step", NaN, data);
 
       expect(step).toBe(1);
     });
 
-    test("< 0", () => {
+    test("smaller 0", () => {
       const step = adjustValue("step", -2, data);
 
       expect(step).toBe(1);
