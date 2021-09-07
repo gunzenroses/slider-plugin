@@ -47,11 +47,11 @@ According interfaces we have the following streams:
 - eslint, prettier;
 - babel.
 
-### How to
+### How to clone project files
 Clone repository
 >`git clone https://github.com/gunzenroses/slider-plugin.git`
 
-Install dependancies
+Install dependencies
 >`npm i`
 
 Run development mode (on localhost:8081)
@@ -65,9 +65,6 @@ Run production mode
 
 Run debug mode
 >`npm run debug`
-
-### Example of slider-plugin usage
-[Link to example](https://gunzenroses.github.io/slider-plugin/)
 
 ### How to use plugin
 Copy css-file `dist/slider-plugin/slider-plugin.min.css` to your project folder and add link in the <head> of the page:
@@ -105,3 +102,6 @@ Initiate slider in js-file with your parameters
 Extended API
 If you want to see configuration panel next to your slider
 >`$(`selector`).sliderMaker({` *your parameters* `},`true`)`
+
+### Example of slider-plugin usage
+[Link to example](https://gunzenroses.github.io/slider-plugin/)
