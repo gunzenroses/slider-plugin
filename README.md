@@ -1,10 +1,10 @@
 # slider-plugin
 
 The aim of this project is to get known with:
-- developmental patterns: mvp/c, dependency inversion, observer;
-- low coupling and high cohesion attitude in code;
+- development patterns;
+- low coupling and high cohesion principle;
 - unit-testing and bdd approach;
-- work with webpack.
+- webpack.
 
 ### Plugin architecture
 Plugin has MVP-architecture with Passive View.
@@ -12,89 +12,84 @@ Plugin has MVP-architecture with Passive View.
 Model:
 - implements IModel interface;
 - contains and updates data;
-- notifies via instances based on ISender interface (EventDispatcher class) - - when data is updated.
+- calls methods of presenter when data is updated (using instances based on the ISender interface).
 
 View:
-- imprements IView interface;
+- implements IView interface;
 - visualizes data;
-- applies instances of subviews via ISubview interface;
-- interacts with Model using IModel interface methods;
+- manipulates (renders and updates) subviews using the ISubview interface;
 - handles events;
-- calls methods of IPresenter interface using instances based on ISender interface.
+- calls methods of IPresenter interface (using instances based on the ISender interface).
 
 Presenter:
 - serves as mediator between data and UI;
-- carries presentation logic;
-- use IModel and IView interfaces to initiate instances of SliderModel and SliderView classes;
-- receives user input through methods defined by IView interface;
-- update settings of Model and View via methods of its interfaces.
+- manipulates instances of SliderModel and SliderView classes using methods of IModel and IView interfaces;
+- handles user input using methods defined by the IView interface;
+- update Model and View settings (using methods of their interfaces).
 
 Contract:
-Interactions between Presenter, its View and Model are based on Contract (IPresenter, IView and IModel interfaces).
+The interaction between Presenter, its View and Model is based on Contract (IPresenter, IView and IModel interfaces).
 
-According interfaces we have following flows:
+According interfaces we have the following streams:
 
 - change data (Model) -> notify method that process data (Presenter) -> change UI (View);
-- event in UI (View) -> notify method that process data (Presenter) -> change data(Model);
-- change data outside MVP (Panel) -> notify method that process data (Presenter) -> change data(Model) -> notify method that process data (Presenter) -> change UI (View).
+- UI event (View) -> notify method that process data (Presenter) -> change data (Model);
+- change data outside MVP (Panel) -> notify method that process data (Presenter) -> change data (Model) -> notify method that process data (Presenter) -> change UI (View).
 
-### [UML diagram](https://github.com/gunzenroses/slider-plugin/blob/master/src/UML%20diagram.png)
+### UML diagram
+[Link to uml diagram](https://github.com/gunzenroses/slider-plugin/blob/master/src/UML%20diagram.png)
 
 ### Used technologies and libraries
-- webpack (path aliases, plugins, rules, development and production modes differences);
+- webpack (path aliases, plugins, rules, development and production modes);
 - scss;
 - TypeScript;
 - jest (unit-testing);
+- eslint, prettier;
 - babel.
 
 ### How to
 Clone repository
->```git clone https://github.com/gunzenroses/slider-plugin.git```
+>`git clone https://github.com/gunzenroses/slider-plugin.git`
 
 Install dependancies
->```npm i```
+>`npm i`
 
 Run development mode (on localhost:8081)
->```npm run dev```
+>`npm run dev`
 
 Run tests
->```npm test```
+>`npm test`
 
 Run production mode
->```npm run build```
+>`npm run build`
 
 Run debug mode
->```npm run debug```
+>`npm run debug`
 
-### Link to page
-[Example of Slider](https://gunzenroses.github.io/slider-plugin/)
+### Example of slider-plugin usage
+[Link to example](https://gunzenroses.github.io/slider-plugin/)
 
 ### How to use plugin
-Install jQuery 3.6.0 npm install jquery@3.6.0 or link to it directly at the end of tag
-```html
-<body>
-    <script src=httpscode.jquery.comjquery-3.6.0.min.jsscript></script>
-</body>
-```
-
-Copy and add styles from folder distslider-plugin
+Copy css-file `dist/slider-plugin/slider-plugin.min.css` to your project folder and add link in the <head> of the page:
 ```html
 <head>
-    <link rel=stylesheet href=slider-plugin.min.css>
+    <link rel="stylesheet" href="slider-plugin.min.css">
 <head>
 ```
 
-Copy and add after jQuery plugin from folder distslider-plugin
+Install jQuery 3.6.0 `npm install jquery@3.6.0` or link to it directly at the end of <body> tag.
+Copy `dist/slider-plugin/slider-plugin.min.js` to your project folder and add after jQuery.
+
 ```html
 <body>
-    <script src=slider-plugin.min.jsscript></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="slider-plugin.min.js"></script>
 </body>
 ```
 
 Initiate slider in js-file with your parameters
->`$(selector).slider-plugin({` *your parameters* `})`
+>`$(`selector`).sliderMaker({` *your parameters* `})`
 
-JS API  
 |Option|Defaults|Type|Description|
 |-----|----|----|----------|
 |min|0|number|set min value|
@@ -105,4 +100,8 @@ JS API
 |step|1|number|should be integer number > 0|
 |orientation|horizontal|string|*horizontal* or *vertical* orientation|
 |tooptip|true|boolean|*true* - enable tooltips with value of handle; *false* - hide tooltips;|
-|scale|{stepPerDiv 10}|boolean / object|enable grid of values: *true* - sets automatic numbering of grid sections; *false* - hides grid; *{stepPerDiv number}* - put number at every Nth division of grid|
+|scale|{stepPerDiv: 10}|boolean / object|enable grid of values: *true* - sets automatic numbering of grid sections; *false* - hides grid; *{stepPerDiv: number}* - put number at every Nth division of grid|
+
+Extended API
+If you want to see configuration panel next to your slider
+>`$(`selector`).sliderMaker({` *your parameters* `},`true`)`
