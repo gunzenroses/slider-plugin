@@ -107,7 +107,7 @@ describe("SliderPresenter", () => {
 
         presenter.model.fromModelChangeView.notify(value);
 
-        expect(spyfromModelUpdate).toHaveBeenCalledWith(value);
+        expect(spyfromModelUpdate).toHaveBeenCalledWith(value.toString());
         expect(spyFromModelChangeView).toHaveBeenCalledWith(
           presenter.view.sliderThumb.element,
           value
@@ -122,7 +122,7 @@ describe("SliderPresenter", () => {
 
         presenter.model.fromModelChangeView.notify(value);
 
-        expect(spyfromModelUpdate).toHaveBeenCalledWith(value);
+        expect(spyfromModelUpdate).toHaveBeenCalledWith(value.toString());
         expect(spyFromModelChangeView).toHaveBeenCalledWith(
           presenter.view.sliderThumbSecond.element,
           value
