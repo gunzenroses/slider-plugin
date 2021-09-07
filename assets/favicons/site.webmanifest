@@ -1,10 +1,10 @@
 {
   "name": "sliderPlugin",
   "short_name": "slider",
-  "description": "demo page to get known with sliderPlugin",
+  "description": "demo page",
   "manifest_version": 1,
   "version": "1.0.0",
-  "starting_url": "/",
+  "starting_url": "https://gunzenroses.github.io/slider-plugin/",
   "icons": [
     {
       "src": "\/android-icon-36x36.png",
