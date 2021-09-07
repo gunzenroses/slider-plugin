@@ -97,7 +97,6 @@ class ConfigurationPanel implements IPanel {
         (this.data.currentFirst = parseInt(val)),
         (this.currentSecondInput.min = val))
       : (this.currentFirstInput.value = this.data.currentFirst);
-    console.log(this.currentFirstInput.value);
     this.currentFirstInput.min = this.data.min;
     this.currentFirstInput.max = this.data.currentSecond;
     this.currentFirstInput.step = this.data.step;
