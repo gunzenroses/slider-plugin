@@ -1,27 +1,21 @@
 const path = require("path");
 const common = require("./webpack.common");
 const { merge } = require("webpack-merge");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
-  mode: "development",
+  mode: "production",
   entry: {
-    "example": path.resolve(__dirname, "./src/index.js"),
+    "index": path.resolve(__dirname, "./src/index.js"),
   },
   output: {
-    path: path.resolve(__dirname, "./dist"),
-    publicPath: "/",
-    filename: "[name]/[name].js",
-  },
-  devtool: "inline-source-map",
-  devServer: {
-    static: {
-      directory: path.join(__dirname, "./dist"),
-    },
-    compress: true,
-    hot: true,
-    port: 8081,
+    libraryTarget: 'umd',
+    libraryExport: 'default',
+    path: path.resolve(__dirname, "./build"),
+    filename: "[name].min.js",
+    publicPath: "https://gunzenroses.github.io/slider-plugin/",
   },
   module: {
     rules: [
@@ -34,7 +28,7 @@ module.exports = merge(common, {
           {
             loader: "ts-loader",
             options: {
-              configFile: "tsconfig.json",
+              configFile: "tsconfig.prod.json",
             }
           },
         ],
@@ -43,7 +37,7 @@ module.exports = merge(common, {
       {
         test: /\.css$/,
         use: [
-          "style-loader",
+          MiniCssExtractPlugin.loader,
           "css-loader",
           {
             loader: "postcss-loader",
@@ -64,7 +58,7 @@ module.exports = merge(common, {
       {
         test: /\.s[ac]ss$/,
         use: [
-          "style-loader",
+          MiniCssExtractPlugin.loader,
           { 
             loader: "css-loader", 
             options: { importLoaders: 1 } 
@@ -91,12 +85,15 @@ module.exports = merge(common, {
         { from: "assets/favicons", to: "assets/favicons" },
       ],
     }),
+    new MiniCssExtractPlugin({
+      filename: "[name].min.css",
+    }),
     new HtmlWebpackPlugin({
       filename: "index.html",
       minify: true,
       template: path.resolve(__dirname, "./src/index.pug"),
-      chunks: ["example"],
+      chunks: ["index"],
       inject: "body",
     }),
-  ]
+  ],
 })

@@ -1,6 +1,7 @@
 node_modules
 /.vscode
 /dist
+/build
 /coverage
 /.git
 jest.config.js
@@ -10,5 +11,6 @@ tscondif.prod.js
 webpack.common.js
 webpack.dev.js
 webpack.prod.js
+webpack.build.js
 index.js
 /src/slider-plugin.js

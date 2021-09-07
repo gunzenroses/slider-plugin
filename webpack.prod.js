@@ -7,14 +7,12 @@ module.exports = merge(common, {
   mode: "production",
   entry: {
     "slider-plugin": path.resolve(__dirname, "./src/slider-plugin.js"),
-    "example": path.resolve(__dirname, "./src/index.js"),
   },
   output: {
-    library: 'slider',
     libraryTarget: 'umd',
     libraryExport: 'default',
     path: path.resolve(__dirname, "./dist"),
-    filename: "[name]/[name].min.js",
+    filename: "[name].min.js",
     publicPath: "https://gunzenroses.github.io/slider-plugin/",
   },
   externals: {
@@ -84,7 +82,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name]/[name].bundle.css",
+      filename: "[name].min.css",
     }),
   ],
 })

@@ -6,11 +6,12 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage --watchAll=false --verbose=false",
-    "build": "rimraf dist && webpack --config ./webpack.prod.js --env production --mode=production",
     "dev": "webpack serve --config ./webpack.dev.js --env development --progress --live-reload",
-    "docs": "jsdoc2md --template ./README.hbs --files ./src/lib/*.ts --configure ./jsdoc2md.json > ./README.md",
-    "deploy": "gh-pages -d dist",
+    "prod": "rimraf dist && webpack --config ./webpack.prod.js --env production --mode=production",
+    "build": "rimraf build && webpack --config ./webpack.build.js --env production --mode=production",
+    "deploy": "gh-pages -d build",
     "predeploy": "npm run build",
+    "docs": "jsdoc2md --template ./README.hbs --files ./src/lib/*.ts --configure ./jsdoc2md.json > ./README.md",
     "eslint": "eslint --ext .ts,.tsx src --fix",
     "test-eslint": "jest-runner-eslint",
     "debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand"
