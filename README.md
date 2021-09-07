@@ -1,20 +1,24 @@
 # slider-plugin
 
 The aim of this project is to get known with:
+
 - development patterns;
 - low coupling and high cohesion principle;
 - unit-testing and bdd approach;
 - webpack.
 
 ### Plugin architecture
+
 Plugin has MVP-architecture with Passive View.
 
 Model:
+
 - implements IModel interface;
 - contains and updates data;
 - calls methods of presenter when data is updated (using instances based on the ISender interface).
 
 View:
+
 - implements IView interface;
 - visualizes data;
 - manipulates (renders and updates) subviews using the ISubview interface;
@@ -22,6 +26,7 @@ View:
 - calls methods of IPresenter interface (using instances based on the ISender interface).
 
 Presenter:
+
 - serves as mediator between data and UI;
 - manipulates instances of SliderModel and SliderView classes using methods of IModel and IView interfaces;
 - handles user input using methods defined by the IView interface;
@@ -37,9 +42,11 @@ According interfaces we have the following streams:
 - change data outside MVP (Panel) -> notify method that process data (Presenter) -> change data (Model) -> notify method that process data (Presenter) -> change UI (View).
 
 ### UML diagram
+
 [Link to uml diagram](https://github.com/gunzenroses/slider-plugin/blob/master/src/UML%20diagram.png)
 
 ### Used technologies and libraries
+
 - webpack (path aliases, plugins, rules, development and production modes);
 - scss;
 - TypeScript;
@@ -47,27 +54,33 @@ According interfaces we have the following streams:
 - eslint, prettier;
 - babel.
 
-### How to work with project files
+### How to work with project
+
 Clone repository
 >`git clone https://github.com/gunzenroses/slider-plugin.git`
 
 Install dependencies
 >`npm i`
 
-Run development mode (on localhost:8081)
->`npm run dev`
-
 Run tests
 >`npm test`
 
-Run production mode
->`npm run build`
+Run development mode (on localhost:8081)
+>`npm run dev`
+
+Run production mode(to assemble slider-plugin files)
+>`npm run prod`
 
 Run debug mode
 >`npm run debug`
 
+Run statical analyzer for code
+>`npm run eslint`
+
 ### How to use plugin
-Copy css-file `dist/slider-plugin/slider-plugin.min.css` to your project folder, add link in the `<head>`.
+
+Copy css-file from `dist/` to your project folder, add link in the `<head>`.
+
 ```html
 <head>
     <link rel="stylesheet" href="slider-plugin.min.css">
@@ -75,7 +88,7 @@ Copy css-file `dist/slider-plugin/slider-plugin.min.css` to your project folder,
 ```
 
 Install jQuery 3.6.0 `npm install jquery@3.6.0` or link to it directly at the end of `<body>`.
-Copy `dist/slider-plugin/slider-plugin.min.js` to your project folder, add after jQuery.
+Copy js file from `dist/` to your project folder, add after jQuery.
 
 ```html
 <body>
@@ -84,7 +97,7 @@ Copy `dist/slider-plugin/slider-plugin.min.js` to your project folder, add after
 </body>
 ```
 
-Initiate slider in js-file with your parameters
+Initiate slider in js-file with your parameters.
 >`$(`selector`).sliderMaker({` *your parameters* `})`
 
 |Option|Defaults|Type|Description|
@@ -103,4 +116,5 @@ Extended API. If you want to see configuration panel next to your slider
 >`$(`selector`).sliderMaker({` *your parameters* `},`true`)`
 
 ### Example of slider-plugin usage
+
 [Link to example](https://gunzenroses.github.io/slider-plugin/)
