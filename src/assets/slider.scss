@@ -32,11 +32,11 @@ $color-dark: #000;
     }
 }
 
-@import "../components/subview/tooltipView/tooltipView.scss";
-@import "../components/subview/trackView/sliderRange/sliderRangeView.scss";
-@import "../components/subview/trackView/sliderThumb/sliderThumbView.scss";
-@import "../components/subview/trackView/sliderTrack/sliderTrackView.scss";
-@import "../components/subview/scaleView/scaleView.scss";
+@import "../components/subview/tooltip/tooltip.scss";
+@import "../components/subview/track/range/range.scss";
+@import "../components/subview/track/thumb/thumb.scss";
+@import "../components/subview/track/track/track.scss";
+@import "../components/subview/scale/scale.scss";
 @import "../components/panel/panel.scss";
 
 .disabled {

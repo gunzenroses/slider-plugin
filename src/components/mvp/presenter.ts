@@ -1,5 +1,5 @@
-import { IModel, SliderModel } from "./model";
-import { IView, SliderView } from "./view";
+import { IModel, Model } from "./model";
+import { IView, View } from "./view";
 import { EventDispatcher, ISender } from "./eventDispatcher";
 import { IModelData, TFunc, TSettings } from "utils/types";
 import {
@@ -23,7 +23,7 @@ interface IPresenter {
   fromPresenterThumbSecondUpdate: ISender;
 }
 
-class SliderPresenter implements IPresenter {
+class Presenter implements IPresenter {
   model: IModel;
   view: IView;
   data!: TSettings;
@@ -43,8 +43,8 @@ class SliderPresenter implements IPresenter {
   fromViewDragThumbHandler!: { (e: PointerEvent): void };
 
   constructor(container: HTMLElement, data: TSettings) {
-    this.model = new SliderModel(data);
-    this.view = new SliderView(container);
+    this.model = new Model(data);
+    this.view = new View(container);
     this.fromPresenterUpdate = new EventDispatcher();
     this.fromPresenterThumbUpdate = new EventDispatcher();
     this.fromPresenterThumbSecondUpdate = new EventDispatcher();
@@ -57,7 +57,6 @@ class SliderPresenter implements IPresenter {
     this.enable();
   }
 
-  // maybe join with init
   updateView(): void {
     this.data = this.model.getData();
     this.view.init(this.data);
@@ -69,9 +68,7 @@ class SliderPresenter implements IPresenter {
     this.containerSize = this.ifHorizontal
       ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px", ""))
       : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px", ""));
-    this.thumbWidth = parseInt(
-      getComputedStyle(this.view.sliderThumb.element).width.replace("px", "")
-    );
+    this.thumbWidth = parseInt(getComputedStyle(this.view.thumb.element).width.replace("px", ""));
   }
 
   private setupHandlers(): void {
@@ -133,12 +130,12 @@ class SliderPresenter implements IPresenter {
 
   private countPercents() {
     const firstThumbPercent: number = findPosition(
-      this.view.sliderThumb.element,
+      this.view.thumb.element,
       this.ifHorizontal,
       this.containerSize
     );
     const secondThumbPercent: number = findPosition(
-      this.view.sliderThumbSecond.element,
+      this.view.thumbSecond.element,
       this.ifHorizontal,
       this.containerSize
     );
@@ -164,13 +161,12 @@ class SliderPresenter implements IPresenter {
   private dragThumbRangeTrue(newPos: number): void {
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
     if (
-      (this.view.dragObj as HTMLElement).classList === this.view.sliderThumb.element.classList &&
+      (this.view.dragObj as HTMLElement).classList === this.view.thumb.element.classList &&
       newPos <= secondThumbPercent - 1
     ) {
       this.modelThumbFirst(newPos);
     } else if (
-      (this.view.dragObj as HTMLElement).classList ===
-        this.view.sliderThumbSecond.element.classList &&
+      (this.view.dragObj as HTMLElement).classList === this.view.thumbSecond.element.classList &&
       newPos >= firstThumbPercent + 1
     ) {
       this.modelThumbSecond(newPos);
@@ -179,14 +175,14 @@ class SliderPresenter implements IPresenter {
 
   //value - %, newValue - actual
   private modelThumbFirst(value: number): void {
-    this.setObject(this.view.sliderThumb.element);
+    this.setObject(this.view.thumb.element);
     const newValue = percentsToValue(value, this.data);
     this.model.setData("currentFirst", newValue);
   }
 
   //value - %, newValue - actual
   private modelThumbSecond(value: number): void {
-    this.setObject(this.view.sliderThumbSecond.element);
+    this.setObject(this.view.thumbSecond.element);
     const newValue = percentsToValue(value, this.data);
     this.model.setData("currentSecond", newValue);
   }
@@ -203,7 +199,7 @@ class SliderPresenter implements IPresenter {
 
   //value - actual, newValue - %
   private updateThumbs(value: number): void {
-    this.changingObject === this.view.sliderThumb.element
+    this.changingObject === this.view.thumb.element
       ? this.fromPresenterThumbUpdate.notify(value.toString())
       : this.fromPresenterThumbSecondUpdate.notify(value.toString());
 
@@ -212,4 +208,4 @@ class SliderPresenter implements IPresenter {
   }
 }
 
-export { IPresenter, SliderPresenter };
+export { IPresenter, Presenter };

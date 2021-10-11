@@ -28,7 +28,7 @@ View:
 Presenter:
 
 - serves as mediator between data and UI;
-- manipulates instances of SliderModel and SliderView classes using methods of IModel and IView interfaces;
+- manipulates instances of Model and View classes using methods of IModel and IView interfaces;
 - handles user input using methods defined by the IView interface;
 - updates Model and View settings (using methods of their interfaces).
 

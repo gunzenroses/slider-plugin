@@ -149,9 +149,9 @@ class ConfigurationPanel implements IPanel {
   private assignChangingObject(name: string): void {
     this.presenter.changingObject =
       name === "currentFirst"
-        ? this.presenter.view.sliderThumb.element
+        ? this.presenter.view.thumb.element
         : name === "currentSecond"
-        ? this.presenter.view.sliderThumbSecond.element
+        ? this.presenter.view.thumbSecond.element
         : null;
   }
 

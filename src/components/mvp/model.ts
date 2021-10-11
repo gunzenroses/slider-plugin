@@ -10,7 +10,7 @@ interface IModel {
   getData(): TSettings;
 }
 
-class SliderModel implements IModel {
+class Model implements IModel {
   private data: TSettings;
   fromModelChangeView: ISender;
   fromModelUpdateData: ISender;
@@ -56,4 +56,4 @@ class SliderModel implements IModel {
   }
 }
 
-export { IModel, SliderModel };
+export { IModel, Model };

@@ -1,7 +1,7 @@
 import { IView } from "mvp/view";
 import ISubview from "subview/subviewElement";
 
-export default class SliderThumb implements ISubview {
+export default class thumb implements ISubview {
   element!: HTMLElement;
   private className: string;
 
@@ -13,7 +13,7 @@ export default class SliderThumb implements ISubview {
   private init(that: IView): HTMLElement {
     this.make(that);
     this.change(that);
-    that.sliderTrack.append(this.element);
+    that.track.append(this.element);
     return this.element;
   }
 
