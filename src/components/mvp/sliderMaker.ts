@@ -1,5 +1,5 @@
 import { sliderData } from "./data";
-import { IPresenter, SliderPresenter } from "./presenter";
+import { IPresenter, Presenter } from "./presenter";
 import { IPanel, ConfigurationPanel } from "panel/panel";
 import { TSettings } from "utils/types";
 
@@ -11,7 +11,7 @@ export default class SliderMaker {
 
   constructor(container: HTMLElement, options: TSettings, configurationPanel?: boolean) {
     const data = { ...sliderData, ...options };
-    this.presenter = new SliderPresenter(container, data);
+    this.presenter = new Presenter(container, data);
     this.panel = configurationPanel ? new ConfigurationPanel(container, this.presenter) : null;
     return this;
   }

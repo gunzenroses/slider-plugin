@@ -1,6 +1,6 @@
 import { IView } from "mvp/view";
 
-export default class SliderTrack {
+export default class track {
   element!: HTMLElement;
 
   constructor(that: IView) {
@@ -8,11 +8,11 @@ export default class SliderTrack {
   }
 
   private init(that: IView): HTMLElement {
-    const sliderTrackClass: string = that.settings.ifHorizontal
+    const trackClass: string = that.settings.ifHorizontal
       ? "slider__track"
       : "slider__track_vertical";
     this.element = document.createElement("div");
-    this.element.classList.add(sliderTrackClass);
+    this.element.classList.add(trackClass);
     that.sliderContainer.append(this.element);
     return this.element;
   }

@@ -1,10 +1,10 @@
 /**
  * @jest-environment jsdom
  */
-import { IView, SliderView } from "mvp/view";
+import { IView, View } from "mvp/view";
 import { sliderData } from "mvp/data";
 
-describe("class SliderView", () => {
+describe("class View", () => {
   const data = sliderData;
   const container = document.createElement("div");
   document.body.append(container);
@@ -12,7 +12,7 @@ describe("class SliderView", () => {
 
   beforeEach(() => {
     container.innerHTML = "";
-    view = new SliderView(container);
+    view = new View(container);
     view.init(data);
     jest.restoreAllMocks();
   });
@@ -48,11 +48,11 @@ describe("class SliderView", () => {
       expect(spyOnClick).toHaveBeenCalledTimes(1);
     });
 
-    test('should not activate "fromViewSelectThumb" when sliderThumb or sliderThumbSecond is clicked', () => {
+    test('should not activate "fromViewSelectThumb" when thumb or thumbSecond is clicked', () => {
       const spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
 
-      view.sliderThumb.element.dispatchEvent(new Event("click"));
-      view.sliderThumbSecond.element.dispatchEvent(new Event("click"));
+      view.thumb.element.dispatchEvent(new Event("click"));
+      view.thumbSecond.element.dispatchEvent(new Event("click"));
 
       expect(spyOnClick).toHaveBeenCalledTimes(0);
     });
@@ -60,7 +60,7 @@ describe("class SliderView", () => {
     test("notify fromViewDragThumb subscribers when thumb is moved", () => {
       const spyOnDragMove = jest.spyOn(view.fromViewDragThumb, "notify");
 
-      view.sliderThumbSecond.element.dispatchEvent(new Event("pointerdown"));
+      view.thumbSecond.element.dispatchEvent(new Event("pointerdown"));
       document.dispatchEvent(new Event("pointermove"));
 
       expect(spyOnDragMove).toHaveBeenCalledTimes(1);
@@ -70,7 +70,7 @@ describe("class SliderView", () => {
   describe("method selectThumb()", () => {
     test("should not notify subscribers if e.target is selectThumb or selectThumbSecond", () => {
       const evt = new Event("pointerup") as PointerEvent;
-      view.sliderThumb.element.dispatchEvent(evt);
+      view.thumb.element.dispatchEvent(evt);
       const spyOnSm = jest.spyOn(view.fromViewSelectThumb, "notify");
 
       view.selectThumb(evt);
@@ -86,11 +86,11 @@ describe("class SliderView", () => {
         range: false,
       };
       view.init(newSet);
-      view.sliderThumb.element.dispatchEvent(new Event("pointerdown"));
+      view.thumb.element.dispatchEvent(new Event("pointerdown"));
       document.dispatchEvent(new Event("pointermove"));
       const spyOnDragStart = jest.spyOn(view, "dragThumbStart");
 
-      view.sliderThumb.element.dispatchEvent(new Event("pointerdowm"));
+      view.thumb.element.dispatchEvent(new Event("pointerdowm"));
 
       expect(spyOnDragStart).toHaveBeenCalledTimes(0);
     });
@@ -117,25 +117,25 @@ describe("class SliderView", () => {
   });
 
   describe("method change()", () => {
-    test("update styles for Thumb, Range and Tooltip when (selectObject === sliderThumb)", () => {
-      const obj = view.sliderThumb.element;
+    test("update styles for Thumb, Range and Tooltip when (selectObject === thumb)", () => {
+      const obj = view.thumb.element;
       const num = 7;
 
       view.change(obj, num);
 
-      expect(view.sliderThumb.element.style.left).toBe(num + "%");
-      expect(view.sliderRange.element.style.left).toBe(num + "%");
+      expect(view.thumb.element.style.left).toBe(num + "%");
+      expect(view.range.element.style.left).toBe(num + "%");
       expect(parseInt(view.tooltipFirst.element.innerText)).toBe(num);
     });
 
-    test("update styles for Thumb, Range and Tooltip when (selectObject === sliderThumbSecond)", () => {
-      const obj = view.sliderThumbSecond.element;
+    test("update styles for Thumb, Range and Tooltip when (selectObject === thumbSecond)", () => {
+      const obj = view.thumbSecond.element;
       const num = 11;
 
       view.change(obj, num);
 
-      expect(view.sliderThumbSecond.element.style.left).toBe(num + "%");
-      expect(view.sliderRange.element.style.right).toBe(100 - num + "%");
+      expect(view.thumbSecond.element.style.left).toBe(num + "%");
+      expect(view.range.element.style.right).toBe(100 - num + "%");
       expect(parseInt(view.tooltipSecond.element.innerText)).toBe(num);
     });
   });
@@ -143,10 +143,10 @@ describe("class SliderView", () => {
   describe("method render()", () => {
     test("init rendering view elements", () => {
       expect(view.sliderContainer).toBeDefined();
-      expect(view.sliderTrack).toBeDefined();
-      expect(view.sliderRange).toBeDefined();
-      expect(view.sliderThumb).toBeDefined();
-      expect(view.sliderThumbSecond).toBeDefined();
+      expect(view.track).toBeDefined();
+      expect(view.range).toBeDefined();
+      expect(view.thumb).toBeDefined();
+      expect(view.thumbSecond).toBeDefined();
       expect(view.scale).toBeDefined();
       expect(view.tooltipFirst).toBeDefined();
       expect(view.tooltipSecond).toBeDefined();

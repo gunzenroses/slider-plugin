@@ -22,9 +22,7 @@ export default class SliderTooltip implements ISubview {
 
   private createChildren(that: IView): void {
     this.parentNode =
-      this.className === "tooltip_first"
-        ? that.sliderThumb.element
-        : that.sliderThumbSecond.element;
+      this.className === "tooltip_first" ? that.thumb.element : that.thumbSecond.element;
   }
 
   make(that: IView): HTMLElement {

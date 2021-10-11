@@ -3,13 +3,13 @@
  */
 
 import { ConfigurationPanel } from "panel/panel";
-import { SliderPresenter } from "mvp/presenter";
+import { Presenter } from "mvp/presenter";
 import { sliderData } from "mvp/data";
 
 const container = document.createElement("div");
 document.body.append(container);
 
-const presenter = new SliderPresenter(container, sliderData);
+const presenter = new Presenter(container, sliderData);
 const panel = new ConfigurationPanel(container, presenter);
 
 describe("Panel for double slider", () => {
@@ -94,7 +94,7 @@ describe("Panel for double slider", () => {
 
         panel.changePanel(evt);
 
-        expect(panel.presenter.changingObject).toBe(panel.presenter.view.sliderThumb.element);
+        expect(panel.presenter.changingObject).toBe(panel.presenter.view.thumb.element);
       });
 
       test("case currentSecond", () => {
@@ -110,7 +110,7 @@ describe("Panel for double slider", () => {
 
         panel.changePanel(evt);
 
-        expect(panel.presenter.changingObject).toBe(panel.presenter.view.sliderThumbSecond.element);
+        expect(panel.presenter.changingObject).toBe(panel.presenter.view.thumbSecond.element);
       });
     });
   });
@@ -131,7 +131,7 @@ describe("Panel for double slider", () => {
 });
 
 const newData = { ...sliderData, range: false, tooltip: false, scale: false };
-const presenterS = new SliderPresenter(container, newData);
+const presenterS = new Presenter(container, newData);
 const panelS = new ConfigurationPanel(container, presenterS);
 describe("Panel for single slider", () => {
   test("should disable input for currentSecond", () => {

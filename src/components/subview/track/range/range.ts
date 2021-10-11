@@ -2,7 +2,7 @@ import { IView } from "mvp/view";
 import ISubview from "subview/subviewElement";
 
 //here all values are in %
-export default class SliderRange implements ISubview {
+export default class range implements ISubview {
   element!: HTMLElement;
 
   constructor(that: IView) {
@@ -12,7 +12,7 @@ export default class SliderRange implements ISubview {
   private init(that: IView): HTMLElement {
     this.make(that);
     this.change(that);
-    that.sliderTrack.append(this.element);
+    that.track.append(this.element);
     return this.element;
   }
 

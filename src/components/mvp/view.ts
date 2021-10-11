@@ -1,21 +1,21 @@
 import { EventDispatcher, ISender } from "./eventDispatcher";
-import SliderContainer from "subview/trackView/sliderContainer/sliderContainer";
-import SliderRange from "subview/trackView/sliderRange/sliderRange";
-import SliderTrack from "subview/trackView/sliderTrack/sliderTrack";
-import SliderThumb from "subview/trackView/sliderThumb/sliderThumb";
-import SliderScale from "subview/scaleView/sliderScale";
+import SliderContainer from "subview/track/container/sliderContainer";
+import Range from "subview/track/range/range";
+import Track from "subview/track/track/track";
+import Thumb from "subview/track/thumb/thumb";
+import Scale from "subview/scale/scale";
 import { changeValueToPercents } from "utils/common";
 import { TSettings } from "utils/types";
-import SliderTooltip from "subview/tooltipView/sliderTooltip";
+import Tooltip from "subview/tooltip/tooltip";
 import ISubview from "subview/subviewElement";
 
 interface IView {
   settings: TSettings;
   sliderContainer: HTMLElement;
-  sliderThumb: ISubview;
-  sliderThumbSecond: ISubview;
-  sliderTrack: HTMLElement;
-  sliderRange: ISubview;
+  thumb: ISubview;
+  thumbSecond: ISubview;
+  track: HTMLElement;
+  range: ISubview;
   scale: HTMLElement;
   tooltipFirst: ISubview;
   tooltipSecond: ISubview;
@@ -31,7 +31,7 @@ interface IView {
   dragThumbEnd(): void;
 }
 
-class SliderView implements IView {
+class View implements IView {
   //in constructor
   private parentContainer: HTMLElement;
   fromViewSelectThumb: ISender;
@@ -40,10 +40,10 @@ class SliderView implements IView {
   //to manipulate the DOM
   settings!: TSettings;
   sliderContainer!: HTMLElement;
-  sliderThumb!: ISubview;
-  sliderThumbSecond!: ISubview;
-  sliderRange!: ISubview;
-  sliderTrack!: HTMLElement;
+  thumb!: ISubview;
+  thumbSecond!: ISubview;
+  range!: ISubview;
+  track!: HTMLElement;
   tooltipFirst!: ISubview;
   tooltipSecond!: ISubview;
   scale!: HTMLElement;
@@ -89,19 +89,19 @@ class SliderView implements IView {
 
   private addListenerPointerDown(): void {
     if (this.settings.range) {
-      this.sliderThumb.element.addEventListener("pointerdown", this.dragThumbHandler);
-      this.sliderThumbSecond.element.addEventListener("pointerdown", this.dragThumbHandler);
+      this.thumb.element.addEventListener("pointerdown", this.dragThumbHandler);
+      this.thumbSecond.element.addEventListener("pointerdown", this.dragThumbHandler);
     } else {
-      this.sliderThumb.element.addEventListener("pointerdown", this.dragThumbHandler);
+      this.thumb.element.addEventListener("pointerdown", this.dragThumbHandler);
     }
   }
 
   private stopListenDown(): void {
     if (this.settings.range === true) {
-      this.sliderThumb.element.removeEventListener("pointerdown", this.dragThumbHandler);
-      this.sliderThumbSecond.element.removeEventListener("pointerdown", this.dragThumbHandler);
+      this.thumb.element.removeEventListener("pointerdown", this.dragThumbHandler);
+      this.thumbSecond.element.removeEventListener("pointerdown", this.dragThumbHandler);
     } else {
-      this.sliderThumb.element.removeEventListener("pointerdown", this.dragThumbHandler);
+      this.thumb.element.removeEventListener("pointerdown", this.dragThumbHandler);
     }
   }
 
@@ -118,7 +118,7 @@ class SliderView implements IView {
   }
 
   selectThumb(e: PointerEvent): void {
-    e.target !== this.sliderThumb.element && e.target !== this.sliderThumbSecond.element
+    e.target !== this.thumb.element && e.target !== this.thumbSecond.element
       ? this.fromViewSelectThumb.notify(e)
       : null;
   }
@@ -143,25 +143,25 @@ class SliderView implements IView {
 
   // in % and actual values
   change(object: HTMLElement, newThumbCurrent: number): void {
-    object === this.sliderThumb.element
+    object === this.thumb.element
       ? (this.settings.firstPosition = newThumbCurrent)
       : (this.settings.secondPosition = newThumbCurrent);
     this.updateElements();
   }
 
   private updateElements(): void {
-    this.sliderRange.change(this);
+    this.range.change(this);
     this.settings.range ? this.renderDouble() : this.renderSingle();
   }
 
   private renderSingle(): void {
-    this.sliderThumb.change(this);
+    this.thumb.change(this);
     this.tooltipFirst.change(this);
   }
 
   private renderDouble(): void {
-    this.sliderThumb.change(this);
-    this.sliderThumbSecond.change(this);
+    this.thumb.change(this);
+    this.thumbSecond.change(this);
     this.tooltipFirst.change(this);
     this.tooltipSecond.change(this);
   }
@@ -169,16 +169,16 @@ class SliderView implements IView {
   private render(): void {
     this.parentContainer.innerHTML = "";
     this.sliderContainer = new SliderContainer(this, this.parentContainer).sliderContainer;
-    this.sliderTrack = new SliderTrack(this).element;
-    this.scale = new SliderScale(this).element;
+    this.track = new Track(this).element;
+    this.scale = new Scale(this).element;
 
-    this.sliderRange = new SliderRange(this);
-    this.sliderThumb = new SliderThumb(this, "thumb_first");
-    this.sliderThumbSecond = new SliderThumb(this, "thumb_second");
-    this.tooltipFirst = new SliderTooltip(this, "tooltip_first");
-    this.tooltipSecond = new SliderTooltip(this, "tooltip_second");
+    this.range = new Range(this);
+    this.thumb = new Thumb(this, "thumb_first");
+    this.thumbSecond = new Thumb(this, "thumb_second");
+    this.tooltipFirst = new Tooltip(this, "tooltip_first");
+    this.tooltipSecond = new Tooltip(this, "tooltip_second");
     this.updateElements();
   }
 }
 
-export { IView, SliderView };
+export { IView, View };
