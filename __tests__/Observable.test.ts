@@ -1,13 +1,13 @@
 import Observable from "mvp/Observable/Observable";
 
 describe("Observable", () => {
-  const keeper = new Observable();
+  const eventDispatcher = new Observable();
   const follower = jest.fn(x => 42 + x);
   const anotherFollower = jest.fn(x => 17 + x);
-  keeper.add("someKey", follower);
-  keeper.add("anotherKey", anotherFollower);
-  keeper.notify("someKey", 13);
-  keeper.notify("anotherKey", -8);
+  eventDispatcher.add("someKey", follower);
+  eventDispatcher.add("anotherKey", anotherFollower);
+  eventDispatcher.notify("someKey", 13);
+  eventDispatcher.notify("anotherKey", -8);
   
   beforeEach(() => {
     jest.restoreAllMocks();
