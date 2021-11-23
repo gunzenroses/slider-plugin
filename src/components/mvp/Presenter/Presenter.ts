@@ -29,8 +29,8 @@ export default class Presenter implements IPresenter {
 
   changeViewHandler!: { (value: number): void };
   updateDataHandler!: { (data: TSettings): void };
-  fromViewSelectThumbHandler!: { (e: PointerEvent): void };
-  fromViewDragThumbHandler!: { (e: PointerEvent): void };
+  selectThumbHandler!: { (e: PointerEvent): void };
+  dragThumbHandler!: { (e: PointerEvent): void };
 
   constructor(container: HTMLElement, data: TSettings) {
     this.model = new Model(data);
@@ -62,15 +62,15 @@ export default class Presenter implements IPresenter {
   }
 
   private setupHandlers(): void {
-    this.fromViewSelectThumbHandler = this.selectThumb.bind(this);
-    this.fromViewDragThumbHandler = this.dragThumb.bind(this);
+    this.selectThumbHandler = this.selectThumb.bind(this);
+    this.dragThumbHandler = this.dragThumb.bind(this);
     this.changeViewHandler = this.updateThumbs.bind(this);
     this.updateDataHandler = this.updateData.bind(this);
   }
 
   private enable(): void {
-    this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler as TListener);
-    this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler as TListener);
+    this.view.eventDispatcher.add("selectThumb", this.selectThumbHandler as TListener);
+    this.view.eventDispatcher.add("dragThumb", this.dragThumbHandler as TListener);
     this.model.eventDispatcher.add("changeView", this.changeViewHandler as TListener);
     this.model.eventDispatcher.add("updateData", this.updateDataHandler as TListener);
   }

@@ -14,8 +14,7 @@ import Tooltip from "./Tooltip/Tooltip";
 export default class View implements IView {
   //in constructor
   private parentContainer: HTMLElement;
-  fromViewSelectThumb: IObservable;
-  fromViewDragThumb: IObservable;
+  eventDispatcher: IObservable;
 
   //to manipulate the DOM
   settings!: TSettings;
@@ -35,8 +34,7 @@ export default class View implements IView {
   private dropThumbHandler!: () => void;
 
   constructor(container: HTMLElement) {
-    this.fromViewSelectThumb = new Observable();
-    this.fromViewDragThumb = new Observable();
+    this.eventDispatcher = new Observable();
     this.parentContainer = container;
   }
 
@@ -99,7 +97,7 @@ export default class View implements IView {
 
   selectThumb(e: PointerEvent): void {
     e.target !== this.thumb.element && e.target !== this.thumbSecond.element
-      ? this.fromViewSelectThumb.notify(e)
+      ? this.eventDispatcher.notify("selectThumb", e)
       : null;
   }
 
@@ -112,7 +110,7 @@ export default class View implements IView {
   private dragThumbMove(e: PointerEvent): void {
     this.stopListenDown();
     e.preventDefault();
-    this.fromViewDragThumb.notify(e);
+    this.eventDispatcher.notify("dragThumb", e);
   }
 
   dragThumbEnd(): void {

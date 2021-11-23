@@ -41,8 +41,8 @@ describe("class View", () => {
   });
 
   describe("method enable()", () => {
-    test("notify fromViewSelectThumb subscribers when sliderContainer is clicked", () => {
-      const spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
+    test("notify 'selectThumb' subscribers when sliderContainer is clicked", () => {
+      const spyOnClick = jest.spyOn(view.eventDispatcher, "notify");
 
       view.sliderContainer.dispatchEvent(new Event("pointerdown"));
       view.sliderContainer.dispatchEvent(new Event("pointerup"));
@@ -50,8 +50,8 @@ describe("class View", () => {
       expect(spyOnClick).toHaveBeenCalledTimes(1);
     });
 
-    test('should not activate "fromViewSelectThumb" when thumb or thumbSecond is clicked', () => {
-      const spyOnClick = jest.spyOn(view.fromViewSelectThumb, "notify");
+    test("should not notify 'selectThumb' subscribers when thumb or thumbSecond is clicked", () => {
+      const spyOnClick = jest.spyOn(view.eventDispatcher, "notify");
 
       view.thumb.element.dispatchEvent(new Event("click"));
       view.thumbSecond.element.dispatchEvent(new Event("click"));
@@ -59,8 +59,8 @@ describe("class View", () => {
       expect(spyOnClick).toHaveBeenCalledTimes(0);
     });
 
-    test("notify fromViewDragThumb subscribers when thumb is moved", () => {
-      const spyOnDragMove = jest.spyOn(view.fromViewDragThumb, "notify");
+    test("notify 'dragThumb' subscribers when thumb is moved", () => {
+      const spyOnDragMove = jest.spyOn(view.eventDispatcher, "notify");
 
       view.thumbSecond.element.dispatchEvent(new Event("pointerdown"));
       document.dispatchEvent(new Event("pointermove"));
@@ -73,7 +73,7 @@ describe("class View", () => {
     test("should not notify subscribers if e.target is selectThumb or selectThumbSecond", () => {
       const evt = new Event("pointerup") as PointerEvent;
       view.thumb.element.dispatchEvent(evt);
-      const spyOnSm = jest.spyOn(view.fromViewSelectThumb, "notify");
+      const spyOnSm = jest.spyOn(view.eventDispatcher, "notify");
 
       view.selectThumb(evt);
 
@@ -100,7 +100,7 @@ describe("class View", () => {
 
   describe("method dragThumbEnd()", () => {
     test("when pointer is up should end listening to pointermove", () => {
-      const spyOnMoveListener = jest.spyOn(view.fromViewDragThumb, "notify");
+      const spyOnMoveListener = jest.spyOn(view.eventDispatcher, "notify");
 
       document.dispatchEvent(new Event("pointerup"));
 

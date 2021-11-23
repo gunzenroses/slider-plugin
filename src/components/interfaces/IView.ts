@@ -13,9 +13,8 @@ export default interface IView {
     tooltipFirst: ISubview;
     tooltipSecond: ISubview;
     dragObj: HTMLElement | null;
-  
-    fromViewSelectThumb: IObservable;
-    fromViewDragThumb: IObservable;
+
+    eventDispatcher: IObservable;
   
     init(settings: TSettings): void;
     change(object: HTMLElement, newThumbCurrent: number): void;
