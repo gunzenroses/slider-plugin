@@ -1,6 +1,6 @@
-import { IView } from "mvp/view";
+import { IView } from "mvp/View/View";
 
-export default class track {
+export default class Track {
   element!: HTMLElement;
 
   constructor(that: IView) {

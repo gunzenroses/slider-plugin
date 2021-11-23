@@ -4,7 +4,7 @@ import {
   applyStepOnValue,
   commonDivider,
   findPosition,
-} from "utils/common";
+} from "Utils/common";
 
 describe("applyStepOnPercents()", () => {
   test("casual case for 'value' and 'step'", () => {

@@ -1,29 +1,19 @@
-import { IModel, Model } from "./model";
-import { IView, View } from "./view";
-import { EventDispatcher, ISender } from "./eventDispatcher";
-import { IModelData, TFunc, TSettings } from "utils/types";
+import { IModelData, TFunc, TSettings } from "Utils/types";
 import {
   applyRestrictions,
   findPosition,
   percentsToValue,
   valueToPercentsApplyStep,
-} from "utils/common";
+} from "Utils/common";
+import IModel from "Interfaces/IModel";
+import IObservable from "Interfaces/IObservable";
+import IPresenter from "Interfaces/IPresenter";
+import IView from "Interfaces/IView";
+import Model from "../Model/Model";
+import Observable from "../Observable/Observable";
+import View from "../View/View";
 
-interface IPresenter {
-  model: IModel;
-  view: IView;
-  data: TSettings;
-  changingObject: HTMLElement | null;
-
-  init(): void;
-  modelData(name: string, data: IModelData): void;
-
-  fromPresenterUpdate: ISender;
-  fromPresenterThumbUpdate: ISender;
-  fromPresenterThumbSecondUpdate: ISender;
-}
-
-class Presenter implements IPresenter {
+export default class Presenter implements IPresenter {
   model: IModel;
   view: IView;
   data!: TSettings;
@@ -31,9 +21,9 @@ class Presenter implements IPresenter {
   containerSize!: number;
   thumbWidth!: number;
 
-  fromPresenterUpdate!: ISender;
-  fromPresenterThumbUpdate!: ISender;
-  fromPresenterThumbSecondUpdate!: ISender;
+  fromPresenterUpdate!: IObservable;
+  fromPresenterThumbUpdate!: IObservable;
+  fromPresenterThumbSecondUpdate!: IObservable;
 
   private ifHorizontal!: boolean;
 
@@ -45,9 +35,9 @@ class Presenter implements IPresenter {
   constructor(container: HTMLElement, data: TSettings) {
     this.model = new Model(data);
     this.view = new View(container);
-    this.fromPresenterUpdate = new EventDispatcher();
-    this.fromPresenterThumbUpdate = new EventDispatcher();
-    this.fromPresenterThumbSecondUpdate = new EventDispatcher();
+    this.fromPresenterUpdate = new Observable();
+    this.fromPresenterThumbUpdate = new Observable();
+    this.fromPresenterThumbSecondUpdate = new Observable();
     this.init();
   }
 

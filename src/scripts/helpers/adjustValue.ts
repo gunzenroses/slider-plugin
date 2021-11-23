@@ -1,5 +1,5 @@
-import { IModelData, TSettings } from "utils/types";
-import { applyStepOnValue } from "utils/common";
+import { IModelData, TSettings } from "Utils/types";
+import { applyStepOnValue } from "Utils/common";
 
 export default function adjustValue(name: string, value: IModelData, data: TSettings): IModelData {
   const { max, min, step, currentFirst, currentSecond }: TSettings = data;

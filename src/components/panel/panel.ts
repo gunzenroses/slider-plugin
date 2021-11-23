@@ -1,20 +1,10 @@
-import { IPresenter } from "mvp/presenter";
-import checkValidity from "helpers/checkValidity";
-import { TSettings, TPanelParam, TFunc, IModelData } from "utils/types";
-import { afterCustomElement, appendCustomElement } from "utils/common";
+import checkValidity from "Helpers/checkValidity";
+import { TSettings, TPanelParam, TFunc, IModelData } from "Utils/types";
+import { afterCustomElement, appendCustomElement } from "Utils/common";
+import IPresenter from "Interfaces/IPresenter";
+import IPanel from "Interfaces/IPanel";
 
-interface IPanel {
-  presenter: IPresenter;
-  panelContainer: HTMLElement;
-  data: TSettings;
-
-  init(): void;
-  render(data: TSettings): void;
-  changePanel(e: Event): void;
-  updatePanel(): void;
-}
-
-class ConfigurationPanel implements IPanel {
+export default class Panel implements IPanel {
   presenter: IPresenter;
   panelContainer: HTMLElement;
   private panelItems: HTMLElement;
@@ -258,5 +248,3 @@ class ConfigurationPanel implements IPanel {
       : `<option value="${arg}">${arg}</option> `;
   }
 }
-
-export { IPanel, ConfigurationPanel };

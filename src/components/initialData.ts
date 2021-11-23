@@ -1,6 +1,6 @@
-import { TSettings } from "utils/types";
+import { TSettings } from "Utils/types";
 
-const sliderData: TSettings = {
+const initialData: TSettings = {
   min: 0,
   max: 100,
   range: true,
@@ -14,4 +14,4 @@ const sliderData: TSettings = {
   },
 };
 
-export { sliderData };
+export { initialData };

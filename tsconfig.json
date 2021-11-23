@@ -4,10 +4,10 @@
     "paths": {
       "assets/*": ["src/assets/*"],
       "mvp/*": ["src/components/mvp/*"],
-      "panel/*": ["src/components/panel/*"],
-      "subview/*": ["src/components/subview/*"],
-      "helpers/*": ["src/scripts/helpers/*"],
-      "utils/*": ["src/scripts/utils/*"],
+      "Panel/*": ["src/components/Panel/*"],
+      "Interfaces/*": ["src/components/interfaces/*"],
+      "Helpers/*": ["src/scripts/helpers/*"],
+      "Utils/*": ["src/scripts/utils/*"],
     },
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     /* Basic Options */

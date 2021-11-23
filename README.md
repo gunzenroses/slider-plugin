@@ -15,7 +15,7 @@ Model:
 
 - implements IModel interface;
 - contains and updates data;
-- calls methods of presenter when data is updated (using instances based on the ISender interface).
+- calls methods of presenter when data is updated (using instances based on the IObservable interface).
 
 View:
 
@@ -23,7 +23,7 @@ View:
 - visualizes data;
 - manipulates (renders and updates) subviews using the ISubview interface;
 - handles events;
-- calls methods of IPresenter interface (using instances based on the ISender interface).
+- calls methods of IPresenter interface (using instances based on the IObservable interface).
 
 Presenter:
 

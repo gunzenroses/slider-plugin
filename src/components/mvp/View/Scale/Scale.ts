@@ -1,9 +1,9 @@
-import { IView } from "mvp/view";
-import ISubview from "subview/subviewElement";
-import { commonDivider, fromValueToPX } from "utils/common";
-import { TScaleItem, TScaleOptions } from "utils/types";
+import { commonDivider, fromValueToPX } from "Utils/common";
+import { TScaleItem, TScaleOptions } from "Utils/types";
+import { IView } from "mvp/View/View";
+import ISubview from "Interfaces/ISubview";
 
-export default class SliderScale implements ISubview {
+export default class Scale implements ISubview {
   element!: HTMLElement;
   scaleItemRow!: number[];
   tailContainer!: number;

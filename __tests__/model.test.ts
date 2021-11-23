@@ -2,17 +2,18 @@
  * @jest-environment jsdom
  */
 
-import { IModel, Model } from "mvp/model";
-import { sliderData } from "mvp/data";
-import { TSettings } from "utils/types";
-import adjustValue from "helpers/adjustValue";
+import { initialData } from "src/components/initialData";
+import IModel from "Interfaces/IModel";
+import Model from "mvp/Model/Model";
+import { TSettings } from "Utils/types";
+import adjustValue from "Helpers/adjustValue";
 
 describe("class Model", () => {
   let data: TSettings;
   let model: IModel;
 
   beforeEach(() => {
-    data = sliderData;
+    data = initialData;
     model = new Model(data);
     jest.restoreAllMocks();
   });

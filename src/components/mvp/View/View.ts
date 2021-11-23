@@ -1,41 +1,21 @@
-import { EventDispatcher, ISender } from "./eventDispatcher";
-import SliderContainer from "subview/track/container/sliderContainer";
-import Range from "subview/track/range/range";
-import Track from "subview/track/track/track";
-import Thumb from "subview/track/thumb/thumb";
-import Scale from "subview/scale/scale";
-import { changeValueToPercents } from "utils/common";
-import { TSettings } from "utils/types";
-import Tooltip from "subview/tooltip/tooltip";
-import ISubview from "subview/subviewElement";
+import { changeValueToPercents } from "Utils/common";
+import { TSettings } from "Utils/types";
+import IObservable from "src/components/interfaces/IObservable";
+import ISubview from "Interfaces/ISubview";
+import IView from "Interfaces/IView";
+import Observable from "../Observable/Observable";
+import SliderContainer from "./SliderContainer/SliderContainer";
+import Range from "./Range/Range";
+import Track from "./Track/Track";
+import Thumb from "./Thumb/Thumb";
+import Scale from "./Scale/Scale";
+import Tooltip from "./Tooltip/Tooltip";
 
-interface IView {
-  settings: TSettings;
-  sliderContainer: HTMLElement;
-  thumb: ISubview;
-  thumbSecond: ISubview;
-  track: HTMLElement;
-  range: ISubview;
-  scale: HTMLElement;
-  tooltipFirst: ISubview;
-  tooltipSecond: ISubview;
-  dragObj: HTMLElement | null;
-
-  fromViewSelectThumb: ISender;
-  fromViewDragThumb: ISender;
-
-  init(settings: TSettings): void;
-  change(object: HTMLElement, newThumbCurrent: number): void;
-  selectThumb(e: PointerEvent): void;
-  dragThumbStart(e: PointerEvent): void;
-  dragThumbEnd(): void;
-}
-
-class View implements IView {
+export default class View implements IView {
   //in constructor
   private parentContainer: HTMLElement;
-  fromViewSelectThumb: ISender;
-  fromViewDragThumb: ISender;
+  fromViewSelectThumb: IObservable;
+  fromViewDragThumb: IObservable;
 
   //to manipulate the DOM
   settings!: TSettings;
@@ -55,8 +35,8 @@ class View implements IView {
   private dropThumbHandler!: () => void;
 
   constructor(container: HTMLElement) {
-    this.fromViewSelectThumb = new EventDispatcher();
-    this.fromViewDragThumb = new EventDispatcher();
+    this.fromViewSelectThumb = new Observable();
+    this.fromViewDragThumb = new Observable();
     this.parentContainer = container;
   }
 

@@ -1,7 +1,7 @@
-import { IView } from "mvp/view";
-import ISubview from "subview/subviewElement";
+import { IView } from "mvp/View/View";
+import ISubview from "Interfaces/ISubview";
 
-export default class thumb implements ISubview {
+export default class Thumb implements ISubview {
   element!: HTMLElement;
   private className: string;
 

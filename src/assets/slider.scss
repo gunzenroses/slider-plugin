@@ -32,12 +32,12 @@ $color-dark: #000;
     }
 }
 
-@import "../components/subview/tooltip/tooltip.scss";
-@import "../components/subview/track/range/range.scss";
-@import "../components/subview/track/thumb/thumb.scss";
-@import "../components/subview/track/track/track.scss";
-@import "../components/subview/scale/scale.scss";
-@import "../components/panel/panel.scss";
+@import "../components/mvp/View/Tooltip/tooltip.scss";
+@import "../components/mvp/View/Range/range.scss";
+@import "../components/mvp/View/Thumb/thumb.scss";
+@import "../components/mvp/View/Track/track.scss";
+@import "../components/mvp/View/Scale/scale.scss";
+@import "../components/Panel/panel.scss";
 
 .disabled {
     display: none;

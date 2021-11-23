@@ -1,4 +1,4 @@
-import { IView } from "mvp/view";
+import { IView } from "mvp/View/View";
 
 export default class SliderContainer {
   sliderContainer!: HTMLElement;

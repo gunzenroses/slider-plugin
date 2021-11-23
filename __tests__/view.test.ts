@@ -1,11 +1,13 @@
 /**
  * @jest-environment jsdom
  */
-import { IView, View } from "mvp/view";
-import { sliderData } from "mvp/data";
+
+import { initialData } from "src/components/initialData";
+import IView from "src/components/interfaces/IView";
+import View from "mvp/View/View";
 
 describe("class View", () => {
-  const data = sliderData;
+  const data = initialData;
   const container = document.createElement("div");
   document.body.append(container);
   let view: IView;
@@ -158,7 +160,7 @@ describe("class View", () => {
         tooltip: false,
         range: false,
       };
-      const updatedData = { ...sliderData, ...newData };
+      const updatedData = { ...initialData, ...newData };
 
       view.init(updatedData);
 

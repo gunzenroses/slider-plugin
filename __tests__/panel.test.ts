@@ -2,15 +2,15 @@
  * @jest-environment jsdom
  */
 
-import { ConfigurationPanel } from "panel/panel";
-import { Presenter } from "mvp/presenter";
-import { sliderData } from "mvp/data";
+import { initialData } from "src/components/initialData";
+import Panel from "Panel/Panel";
+import Presenter from "mvp/Presenter/Presenter";
 
 const container = document.createElement("div");
 document.body.append(container);
 
-const presenter = new Presenter(container, sliderData);
-const panel = new ConfigurationPanel(container, presenter);
+const presenter = new Presenter(container, initialData);
+const panel = new Panel(container, presenter);
 
 describe("Panel for double slider", () => {
   beforeEach(() => {
@@ -130,9 +130,9 @@ describe("Panel for double slider", () => {
   });
 });
 
-const newData = { ...sliderData, range: false, tooltip: false, scale: false };
+const newData = { ...initialData, range: false, tooltip: false, scale: false };
 const presenterS = new Presenter(container, newData);
-const panelS = new ConfigurationPanel(container, presenterS);
+const panelS = new Panel(container, presenterS);
 describe("Panel for single slider", () => {
   test("should disable input for currentSecond", () => {
     const currentSecondInput = <HTMLInputElement>(

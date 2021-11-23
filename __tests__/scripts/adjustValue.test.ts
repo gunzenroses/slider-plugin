@@ -1,8 +1,8 @@
-import { sliderData } from "mvp/data";
-import adjustValue from "helpers/adjustValue";
-import { applyStepOnValue } from "utils/common";
+import { initialData } from "src/components/initialData";
+import adjustValue from "Helpers/adjustValue";
+import { applyStepOnValue } from "Utils/common";
 
-const data = sliderData;
+const data = initialData;
 
 describe("adjustValue", () => {
   describe("should adjust 'min'", () => {

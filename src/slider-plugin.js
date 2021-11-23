@@ -1,4 +1,4 @@
-import SliderMaker from "./components/mvp/sliderMaker.ts";
+import SliderMaker from "./components/sliderMaker.ts";
 import "assets/slider.scss";
 
 (function($){

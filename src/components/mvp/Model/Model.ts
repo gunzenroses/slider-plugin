@@ -1,23 +1,18 @@
-import { EventDispatcher, ISender } from "./eventDispatcher";
-import { IModelData, TSettings } from "utils/types";
-import { applyStepOnValue } from "utils/common";
-import adjustValue from "helpers/adjustValue";
+import { IModelData, TSettings } from "Utils/types";
+import { applyStepOnValue } from "Utils/common";
+import adjustValue from "Helpers/adjustValue";
+import Observable from "mvp/Observable/Observable";
+import IObservable from "Interfaces/IObservable";
+import IModel from "Interfaces/IModel";
 
-interface IModel {
-  fromModelChangeView: ISender;
-  fromModelUpdateData: ISender;
-  setData(name: string, data: IModelData): void;
-  getData(): TSettings;
-}
-
-class Model implements IModel {
+export default class Model implements IModel {
   private data: TSettings;
-  fromModelChangeView: ISender;
-  fromModelUpdateData: ISender;
+  fromModelChangeView: IObservable;
+  fromModelUpdateData: IObservable;
 
   constructor(settings: TSettings) {
-    this.fromModelChangeView = new EventDispatcher();
-    this.fromModelUpdateData = new EventDispatcher();
+    this.fromModelChangeView = new Observable();
+    this.fromModelUpdateData = new Observable();
     this.data = settings;
     this.updateCurrentsWithStep();
   }
@@ -55,5 +50,3 @@ class Model implements IModel {
       : this.fromModelUpdateData.notify();
   }
 }
-
-export { IModel, Model };

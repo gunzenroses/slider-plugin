@@ -1,4 +1,4 @@
-import { appendCustomElement } from "utils/common";
+import { appendCustomElement } from "Utils/common";
 
 export default class checkValidity {
   private item: HTMLInputElement;

@@ -2,14 +2,14 @@
  * @jest-environment jsdom
  */
 
-import { Presenter } from "mvp/presenter";
-import { sliderData } from "mvp/data";
+import { initialData } from "src/components/initialData";
+import { Presenter } from "mvp/Presenter/Presenter";
 
 const container = document.createElement("div");
 container.innerHTML = "div {width: 400px, height: 400px}";
 document.body.append(container);
 
-const presenter = new Presenter(container, sliderData);
+const presenter = new Presenter(container, initialData);
 
 describe("Presenter", () => {
   beforeEach(() => {
@@ -182,8 +182,8 @@ const VS = {
   orientation: "vertical",
   range: false,
 };
-const sliderDataVS = { ...sliderData, ...VS };
-const presenterVS = new Presenter(container, sliderDataVS);
+const initialDataVS = { ...initialData, ...VS };
+const presenterVS = new Presenter(container, initialDataVS);
 
 describe("should work for single and vertical sliders", () => {
   test("method selectThumb()", () => {

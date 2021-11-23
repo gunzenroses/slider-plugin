@@ -1,4 +1,4 @@
-import { IView } from "mvp/view";
+import { IView } from "mvp/View/View";
 
 type IModelData = boolean | number | string;
 

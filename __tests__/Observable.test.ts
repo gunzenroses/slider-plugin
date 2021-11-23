@@ -1,5 +1,5 @@
-import { EventDispatcher } from "mvp/eventDispatcher";
-import { TFuncArg } from "utils/types";
+import Observable from "mvp/Observable/Observable";
+import { TFuncArg } from "Utils/types";
 
 class Listener {
   msg: TFuncArg | undefined;
@@ -15,8 +15,8 @@ class Listener {
   }
 }
 
-describe("EventDispatcher", () => {
-  const ed = new EventDispatcher();
+describe("Observable", () => {
+  const ed = new Observable();
   const listener = new Listener(1);
 
   test("method add(): add listener to listeners", () => {

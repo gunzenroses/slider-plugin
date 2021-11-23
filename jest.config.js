@@ -19,10 +19,10 @@ module.exports = {
   moduleNameMapper: {
     '^styles/(.*)$': '<rootDir>/src/assets/styles/$1',
     '^mvp/(.*)$': '<rootDir>/src/components/mvp/$1',
-    '^panel(.*)$': '<rootDir>/src/components/panel/$1',
-    '^subview/(.*)$': '<rootDir>/src/components/subview/$1',
-    '^helpers/(.*)$': '<rootDir>/src/scripts/helpers/$1',
-    '^utils/(.*)$': '<rootDir>/src/scripts/utils/$1',
+    '^Panel(.*)$': '<rootDir>/src/components/Panel/$1',
+    '^Interfaces/(.*)$': '<rootDir>/src/components/interfaces/$1',
+    '^Helpers/(.*)$': '<rootDir>/src/scripts/helpers/$1',
+    '^Utils/(.*)$': '<rootDir>/src/scripts/utils/$1',
   },
   moduleDirectories: ['node_modules', 'src'],
 }

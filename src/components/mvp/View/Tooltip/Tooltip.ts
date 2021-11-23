@@ -1,8 +1,8 @@
-import { IView } from "mvp/view";
-import ISubview from "subview/subviewElement";
-import { percentsToValue } from "utils/common";
+import { IView } from "mvp/View/View";
+import ISubview from "Interfaces/ISubview";
+import { percentsToValue } from "Utils/common";
 
-export default class SliderTooltip implements ISubview {
+export default class Tooltip implements ISubview {
   private className: string;
   private parentNode!: HTMLElement;
   element!: HTMLElement;

@@ -1,8 +1,8 @@
-import { IView } from "mvp/view";
-import ISubview from "subview/subviewElement";
+import { IView } from "mvp/View/View";
+import ISubview from "Interfaces/ISubview";
 
 //here all values are in %
-export default class range implements ISubview {
+export default class Range implements ISubview {
   element!: HTMLElement;
 
   constructor(that: IView) {

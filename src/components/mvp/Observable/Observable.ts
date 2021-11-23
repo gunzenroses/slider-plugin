@@ -1,12 +1,7 @@
-import { TFunc, TFuncArg } from "utils/types";
+import { TFunc, TFuncArg } from "Utils/types";
+import IObservable from "Interfaces/IObservable";
 
-interface ISender {
-  add(listener: TFunc): void;
-  remove(listener: TFunc): void;
-  notify(args?: TFuncArg): void;
-}
-
-class EventDispatcher implements ISender {
+export default class Observable implements IObservable {
   private listeners: Array<TFunc> = [];
 
   add(listener: TFunc): void {
@@ -25,6 +20,4 @@ class EventDispatcher implements ISender {
   notify(args?: Event | number): void {
     this.listeners.forEach((listener) => listener(args as TFuncArg));
   }
-}
-
-export { ISender, EventDispatcher };
+};
