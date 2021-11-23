@@ -1,23 +1,20 @@
-import { TFunc, TFuncArg } from "Utils/types";
+import { TListener, TListenerArg, TListenerArr } from "Utils/types";
 import IObservable from "Interfaces/IObservable";
 
 export default class Observable implements IObservable {
-  private listeners: Array<TFunc> = [];
+  private listeners: TListenerArr = {};
 
-  add(listener: TFunc): void {
-    this.listeners.push(listener);
+  add(eventKey: string, listener: TListener): void {
+    if (this.listeners[eventKey]) {
+      this.listeners[eventKey].push(listener);
+    } else {
+      this.listeners[eventKey] = [listener];
+    }
   }
 
-  remove(listener: TFunc): void {
-    const index = this.listeners.indexOf(listener);
-    this.listeners.splice(index, 1);
-  }
-
-  get(): Array<TFunc> {
-    return this.listeners;
-  }
-
-  notify(args?: Event | number): void {
-    this.listeners.forEach((listener) => listener(args as TFuncArg));
+  notify(eventKey: string, args?: TListenerArg): void {
+    if (this.listeners[eventKey]) {
+      this.listeners[eventKey].forEach((listener) => listener(args));
+    }
   }
 };
