@@ -27,8 +27,8 @@ export default class Presenter implements IPresenter {
 
   private ifHorizontal!: boolean;
 
-  fromModelChangeViewHandler!: { (value: number): void };
-  fromModelUpdateDataHandler!: { (data: TSettings): void };
+  changeViewHandler!: { (value: number): void };
+  updateDataHandler!: { (data: TSettings): void };
   fromViewSelectThumbHandler!: { (e: PointerEvent): void };
   fromViewDragThumbHandler!: { (e: PointerEvent): void };
 
@@ -64,15 +64,15 @@ export default class Presenter implements IPresenter {
   private setupHandlers(): void {
     this.fromViewSelectThumbHandler = this.selectThumb.bind(this);
     this.fromViewDragThumbHandler = this.dragThumb.bind(this);
-    this.fromModelChangeViewHandler = this.updateThumbs.bind(this);
-    this.fromModelUpdateDataHandler = this.updateData.bind(this);
+    this.changeViewHandler = this.updateThumbs.bind(this);
+    this.updateDataHandler = this.updateData.bind(this);
   }
 
   private enable(): void {
     this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler as TListener);
     this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler as TListener);
-    this.model.fromModelChangeView.add(this.fromModelChangeViewHandler as TListener);
-    this.model.fromModelUpdateData.add(this.fromModelUpdateDataHandler as TListener);
+    this.model.eventDispatcher.add("changeView", this.changeViewHandler as TListener);
+    this.model.eventDispatcher.add("updateData", this.updateDataHandler as TListener);
   }
 
   private setObject(object: HTMLElement): void {

@@ -7,12 +7,10 @@ import IModel from "Interfaces/IModel";
 
 export default class Model implements IModel {
   private data: TSettings;
-  fromModelChangeView: IObservable;
-  fromModelUpdateData: IObservable;
+  eventDispatcher: IObservable;
 
   constructor(settings: TSettings) {
-    this.fromModelChangeView = new Observable();
-    this.fromModelUpdateData = new Observable();
+    this.eventDispatcher = new Observable();
     this.data = settings;
     this.updateCurrentsWithStep();
   }
@@ -44,9 +42,9 @@ export default class Model implements IModel {
 
   private changeData(name: string): void {
     name === "currentFirst"
-      ? this.fromModelChangeView.notify(this.data.currentFirst)
+      ? this.eventDispatcher.notify("changeView", this.data.currentFirst)
       : name === "currentSecond"
-      ? this.fromModelChangeView.notify(this.data.currentSecond)
-      : this.fromModelUpdateData.notify();
+      ? this.eventDispatcher.notify("changeView", this.data.currentSecond)
+      : this.eventDispatcher.notify("updateData");
   }
 }
