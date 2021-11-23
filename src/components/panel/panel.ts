@@ -1,5 +1,5 @@
 import checkValidity from "Helpers/checkValidity";
-import { TSettings, TPanelParam, TFunc, IModelData } from "Utils/types";
+import { TSettings, TPanelParam, TListener, IModelData } from "Utils/types";
 import { afterCustomElement, appendCustomElement } from "Utils/common";
 import IPresenter from "Interfaces/IPresenter";
 import IPanel from "Interfaces/IPanel";
@@ -66,10 +66,9 @@ export default class Panel implements IPanel {
 
   private enable(): void {
     this.panelItems.addEventListener("change", this.changePanelHandler);
-
-    this.presenter.fromPresenterUpdate.add(this.updateHandler as TFunc);
-    this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler as TFunc);
-    this.presenter.fromPresenterThumbSecondUpdate.add(this.updateThumbSecondHandler as TFunc);
+    this.presenter.fromPresenterUpdate.add(this.updateHandler as TListener);
+    this.presenter.fromPresenterThumbUpdate.add(this.updateThumbHandler as TListener);
+    this.presenter.fromPresenterThumbSecondUpdate.add(this.updateThumbSecondHandler as TListener);
   }
 
   updatePanel(): void {

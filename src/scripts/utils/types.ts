@@ -1,10 +1,14 @@
 import { IView } from "mvp/View/View";
 
+type TListenerArg = Event | string | number;
+
+type TListener = (arg1?: TListenerArg) => void;
+
+type TListenerArr = {
+  [eventKey: string]: Array<TListener>
+}
+
 type IModelData = boolean | number | string;
-
-type TListType = number | PointerEvent | null;
-
-type TListener = (arg1: TListType) => void;
 
 type TRangeStyle = {
   newThumbCurrent: number;
@@ -42,19 +46,15 @@ type TScaleOptions = {
   that: IView;
 };
 
-type TFuncArg = Event | string | number;
-
-type TFunc = (arg1?: TFuncArg) => void;
-
 export {
-  TScale,
-  TSettings,
   IModelData,
-  TRangeStyle,
+  TListenerArg,
   TListener,
+  TListenerArr,
   TPanelParam,
+  TRangeStyle,
+  TScale,
   TScaleOptions,
   TScaleItem,
-  TFuncArg,
-  TFunc,
+  TSettings,
 };

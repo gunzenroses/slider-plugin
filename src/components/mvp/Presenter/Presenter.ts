@@ -1,4 +1,4 @@
-import { IModelData, TFunc, TSettings } from "Utils/types";
+ import { IModelData, TListener, TSettings } from "Utils/types";
 import {
   applyRestrictions,
   findPosition,
@@ -69,10 +69,10 @@ export default class Presenter implements IPresenter {
   }
 
   private enable(): void {
-    this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler as TFunc);
-    this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler as TFunc);
-    this.model.fromModelChangeView.add(this.fromModelChangeViewHandler as TFunc);
-    this.model.fromModelUpdateData.add(this.fromModelUpdateDataHandler as TFunc);
+    this.view.fromViewSelectThumb.add(this.fromViewSelectThumbHandler as TListener);
+    this.view.fromViewDragThumb.add(this.fromViewDragThumbHandler as TListener);
+    this.model.fromModelChangeView.add(this.fromModelChangeViewHandler as TListener);
+    this.model.fromModelUpdateData.add(this.fromModelUpdateDataHandler as TListener);
   }
 
   private setObject(object: HTMLElement): void {
