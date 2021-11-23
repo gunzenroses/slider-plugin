@@ -1,41 +1,25 @@
 import Observable from "mvp/Observable/Observable";
-import { TFuncArg } from "Utils/types";
-
-class Listener {
-  msg: TFuncArg | undefined;
-
-  constructor(msg?: TFuncArg) {
-    this.msg = msg;
-  }
-
-  setHandler = this.set.bind(this);
-
-  set(msg?: TFuncArg) {
-    this.msg = msg;
-  }
-}
 
 describe("Observable", () => {
-  const ed = new Observable();
-  const listener = new Listener(1);
+  const keeper = new Observable();
+  const follower = jest.fn(x => 42 + x);
+  const anotherFollower = jest.fn(x => 17 + x);
+  keeper.add("someKey", follower);
+  keeper.add("anotherKey", anotherFollower);
+  keeper.notify("someKey", 13);
+  keeper.notify("anotherKey", -8);
+  
+  beforeEach(() => {
+    jest.restoreAllMocks();
+  })
 
-  test("method add(): add listener to listeners", () => {
-    ed.add(listener.setHandler);
-
-    expect(ed.get().length).toBe(1);
+  test("method add(): notify listeners in relevance with eventKey", () => {
+    expect(follower).toHaveBeenCalledTimes(1);
+    expect(anotherFollower).toHaveBeenCalledTimes(1);
   });
 
   test("method notify(): pass arguments when it notifies listeners", () => {
-    const message = 12;
-
-    ed.notify(message);
-
-    expect(listener.msg).toBe(message);
-  });
-
-  test("method remove(): remove listener from listeners", () => {
-    ed.remove(listener.setHandler);
-
-    expect(ed.get().length).toBe(0);
+    expect(follower).toBe(55);
+    expect(anotherFollower).toBe(11);
   });
 });
