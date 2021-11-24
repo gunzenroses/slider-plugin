@@ -139,11 +139,11 @@ describe("Presenter", () => {
         expect(spyUpdateView).toHaveBeenCalledTimes(1);
       });
       test("notify subscribers", () => {
-        const spyfromPresenterUpdate = jest.spyOn(presenter.eventDispatcher, "notify");
+        const spyupdateAll = jest.spyOn(presenter.eventDispatcher, "notify");
 
         presenter.model.eventDispatcher.notify("updateData");
 
-        expect(spyfromPresenterUpdate).toHaveBeenCalledTimes(1);
+        expect(spyupdateAll).toHaveBeenCalledTimes(1);
       });
     });
   });

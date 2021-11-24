@@ -180,7 +180,7 @@ export default class Presenter implements IPresenter {
 
   private updateData(): void {
     this.updateView();
-    this.eventDispatcher.notify("fromPresenterUpdate");
+    this.eventDispatcher.notify("updateAll");
   }
 
   //value - actual, newValue - %

@@ -32,7 +32,7 @@ describe("Panel for double slider", () => {
       const spyOnUpdatePanel = jest.spyOn(panel, "updatePanel").mockImplementation();
 
       panel.init();
-      panel.presenter.eventDispatcher.notify("fromPresenterUpdate");
+      panel.presenter.eventDispatcher.notify("updateAll");
 
       expect(spyOnUpdatePanel).toHaveBeenCalledTimes(1);
     });

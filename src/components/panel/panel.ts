@@ -66,7 +66,7 @@ export default class Panel implements IPanel {
 
   private enable(): void {
     this.panelItems.addEventListener("change", this.changePanelHandler);
-    this.presenter.eventDispatcher.add("fromPresenterUpdate", this.updateHandler as TListener);
+    this.presenter.eventDispatcher.add("updateAll", this.updateHandler as TListener);
     this.presenter.eventDispatcher.add("thumbUpdate", this.updateThumbHandler as TListener);
     this.presenter.eventDispatcher.add("thumbSecondUpdate", this.updateThumbSecondHandler as TListener);
   }
