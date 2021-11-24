@@ -19,7 +19,7 @@ describe("Observable", () => {
   });
 
   test("method notify(): pass arguments when it notifies listeners", () => {
-    expect(follower).toBe(55);
-    expect(anotherFollower).toBe(11);
+    expect(follower).toHaveReturnedWith(55);
+    expect(anotherFollower).toHaveReturnedWith(9);
   });
 });
