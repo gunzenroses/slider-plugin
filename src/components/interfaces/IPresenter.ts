@@ -12,8 +12,5 @@ export default interface IPresenter {
   
     init(): void;
     modelData(name: string, data: IModelData): void;
-  
-    fromPresenterUpdate: IObservable;
-    fromPresenterThumbUpdate: IObservable;
-    fromPresenterThumbSecondUpdate: IObservable;
+    eventDispatcher: IObservable;
   }

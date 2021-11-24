@@ -16,14 +16,12 @@ import View from "../View/View";
 export default class Presenter implements IPresenter {
   model: IModel;
   view: IView;
+  eventDispatcher: IObservable;
+
   data!: TSettings;
   changingObject!: HTMLElement | null;
   containerSize!: number;
   thumbWidth!: number;
-
-  fromPresenterUpdate!: IObservable;
-  fromPresenterThumbUpdate!: IObservable;
-  fromPresenterThumbSecondUpdate!: IObservable;
 
   private ifHorizontal!: boolean;
 
@@ -35,9 +33,7 @@ export default class Presenter implements IPresenter {
   constructor(container: HTMLElement, data: TSettings) {
     this.model = new Model(data);
     this.view = new View(container);
-    this.fromPresenterUpdate = new Observable();
-    this.fromPresenterThumbUpdate = new Observable();
-    this.fromPresenterThumbSecondUpdate = new Observable();
+    this.eventDispatcher = new Observable();
     this.init();
   }
 
@@ -184,14 +180,14 @@ export default class Presenter implements IPresenter {
 
   private updateData(): void {
     this.updateView();
-    this.fromPresenterUpdate.notify();
+    this.eventDispatcher.notify("fromPresenterUpdate");
   }
 
   //value - actual, newValue - %
   private updateThumbs(value: number): void {
     this.changingObject === this.view.thumb.element
-      ? this.fromPresenterThumbUpdate.notify(value.toString())
-      : this.fromPresenterThumbSecondUpdate.notify(value.toString());
+      ? this.eventDispatcher.notify("thumbUpdate", value.toString())
+      : this.eventDispatcher.notify("thumbSecondUpdate", value.toString());
 
     const newValue = valueToPercentsApplyStep(value, this.data);
     this.view.change(<HTMLElement>this.changingObject, newValue);
