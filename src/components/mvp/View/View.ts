@@ -1,6 +1,6 @@
 import { changeValueToPercents } from "Utils/common";
 import { TSettings } from "Utils/types";
-import IObservable from "src/components/interfaces/IObservable";
+import IObservable from "Interfaces/IObservable";
 import ISubview from "Interfaces/ISubview";
 import IView from "Interfaces/IView";
 import Observable from "../Observable/Observable";
