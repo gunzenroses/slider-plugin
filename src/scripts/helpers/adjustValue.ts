@@ -35,7 +35,7 @@ export default function adjustValue(name: string, value: IModelData, data: TSett
   }
 
   function adjustStep(value: number): number {
-    return value < 0
+    return value <= 0
       ? 1
       : value > max - min
       ? max - min
