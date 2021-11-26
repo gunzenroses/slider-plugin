@@ -87,7 +87,9 @@ export default class Scale implements ISubview {
 
   private makeScaleItems(that: IView): string {
     this.itemWidth = Math.round(this.scaleLength / this.scaleItemRow.length);
-    this.stepPerDivValue = that.settings.stepPerDiv ? that.settings.stepPerDiv : 1;
+    this.stepPerDivValue = (typeof that.settings.scale === "boolean") 
+      ? 1
+      : that.settings.scale.stepPerDiv;
     this.maxItem = this.scaleItemRow[this.scaleItemRow.length - 1];
 
     return this.scaleItemRow

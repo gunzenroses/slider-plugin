@@ -101,7 +101,8 @@ export default class View implements IView {
   }
 
   dragThumbStart(e: PointerEvent): void {
-    this.dragObj = <HTMLElement>e.target;
+    if (!e.target) return;
+    this.dragObj = e.target as HTMLElement;
     e.preventDefault();
     this.listenMoveAndUp();
   }
