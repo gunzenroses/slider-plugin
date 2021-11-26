@@ -1,7 +1,7 @@
 import { commonDivider, fromValueToPX } from "Utils/common";
 import { TScaleItem, TScaleOptions } from "Utils/types";
-import { IView } from "mvp/View/View";
 import ISubview from "Interfaces/ISubview";
+import IView from "Interfaces/IView";
 
 export default class Scale implements ISubview {
   element!: HTMLElement;
@@ -60,9 +60,12 @@ export default class Scale implements ISubview {
   private makeScaleRow(that: IView): void {
     this.scaleItemRow = [];
     let i = that.settings.min;
+    const step = (that.settings.max > 500)
+      ? Math.floor(that.settings.max / 5)
+      : that.settings.step;
     while (i < that.settings.max) {
       this.scaleItemRow.push(i);
-      i += that.settings.step;
+      i += step;
     }
   }
 
