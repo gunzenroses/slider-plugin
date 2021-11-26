@@ -4,7 +4,7 @@ import { afterCustomElement, appendCustomElement } from "Utils/common";
 import IPresenter from "Interfaces/IPresenter";
 import IPanel from "Interfaces/IPanel";
 
-export default class Panel implements IPanel {
+export default class ConfigurationPanel implements IPanel {
   presenter: IPresenter;
   panelContainer: HTMLElement;
   private panelItems: HTMLElement;
@@ -93,7 +93,7 @@ export default class Panel implements IPanel {
 
   private updateThumbSecond(val?: string): void {
     val
-      ? ((this.currentSecondInput.value = val),
+      ? ((this.currentSecondInput.value = val.toString()),
         (this.data.currentSecond = parseInt(val)),
         (this.currentFirstInput.max = val))
       : (this.currentSecondInput.value = this.data.currentSecond.toString());
@@ -124,7 +124,7 @@ export default class Panel implements IPanel {
   }
 
   changePanel(e: Event): void {
-    if (e.target == null) return;
+    if (e.target == null)  return;
     const element = <HTMLInputElement>e.target;
     const name = element.getAttribute("name");
     const type = element.getAttribute("type");
@@ -230,23 +230,21 @@ export default class Panel implements IPanel {
     return `<div class= "panel__name">${text}</div>`;
   }
 
-  private panelItemInput(params: TPanelParam): string | void {
-    if (params.options) {
-      const options: string[] = params.options;
-      return params.type === "number"
-        ? `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} required/>`
-        : params.type === "checkbox"
-        ? `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value}/>`
-        : params.type === "select"
-        ? `<${params.type} class="panel__input" name= ${params.name}> 
-              ${options.map((el: string) => this.selectOptions(el)).join("")} 
-          </${params.type}>`
-        : "";
-    }
+  private panelItemInput(params: TPanelParam): string {
+    const options = params.options ? params.options : [];
+    return params.type === "number"
+      ? `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} required/>`
+      : params.type === "checkbox"
+      ? `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value}/>`
+      : params.type === "select"
+      ? `<${params.type} class="panel__input" name= ${params.name}> 
+            ${options.map((el: string) => this.selectOptions(el)).join("")} 
+        </${params.type}>`
+      : "";
   }
 
   private selectOptions(arg: string): string {
-    const orient = this.data.orientation === TOrient.HORIZONTAL
+    let orient = this.data.orientation === TOrient.HORIZONTAL
       ? "horizontal"
       : "vertical";
     return arg === orient
