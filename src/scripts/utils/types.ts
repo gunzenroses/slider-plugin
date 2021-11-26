@@ -13,7 +13,7 @@ type TListenerArr = {
   [eventKey: string]: Array<TListener>
 }
 
-type IModelData = boolean | number | string;
+type TModelData = boolean | number | string;
 
 type TRangeStyle = {
   newThumbCurrent: number;
@@ -64,7 +64,7 @@ type TScaleOptions = {
 };
 
 export {
-  IModelData,
+  TModelData,
   TListenerArg,
   TListener,
   TListenerArr,
