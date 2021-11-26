@@ -1,9 +1,9 @@
-import { TSettings } from "Utils/types";
+import { TSettings, TViewSettings } from "Utils/types";
 import IObservable from "./IObservable";
 import ISubview from "./ISubview";
 
 export default interface IView {
-    settings: TSettings;
+    settings: TViewSettings;
     sliderContainer: HTMLElement;
     thumb: ISubview;
     thumbSecond: ISubview;

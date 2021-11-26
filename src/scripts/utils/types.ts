@@ -1,8 +1,13 @@
 import { IView } from "mvp/View/View";
 
-type TListenerArg = Event | string | number;
+enum TOrient {
+  HORIZONTAL,
+  VERTICAL,
+}
 
-type TListener = (arg1?: TListenerArg) => void;
+type TListenerArg = any;
+
+type TListener = (arg1: TListenerArg) => void;
 
 type TListenerArr = {
   [eventKey: string]: Array<TListener>
@@ -25,13 +30,25 @@ type TPanelParam = {
   options?: Array<string>;
 };
 
-type TSettings = {
-  [key: string]: any;
-};
+type TScale = { stepPerDiv: number } | boolean;
 
-type TScale = {
-  stepPerDiv: number;
-};
+type TSettings = {
+  min: number,
+  max: number,
+  range: boolean,
+  currentFirst: number,
+  currentSecond: number,
+  step: number,
+  orientation: TOrient,
+  tooltip: boolean,
+  scale: TScale,
+}
+
+type TViewSettings = TSettings & {
+  ifHorizontal: boolean,
+  firstPosition: number,
+  secondPosition: number,
+}
 
 type TScaleItem = {
   width: number;
@@ -56,5 +73,7 @@ export {
   TScale,
   TScaleOptions,
   TScaleItem,
+  TOrient,
   TSettings,
+  TViewSettings,
 };

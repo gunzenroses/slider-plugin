@@ -1,5 +1,5 @@
 import { changeValueToPercents } from "Utils/common";
-import { TSettings } from "Utils/types";
+import { TOrient, TSettings, TViewSettings } from "Utils/types";
 import IObservable from "Interfaces/IObservable";
 import ISubview from "Interfaces/ISubview";
 import IView from "Interfaces/IView";
@@ -17,7 +17,7 @@ export default class View implements IView {
   eventDispatcher: IObservable;
 
   //to manipulate the DOM
-  settings!: TSettings;
+  settings!: TViewSettings;
   sliderContainer!: HTMLElement;
   thumb!: ISubview;
   thumbSecond!: ISubview;
@@ -46,11 +46,10 @@ export default class View implements IView {
   }
 
   private createSettings(settings: TSettings): void {
-    this.settings = settings;
-    this.settings.firstPosition = changeValueToPercents(settings.currentFirst, settings);
-    this.settings.secondPosition = changeValueToPercents(settings.currentSecond, settings);
-    this.settings.stepPerDiv = this.settings.scale.stepPerDiv;
-    this.settings.ifHorizontal = this.settings.orientation === "horizontal";
+    const ifHorizontal = settings.orientation === TOrient.HORIZONTAL;
+    const firstPosition = changeValueToPercents(settings.currentFirst, settings);
+    const secondPosition = changeValueToPercents(settings.currentSecond, settings);
+    this.settings = { ...settings, ifHorizontal, firstPosition, secondPosition };
   }
 
   private setupHandlers(): void {

@@ -1,4 +1,4 @@
- import { IModelData, TListener, TSettings } from "Utils/types";
+ import { IModelData, TListener, TOrient, TSettings } from "Utils/types";
 import {
   applyRestrictions,
   findPosition,
@@ -50,7 +50,7 @@ export default class Presenter implements IPresenter {
   }
 
   private createChildren(): void {
-    this.ifHorizontal = this.data.orientation === "horizontal";
+    this.ifHorizontal = this.data.orientation === TOrient.HORIZONTAL;
     this.containerSize = this.ifHorizontal
       ? parseInt(getComputedStyle(this.view.sliderContainer).width.replace("px", ""))
       : parseInt(getComputedStyle(this.view.sliderContainer).height.replace("px", ""));
@@ -65,10 +65,10 @@ export default class Presenter implements IPresenter {
   }
 
   private enable(): void {
-    this.view.eventDispatcher.add("selectThumb", this.selectThumbHandler as TListener);
-    this.view.eventDispatcher.add("dragThumb", this.dragThumbHandler as TListener);
-    this.model.eventDispatcher.add("changeView", this.changeViewHandler as TListener);
-    this.model.eventDispatcher.add("updateData", this.updateDataHandler as TListener);
+    this.view.eventDispatcher.add("selectThumb", this.selectThumbHandler);
+    this.view.eventDispatcher.add("dragThumb", this.dragThumbHandler);
+    this.model.eventDispatcher.add("changeView", this.changeViewHandler);
+    this.model.eventDispatcher.add("updateData", this.updateDataHandler);
   }
 
   private setObject(object: HTMLElement): void {
@@ -82,11 +82,11 @@ export default class Presenter implements IPresenter {
     this.data.range ? this.selectRangeTrue(pos) : this.selectThumbRangeFalse(pos);
   }
 
-  private countPosition(e: PointerEvent) {
-    const newVal = this.ifHorizontal
+  private countPosition(e: PointerEvent): number {
+    const newVal: number = this.ifHorizontal
       ? e.clientX - this.view.sliderContainer.getBoundingClientRect().left + this.thumbWidth / 2
       : e.clientY - this.view.sliderContainer.getBoundingClientRect().top;
-    const newPos = this.ifHorizontal
+    const newPos: number = this.ifHorizontal
       ? Math.floor((newVal / this.containerSize) * 100)
       : Math.floor(((this.containerSize - newVal) / this.containerSize) * 100);
     return applyRestrictions(newPos);
