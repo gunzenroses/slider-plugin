@@ -1,4 +1,4 @@
-import { IModelData, TSettings } from "Utils/types";
+import { TModelData, TSettings } from "Utils/types";
 import { applyStepOnValue } from "Utils/common";
 import adjustValue from "Helpers/adjustValue";
 import Observable from "mvp/Observable/Observable";
@@ -26,13 +26,13 @@ export default class Model implements IModel {
     return this.data;
   }
 
-  setData(name: string, data: IModelData): void {
+  setData(name: keyof TSettings, data: TModelData): void {
     this.updateData(name, data);
     this.updateCurrentsWithStep();
     this.changeData(name);
   }
 
-  private updateData(name: string, data: IModelData): void {
+  private updateData(name: keyof TSettings, data: TModelData): void {
     const oldData = this.getData();
     if (oldData[name] === data) return;
     data = adjustValue(name, data, oldData);
@@ -40,7 +40,7 @@ export default class Model implements IModel {
     this.data = { ...oldData, ...newData };
   }
 
-  private changeData(name: string): void {
+  private changeData(name: keyof TSettings): void {
     name === "currentFirst"
       ? this.eventDispatcher.notify("changeView", this.data.currentFirst)
       : name === "currentSecond"

@@ -1,5 +1,5 @@
 import checkValidity from "Helpers/checkValidity";
-import { TSettings, TPanelParam, TListener, IModelData } from "Utils/types";
+import { TSettings, TPanelParam, TListener, TModelData, TOrient } from "Utils/types";
 import { afterCustomElement, appendCustomElement } from "Utils/common";
 import IPresenter from "Interfaces/IPresenter";
 import IPanel from "Interfaces/IPanel";
@@ -66,9 +66,9 @@ export default class Panel implements IPanel {
 
   private enable(): void {
     this.panelItems.addEventListener("change", this.changePanelHandler);
-    this.presenter.eventDispatcher.add("updateAll", this.updateHandler as TListener);
-    this.presenter.eventDispatcher.add("thumbUpdate", this.updateThumbHandler as TListener);
-    this.presenter.eventDispatcher.add("thumbSecondUpdate", this.updateThumbSecondHandler as TListener);
+    this.presenter.eventDispatcher.add("updateAll", this.updateHandler);
+    this.presenter.eventDispatcher.add("thumbUpdate", this.updateThumbHandler);
+    this.presenter.eventDispatcher.add("thumbSecondUpdate", this.updateThumbSecondHandler);
   }
 
   updatePanel(): void {
@@ -85,25 +85,25 @@ export default class Panel implements IPanel {
       ? ((this.currentFirstInput.value = val),
         (this.data.currentFirst = parseInt(val)),
         (this.currentSecondInput.min = val))
-      : (this.currentFirstInput.value = this.data.currentFirst);
-    this.currentFirstInput.min = this.data.min;
-    this.currentFirstInput.max = this.data.currentSecond;
-    this.currentFirstInput.step = this.data.step;
+      : (this.currentFirstInput.value = this.data.currentFirst.toString());
+    this.currentFirstInput.min = this.data.min.toString();
+    this.currentFirstInput.max = this.data.currentSecond.toString();
+    this.currentFirstInput.step = this.data.step.toString();
   }
 
   private updateThumbSecond(val?: string): void {
     val
       ? ((this.currentSecondInput.value = val),
-        (this.data.currentSecond = val),
+        (this.data.currentSecond = parseInt(val)),
         (this.currentFirstInput.max = val))
-      : (this.currentSecondInput.value = this.data.currentSecond);
-    this.currentSecondInput.min = this.data.currentFirst;
-    this.currentSecondInput.max = this.data.max;
-    this.currentSecondInput.step = this.data.step;
+      : (this.currentSecondInput.value = this.data.currentSecond.toString());
+    this.currentSecondInput.min = this.data.currentFirst.toString();
+    this.currentSecondInput.max = this.data.max.toString();
+    this.currentSecondInput.step = this.data.step.toString();
     this.data.range
       ? (this.currentSecondInput.disabled = false)
       : ((this.currentSecondInput.disabled = true),
-        (this.currentSecondInput.value = this.data.max));
+        (this.currentSecondInput.value = this.data.max.toString()));
   }
 
   private updateStep(): void {
@@ -124,13 +124,15 @@ export default class Panel implements IPanel {
   }
 
   changePanel(e: Event): void {
-    const element = e.target as HTMLInputElement;
-    const name = element.getAttribute("name") as string;
-    const type = element.getAttribute("type") as string;
+    if (e.target == null) return;
+    const element = <HTMLInputElement>e.target;
+    const name = element.getAttribute("name");
+    const type = element.getAttribute("type");
     const data = type === "checkbox" ? element.checked : element.value;
     if (type === "number") {
       new checkValidity(element, this.panelContainer);
     }
+    if (name == null || type === null) return;
     this.assignChangingObject(name);
     this.modelData(type, name, data);
   }
@@ -144,7 +146,7 @@ export default class Panel implements IPanel {
         : null;
   }
 
-  private modelData(type: string, name: string, data: IModelData): void {
+  private modelData(type: string, name: string, data: TModelData): void {
     type === "number"
       ? setTimeout(() => {
           this.presenter.modelData(name, data);
@@ -228,21 +230,26 @@ export default class Panel implements IPanel {
     return `<div class= "panel__name">${text}</div>`;
   }
 
-  private panelItemInput(params: TPanelParam): string {
-    const options = params.options as Array<string>;
-    return params.type === "number"
-      ? `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} required/>`
-      : params.type === "checkbox"
-      ? `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value}/>`
-      : params.type === "select"
-      ? `<${params.type} class="panel__input" name= ${params.name}> 
-            ${options.map((el: string) => this.selectOptions(el)).join("")} 
-        </${params.type}>`
-      : "";
+  private panelItemInput(params: TPanelParam): string | void {
+    if (params.options) {
+      const options: string[] = params.options;
+      return params.type === "number"
+        ? `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} required/>`
+        : params.type === "checkbox"
+        ? `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value}/>`
+        : params.type === "select"
+        ? `<${params.type} class="panel__input" name= ${params.name}> 
+              ${options.map((el: string) => this.selectOptions(el)).join("")} 
+          </${params.type}>`
+        : "";
+    }
   }
 
   private selectOptions(arg: string): string {
-    return arg === this.data.orientation
+    const orient = this.data.orientation === TOrient.HORIZONTAL
+      ? "horizontal"
+      : "vertical";
+    return arg === orient
       ? `<option selected value="${arg}">${arg}</option> `
       : `<option value="${arg}">${arg}</option> `;
   }

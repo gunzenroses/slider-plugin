@@ -32,8 +32,9 @@ export default class checkValidity {
 
     if (validity.stepMismatch) {
       const step = this.item.getAttribute("step");
-      const min: number = parseInt(this.item.getAttribute("min") as string);
-      if (min < 1) {
+      const min = this.item.getAttribute("min");
+      if (min === null) return
+      if (parseInt(min) < 1) {
         this.addInvalidity(`Number should be multiple of ${step}`);
       } else {
         this.addInvalidity(`Number should be: ${min} + multiple of ${step}`);

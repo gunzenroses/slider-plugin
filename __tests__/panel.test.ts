@@ -53,7 +53,7 @@ describe("Panel for double slider", () => {
   describe("method changePanel()", () => {
     test("should update data", () => {
       const spyPresenter = jest.spyOn(panel.presenter, "modelData").mockImplementation();
-      const trg = panel.panelContainer.querySelector("input[name='range']") as HTMLInputElement;
+      const trg = panel.panelContainer.querySelector("input[name='range']");
       const evt = {
         ...new Event("click"),
         target: trg,
@@ -67,17 +67,17 @@ describe("Panel for double slider", () => {
     test("should use setTimeout to update data with type 'number'", async () => {
       jest.useFakeTimers();
       const spyPresenter = jest.spyOn(panel.presenter, "modelData").mockImplementation();
-      const trg: HTMLInputElement = panel.panelContainer.querySelector(
-        "input[name='max']"
-      ) as HTMLInputElement;
-      const event = new Event("change");
-      trg.value = "";
+      const trg: HTMLInputElement | null = panel.panelContainer.querySelector("input[name='max']");
+      if (trg !== null) {
+        const event = new Event("change");
+        trg.value = "";
 
-      trg.dispatchEvent(event);
-      panel.changePanel(event);
-      jest.runAllTimers();
+        trg.dispatchEvent(event);
+        panel.changePanel(event);
+        jest.runAllTimers();
 
-      expect(spyPresenter).toHaveBeenCalledTimes(1);
+        expect(spyPresenter).toHaveBeenCalledTimes(1);
+      }
     });
 
     describe("should assign changingObject", () => {
@@ -123,9 +123,9 @@ describe("Panel for double slider", () => {
 
       panel.updatePanel();
 
-      expect(parseInt(panel.data.step)).toBe(presenter.data.step);
-      expect(parseInt(panel.data.min)).toBe(presenter.data.min);
-      expect(parseInt(panel.data.max)).toBe(presenter.data.max);
+      expect(panel.data.step).toBe(presenter.data.step);
+      expect(panel.data.min).toBe(presenter.data.min);
+      expect(panel.data.max).toBe(presenter.data.max);
     });
   });
 });

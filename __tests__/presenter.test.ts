@@ -4,6 +4,7 @@
 
 import { initialData } from "src/components/initialData";
 import { Presenter } from "mvp/Presenter/Presenter";
+import { TOrient } from "Utils/types";
 
 const container = document.createElement("div");
 container.innerHTML = "div {width: 400px, height: 400px}";
@@ -179,7 +180,7 @@ describe("Presenter", () => {
 });
 
 const VS = {
-  orientation: "vertical",
+  orientation: TOrient.VERTICAL,
   range: false,
 };
 const initialDataVS = { ...initialData, ...VS };

@@ -1,4 +1,4 @@
- import { IModelData, TListener, TOrient, TSettings } from "Utils/types";
+ import { TModelData, TListener, TOrient, TSettings } from "Utils/types";
 import {
   applyRestrictions,
   findPosition,
@@ -145,14 +145,15 @@ export default class Presenter implements IPresenter {
 
   //all values are in %
   private dragThumbRangeTrue(newPos: number): void {
+    if (this.view.dragObj === null) return;
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
     if (
-      (this.view.dragObj as HTMLElement).classList === this.view.thumb.element.classList &&
+      this.view.dragObj.classList === this.view.thumb.element.classList &&
       newPos <= secondThumbPercent - 1
     ) {
       this.modelThumbFirst(newPos);
     } else if (
-      (this.view.dragObj as HTMLElement).classList === this.view.thumbSecond.element.classList &&
+      this.view.dragObj.classList === this.view.thumbSecond.element.classList &&
       newPos >= firstThumbPercent + 1
     ) {
       this.modelThumbSecond(newPos);
@@ -174,7 +175,7 @@ export default class Presenter implements IPresenter {
   }
 
   //to update all kinds of data
-  modelData(name: string, data: IModelData): void {
+  modelData(name: keyof TSettings, data: TModelData): void {
     this.model.setData(name, data);
   }
 

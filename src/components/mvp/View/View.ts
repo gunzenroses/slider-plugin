@@ -113,7 +113,8 @@ export default class View implements IView {
   }
 
   dragThumbEnd(): void {
-    (this.dragObj as HTMLElement).style.zIndex = "3";
+    if (this.dragObj === null) return;
+    this.dragObj.style.zIndex = "3";
     this.removeListenerMoveAndUp();
     this.addListenerPointerDown();
   }

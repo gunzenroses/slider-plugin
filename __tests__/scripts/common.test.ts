@@ -1,3 +1,4 @@
+import { initialData } from "src/components/initialData";
 import {
   applyRestrictions,
   applyStepOnPercents,
@@ -41,6 +42,7 @@ describe("applyRestrictions", () => {
 
 describe("applyStepOnValue", () => {
   const data = {
+    ...initialData,
     max: 122,
     min: 8,
     step: 3,
@@ -129,12 +131,9 @@ describe("commonDivider", () => {
 });
 
 describe("findPosition()", () => {
-  const element = {
-    style: {
-      left: "100px",
-      bottom: "100px",
-    },
-  } as HTMLElement;
+  const element = document.createElement("HTMLElements");
+  element.style.left = "100px";
+  element.style.right = "100px";
 
   const element2 = document.createElement("div");
 

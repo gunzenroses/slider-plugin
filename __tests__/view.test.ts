@@ -34,7 +34,6 @@ describe("class View", () => {
       expect(view.settings.currentFirst).toBeTruthy();
       expect(view.settings.currentSecond).toBeTruthy();
       expect(view.settings.step).toBeTruthy();
-      expect(view.settings.stepPerDiv).toBeTruthy();
       expect(view.settings.max).toBeTruthy();
       expect(view.settings.min).toBeDefined();
     });
@@ -71,7 +70,7 @@ describe("class View", () => {
 
   describe("method selectThumb()", () => {
     test("should not notify subscribers if e.target is selectThumb or selectThumbSecond", () => {
-      const evt = new Event("pointerup") as PointerEvent;
+      const evt = new PointerEvent("pointerup");
       view.thumb.element.dispatchEvent(evt);
       const spyOnSm = jest.spyOn(view.eventDispatcher, "notify");
 
