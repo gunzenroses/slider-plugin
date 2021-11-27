@@ -187,8 +187,8 @@ export default class Presenter implements IPresenter {
   //value - actual, newValue - %
   private updateThumbs(value: number): void {
     this.changingObject === this.view.thumb.element
-      ? this.eventDispatcher.notify("thumbUpdate", value.toString())
-      : this.eventDispatcher.notify("thumbSecondUpdate", value.toString());
+      ? this.eventDispatcher.notify("thumbUpdate", value)
+      : this.eventDispatcher.notify("thumbSecondUpdate", value);
 
     const newValue = valueToPercentsApplyStep(value, this.data);
     this.view.change(<HTMLElement>this.changingObject, newValue);
