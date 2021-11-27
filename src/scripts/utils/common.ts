@@ -93,10 +93,16 @@ function findPosition(
 }
 
 // checked: value in %, others are actual
-function percentsToValue(valueInPercents: number, data: TSettings): string {
+function changePercentsToValue(valueInPercents: number, data: TSettings): number {
   const { max, min } = data;
-  const newValue = (Math.round((valueInPercents * (max - min)) / 100) + min).toString();
+  const newValue = (Math.round((valueInPercents * (max - min)) / 100) + min);
   return newValue;
+}
+
+function percentsToValueApplyStep(num: number, data: TSettings): number {
+  const percToValue = changePercentsToValue(num, data);
+  const stepToValue = applyStepOnValue(percToValue, data);
+  return stepToValue;
 }
 
 //values are actual
@@ -113,10 +119,11 @@ export {
   applyRestrictions,
   applyStepOnPercents,
   applyStepOnValue,
-  changeValueToPercents,
   commonDivider,
   findPosition,
   fromValueToPX,
-  percentsToValue,
+  changeValueToPercents,
+  changePercentsToValue,
+  percentsToValueApplyStep,
   valueToPercentsApplyStep,
 };
