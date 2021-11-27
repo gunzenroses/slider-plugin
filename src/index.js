@@ -5,7 +5,7 @@ window.onload = function () {
   $("#horizontal").sliderMaker(
     {
       min: 10,
-      max: 200,
+      max: 20000,
       currentSecond: 150,
       step: 12,
       scale: true,
