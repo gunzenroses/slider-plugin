@@ -125,24 +125,7 @@ export default class View implements IView {
     object === this.thumb.element
       ? (this.settings.firstPosition = newThumbCurrent)
       : (this.settings.secondPosition = newThumbCurrent);
-    this.updateElements();
-  }
-
-  private updateElements(): void {
-    this.range.change(this);
-    this.settings.range ? this.renderDouble() : this.renderSingle();
-  }
-
-  private renderSingle(): void {
-    this.thumb.change(this);
-    this.tooltipFirst.change(this);
-  }
-
-  private renderDouble(): void {
-    this.thumb.change(this);
-    this.thumbSecond.change(this);
-    this.tooltipFirst.change(this);
-    this.tooltipSecond.change(this);
+    this.eventDispatcher.notify("changeView", this);
   }
 
   private render(): void {
@@ -150,13 +133,11 @@ export default class View implements IView {
     this.sliderContainer = new SliderContainer(this, this.parentContainer).sliderContainer;
     this.track = new Track(this).element;
     this.scale = new Scale(this).element;
-
     this.range = new Range(this);
     this.thumb = new Thumb(this, "thumb_first");
     this.thumbSecond = new Thumb(this, "thumb_second");
     this.tooltipFirst = new Tooltip(this, "tooltip_first");
     this.tooltipSecond = new Tooltip(this, "tooltip_second");
-    this.updateElements();
   }
 }
 

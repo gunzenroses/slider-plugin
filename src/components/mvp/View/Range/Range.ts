@@ -4,6 +4,7 @@ import ISubview from "Interfaces/ISubview";
 //here all values are in %
 export default class Range implements ISubview {
   element!: HTMLElement;
+  private changeHandler!: { (that: IView): void };
 
   constructor(that: IView) {
     this.init(that);
@@ -11,6 +12,8 @@ export default class Range implements ISubview {
 
   private init(that: IView): HTMLElement {
     this.make(that);
+    this.setupHandlers();
+    this.enable(that);
     this.change(that);
     that.track.append(this.element);
     return this.element;
@@ -25,11 +28,18 @@ export default class Range implements ISubview {
     return this.element;
   }
 
-  change(that: IView): HTMLElement {
+  private setupHandlers() {
+    this.changeHandler = this.change.bind(this);
+  }
+
+  private enable(that: IView) {
+    that.eventDispatcher.add("changeView", this.changeHandler);
+  }
+
+  change(that: IView): void {
     that.settings.range
       ? (this.changeFirst(that), this.changeSecond(that))
       : this.changeFirst(that);
-    return this.element;
   }
 
   private changeFirst(that: IView): void {

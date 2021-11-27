@@ -3,9 +3,10 @@ import ISubview from "Interfaces/ISubview";
 import { percentsToValue } from "Utils/common";
 
 export default class Tooltip implements ISubview {
+  element!: HTMLElement;
   private className: string;
   private parentNode!: HTMLElement;
-  element!: HTMLElement;
+  private changeHandler!: { (that: IView): void };
 
   constructor(that: IView, className: string) {
     this.className = className;
@@ -15,6 +16,8 @@ export default class Tooltip implements ISubview {
   private init(that: IView): HTMLElement {
     this.createChildren(that);
     this.make(that);
+    this.setupHandlers();
+    this.enable(that);
     this.change(that);
     this.append();
     return this.element;
@@ -38,13 +41,20 @@ export default class Tooltip implements ISubview {
     return this.element;
   }
 
-  change(that: IView): HTMLElement {
+  private setupHandlers() {
+    this.changeHandler = this.change.bind(this);
+  }
+
+  private enable(that: IView) {
+    that.eventDispatcher.add("changeView", this.changeHandler);
+  }
+
+  change(that: IView): void {
     const value =
       this.className === "tooltip_first"
         ? that.settings.firstPosition
         : that.settings.secondPosition;
     this.element.innerText = percentsToValue(value, that.settings);
-    return this.element;
   }
 
   private append(): void {
