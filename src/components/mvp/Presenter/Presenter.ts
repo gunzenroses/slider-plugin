@@ -1,8 +1,8 @@
  import { TModelData, TListener, TOrient, TSettings } from "Utils/types";
 import {
   applyRestrictions,
+  changePercentsToValue,
   findPosition,
-  percentsToValue,
   valueToPercentsApplyStep,
 } from "Utils/common";
 import IModel from "Interfaces/IModel";
@@ -163,14 +163,14 @@ export default class Presenter implements IPresenter {
   //value - %, newValue - actual
   private modelThumbFirst(value: number): void {
     this.setObject(this.view.thumb.element);
-    const newValue = percentsToValue(value, this.data);
+    const newValue = changePercentsToValue(value, this.data);
     this.model.setData("currentFirst", newValue);
   }
 
   //value - %, newValue - actual
   private modelThumbSecond(value: number): void {
     this.setObject(this.view.thumbSecond.element);
-    const newValue = percentsToValue(value, this.data);
+    const newValue = changePercentsToValue(value, this.data);
     this.model.setData("currentSecond", newValue);
   }
 
