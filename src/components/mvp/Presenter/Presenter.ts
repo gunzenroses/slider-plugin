@@ -3,7 +3,6 @@ import {
   applyRestrictions,
   changePercentsToValue,
   findPosition,
-  valueToPercentsApplyStep,
 } from "Utils/common";
 import IModel from "Interfaces/IModel";
 import IObservable from "Interfaces/IObservable";
@@ -190,8 +189,7 @@ export default class Presenter implements IPresenter {
       ? this.eventDispatcher.notify("thumbUpdate", value)
       : this.eventDispatcher.notify("thumbSecondUpdate", value);
 
-    const newValue = valueToPercentsApplyStep(value, this.data);
-    this.view.change(<HTMLElement>this.changingObject, newValue);
+    this.view.change(<HTMLElement>this.changingObject, value);
   }
 }
 
