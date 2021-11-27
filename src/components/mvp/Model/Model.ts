@@ -6,20 +6,13 @@ import IObservable from "Interfaces/IObservable";
 import IModel from "Interfaces/IModel";
 
 export default class Model implements IModel {
-  private data: TSettings;
   eventDispatcher: IObservable;
+  private data: TSettings;
 
   constructor(settings: TSettings) {
     this.eventDispatcher = new Observable();
     this.data = settings;
     this.updateCurrentsWithStep();
-  }
-
-  private updateCurrentsWithStep(): void {
-    this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data);
-    this.data.currentSecond = this.data.range
-      ? applyStepOnValue(this.data.currentSecond, this.data)
-      : this.data.max;
   }
 
   getData(): TSettings {
@@ -38,6 +31,13 @@ export default class Model implements IModel {
     data = adjustValue(name, data, oldData);
     const newData = { [name]: data };
     this.data = { ...oldData, ...newData };
+  }
+
+  private updateCurrentsWithStep(): void {
+    this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data);
+    this.data.currentSecond = this.data.range
+      ? applyStepOnValue(this.data.currentSecond, this.data)
+      : this.data.max;
   }
 
   private changeData(name: keyof TSettings): void {
