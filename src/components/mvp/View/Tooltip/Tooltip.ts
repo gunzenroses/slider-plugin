@@ -1,6 +1,5 @@
 import { IView } from "mvp/View/View";
 import ISubview from "Interfaces/ISubview";
-import { percentsToValue } from "Utils/common";
 
 export default class Tooltip implements ISubview {
   element!: HTMLElement;
@@ -52,9 +51,9 @@ export default class Tooltip implements ISubview {
   change(that: IView): void {
     const value =
       this.className === "tooltip_first"
-        ? that.settings.firstPosition
-        : that.settings.secondPosition;
-    this.element.innerText = percentsToValue(value, that.settings);
+        ? that.settings.currentFirst
+        : that.settings.currentSecond;
+    this.element.innerText = value.toString();
   }
 
   private append(): void {
