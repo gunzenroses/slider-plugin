@@ -80,6 +80,23 @@ export default class ConfigurationPanel implements IPanel {
     this.updateThumbSecond();
   }
 
+  private updateMin(): void {
+    this.minInput.value = this.data.min.toString();
+    this.minInput.min = "0";
+    this.minInput.max = this.data.max.toString();
+  }
+
+  private updateMax(): void {
+    this.maxInput.value = this.data.max.toString();
+    this.maxInput.min = (this.data.min + this.data.step).toString();
+  }
+
+  private updateStep(): void {
+    this.stepInput.value = this.data.step.toString();
+    this.stepInput.min = "1";
+    this.stepInput.max = (this.data.max - this.data.min).toString();
+  }
+
   private updateThumb(val?: string): void {
     val
       ? ((this.currentFirstInput.value = val),
@@ -104,23 +121,6 @@ export default class ConfigurationPanel implements IPanel {
       ? (this.currentSecondInput.disabled = false)
       : ((this.currentSecondInput.disabled = true),
         (this.currentSecondInput.value = this.data.max.toString()));
-  }
-
-  private updateStep(): void {
-    this.stepInput.value = this.data.step.toString();
-    this.stepInput.min = "1";
-    this.stepInput.max = (this.data.max - this.data.min).toString();
-  }
-
-  private updateMin(): void {
-    this.minInput.value = this.data.min.toString();
-    this.minInput.min = "0";
-    this.minInput.max = this.data.max.toString();
-  }
-
-  private updateMax(): void {
-    this.maxInput.value = this.data.max.toString();
-    this.maxInput.min = (this.data.min + this.data.step).toString();
   }
 
   changePanel(e: Event): void {
@@ -149,7 +149,11 @@ export default class ConfigurationPanel implements IPanel {
   private modelData(type: string, name: string, data: TModelData): void {
     type === "number"
       ? setTimeout(() => {
-          this.presenter.modelData(name, data);
+          if (typeof data === "string") {
+            this.presenter.modelData(name, parseInt(data));
+          } else {
+            this.presenter.modelData(name, data);
+          }
         })
       : this.presenter.modelData(name, data);
   }
@@ -244,7 +248,7 @@ export default class ConfigurationPanel implements IPanel {
   }
 
   private selectOptions(arg: string): string {
-    let orient = this.data.orientation === TOrient.HORIZONTAL
+    const orient = this.data.orientation === TOrient.HORIZONTAL
       ? "horizontal"
       : "vertical";
     return arg === orient
