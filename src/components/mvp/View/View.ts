@@ -1,4 +1,4 @@
-import { changeValueToPercents } from "Utils/common";
+import { changeValueToPercents, valueToPercentsApplyStep } from "Utils/common";
 import { TOrient, TSettings, TViewSettings } from "Utils/types";
 import IObservable from "Interfaces/IObservable";
 import ISubview from "Interfaces/ISubview";
@@ -121,10 +121,13 @@ export default class View implements IView {
   }
 
   // in % and actual values
-  change(object: HTMLElement, newThumbCurrent: number): void {
+  change(object: HTMLElement, num: number): void {
+    const newValue = valueToPercentsApplyStep(num, this.settings);
     object === this.thumb.element
-      ? (this.settings.firstPosition = newThumbCurrent)
-      : (this.settings.secondPosition = newThumbCurrent);
+      ? (this.settings.firstPosition = newValue,
+        this.settings.currentFirst = num)
+      : (this.settings.secondPosition = newValue,
+        this.settings.currentSecond = num);
     this.eventDispatcher.notify("changeView", this);
   }
 
