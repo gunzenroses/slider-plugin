@@ -30,11 +30,11 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
   
 
   function adjustMin(value: number): number {
-    return value < 0 ? 0 : value <= max - step ? value : 0;
+    return value <= max - step ? value : 0;
   }
 
   function adjustMax(value: number): number {
-    return value < 0 ? min + step : value >= min + step ? value : min + step;
+    return value >= min + step ? value : min + step;
   }
 
   function adjustStep(value: number): number {

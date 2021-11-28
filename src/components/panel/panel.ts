@@ -82,7 +82,6 @@ export default class ConfigurationPanel implements IPanel {
 
   private updateMin(): void {
     this.minInput.value = this.data.min.toString();
-    this.minInput.min = "0";
     this.minInput.max = this.data.max.toString();
   }
 
