@@ -78,8 +78,11 @@ function changeValueToPercents(value: number, data: TSettings): number {
 //done: initial values are actual, return %
 function changeStepToPercents(data: TSettings): number {
   const { max, min, step } = data;
-  const newValue = parseFloat(((step / (max - min)) * 100).toFixed(2));
-  return newValue;
+  const newValue = (step / (max - min)) * 100;
+  const stepInPerc = (max > 500000)
+    ? newValue
+    : parseFloat(newValue.toFixed(2));
+  return stepInPerc;
 }
 
 function fromValueToPX(value: number, data: TSettings, containerSize: number): number {
@@ -127,7 +130,7 @@ function getTextWidth(text: string, font: string) {
   if (context){
     context.font = font;
     const metrics = context.measureText(text);
-    return metrics.width + 5;
+    return metrics.width + 6;
   } else {
     return 40;
   }
