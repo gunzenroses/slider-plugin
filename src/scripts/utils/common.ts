@@ -34,18 +34,22 @@ function applyStepOnValue(value: number, data: TSettings): number {
   const { max, min, step } = data;
   if (value - min <= 0) return min;
   if (value >= max) return max;
-  const magnifyValue =  (getNumbersAfterDot(value) === 0) 
-    ? 100
+  const decimalValue = getNumbersAfterDot(value);
+  const magnifyValue =  (decimalValue === 0) 
+    ? 1
     : 10 ** getNumbersAfterDot(value);
-  const magnifyMin = (getNumbersAfterDot(min) === 0)
+  const decimalMin = getNumbersAfterDot(min);
+  const magnifyMin = ( decimalMin === 0)
     ? 1
     : 10 ** getNumbersAfterDot(min);
-  const magnifyStep = (getNumbersAfterDot(step) === 0)
+  const decimalStep = getNumbersAfterDot(step);
+  const magnifyStep = ( decimalStep === 0)
     ? 1
     : 10 ** getNumbersAfterDot(step);
   const magnify = Math.max(magnifyMin, magnifyStep, magnifyValue);
   const numberOfSteps = Math.round(((value - min) * magnify) / (step * magnify));
-  const valueInSteps = ((numberOfSteps * step * magnifyMin) + (min * magnifyMin)) / magnifyMin;
+  const decimalForSteps = Math.max(decimalStep, decimalMin);
+  const valueInSteps = parseFloat((((numberOfSteps * step * magnify) + (min * magnify)) / magnify).toFixed(decimalForSteps));
   const realValue = valueInSteps >= max ? max : valueInSteps;
   return realValue;
 }
