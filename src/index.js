@@ -4,7 +4,7 @@ import "./index.css";
 window.onload = function () {
   $("#horizontal").sliderMaker(
     {
-      min: 10,
+      min: -10.3,
       max: 20000,
       currentSecond: 150,
       step: 12,
