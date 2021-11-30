@@ -99,6 +99,16 @@ function changePercentsToValue(valueInPercents: number, data: TSettings): number
   return newValue;
 }
 
+function getNumbersAfterDot(value: number): number {
+  const hasTail = value.toString().includes(".");
+  const tail = value.toString().split(".").pop();
+  if (hasTail && tail != null) {
+    return tail.length;
+  } else {
+    return 0;
+  }
+}
+
 function percentsToValueApplyStep(num: number, data: TSettings): number {
   const percToValue = changePercentsToValue(num, data);
   const stepToValue = applyStepOnValue(percToValue, data);
