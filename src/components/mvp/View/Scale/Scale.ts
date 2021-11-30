@@ -1,4 +1,4 @@
-import { commonDivider, fromValueToPX } from "Utils/common";
+import { commonDivider, fromValueToPX, getNumbersAfterDot, getTextWidth } from "Utils/common";
 import { TScaleItem, TScaleOptions } from "Utils/types";
 import ISubview from "Interfaces/ISubview";
 import IView from "Interfaces/IView";
@@ -59,11 +59,27 @@ export default class Scale implements ISubview {
 
   private makeScaleRow(that: IView): void {
     this.scaleItemRow = [];
-    let i = that.settings.min;
-    const step = (that.settings.max > 500)
-      ? Math.floor(that.settings.max / 5)
+    
+    const intNumbers = (
+      that.settings.min === Math.round(that.settings.min)
+      && that.settings.step === Math.round(that.settings.step)
+    );
+
+    console.log("is it int?", intNumbers);
+    
+    const decimalValue = Math.max(getNumbersAfterDot(that.settings.min), getNumbersAfterDot(that.settings.step));
+    const widthOfScaleNumber = getTextWidth((that.settings.max - that.settings.step).toFixed(decimalValue), "16px TimesNewRoman");
+    console.log("width of scale num", widthOfScaleNumber);
+    const amountOfSteps = Math.round(this.scaleLength / widthOfScaleNumber);
+    
+    const step = (that.settings.max > 500 || !intNumbers && that.settings.ifHorizontal)
+      ? Math.floor(that.settings.max / amountOfSteps)
       : that.settings.step;
+
+    const toFixedDecimals = Math.max(getNumbersAfterDot(that.settings.min), getNumbersAfterDot(that.settings.step));
+    let i = that.settings.min;
     while (i < that.settings.max) {
+      i = parseFloat(i.toFixed(toFixedDecimals));
       this.scaleItemRow.push(i);
       i += step;
     }
