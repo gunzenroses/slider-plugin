@@ -12,36 +12,42 @@ export default class checkValidity {
     this.messageContainer = appendCustomElement("div", "error-message", this.parentContainer);
     this.invalidities = [];
     this.checkValidity();
+    this.checkMessages();
   }
 
   checkValidity(): void {
     const validity = this.item.validity;
-    if (this.item.value === "") {
+    const value = this.item.value;
+    const name = this.item.getAttribute("name");
+    const min = this.item.getAttribute("min");
+    const max = this.item.getAttribute("max");
+    const step = this.item.getAttribute("step");
+
+    if (value === "") {
       this.addInvalidity("Should be a number");
     }
 
+    if ((name === "step") && (parseFloat(value) !== parseInt(value))) {
+      this.addInvalidity("Should be an integer");
+    }
+
     if (validity.rangeOverflow) {
-      const max = this.item.getAttribute("max");
       this.addInvalidity("Number should be maximum " + max);
     }
 
     if (validity.rangeUnderflow) {
-      const min = this.item.getAttribute("min");
       this.addInvalidity("Number should be minimum " + min);
     }
 
     if (validity.stepMismatch) {
-      const step = this.item.getAttribute("step");
-      const min = this.item.getAttribute("min");
-      if (min === null) return
-      if (parseInt(min) < 1) {
-        this.addInvalidity(`Number should be multiple of ${step}`);
-      } else {
-        this.addInvalidity(`Number should be: ${min} + multiple of ${step}`);
-      }
+      if (name === "step" || "max") return;
+      if (min === null) return;
+      this.addInvalidity(`Number should be: ${min} + multiple of ${step}`);
     }
+  }
 
-    this.item.checkValidity() === false ? this.placeValidityMessages() : null;
+  private checkMessages() {
+    this.invalidities.length >= 1 ? this.placeValidityMessages() : null;
   }
 
   private addInvalidity(message: string): void {
