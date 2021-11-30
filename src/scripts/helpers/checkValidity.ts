@@ -27,10 +27,6 @@ export default class checkValidity {
       this.addInvalidity("Should be a number");
     }
 
-    if ((name === "step") && (parseFloat(value) !== parseInt(value))) {
-      this.addInvalidity("Should be an integer");
-    }
-
     if (validity.rangeOverflow) {
       this.addInvalidity("Number should be maximum " + max);
     }
