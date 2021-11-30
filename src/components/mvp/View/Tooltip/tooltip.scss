@@ -4,7 +4,8 @@ $height-tooltip: 2rem;
 .tooltip_first,
 .tooltip_second {
   position: absolute;
-  width: $width-tooltip;
+  width: fit-content;
+  min-width: $width-tooltip;
   height: $height-tooltip;
   border-radius: 3px;
   background-color: $color-tooltip;
