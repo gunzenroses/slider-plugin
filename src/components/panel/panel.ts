@@ -1,5 +1,5 @@
 import checkValidity from "Helpers/checkValidity";
-import { TSettings, TPanelParam, TListener, TModelData, TOrient } from "Utils/types";
+import { TSettings, TPanelParam, TModelData, TOrient } from "Utils/types";
 import { afterCustomElement, appendCustomElement } from "Utils/common";
 import IPresenter from "Interfaces/IPresenter";
 import IPanel from "Interfaces/IPanel";
@@ -82,7 +82,7 @@ export default class ConfigurationPanel implements IPanel {
 
   private updateMin(): void {
     this.minInput.value = this.data.min.toString();
-    this.minInput.max = this.data.max.toString();
+    this.minInput.max = (this.data.max - this.data.step).toString();
   }
 
   private updateMax(): void {
@@ -99,7 +99,7 @@ export default class ConfigurationPanel implements IPanel {
   private updateThumb(val?: string): void {
     val
       ? ((this.currentFirstInput.value = val),
-        (this.data.currentFirst = parseInt(val)),
+        (this.data.currentFirst = parseFloat(val)),
         (this.currentSecondInput.min = val))
       : (this.currentFirstInput.value = this.data.currentFirst.toString());
     this.currentFirstInput.min = this.data.min.toString();
@@ -110,7 +110,7 @@ export default class ConfigurationPanel implements IPanel {
   private updateThumbSecond(val?: string): void {
     val
       ? ((this.currentSecondInput.value = val.toString()),
-        (this.data.currentSecond = parseInt(val)),
+        (this.data.currentSecond = parseFloat(val)),
         (this.currentFirstInput.max = val))
       : (this.currentSecondInput.value = this.data.currentSecond.toString());
     this.currentSecondInput.min = this.data.currentFirst.toString();
@@ -149,7 +149,7 @@ export default class ConfigurationPanel implements IPanel {
     type === "number"
       ? setTimeout(() => {
           if (typeof data === "string") {
-            this.presenter.modelData(name, parseInt(data));
+            this.presenter.modelData(name, parseFloat(data));
           } else {
             this.presenter.modelData(name, data);
           }
