@@ -121,6 +121,18 @@ function getNumbersAfterDot(value: number): number {
   }
 }
 
+function getTextWidth(text: string, font: string) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  if (context){
+    context.font = font;
+    const metrics = context.measureText(text);
+    return metrics.width + 5;
+  } else {
+    return 40;
+  }
+}
+
 function percentsToValueApplyStep(num: number, data: TSettings): number {
   const percToValue = changePercentsToValue(num, data);
   const stepToValue = applyStepOnValue(percToValue, data);
@@ -141,6 +153,8 @@ export {
   applyRestrictions,
   applyStepOnPercents,
   applyStepOnValue,
+  getNumbersAfterDot,
+  getTextWidth,
   commonDivider,
   findPosition,
   fromValueToPX,
