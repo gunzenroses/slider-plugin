@@ -8,6 +8,7 @@ $height-tooltip: 2rem;
   min-width: $width-tooltip;
   height: $height-tooltip;
   border-radius: 3px;
+  border: 2px solid $color-basic;
   background-color: $color-tooltip;
   text-align: center;
   line-height: $height-tooltip;
