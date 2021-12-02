@@ -212,6 +212,8 @@ export default class View implements IView {
 
   changeFirstThumb(num: number) {
     const newValue = valueToPercentsApplyStep(num, this.settings);
+    this.thumb.element.style.zIndex = "4";
+    this.thumbSecond.element.style.zIndex = "3";
     this.settings.firstPosition = newValue;
     this.settings.currentFirst = num;
     this.eventDispatcher.notify("changeView", this);
@@ -219,6 +221,8 @@ export default class View implements IView {
 
   changeSecondThumb(num: number) {
     const newValue = valueToPercentsApplyStep(num, this.settings);
+    this.thumb.element.style.zIndex = "3";
+    this.thumbSecond.element.style.zIndex = "4";
     this.settings.secondPosition = newValue;
     this.settings.currentSecond = num;
     this.eventDispatcher.notify("changeView", this);
