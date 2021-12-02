@@ -8,7 +8,6 @@ export default interface IPresenter {
     model: IModel;
     view: IView;
     data: TSettings;
-    changingObject: HTMLElement | null;
   
     init(): void;
     modelData(name: string, data: TModelData): void;
