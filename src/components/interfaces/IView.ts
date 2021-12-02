@@ -21,4 +21,6 @@ export default interface IView {
     selectThumb(e: PointerEvent): void;
     dragThumbStart(e: PointerEvent): void;
     dragThumbEnd(): void;
+    changeFirstThumb(val: number): void;
+    changeSecondThumb(val: number): void;
   }
