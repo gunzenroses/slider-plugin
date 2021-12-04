@@ -131,21 +131,11 @@ export default class ConfigurationPanel implements IPanel {
     if (type === "number") {
       new checkValidity(element, this.panelContainer);
     }
-    if (name == null || type === null) return;
-    this.assignChangingObject(name);
+    if (data === null || name === null) return;
     this.modelData(type, name, data);
   }
 
-  private assignChangingObject(name: string): void {
-    this.presenter.changingObject =
-      name === "currentFirst"
-        ? this.presenter.view.thumb.element
-        : name === "currentSecond"
-        ? this.presenter.view.thumbSecond.element
-        : null;
-  }
-
-  private modelData(type: string, name: string, data: TModelData): void {
+  private modelData(type: string | null, name: string, data: TModelData): void {
     type === "number"
       ? setTimeout(() => {
           if (typeof data === "string") {
