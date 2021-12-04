@@ -1,8 +1,8 @@
 import { IView } from "mvp/View/View";
 
-enum TOrient {
-  HORIZONTAL,
-  VERTICAL,
+const TOrient = {
+  HORIZONTAL: "horizontal",
+  VERTICAL: "vertical",
 }
 
 type TListenerArg = any;
@@ -39,7 +39,7 @@ type TSettings = {
   currentFirst: number,
   currentSecond: number,
   step: number,
-  orientation: TOrient,
+  orientation: string,
   tooltip: boolean,
   scale: TScale,
 }
