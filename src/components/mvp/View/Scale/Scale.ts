@@ -64,12 +64,9 @@ export default class Scale implements ISubview {
       that.settings.min === Math.round(that.settings.min)
       && that.settings.step === Math.round(that.settings.step)
     );
-
-    console.log("is it int?", intNumbers);
     
     const decimalValue = Math.max(getNumbersAfterDot(that.settings.min), getNumbersAfterDot(that.settings.step));
     const widthOfScaleNumber = getTextWidth((that.settings.max - that.settings.step).toFixed(decimalValue), "16px TimesNewRoman");
-    console.log("width of scale num", widthOfScaleNumber);
     const amountOfSteps = Math.round(this.scaleLength / widthOfScaleNumber);
     
     const step = (that.settings.max > 500 || !intNumbers && that.settings.ifHorizontal)
