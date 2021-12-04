@@ -42,9 +42,9 @@ export default class Model implements IModel {
 
   private changeData(name: keyof TSettings): void {
     name === "currentFirst"
-      ? this.eventDispatcher.notify("changeFirstThumb", this.data.currentFirst)
+      ? this.eventDispatcher.notify("thumbUpdate", this.data.currentFirst)
       : name === "currentSecond"
-      ? this.eventDispatcher.notify("changeSecondThumb", this.data.currentSecond)
+      ? this.eventDispatcher.notify("thumbSecondUpdate", this.data.currentSecond)
       : this.eventDispatcher.notify("updateData");
   }
 }

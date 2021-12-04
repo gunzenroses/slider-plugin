@@ -1,4 +1,4 @@
- import { TModelData, TSettings } from "Utils/types";
+import { TModelData, TSettings } from "Utils/types";
 import {
   changePercentsToValue,
 } from "Utils/common";
@@ -52,8 +52,8 @@ export default class Presenter implements IPresenter {
   private enable(): void {
     this.view.eventDispatcher.add("firstThumb", this.modelThumbFirstHandler);
     this.view.eventDispatcher.add("secondThumb", this.modelThumbSecondHandler);
-    this.model.eventDispatcher.add("changeFirstThumb", this.changeFirstThumbHandler);
-    this.model.eventDispatcher.add("changeSecondThumb", this.changeSecondThumbHandler);
+    this.model.eventDispatcher.add("thumbUpdate", this.changeFirstThumbHandler);
+    this.model.eventDispatcher.add("thumbSecondUpdate", this.changeSecondThumbHandler);
     this.model.eventDispatcher.add("updateData", this.updateDataHandler);
   }
 
