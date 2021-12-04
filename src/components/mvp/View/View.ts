@@ -199,17 +199,6 @@ export default class View implements IView {
     this.addListenerPointerDown();
   }
 
-  // in % and actual values
-  change(object: HTMLElement, num: number): void {
-    const newValue = valueToPercentsApplyStep(num, this.settings);
-    object === this.thumb.element
-      ? (this.settings.firstPosition = newValue,
-        this.settings.currentFirst = num)
-      : (this.settings.secondPosition = newValue,
-        this.settings.currentSecond = num);
-    this.eventDispatcher.notify("changeView", this);
-  }
-
   changeFirstThumb(num: number) {
     const newValue = valueToPercentsApplyStep(num, this.settings);
     this.thumb.element.style.zIndex = "4";
