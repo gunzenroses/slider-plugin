@@ -17,6 +17,7 @@ export default interface IView {
     eventDispatcher: IObservable;
   
     init(settings: TSettings): void;
+    enable(): void;
     selectThumb(e: PointerEvent): void;
     dragThumbStart(e: PointerEvent): void;
     dragThumbEnd(): void;
