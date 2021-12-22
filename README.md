@@ -7,6 +7,10 @@ The aim of this project is to get known with:
 - unit-testing and bdd approach;
 - webpack.
 
+### Plugins info
+
+The project works with node@14.16.1, npm@8.1.0, git@2.34 and jquery@3.6.0.
+
 ### Plugin architecture
 
 Plugin has MVP-architecture with Passive View.
