@@ -69,7 +69,7 @@ export default class View implements IView {
     this.dropThumbHandler = this.dragThumbEnd.bind(this);
   }
 
-  private enable(): void {
+  enable(): void {
     this.sliderContainer.addEventListener("pointerup", this.selectThumbHandler);
     this.addListenerPointerDown();
   }
