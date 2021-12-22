@@ -79,40 +79,6 @@ describe("Panel for double slider", () => {
         expect(spyPresenter).toHaveBeenCalledTimes(1);
       }
     });
-
-    describe("should assign changingObject", () => {
-      test("case currentFirst", () => {
-        const elm = document.createElement("input");
-        elm.setAttribute("name", "currentFirst");
-        elm.setAttribute("type", "number");
-        elm.setAttribute("value", "33%");
-
-        const evt = {
-          ...new Event("change"),
-          target: elm,
-        };
-
-        panel.changePanel(evt);
-
-        expect(panel.presenter.changingObject).toBe(panel.presenter.view.thumb.element);
-      });
-
-      test("case currentSecond", () => {
-        const elm = document.createElement("input");
-        elm.setAttribute("name", "currentSecond");
-        elm.setAttribute("type", "number");
-        elm.setAttribute("value", "66%");
-
-        const evt = {
-          ...new Event("change"),
-          target: elm,
-        };
-
-        panel.changePanel(evt);
-
-        expect(panel.presenter.changingObject).toBe(panel.presenter.view.thumbSecond.element);
-      });
-    });
   });
 
   describe("method updatePanel()", () => {

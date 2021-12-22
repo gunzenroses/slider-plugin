@@ -19,12 +19,6 @@ describe("class View", () => {
     jest.restoreAllMocks();
   });
 
-  describe("method init()", () => {
-    test("set passed in data as settings", () => {
-      expect(view.settings).toEqual(data);
-    });
-  });
-
   describe("method createSettings()", () => {
     test("create settings for class functionality", () => {
       expect(view.settings.ifHorizontal).toBeDefined();
@@ -36,29 +30,39 @@ describe("class View", () => {
       expect(view.settings.step).toBeTruthy();
       expect(view.settings.max).toBeTruthy();
       expect(view.settings.min).toBeDefined();
+      expect(view.settings.ifHorizontal).toBeDefined();
+      expect(view.settings.firstPosition).toBeDefined();
+      expect(view.settings.secondPosition).toBeDefined();
     });
   });
 
   describe("method enable()", () => {
-    test("notify 'selectThumb' subscribers when sliderContainer is clicked", () => {
+    test("notify to change one of thumbs when sliderContainer is clicked", () => {
       const spyOnClick = jest.spyOn(view.eventDispatcher, "notify");
-
-      view.sliderContainer.dispatchEvent(new Event("pointerdown"));
-      view.sliderContainer.dispatchEvent(new Event("pointerup"));
+      const evt = new Event("pointerup", {
+        bubbles: true,
+        cancelable: false, 
+        composed: false
+      });
+      
+      view.selectThumb(evt as PointerEvent);
 
       expect(spyOnClick).toHaveBeenCalledTimes(1);
     });
 
-    test("should not notify 'selectThumb' subscribers when thumb or thumbSecond is clicked", () => {
+    test("should not notify when thumb or thumbSecond is clicked", () => {
       const spyOnClick = jest.spyOn(view.eventDispatcher, "notify");
+      const evt = new Event("click", {
+        bubbles: true
+      })
 
-      view.thumb.element.dispatchEvent(new Event("click"));
-      view.thumbSecond.element.dispatchEvent(new Event("click"));
+      view.thumb.element.dispatchEvent(evt);
+      view.thumbSecond.element.dispatchEvent(evt);
 
       expect(spyOnClick).toHaveBeenCalledTimes(0);
     });
 
-    test("notify 'dragThumb' subscribers when thumb is moved", () => {
+    test("notify when thumb is moved", () => {
       const spyOnDragMove = jest.spyOn(view.eventDispatcher, "notify");
 
       view.thumbSecond.element.dispatchEvent(new Event("pointerdown"));
@@ -70,11 +74,12 @@ describe("class View", () => {
 
   describe("method selectThumb()", () => {
     test("should not notify subscribers if e.target is selectThumb or selectThumbSecond", () => {
-      const evt = new PointerEvent("pointerup");
-      view.thumb.element.dispatchEvent(evt);
       const spyOnSm = jest.spyOn(view.eventDispatcher, "notify");
 
-      view.selectThumb(evt);
+      const evt = new MouseEvent("pointerup", {
+        bubbles: true
+      });
+      view.thumb.element.dispatchEvent(evt);
 
       expect(spyOnSm).toBeCalledTimes(0);
     });
@@ -114,30 +119,6 @@ describe("class View", () => {
       document.dispatchEvent(new Event("pointerdown"));
 
       expect(spyOnThumbDowm).toBeCalledTimes(0);
-    });
-  });
-
-  describe("method change()", () => {
-    test("update styles for Thumb, Range and Tooltip when (selectObject === thumb)", () => {
-      const obj = view.thumb.element;
-      const num = 7;
-
-      view.change(obj, num);
-
-      expect(view.thumb.element.style.left).toBe(num + "%");
-      expect(view.range.element.style.left).toBe(num + "%");
-      expect(parseInt(view.tooltipFirst.element.innerText)).toBe(num);
-    });
-
-    test("update styles for Thumb, Range and Tooltip when (selectObject === thumbSecond)", () => {
-      const obj = view.thumbSecond.element;
-      const num = 11;
-
-      view.change(obj, num);
-
-      expect(view.thumbSecond.element.style.left).toBe(num + "%");
-      expect(view.range.element.style.right).toBe(100 - num + "%");
-      expect(parseInt(view.tooltipSecond.element.innerText)).toBe(num);
     });
   });
 

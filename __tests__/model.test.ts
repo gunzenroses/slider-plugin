@@ -53,12 +53,10 @@ describe("class Model", () => {
 
   describe("method getData()", () => {
     test("return object which were passed into constructor data", () => {
-      //assertion
       expect(model.getData()).toEqual(data);
     });
 
     test("have valid properties('min', 'max', 'range', 'currentFirst', 'currentSecond', 'step', 'orientation', 'tooltip', 'scale')", () => {
-      //assertion
       expect(model.getData()).toHaveProperty("min");
       expect(model.getData()).toHaveProperty("max");
       expect(model.getData()).toHaveProperty("range");
