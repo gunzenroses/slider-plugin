@@ -70,9 +70,8 @@ export default class Scale implements ISubview {
     const amountOfSteps = Math.round(this.scaleLength / widthOfScaleNumber);
     
     const step = (that.settings.max > 500 || !intNumbers && that.settings.ifHorizontal)
-      ? Math.floor(that.settings.max / amountOfSteps)
+      ? that.settings.max / amountOfSteps
       : that.settings.step;
-
     const toFixedDecimals = Math.max(getNumbersAfterDot(that.settings.min), getNumbersAfterDot(that.settings.step));
     let i = that.settings.min;
     while (i < that.settings.max) {
