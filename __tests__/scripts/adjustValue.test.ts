@@ -6,12 +6,6 @@ const data = initialData;
 
 describe("adjustValue", () => {
   describe("should adjust 'min'", () => {
-    test("smaller 0", () => {
-      const min = adjustValue("min", -2, data);
-
-      expect(min).toBe(0);
-    });
-
     test("smaller 'max' - 'step'", () => {
       const temp = data.max - data.step - 1;
       const min = adjustValue("min", temp, data);
