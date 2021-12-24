@@ -136,12 +136,6 @@ function getTextWidth(text: string, font: string) {
   }
 }
 
-function percentsToValueApplyStep(num: number, data: TSettings): number {
-  const percToValue = changePercentsToValue(num, data);
-  const stepToValue = applyStepOnValue(percToValue, data);
-  return stepToValue;
-}
-
 //values are actual
 function valueToPercentsApplyStep(value: number, data: TSettings): number {
   const valuePerc = changeValueToPercents(value, data);
@@ -163,6 +157,5 @@ export {
   fromValueToPX,
   changeValueToPercents,
   changePercentsToValue,
-  percentsToValueApplyStep,
   valueToPercentsApplyStep,
 };
