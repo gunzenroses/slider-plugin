@@ -166,11 +166,10 @@ export default class View implements IView {
     this.listenMoveAndUp();
   }
 
-  private dragThumbMove(e: PointerEvent): void {
+  dragThumbMove(e: PointerEvent): void {
     this.stopListenDown();
     e.preventDefault();
     const pos = this.countPosition(e);
-    // this.eventDispatcher.notify("dragThumb", e);
     this.settings.range 
       ? this.dragThumbRangeTrue(pos) 
       : this.eventDispatcher.notify("firstThumb", pos);
