@@ -51,6 +51,7 @@ describe("helpers: class checkValidity", () => {
     item.min = "0";
     item.step = "4";
     item.value = "11";
+    item.name = "from";
 
     const checkItem = new checkValidity(item, container);
 
@@ -61,7 +62,8 @@ describe("helpers: class checkValidity", () => {
     item.min = "10";
     item.step = "8";
     item.value = "25";
-
+    item.name = "from"
+    
     const checkItem = new checkValidity(item, container);
 
     expect(checkItem.invalidities).toContain("Number should be: 10 + multiple of 8");
