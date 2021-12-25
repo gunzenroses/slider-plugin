@@ -70,7 +70,6 @@ export default class Scale implements ISubview {
     
     let i = that.settings.min;
     while (i < that.settings.max) {
-      console.log(i)
       i = parseFloat(i.toFixed(toFixedDecimals));
       this.scaleItemRow.push(i);
       i += step;
