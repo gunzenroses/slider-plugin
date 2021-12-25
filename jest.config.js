@@ -5,6 +5,12 @@ module.exports = {
     "^.+\\.tsx?$": "ts-jest", //to verify types
   },
   collectCoverage: true,
+  collectCoverageFrom: [
+    "**/mvp/**",
+    "**/Panel/**",
+    "**/scripts/**",
+    "!**/interfaces/**",
+  ],
   //coverageReporters: ['text'],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   moduleFileExtensions: [
