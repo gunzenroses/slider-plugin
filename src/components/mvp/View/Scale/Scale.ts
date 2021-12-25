@@ -60,19 +60,19 @@ export default class Scale implements ISubview {
   private makeScaleRow(that: IView): void {
     this.scaleItemRow = [];
     
-    const decimalValue = Math.max(getNumbersAfterDot(that.settings.min), getNumbersAfterDot(that.settings.step));
-    const widthOfScaleNumber = getTextWidth((that.settings.max - that.settings.step).toFixed(decimalValue), "16px TimesNewRoman");
-    const amountOfSteps = Math.round(this.scaleLength / widthOfScaleNumber);
-    
-    const step = that.settings.max / amountOfSteps;
-
     const toFixedDecimals = Math.max(getNumbersAfterDot(that.settings.min), getNumbersAfterDot(that.settings.step), getNumbersAfterDot(that.settings.max));
-    
-    let i = that.settings.min;
-    while (i < that.settings.max) {
-      i = parseFloat(i.toFixed(toFixedDecimals));
-      this.scaleItemRow.push(i);
-      i += step;
+    const widthOfScaleNumber = getTextWidth((that.settings.max - that.settings.step).toFixed(toFixedDecimals), "16px TimesNewRoman");
+    const amountOfSteps = Math.round(this.scaleLength / widthOfScaleNumber);
+    const step = that.settings.max / amountOfSteps;
+    if (getNumbersAfterDot(step) <= toFixedDecimals) {
+      let i = that.settings.min;
+      while (i < that.settings.max) {
+        i = parseFloat(i.toFixed(toFixedDecimals));
+        this.scaleItemRow.push(i);
+        i += step;
+      }
+    } else {
+      this.scaleItemRow.push(that.settings.min, that.settings.max);
     }
   }
 
