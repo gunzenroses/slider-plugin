@@ -30,8 +30,6 @@ type TPanelParam = {
   options?: Array<string>;
 };
 
-type TScale = { stepPerDiv: number } | boolean;
-
 type TSettings = {
   min: number,
   max: number,
@@ -41,7 +39,7 @@ type TSettings = {
   step: number,
   orientation: string,
   tooltip: boolean,
-  scale: TScale,
+  scale: boolean,
 }
 
 type TViewSettings = TSettings & {
@@ -70,7 +68,6 @@ export {
   TListenerArr,
   TPanelParam,
   TRangeStyle,
-  TScale,
   TScaleOptions,
   TScaleItem,
   TOrient,

@@ -12,11 +12,9 @@ import Scale from "./Scale/Scale";
 import Tooltip from "./Tooltip/Tooltip";
 
 export default class View implements IView {
-  //in constructor
   private parentContainer: HTMLElement;
   eventDispatcher: IObservable;
 
-  //to manipulate the DOM
   settings!: TViewSettings;
   sliderContainer!: HTMLElement;
   thumb!: ISubview;

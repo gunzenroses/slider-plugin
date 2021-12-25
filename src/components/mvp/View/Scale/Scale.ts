@@ -60,21 +60,17 @@ export default class Scale implements ISubview {
   private makeScaleRow(that: IView): void {
     this.scaleItemRow = [];
     
-    const intNumbers = (
-      that.settings.min === Math.round(that.settings.min)
-      && that.settings.step === Math.round(that.settings.step)
-    );
-    
     const decimalValue = Math.max(getNumbersAfterDot(that.settings.min), getNumbersAfterDot(that.settings.step));
     const widthOfScaleNumber = getTextWidth((that.settings.max - that.settings.step).toFixed(decimalValue), "16px TimesNewRoman");
     const amountOfSteps = Math.round(this.scaleLength / widthOfScaleNumber);
     
-    const step = (that.settings.max > 500 || !intNumbers && that.settings.ifHorizontal)
-      ? that.settings.max / amountOfSteps
-      : that.settings.step;
-    const toFixedDecimals = Math.max(getNumbersAfterDot(that.settings.min), getNumbersAfterDot(that.settings.step));
+    const step = that.settings.max / amountOfSteps;
+
+    const toFixedDecimals = Math.max(getNumbersAfterDot(that.settings.min), getNumbersAfterDot(that.settings.step), getNumbersAfterDot(that.settings.max));
+    
     let i = that.settings.min;
     while (i < that.settings.max) {
+      console.log(i)
       i = parseFloat(i.toFixed(toFixedDecimals));
       this.scaleItemRow.push(i);
       i += step;
@@ -102,9 +98,6 @@ export default class Scale implements ISubview {
 
   private makeScaleItems(that: IView): string {
     this.itemWidth = Math.round(this.scaleLength / this.scaleItemRow.length);
-    this.stepPerDivValue = (typeof that.settings.scale === "boolean") 
-      ? 1
-      : that.settings.scale.stepPerDiv;
     this.maxItem = this.scaleItemRow[this.scaleItemRow.length - 1];
 
     return this.scaleItemRow
@@ -121,18 +114,11 @@ export default class Scale implements ISubview {
     if (this.itemWidth > 40) {
       return `<div class=${this.segmentClass}><span class="${this.spanClass}" ${special}>${item}</span></div>`;
     } else {
-      const temp: number = Math.floor(50 / this.itemWidth);
-      let numOfItems;
-      if (this.stepPerDivValue <= temp || this.stepPerDivValue % temp === 0) {
-        numOfItems = temp;
-      } else {
-        numOfItems = commonDivider(this.stepPerDivValue, temp);
-      }
+      const numOfItems: number = Math.floor(50 / this.itemWidth);
 
       return item === that.settings.min ||
-        ((item - that.settings.min) % (this.stepPerDivValue * that.settings.step) === 0 &&
-          index % numOfItems === 0 &&
-          index % this.stepPerDivValue === 0)
+        ((item - that.settings.min) % that.settings.step === 0 &&
+          index % numOfItems === 0 )
         ? `<div class=${this.segmentClass}><span class="${this.spanClass}" ${special}>${item}</span></div>`
         : `<div class=${itemClass}></div>`;
     }
