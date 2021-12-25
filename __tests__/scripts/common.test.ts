@@ -5,6 +5,7 @@ import {
   applyStepOnValue,
   commonDivider,
   findPosition,
+  getNumbersAfterDot,
 } from "Utils/common";
 
 describe("applyStepOnPercents()", () => {
@@ -167,3 +168,18 @@ describe("findPosition()", () => {
     });
   });
 });
+
+describe("get amout of numbers after dot", () => {
+  test("should be zero for integer numbers", () => {
+    const intNum = 8;
+
+    expect(getNumbersAfterDot(intNum)).toBe(0);
+  });
+
+  test("should be > 0 for float numbers", () => {
+    const floatNum = 8.123;
+
+    expect(getNumbersAfterDot(floatNum)).toBe(3);
+  })
+  
+})
