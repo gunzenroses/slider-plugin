@@ -36,9 +36,12 @@ export default class checkValidity {
     }
 
     if (validity.stepMismatch) {
-      if (name === "step" || "max") return;
-      if (min === null) return;
-      this.addInvalidity(`Number should be: ${min} + multiple of ${step}`);
+      if (name !== "from" && name !== "to") return;
+      if (min !== null && min !== "0") {
+        this.addInvalidity(`Number should be: ${min} + multiple of ${step}`);
+      } else {
+        this.addInvalidity(`Number should be multiple of ${step}`);
+      }
     }
   }
 
