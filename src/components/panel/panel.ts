@@ -1,6 +1,6 @@
 import checkValidity from "Helpers/checkValidity";
 import { TSettings, TPanelParam, TModelData, TOrient } from "Utils/types";
-import { afterCustomElement, appendCustomElement } from "Utils/common";
+import { afterCustomElement, appendCustomElement, getNumbersAfterDot } from "Utils/common";
 import IPresenter from "Interfaces/IPresenter";
 import IPanel from "Interfaces/IPanel";
 
@@ -81,19 +81,25 @@ export default class ConfigurationPanel implements IPanel {
   }
 
   private updateMin(): void {
+    const toFixedNum = Math.max(getNumbersAfterDot(this.data.max), getNumbersAfterDot(this.data.step));
+    const multiplyToInt = 10**toFixedNum;
     this.minInput.value = this.data.min.toString();
-    this.minInput.max = (this.data.max - this.data.step).toString();
+    this.minInput.max = ((this.data.max * multiplyToInt - this.data.step * multiplyToInt)/multiplyToInt).toString();
   }
 
   private updateMax(): void {
+    const toFixedNum = Math.max(getNumbersAfterDot(this.data.min), getNumbersAfterDot(this.data.step));
+    const multiplyToInt = 10**toFixedNum;
     this.maxInput.value = this.data.max.toString();
-    this.maxInput.min = (this.data.min + this.data.step).toString();
+    this.maxInput.min = ((this.data.min * multiplyToInt + this.data.step * multiplyToInt) / multiplyToInt).toString();
   }
 
   private updateStep(): void {
+    const toFixedNum = Math.max(getNumbersAfterDot(this.data.min), getNumbersAfterDot(this.data.max));
+    const multiplyToInt = 10**toFixedNum;
     this.stepInput.value = this.data.step.toString();
     this.stepInput.min = "1";
-    this.stepInput.max = (this.data.max - this.data.min).toString();
+    this.stepInput.max = ((this.data.max * multiplyToInt - this.data.min * multiplyToInt) / multiplyToInt).toString();
   }
 
   private updateThumb(val?: string): void {
