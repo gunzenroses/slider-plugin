@@ -16,6 +16,8 @@ describe("class View", () => {
     container.innerHTML = "";
     view = new View(container);
     view.init(data);
+    view.thumbWidth = 8;
+    view.containerSize = 400;
     jest.restoreAllMocks();
   });
 
@@ -44,8 +46,13 @@ describe("class View", () => {
         cancelable: false, 
         composed: false
       });
+      const clickEvt = {... evt,
+        clientX: 100,
+        clientY: 100,
+        preventDefault: jest.fn(),
+      }
       
-      view.selectThumb(evt as PointerEvent);
+      view.selectThumb(clickEvt as unknown as PointerEvent);
 
       expect(spyOnClick).toHaveBeenCalledTimes(1);
     });
@@ -54,7 +61,7 @@ describe("class View", () => {
       const spyOnClick = jest.spyOn(view.eventDispatcher, "notify");
       const evt = new Event("click", {
         bubbles: true
-      })
+      });
 
       view.thumb.element.dispatchEvent(evt);
       view.thumbSecond.element.dispatchEvent(evt);
@@ -62,11 +69,62 @@ describe("class View", () => {
       expect(spyOnClick).toHaveBeenCalledTimes(0);
     });
 
-    test("notify when thumb is moved", () => {
+    test("notify when thumbFirst is moved to a position smaller that thumbSecond", () => {
       const spyOnDragMove = jest.spyOn(view.eventDispatcher, "notify");
+      view.settings.range = true;
+      const pointDowm = new CustomEvent("poinerdown", {
+        bubbles: true,
+        cancelable: false, 
+        composed: false,
+      });
+      const startEvent = {...pointDowm, 
+        target: view.thumb.element,
+        preventDefault: jest.fn(),
+      };
+      const pointMove = new Event("pointermove", {
+        bubbles: true,
+        cancelable: false, 
+        composed: false
+      });
+      const moveEvent = {... pointMove,
+        clientX: 2,
+        clientY: 2,
+        preventDefault: jest.fn(),
+      }
 
-      view.thumbSecond.element.dispatchEvent(new Event("pointerdown"));
-      document.dispatchEvent(new Event("pointermove"));
+
+      view.dragThumbStart(startEvent as unknown as PointerEvent);     
+      view.dragThumbMove(moveEvent as unknown as PointerEvent);
+
+      expect(spyOnDragMove).toHaveBeenCalledTimes(1);
+    });
+
+    test("notify when thumbSecond moved to a positon bigger than thumbFirst", () => {
+      const spyOnDragMove = jest.spyOn(view.eventDispatcher, "notify");
+      view.settings.range = true;
+      
+      const pointDown = new CustomEvent("poinerdown", {
+        bubbles: true,
+        cancelable: false, 
+        composed: false,
+      });
+      const startEvent = {...pointDown, 
+        target: view.thumbSecond.element,
+        preventDefault: jest.fn(),
+      };
+      const pointMove = new Event("pointermove", {
+        bubbles: true,
+        cancelable: false, 
+        composed: false
+      });
+      const moveEvent = {... pointMove,
+        clientX: 300,
+        clientY: 300,
+        preventDefault: jest.fn(),
+      }
+
+      view.dragThumbStart(startEvent as unknown as PointerEvent); 
+      view.dragThumbMove(moveEvent as unknown as PointerEvent);
 
       expect(spyOnDragMove).toHaveBeenCalledTimes(1);
     });
@@ -119,6 +177,28 @@ describe("class View", () => {
       document.dispatchEvent(new Event("pointerdown"));
 
       expect(spyOnThumbDowm).toBeCalledTimes(0);
+    });
+  });
+
+  describe("method changeFirstThumb()", () => {
+    test("change data", () => {
+      const num = 18;
+      const spyOnChangeThumb = jest.spyOn(view.eventDispatcher, "notify");
+      view.changeFirstThumb(num);
+
+      expect(view.settings.currentFirst).toBe(num);
+      expect(spyOnChangeThumb).toBeCalledTimes(1);
+    });
+  });
+
+  describe("method changeSecondThumb()", () => {
+    test("change data", () => {
+      const num = 18;
+      const spyOnChangeThumb = jest.spyOn(view.eventDispatcher, "notify");
+      view.changeSecondThumb(num);
+
+      expect(view.settings.currentSecond).toBe(num);
+      expect(spyOnChangeThumb).toBeCalledTimes(1);
     });
   });
 
