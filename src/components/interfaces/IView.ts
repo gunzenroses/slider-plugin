@@ -13,6 +13,8 @@ export default interface IView {
     tooltipFirst: ISubview;
     tooltipSecond: ISubview;
     dragObj: HTMLElement | null;
+    thumbWidth: number;
+    containerSize: number;
 
     eventDispatcher: IObservable;
   
@@ -20,6 +22,7 @@ export default interface IView {
     enable(): void;
     selectThumb(e: PointerEvent): void;
     dragThumbStart(e: PointerEvent): void;
+    dragThumbMove(e: PointerEvent): void;
     dragThumbEnd(): void;
     changeFirstThumb(val: number): void;
     changeSecondThumb(val: number): void;
