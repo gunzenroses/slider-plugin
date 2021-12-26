@@ -1,26 +1,23 @@
-import { commonDivider, fromValueToPX, getNumbersAfterDot, getTextWidth } from "Utils/common";
-import { TScaleItem, TScaleOptions } from "Utils/types";
-import ISubview from "Interfaces/ISubview";
+import { fromValueToPX, getNumbersAfterDot, getTextWidth } from "Utils/common";
+import { TScaleOptions } from "Utils/types";
 import IView from "Interfaces/IView";
 
-export default class Scale implements ISubview {
+export default class Scale {
   element!: HTMLElement;
-  scaleItemRow!: number[];
-  tailContainer!: number;
-  item!: TScaleItem;
-  scaleLength!: number;
-  scaleItems!: HTMLDivElement;
-  segmentClass!: string;
-  spanClass!: string;
-  stepPerDivValue!: number;
-  itemWidth!: number;
-  maxItem!: number;
+  private scaleItemRow!: number[];
+  private tailContainer!: number;
+  private scaleLength!: number;
+  private scaleItems!: HTMLDivElement;
+  private segmentClass!: string;
+  private spanClass!: string;
+  private itemWidth!: number;
+  private maxItem!: number;
 
   constructor(that: IView) {
     this.init(that);
   }
 
-  init(that: IView): HTMLElement {
+  private init(that: IView): HTMLElement {
     this.make(that);
     this.change(that);
     this.element.append(this.scaleItems);
@@ -28,7 +25,7 @@ export default class Scale implements ISubview {
     return this.element;
   }
 
-  make(that: IView): HTMLElement {
+  private make(that: IView): HTMLElement {
     const scaleClass: string = that.settings.ifHorizontal
       ? "slider__scale"
       : "slider__scale_vertical";
@@ -41,7 +38,7 @@ export default class Scale implements ISubview {
     return this.element;
   }
 
-  change(that: IView): HTMLElement {
+  private change(that: IView): HTMLElement {
     this.countContainerSize(that);
     this.makeScaleRow(that);
     this.makeScaleContainer(that);

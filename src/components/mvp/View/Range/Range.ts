@@ -1,8 +1,7 @@
 import { IView } from "mvp/View/View";
-import ISubview from "Interfaces/ISubview";
 
 //here all values are in %
-export default class Range implements ISubview {
+export default class Range {
   element!: HTMLElement;
   private changeHandler!: { (that: IView): void };
 
@@ -19,7 +18,7 @@ export default class Range implements ISubview {
     return this.element;
   }
 
-  make(that: IView): HTMLElement {
+  private make(that: IView): HTMLElement {
     this.element = document.createElement("div");
     const elementClass: string = that.settings.ifHorizontal
       ? "slider__range"
@@ -36,7 +35,7 @@ export default class Range implements ISubview {
     that.eventDispatcher.add("changeView", this.changeHandler);
   }
 
-  change(that: IView): void {
+  private change(that: IView): void {
     that.settings.range
       ? (this.changeFirst(that), this.changeSecond(that))
       : this.changeFirst(that);
