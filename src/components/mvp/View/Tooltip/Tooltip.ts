@@ -12,21 +12,6 @@ export default class Tooltip implements ISubview {
     this.init(that);
   }
 
-  private init(that: IView): HTMLElement {
-    this.createChildren(that);
-    this.make(that);
-    this.setupHandlers();
-    this.enable(that);
-    this.change(that);
-    this.append();
-    return this.element;
-  }
-
-  private createChildren(that: IView): void {
-    this.parentNode =
-      this.className === "tooltip_first" ? that.thumb.element : that.thumbSecond.element;
-  }
-
   make(that: IView): HTMLElement {
     const verticalClass = that.settings.ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
     const totalClass = that.settings.tooltip
@@ -40,20 +25,35 @@ export default class Tooltip implements ISubview {
     return this.element;
   }
 
-  private setupHandlers() {
-    this.changeHandler = this.change.bind(this);
-  }
-
-  private enable(that: IView) {
-    that.eventDispatcher.add("changeView", this.changeHandler);
-  }
-
   change(that: IView): void {
     const value =
       this.className === "tooltip_first"
         ? that.settings.currentFirst
         : that.settings.currentSecond;
     this.element.innerText = value.toString();
+  }
+
+  private init(that: IView): HTMLElement {
+    this.createChildren(that);
+    this.make(that);
+    this.setupHandlers();
+    this.enable(that);
+    this.change(that);
+    this.append();
+    return this.element;
+  }
+ 
+  private createChildren(that: IView): void {
+    this.parentNode =
+      this.className === "tooltip_first" ? that.thumb.element : that.thumbSecond.element;
+  }
+
+  private setupHandlers() {
+    this.changeHandler = this.change.bind(this);
+  }
+
+  private enable(that: IView) {
+    that.eventDispatcher.add("changeView", this.changeHandler);
   }
 
   private append(): void {
