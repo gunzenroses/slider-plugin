@@ -24,13 +24,15 @@ describe("adjustValue", () => {
       const temp = data.max - data.step;
       const min = adjustValue("min", temp + 1, data);
 
-      expect(min).toBe(0);
+      expect(min).toBe(temp);
     });
 
     test("equals NaN", () => {
+      const temp = data.max - data.step;
+
       const min = adjustValue("min", NaN, data);
 
-      expect(min).toBe(0);
+      expect(min).toBe(temp);
     });
   });
 
@@ -115,7 +117,7 @@ describe("adjustValue", () => {
     });
 
     test("equals NaN", () => {
-      const temp = data.currentFirst;
+      const temp = data.max;
       const currentSecond = adjustValue("currentSecond", NaN, data);
 
       expect(currentSecond).toBe(temp);
