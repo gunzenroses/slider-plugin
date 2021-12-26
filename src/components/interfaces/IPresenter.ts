@@ -8,8 +8,8 @@ export default interface IPresenter {
     model: IModel;
     view: IView;
     data: TSettings;
+    eventDispatcher: IObservable;
   
     init(): void;
     modelData(name: string, data: TModelData): void;
-    eventDispatcher: IObservable;
   }
