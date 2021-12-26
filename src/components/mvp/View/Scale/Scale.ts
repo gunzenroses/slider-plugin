@@ -60,7 +60,6 @@ export default class Scale {
     const widthOfScaleNumber = getTextWidth((that.settings.max - that.settings.step).toFixed(toFixedDecimals), "16px TimesNewRoman") + 5;
     const amountOfSteps = Math.round(this.scaleLength / widthOfScaleNumber);
     const weightOfStep = that.settings.max / amountOfSteps;
-    console.log(weightOfStep)
     if (weightOfStep > 1) {
       let i = that.settings.min;
       while (i < that.settings.max) {
