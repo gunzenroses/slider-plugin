@@ -16,12 +16,11 @@ export default class Presenter implements IPresenter {
   eventDispatcher: IObservable;
   data!: TSettings;
 
-  changeViewHandler!: { (value: number): void };
-  updateDataHandler!: { (data: TSettings): void };
-  modelThumbFirstHandler!: (value: number) => void;
-  modelThumbSecondHandler!: (value: number) => void;
-  changeSecondThumbHandler!: (value: number) => void;
-  changeFirstThumbHandler!: (value: number) => void;
+  private updateDataHandler!: { (data: TSettings): void };
+  private modelThumbFirstHandler!: (value: number) => void;
+  private modelThumbSecondHandler!: (value: number) => void;
+  private changeSecondThumbHandler!: (value: number) => void;
+  private changeFirstThumbHandler!: (value: number) => void;
 
   constructor(container: HTMLElement, data: TSettings) {
     this.model = new Model(data);
@@ -41,6 +40,10 @@ export default class Presenter implements IPresenter {
     this.view.init(this.data);
   }
 
+  modelData(name: keyof TSettings, data: TModelData): void {
+    this.model.setData(name, data);
+  }
+
   private setupHandlers(): void {
     this.changeFirstThumbHandler = this.changeFirstThumb.bind(this);
     this.changeSecondThumbHandler = this.changeSecondThumb.bind(this);
@@ -57,21 +60,14 @@ export default class Presenter implements IPresenter {
     this.model.eventDispatcher.add("updateData", this.updateDataHandler);
   }
 
-  //value - %, newValue - actual
   private modelThumbFirst(value: number): void {
     const newValue = changePercentsToValue(value, this.data);
     this.model.setData("currentFirst", newValue);
   }
 
-  //value - %, newValue - actual
   private modelThumbSecond(value: number): void {
     const newValue = changePercentsToValue(value, this.data);
     this.model.setData("currentSecond", newValue);
-  }
-
-  //to update all kinds of data
-  modelData(name: keyof TSettings, data: TModelData): void {
-    this.model.setData(name, data);
   }
 
   private updateData(): void {
@@ -79,13 +75,11 @@ export default class Presenter implements IPresenter {
     this.eventDispatcher.notify("updateAll");
   }
 
-  //value - actual
   private changeFirstThumb(value: number): void {
     this.eventDispatcher.notify("thumbUpdate", value);
     this.view.changeFirstThumb(value);
   }
   
-  //value - actual
   private changeSecondThumb(value: number): void {
     this.eventDispatcher.notify("thumbSecondUpdate", value);
     this.view.changeSecondThumb(value);
