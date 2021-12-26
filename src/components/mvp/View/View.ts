@@ -213,7 +213,7 @@ export default class View implements IView {
 
   private render(): void {
     this.parentContainer.innerHTML = "";
-    this.sliderContainer = new SliderContainer(this, this.parentContainer).sliderContainer;
+    this.sliderContainer = new SliderContainer(this, this.parentContainer).element;
     this.track = new Track(this).element;
     this.scale = new Scale(this).element;
     this.range = new Range(this).element;
