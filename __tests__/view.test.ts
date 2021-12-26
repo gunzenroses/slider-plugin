@@ -63,8 +63,8 @@ describe("class View", () => {
         bubbles: true
       });
 
-      view.thumb.element.dispatchEvent(evt);
-      view.thumbSecond.element.dispatchEvent(evt);
+      view.thumb.dispatchEvent(evt);
+      view.thumbSecond.dispatchEvent(evt);
 
       expect(spyOnClick).toHaveBeenCalledTimes(0);
     });
@@ -78,7 +78,7 @@ describe("class View", () => {
         composed: false,
       });
       const startEvent = {...pointDowm, 
-        target: view.thumb.element,
+        target: view.thumb,
         preventDefault: jest.fn(),
       };
       const pointMove = new Event("pointermove", {
@@ -109,7 +109,7 @@ describe("class View", () => {
         composed: false,
       });
       const startEvent = {...pointDown, 
-        target: view.thumbSecond.element,
+        target: view.thumbSecond,
         preventDefault: jest.fn(),
       };
       const pointMove = new Event("pointermove", {
@@ -137,7 +137,7 @@ describe("class View", () => {
       const evt = new MouseEvent("pointerup", {
         bubbles: true
       });
-      view.thumb.element.dispatchEvent(evt);
+      view.thumb.dispatchEvent(evt);
 
       expect(spyOnSm).toBeCalledTimes(0);
     });
@@ -150,11 +150,11 @@ describe("class View", () => {
         range: false,
       };
       view.init(newSet);
-      view.thumb.element.dispatchEvent(new Event("pointerdown"));
+      view.thumb.dispatchEvent(new Event("pointerdown"));
       document.dispatchEvent(new Event("pointermove"));
       const spyOnDragStart = jest.spyOn(view, "dragThumbStart");
 
-      view.thumb.element.dispatchEvent(new Event("pointerdowm"));
+      view.thumb.dispatchEvent(new Event("pointerdowm"));
 
       expect(spyOnDragStart).toHaveBeenCalledTimes(0);
     });
@@ -225,7 +225,7 @@ describe("class View", () => {
       view.init(updatedData);
 
       expect(view.scale.classList.contains("disabled")).toBe(true);
-      expect(view.tooltipFirst.element.classList.contains("disabled")).toBe(true);
+      expect(view.tooltipFirst.classList.contains("disabled")).toBe(true);
     });
   });
 });
