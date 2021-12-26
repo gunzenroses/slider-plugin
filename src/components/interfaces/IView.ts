@@ -1,6 +1,5 @@
 import { TSettings, TViewSettings } from "Utils/types";
 import IObservable from "./IObservable";
-import ISubview from "./ISubview";
 
 export default interface IView {
     eventDispatcher: IObservable;
