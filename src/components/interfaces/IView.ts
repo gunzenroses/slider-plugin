@@ -3,21 +3,19 @@ import IObservable from "./IObservable";
 import ISubview from "./ISubview";
 
 export default interface IView {
+    eventDispatcher: IObservable;
     settings: TViewSettings;
     sliderContainer: HTMLElement;
-    thumb: ISubview;
-    thumbSecond: ISubview;
+    thumb: HTMLElement;
+    thumbSecond: HTMLElement;
     track: HTMLElement;
-    range: ISubview;
+    range: HTMLElement;
     scale: HTMLElement;
-    tooltipFirst: ISubview;
-    tooltipSecond: ISubview;
-    dragObj: HTMLElement | null;
+    tooltipFirst: HTMLElement;
+    tooltipSecond: HTMLElement;
     thumbWidth: number;
     containerSize: number;
 
-    eventDispatcher: IObservable;
-  
     init(settings: TSettings): void;
     enable(): void;
     selectThumb(e: PointerEvent): void;
