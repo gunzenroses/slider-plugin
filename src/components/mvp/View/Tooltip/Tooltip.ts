@@ -45,7 +45,7 @@ export default class Tooltip implements ISubview {
  
   private createChildren(that: IView): void {
     this.parentNode =
-      this.className === "tooltip_first" ? that.thumb.element : that.thumbSecond.element;
+      this.className === "tooltip_first" ? that.thumb : that.thumbSecond;
   }
 
   private setupHandlers() {
