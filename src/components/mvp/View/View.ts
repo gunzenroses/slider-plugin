@@ -20,9 +20,9 @@ export default class View implements IView {
   thumbSecond!: HTMLElement;
   range!: HTMLElement;
   track!: HTMLElement;
+  scale!: HTMLElement;
   tooltipFirst!: HTMLElement;
   tooltipSecond!: HTMLElement;
-  scale!: HTMLElement;
   containerSize!: number;
   thumbWidth!: number;
 
@@ -47,7 +47,7 @@ export default class View implements IView {
 
   enable(): void {
     this.sliderContainer.addEventListener("pointerup", this.selectThumbHandler);
-    this.addListenerPointerDown();
+    this.listenPointerDown();
   }
 
   selectThumb(e: PointerEvent): void {
@@ -66,7 +66,7 @@ export default class View implements IView {
   }
 
   dragThumbMove(e: PointerEvent): void {
-    this.stopListenDown();
+    this.stopListenPointerDown();
     e.preventDefault();
     const pos = this.countPosition(e);
     this.settings.range 
@@ -76,8 +76,8 @@ export default class View implements IView {
   
   dragThumbEnd(): void {
     if (this.dragObj === null) return;
-    this.removeListenerMoveAndUp();
-    this.addListenerPointerDown();
+    this.stopListenMoveAndUp();
+    this.listenPointerDown();
   }
 
   changeFirstThumb(num: number) {
@@ -119,7 +119,7 @@ export default class View implements IView {
     this.dropThumbHandler = this.dragThumbEnd.bind(this);
   }
 
-  private addListenerPointerDown(): void {
+  private listenPointerDown(): void {
     if (this.settings.range) {
       this.thumb.addEventListener("pointerdown", this.dragThumbHandler);
       this.thumbSecond.addEventListener("pointerdown", this.dragThumbHandler);
@@ -128,7 +128,7 @@ export default class View implements IView {
     }
   }
 
-  private stopListenDown(): void {
+  private stopListenPointerDown(): void {
     if (this.settings.range === true) {
       this.thumb.removeEventListener("pointerdown", this.dragThumbHandler);
       this.thumbSecond.removeEventListener("pointerdown", this.dragThumbHandler);
@@ -143,7 +143,7 @@ export default class View implements IView {
     document.addEventListener("pointerup", this.dropThumbHandler);
   }
 
-  private removeListenerMoveAndUp(): void {
+  private stopListenMoveAndUp(): void {
     this.sliderContainer.addEventListener("pointerup", this.selectThumbHandler);
     document.removeEventListener("pointermove", this.moveThumbHandler);
     document.removeEventListener("pointerup", this.dropThumbHandler);
