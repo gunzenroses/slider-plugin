@@ -54,20 +54,6 @@ function applyStepOnValue(value: number, data: TSettings): number {
   return realValue;
 }
 
-function commonDivider(basicNum: number, changeNum: number): number {
-  const bigger = basicNum;
-  //let smaller = changeNum;
-  let smaller = changeNum > 1 ? changeNum : 1;
-  if (bigger <= smaller) {
-    return smaller;
-  } else {
-    while (bigger % smaller !== 0) {
-      smaller++;
-    }
-    return smaller;
-  }
-}
-
 //done: initial values are actual, return %
 function changeValueToPercents(value: number, data: TSettings): number {
   const { max, min } = data;
@@ -152,7 +138,6 @@ export {
   applyStepOnValue,
   getNumbersAfterDot,
   getTextWidth,
-  commonDivider,
   findPosition,
   fromValueToPX,
   changeValueToPercents,

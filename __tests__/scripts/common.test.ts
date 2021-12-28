@@ -3,7 +3,6 @@ import {
   applyRestrictions,
   applyStepOnPercents,
   applyStepOnValue,
-  commonDivider,
   findPosition,
   getNumbersAfterDot,
 } from "Utils/common";
@@ -108,26 +107,6 @@ describe("applyStepOnValue", () => {
 
       expect(rtn).toBe(data.max);
     });
-  });
-});
-
-describe("commonDivider", () => {
-  test("basicNum > changeNum", () => {
-    const bn = 20;
-    const cn = 8;
-
-    const newNum = commonDivider(bn, cn);
-
-    expect(newNum).toBe(10);
-  });
-
-  test("bacisNum < changeNum", () => {
-    const bn = 20;
-    const cn = 50;
-
-    const newNum = commonDivider(bn, cn);
-
-    expect(newNum).toBe(cn);
   });
 });
 
