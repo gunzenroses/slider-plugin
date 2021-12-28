@@ -1,4 +1,4 @@
-import { IView } from "mvp/View/View";
+import IView from "Interfaces/IView";
 
 export default class Tooltip {
   element!: HTMLElement;
@@ -26,11 +26,11 @@ export default class Tooltip {
       this.className === "tooltip_first" ? that.thumb : that.thumbSecond;
   }
 
-  private setupHandlers() {
+  private setupHandlers(): void {
     this.changeHandler = this.change.bind(this);
   }
 
-  private enable(that: IView) {
+  private enable(that: IView): void {
     that.eventDispatcher.add("changeView", this.changeHandler);
   }
 

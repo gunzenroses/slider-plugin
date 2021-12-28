@@ -1,6 +1,5 @@
-import { IView } from "mvp/View/View";
+import IView from "Interfaces/IView";
 
-//here all values are in %
 export default class Range {
   element!: HTMLElement;
   private changeHandler!: { (that: IView): void };
@@ -27,11 +26,11 @@ export default class Range {
     return this.element;
   }
 
-  private setupHandlers() {
+  private setupHandlers(): void {
     this.changeHandler = this.change.bind(this);
   }
 
-  private enable(that: IView) {
+  private enable(that: IView): void {
     that.eventDispatcher.add("changeView", this.changeHandler);
   }
 

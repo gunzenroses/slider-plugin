@@ -1,4 +1,4 @@
-import { IView } from "mvp/View/View";
+import IView from "Interfaces/IView";
 
 const TOrient = {
   HORIZONTAL: "horizontal",

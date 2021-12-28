@@ -72,7 +72,7 @@ export default class Scale {
     }
   }
 
-  private makeScaleContainer(that: IView) {
+  private makeScaleContainer(that: IView): void {
     const lengthOfLeft = that.settings.max - this.scaleItemRow[this.scaleItemRow.length - 1];
     const newContainerSize =
       this.scaleLength - fromValueToPX(lengthOfLeft, that.settings, this.scaleLength) - 1;
