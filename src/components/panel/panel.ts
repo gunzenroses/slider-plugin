@@ -38,39 +38,6 @@ export default class ConfigurationPanel implements IPanel {
     this.enable();
   }
 
-  private assignData(): void {
-    this.data = this.presenter.data;
-  }
-
-  private createChildren(): void {
-    this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
-    this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
-    this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
-    this.currentFirstInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="currentFirst"]')
-    );
-    this.currentSecondInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="currentSecond"]')
-    );
-    this.data.range
-      ? (this.currentSecondInput.disabled = false)
-      : (this.currentSecondInput.disabled = true);
-  }
-
-  private setupHandlers(): void {
-    this.changePanelHandler = this.changePanel.bind(this);
-    this.updateHandler = this.updatePanel.bind(this);
-    this.updateThumbHandler = this.updateThumb.bind(this);
-    this.updateThumbSecondHandler = this.updateThumbSecond.bind(this);
-  }
-
-  private enable(): void {
-    this.panelItems.addEventListener("change", this.changePanelHandler);
-    this.presenter.eventDispatcher.add("updateAll", this.updateHandler);
-    this.presenter.eventDispatcher.add("thumbUpdate", this.updateThumbHandler);
-    this.presenter.eventDispatcher.add("thumbSecondUpdate", this.updateThumbSecondHandler);
-  }
-
   updatePanel(): void {
     this.assignData();
     this.updateMin();
@@ -78,54 +45,6 @@ export default class ConfigurationPanel implements IPanel {
     this.updateStep();
     this.updateThumb();
     this.updateThumbSecond();
-  }
-
-  private updateMin(): void {
-    const toFixedNum = Math.max(getNumbersAfterDot(this.data.max), getNumbersAfterDot(this.data.step));
-    const multiplyToInt = 10**toFixedNum;
-    this.minInput.value = this.data.min.toString();
-    this.minInput.max = ((this.data.max * multiplyToInt - this.data.step * multiplyToInt)/multiplyToInt).toString();
-  }
-
-  private updateMax(): void {
-    const toFixedNum = Math.max(getNumbersAfterDot(this.data.min), getNumbersAfterDot(this.data.step));
-    const multiplyToInt = 10**toFixedNum;
-    this.maxInput.value = this.data.max.toString();
-    this.maxInput.min = ((this.data.min * multiplyToInt + this.data.step * multiplyToInt) / multiplyToInt).toString();
-  }
-
-  private updateStep(): void {
-    const toFixedNum = Math.max(getNumbersAfterDot(this.data.min), getNumbersAfterDot(this.data.max));
-    const multiplyToInt = 10**toFixedNum;
-    this.stepInput.value = this.data.step.toString();
-    this.stepInput.min = "1";
-    this.stepInput.max = ((this.data.max * multiplyToInt - this.data.min * multiplyToInt) / multiplyToInt).toString();
-  }
-
-  private updateThumb(val?: string): void {
-    val
-      ? ((this.currentFirstInput.value = val),
-        (this.data.currentFirst = parseFloat(val)),
-        (this.currentSecondInput.min = val))
-      : (this.currentFirstInput.value = this.data.currentFirst.toString());
-    this.currentFirstInput.min = this.data.min.toString();
-    this.currentFirstInput.max = this.data.currentSecond.toString();
-    this.currentFirstInput.step = this.data.step.toString();
-  }
-
-  private updateThumbSecond(val?: string): void {
-    val
-      ? ((this.currentSecondInput.value = val.toString()),
-        (this.data.currentSecond = parseFloat(val)),
-        (this.currentFirstInput.max = val))
-      : (this.currentSecondInput.value = this.data.currentSecond.toString());
-    this.currentSecondInput.min = this.data.currentFirst.toString();
-    this.currentSecondInput.max = this.data.max.toString();
-    this.currentSecondInput.step = this.data.step.toString();
-    this.data.range
-      ? (this.currentSecondInput.disabled = false)
-      : ((this.currentSecondInput.disabled = true),
-        (this.currentSecondInput.value = this.data.max.toString()));
   }
 
   changePanel(e: Event): void {
@@ -139,18 +58,6 @@ export default class ConfigurationPanel implements IPanel {
     }
     if (data === null || name === null) return;
     this.modelData(type, name, data);
-  }
-
-  private modelData(type: string | null, name: string, data: TModelData): void {
-    type === "number"
-      ? setTimeout(() => {
-          if (typeof data === "string") {
-            this.presenter.modelData(name, parseFloat(data));
-          } else {
-            this.presenter.modelData(name, data);
-          }
-        })
-      : this.presenter.modelData(name, data);
   }
 
   render(data: TSettings): void {
@@ -216,6 +123,99 @@ export default class ConfigurationPanel implements IPanel {
     for (const item of this.listOfPanelItems) {
       this.panelItems.innerHTML += this.createPanelItem(item);
     }
+  }
+
+  private assignData(): void {
+    this.data = this.presenter.data;
+  }
+
+  private createChildren(): void {
+    this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
+    this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
+    this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
+    this.currentFirstInput = <HTMLInputElement>(
+      this.panelContainer.querySelector('input[name="currentFirst"]')
+    );
+    this.currentSecondInput = <HTMLInputElement>(
+      this.panelContainer.querySelector('input[name="currentSecond"]')
+    );
+    this.data.range
+      ? (this.currentSecondInput.disabled = false)
+      : (this.currentSecondInput.disabled = true);
+  }
+
+  private setupHandlers(): void {
+    this.changePanelHandler = this.changePanel.bind(this);
+    this.updateHandler = this.updatePanel.bind(this);
+    this.updateThumbHandler = this.updateThumb.bind(this);
+    this.updateThumbSecondHandler = this.updateThumbSecond.bind(this);
+  }
+
+  private enable(): void {
+    this.panelItems.addEventListener("change", this.changePanelHandler);
+    this.presenter.eventDispatcher.add("updateAll", this.updateHandler);
+    this.presenter.eventDispatcher.add("thumbUpdate", this.updateThumbHandler);
+    this.presenter.eventDispatcher.add("thumbSecondUpdate", this.updateThumbSecondHandler);
+  }
+
+  private updateMin(): void {
+    const toFixedNum = Math.max(getNumbersAfterDot(this.data.max), getNumbersAfterDot(this.data.step));
+    const multiplyToInt = 10**toFixedNum;
+    this.minInput.value = this.data.min.toString();
+    this.minInput.max = ((this.data.max * multiplyToInt - this.data.step * multiplyToInt)/multiplyToInt).toString();
+  }
+
+  private updateMax(): void {
+    const toFixedNum = Math.max(getNumbersAfterDot(this.data.min), getNumbersAfterDot(this.data.step));
+    const multiplyToInt = 10**toFixedNum;
+    this.maxInput.value = this.data.max.toString();
+    this.maxInput.min = ((this.data.min * multiplyToInt + this.data.step * multiplyToInt) / multiplyToInt).toString();
+  }
+
+  private updateStep(): void {
+    const toFixedNum = Math.max(getNumbersAfterDot(this.data.min), getNumbersAfterDot(this.data.max));
+    const multiplyToInt = 10**toFixedNum;
+    this.stepInput.value = this.data.step.toString();
+    this.stepInput.min = "1";
+    this.stepInput.max = ((this.data.max * multiplyToInt - this.data.min * multiplyToInt) / multiplyToInt).toString();
+  }
+
+  private updateThumb(val?: string): void {
+    val
+      ? ((this.currentFirstInput.value = val),
+        (this.data.currentFirst = parseFloat(val)),
+        (this.currentSecondInput.min = val))
+      : (this.currentFirstInput.value = this.data.currentFirst.toString());
+    this.currentFirstInput.min = this.data.min.toString();
+    this.currentFirstInput.max = this.data.currentSecond.toString();
+    this.currentFirstInput.step = this.data.step.toString();
+  }
+
+  private updateThumbSecond(val?: string): void {
+    val
+      ? ((this.currentSecondInput.value = val.toString()),
+        (this.data.currentSecond = parseFloat(val)),
+        (this.currentFirstInput.max = val))
+      : (this.currentSecondInput.value = this.data.currentSecond.toString());
+    this.currentSecondInput.min = this.data.currentFirst.toString();
+    this.currentSecondInput.max = this.data.max.toString();
+    this.currentSecondInput.step = this.data.step.toString();
+    this.data.range
+      ? (this.currentSecondInput.disabled = false)
+      : ((this.currentSecondInput.disabled = true),
+        (this.currentSecondInput.value = this.data.max.toString()));
+  }
+
+  private modelData(type: string | null, name: string, data: TModelData): void {
+    type === "number"
+      ? setTimeout(() => {
+          if (typeof data === "string") {
+            this.presenter.modelData(name, parseFloat(data));
+          } else {
+            this.presenter.modelData(name, data);
+          }
+        })
+      : this.presenter.modelData(name, data);
   }
 
   private createPanelItem(params: TPanelParam): string {
