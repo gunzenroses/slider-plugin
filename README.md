@@ -114,7 +114,7 @@ Initiate slider in js-file with your parameters.
 |step|1|number|should be integer number > 0|
 |orientation|horizontal|string|*horizontal* or *vertical* orientation|
 |tooptip|true|boolean|*true* - enable tooltips with value of handle; *false* - hide tooltips;|
-|scale|{stepPerDiv: 10}|boolean / object|enable grid of values: *true* - sets automatic numbering of grid sections; *false* - hides grid; *{stepPerDiv: number}* - put number at every Nth division of grid|
+|scale|true|boolean: *true* - sets automatic numbering of grid sections; *false* - hides grid.|
 
 Extended API. If you want to see configuration panel next to your slider
 >`$(`selector`).sliderMaker({` *your parameters* `},`true`)`
