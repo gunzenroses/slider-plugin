@@ -80,7 +80,7 @@ export default class View implements IView {
     this.listenPointerDown();
   }
 
-  changeFirstThumb(num: number) {
+  changeFirstThumb(num: number): void {
     const newValue = valueToPercentsApplyStep(num, this.settings);
     this.thumb.style.zIndex = "4";
     this.thumbSecond.style.zIndex = "3";
@@ -89,7 +89,7 @@ export default class View implements IView {
     this.eventDispatcher.notify("changeView", this);
   }
 
-  changeSecondThumb(num: number) {
+  changeSecondThumb(num: number): void {
     const newValue = valueToPercentsApplyStep(num, this.settings);
     this.thumb.style.zIndex = "3";
     this.thumbSecond.style.zIndex = "4";
@@ -105,7 +105,7 @@ export default class View implements IView {
     this.settings = { ...settings, ifHorizontal, firstPosition, secondPosition };
   }
 
-  private createMetrics() {
+  private createMetrics(): void {
     this.containerSize = this.settings.ifHorizontal
       ? parseInt(getComputedStyle(this.sliderContainer).width.replace("px", ""))
       : parseInt(getComputedStyle(this.sliderContainer).height.replace("px", ""));
@@ -165,7 +165,7 @@ export default class View implements IView {
     }
   }
 
-  private countPercents() {
+  private countPercents(): {firstThumbPercent: number, secondThumbPercent: number} {
     const firstThumbPercent: number = findPosition(
       this.thumb,
       this.settings.ifHorizontal,
@@ -223,5 +223,3 @@ export default class View implements IView {
     this.tooltipSecond = new Tooltip(this, "tooltip_second").element;
   }
 }
-
-export { IView, View };
