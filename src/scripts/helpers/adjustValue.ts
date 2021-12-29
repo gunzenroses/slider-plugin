@@ -71,7 +71,7 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
     if (typeof value === "string") {
       return min; 
     } else {
-      return value < min
+      return value <= min
         ? min
         : value > currentSecond
         ? currentSecond
