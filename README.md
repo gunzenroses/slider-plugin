@@ -47,7 +47,7 @@ According interfaces we have the following streams:
 
 ### UML diagram
 
-[Link to uml diagram](https://github.com/gunzenroses/slider-plugin/blob/master/src/UML%20diagram.png)
+[Link to uml diagram](https://github.com/gunzenroses/slider-plugin/blob/master/src/UML.png)
 
 ### Used technologies and libraries
 
