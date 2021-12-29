@@ -17,7 +17,7 @@
         "alias": {
           "assets": "./src/assets/",
           "mvp": "./src/components/mvp/",
-          "Panel": "./src/components/panel/",
+          "Panel": "./src/components/Panel/",
           "Interfaces": "./src/components/interfaces/",
           "Helpers": "./src/scripts/helpers/",
           "Utils": "./src/scripts/utils/"
