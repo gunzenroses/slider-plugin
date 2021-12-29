@@ -35,21 +35,17 @@ function applyStepOnValue(value: number, data: TSettings): number {
   if (value - min <= 0) return min;
   if (value >= max) return max;
   const decimalValue = getNumbersAfterDot(value);
-  const magnifyValue =  (decimalValue === 0) 
-    ? 1
-    : 10 ** getNumbersAfterDot(value);
+  const magnifyValue = decimalValue === 0 ? 1 : 10 ** getNumbersAfterDot(value);
   const decimalMin = getNumbersAfterDot(min);
-  const magnifyMin = ( decimalMin === 0)
-    ? 1
-    : 10 ** getNumbersAfterDot(min);
+  const magnifyMin = decimalMin === 0 ? 1 : 10 ** getNumbersAfterDot(min);
   const decimalStep = getNumbersAfterDot(step);
-  const magnifyStep = ( decimalStep === 0)
-    ? 1
-    : 10 ** getNumbersAfterDot(step);
+  const magnifyStep = decimalStep === 0 ? 1 : 10 ** getNumbersAfterDot(step);
   const magnify = Math.max(magnifyMin, magnifyStep, magnifyValue);
   const numberOfSteps = Math.round(((value - min) * magnify) / (step * magnify));
   const decimalForSteps = Math.max(decimalStep, decimalMin);
-  const valueInSteps = parseFloat((((numberOfSteps * step * magnify) + (min * magnify)) / magnify).toFixed(decimalForSteps));
+  const valueInSteps = parseFloat(
+    ((numberOfSteps * step * magnify + min * magnify) / magnify).toFixed(decimalForSteps)
+  );
   const realValue = valueInSteps >= max ? max : valueInSteps;
   return realValue;
 }
@@ -65,9 +61,7 @@ function changeValueToPercents(value: number, data: TSettings): number {
 function changeStepToPercents(data: TSettings): number {
   const { max, min, step } = data;
   const newValue = (step / (max - min)) * 100;
-  const stepInPerc = (max > 500000)
-    ? newValue
-    : parseFloat(newValue.toFixed(2));
+  const stepInPerc = max > 500000 ? newValue : parseFloat(newValue.toFixed(2));
   return stepInPerc;
 }
 
@@ -96,7 +90,7 @@ function findPosition(
 // checked: value in %, others are actual
 function changePercentsToValue(valueInPercents: number, data: TSettings): number {
   const { max, min } = data;
-  const newValue = (Math.round((valueInPercents * (max - min)) / 100) + min);
+  const newValue = Math.round((valueInPercents * (max - min)) / 100) + min;
   return newValue;
 }
 
@@ -110,10 +104,10 @@ function getNumbersAfterDot(value: number): number {
   }
 }
 
-function getTextWidth(text: string, font: string) {
+function getTextWidth(text: string, font: string): number {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
-  if (context){
+  if (context) {
     context.font = font;
     const metrics = context.measureText(text);
     return metrics.width + 6;

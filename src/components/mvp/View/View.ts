@@ -1,4 +1,9 @@
-import { applyRestrictions, changeValueToPercents, findPosition, valueToPercentsApplyStep } from "Utils/common";
+import {
+  applyRestrictions,
+  changeValueToPercents,
+  findPosition,
+  valueToPercentsApplyStep,
+} from "Utils/common";
 import { TOrient, TSettings, TViewSettings } from "Utils/types";
 import IObservable from "Interfaces/IObservable";
 import IView from "Interfaces/IView";
@@ -53,7 +58,7 @@ export default class View implements IView {
   selectThumb(e: PointerEvent): void {
     if (e.target === this.thumb || e.target === this.thumbSecond) return;
     const pos = this.countPosition(e);
-    this.settings.range 
+    this.settings.range
       ? this.selectRangeTrue(pos)
       : this.eventDispatcher.notify("firstThumb", pos);
   }
@@ -69,11 +74,11 @@ export default class View implements IView {
     this.stopListenPointerDown();
     e.preventDefault();
     const pos = this.countPosition(e);
-    this.settings.range 
-      ? this.dragThumbRangeTrue(pos) 
+    this.settings.range
+      ? this.dragThumbRangeTrue(pos)
       : this.eventDispatcher.notify("firstThumb", pos);
   }
-  
+
   dragThumbEnd(): void {
     if (this.dragObj === null) return;
     this.stopListenMoveAndUp();
@@ -165,7 +170,7 @@ export default class View implements IView {
     }
   }
 
-  private countPercents(): {firstThumbPercent: number, secondThumbPercent: number} {
+  private countPercents(): { firstThumbPercent: number; secondThumbPercent: number } {
     const firstThumbPercent: number = findPosition(
       this.thumb,
       this.settings.ifHorizontal,
@@ -180,7 +185,7 @@ export default class View implements IView {
   }
 
   private findClosestThumb(newPlace: number, thumbPlace: number): void {
-    newPlace < thumbPlace 
+    newPlace < thumbPlace
       ? this.eventDispatcher.notify("firstThumb", newPlace)
       : this.eventDispatcher.notify("secondThumb", newPlace);
   }
@@ -198,10 +203,7 @@ export default class View implements IView {
   private dragThumbRangeTrue(newPos: number): void {
     if (this.dragObj === null) return;
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
-    if (
-      this.dragObj.classList === this.thumb.classList &&
-      newPos <= secondThumbPercent - 1
-    ) {
+    if (this.dragObj.classList === this.thumb.classList && newPos <= secondThumbPercent - 1) {
       this.eventDispatcher.notify("firstThumb", newPos);
     } else if (
       this.dragObj.classList === this.thumbSecond.classList &&

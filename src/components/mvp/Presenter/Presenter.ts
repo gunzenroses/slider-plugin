@@ -1,7 +1,5 @@
 import { TModelData, TSettings } from "Utils/types";
-import {
-  changePercentsToValue,
-} from "Utils/common";
+import { changePercentsToValue } from "Utils/common";
 import IModel from "Interfaces/IModel";
 import IObservable from "Interfaces/IObservable";
 import IPresenter from "Interfaces/IPresenter";
@@ -79,7 +77,7 @@ export default class Presenter implements IPresenter {
     this.eventDispatcher.notify("thumbUpdate", value);
     this.view.changeFirstThumb(value);
   }
-  
+
   private changeSecondThumb(value: number): void {
     this.eventDispatcher.notify("thumbSecondUpdate", value);
     this.view.changeSecondThumb(value);

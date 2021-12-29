@@ -20,10 +20,9 @@ export default class Tooltip {
     this.append();
     return this.element;
   }
- 
+
   private createChildren(that: IView): void {
-    this.parentNode =
-      this.className === "tooltip_first" ? that.thumb : that.thumbSecond;
+    this.parentNode = this.className === "tooltip_first" ? that.thumb : that.thumbSecond;
   }
 
   private setupHandlers(): void {
@@ -49,9 +48,7 @@ export default class Tooltip {
 
   private change(that: IView): void {
     const value =
-      this.className === "tooltip_first"
-        ? that.settings.currentFirst
-        : that.settings.currentSecond;
+      this.className === "tooltip_first" ? that.settings.currentFirst : that.settings.currentSecond;
     this.element.innerText = value.toString();
   }
 

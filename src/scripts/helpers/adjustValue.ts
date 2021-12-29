@@ -23,14 +23,13 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
       default:
         value = adjustAsIs(value);
         break;
-    } 
+    }
   } else {
     value = adjustAsIs(value);
   }
-  
 
   function adjustMin(value: number | string): number {
-    const minDiff = max - step
+    const minDiff = max - step;
     if (typeof value === "string") {
       return minDiff;
     } else {
@@ -42,8 +41,8 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
     const decimalMin = getNumbersAfterDot(min);
     const decimalStep = getNumbersAfterDot(step);
     const decimalCommon = Math.max(decimalMin, decimalStep);
-    const decimalMultiply = 10**decimalCommon
-    const lowestMax = (min * decimalMultiply + step * decimalMultiply)/decimalMultiply;
+    const decimalMultiply = 10 ** decimalCommon;
+    const lowestMax = (min * decimalMultiply + step * decimalMultiply) / decimalMultiply;
     if (typeof value === "string") {
       return lowestMax;
     } else {
@@ -53,7 +52,7 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
 
   function adjustStep(value: number | string): number {
     if (typeof value === "string") {
-      return 1; 
+      return 1;
     } else {
       return value <= 1
         ? 1
@@ -69,7 +68,7 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
 
   function adjustCurrentFirst(value: number | string): number {
     if (typeof value === "string") {
-      return min; 
+      return min;
     } else {
       return value <= min
         ? min
@@ -83,7 +82,7 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
 
   function adjustCurrentSecond(value: number | string): number {
     if (typeof value === "string") {
-      return max; 
+      return max;
     } else {
       return value < currentFirst
         ? currentFirst

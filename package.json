@@ -13,7 +13,6 @@
     "predeploy": "npm run build",
     "docs": "jsdoc2md --template ./README.hbs --files ./src/lib/*.ts --configure ./jsdoc2md.json > ./README.md",
     "eslint": "eslint --ext .ts,.tsx src --fix",
-    "test-eslint": "jest-runner-eslint",
     "debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand"
   },
   "repository": {

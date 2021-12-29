@@ -56,8 +56,16 @@ export default class Scale {
 
   private makeScaleRow(that: IView): void {
     this.scaleItemRow = [];
-    const toFixedDecimals = Math.max(getNumbersAfterDot(that.settings.min), getNumbersAfterDot(that.settings.step), getNumbersAfterDot(that.settings.max));
-    const widthOfScaleNumber = getTextWidth((that.settings.max - that.settings.step).toFixed(toFixedDecimals), "16px TimesNewRoman") + 5;
+    const toFixedDecimals = Math.max(
+      getNumbersAfterDot(that.settings.min),
+      getNumbersAfterDot(that.settings.step),
+      getNumbersAfterDot(that.settings.max)
+    );
+    const widthOfScaleNumber =
+      getTextWidth(
+        (that.settings.max - that.settings.step).toFixed(toFixedDecimals),
+        "16px TimesNewRoman"
+      ) + 5;
     const amountOfSteps = Math.round(this.scaleLength / widthOfScaleNumber);
     const weightOfStep = that.settings.max / amountOfSteps;
     if (weightOfStep > 1) {
@@ -112,8 +120,7 @@ export default class Scale {
       const numOfItems: number = Math.floor(50 / this.itemWidth);
 
       return item === that.settings.min ||
-        ((item - that.settings.min) % that.settings.step === 0 &&
-          index % numOfItems === 0 )
+        ((item - that.settings.min) % that.settings.step === 0 && index % numOfItems === 0)
         ? `<div class=${this.segmentClass}><span class="${this.spanClass}" ${special}>${item}</span></div>`
         : `<div class=${itemClass}></div>`;
     }

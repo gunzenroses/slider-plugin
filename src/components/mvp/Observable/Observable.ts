@@ -17,4 +17,4 @@ export default class Observable implements IObservable {
       this.listeners[eventKey].forEach((listener) => listener(args));
     }
   }
-};
+}

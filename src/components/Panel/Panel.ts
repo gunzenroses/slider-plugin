@@ -48,7 +48,7 @@ export default class ConfigurationPanel implements IPanel {
   }
 
   changePanel(e: Event): void {
-    if (e.target == null)  return;
+    if (e.target == null) return;
     const element = <HTMLInputElement>e.target;
     const name = element.getAttribute("name");
     const type = element.getAttribute("type");
@@ -159,25 +159,43 @@ export default class ConfigurationPanel implements IPanel {
   }
 
   private updateMin(): void {
-    const toFixedNum = Math.max(getNumbersAfterDot(this.data.max), getNumbersAfterDot(this.data.step));
-    const multiplyToInt = 10**toFixedNum;
+    const toFixedNum = Math.max(
+      getNumbersAfterDot(this.data.max),
+      getNumbersAfterDot(this.data.step)
+    );
+    const multiplyToInt = 10 ** toFixedNum;
     this.minInput.value = this.data.min.toString();
-    this.minInput.max = ((this.data.max * multiplyToInt - this.data.step * multiplyToInt)/multiplyToInt).toString();
+    this.minInput.max = (
+      (this.data.max * multiplyToInt - this.data.step * multiplyToInt) /
+      multiplyToInt
+    ).toString();
   }
 
   private updateMax(): void {
-    const toFixedNum = Math.max(getNumbersAfterDot(this.data.min), getNumbersAfterDot(this.data.step));
-    const multiplyToInt = 10**toFixedNum;
+    const toFixedNum = Math.max(
+      getNumbersAfterDot(this.data.min),
+      getNumbersAfterDot(this.data.step)
+    );
+    const multiplyToInt = 10 ** toFixedNum;
     this.maxInput.value = this.data.max.toString();
-    this.maxInput.min = ((this.data.min * multiplyToInt + this.data.step * multiplyToInt) / multiplyToInt).toString();
+    this.maxInput.min = (
+      (this.data.min * multiplyToInt + this.data.step * multiplyToInt) /
+      multiplyToInt
+    ).toString();
   }
 
   private updateStep(): void {
-    const toFixedNum = Math.max(getNumbersAfterDot(this.data.min), getNumbersAfterDot(this.data.max));
-    const multiplyToInt = 10**toFixedNum;
+    const toFixedNum = Math.max(
+      getNumbersAfterDot(this.data.min),
+      getNumbersAfterDot(this.data.max)
+    );
+    const multiplyToInt = 10 ** toFixedNum;
     this.stepInput.value = this.data.step.toString();
     this.stepInput.min = "1";
-    this.stepInput.max = ((this.data.max * multiplyToInt - this.data.min * multiplyToInt) / multiplyToInt).toString();
+    this.stepInput.max = (
+      (this.data.max * multiplyToInt - this.data.min * multiplyToInt) /
+      multiplyToInt
+    ).toString();
   }
 
   private updateThumb(val?: number): void {
@@ -239,9 +257,7 @@ export default class ConfigurationPanel implements IPanel {
   }
 
   private selectOptions(arg: string): string {
-    const orient = this.data.orientation === TOrient.HORIZONTAL
-      ? "horizontal"
-      : "vertical";
+    const orient = this.data.orientation === TOrient.HORIZONTAL ? "horizontal" : "vertical";
     return arg === orient
       ? `<option selected value="${arg}">${arg}</option> `
       : `<option value="${arg}">${arg}</option> `;

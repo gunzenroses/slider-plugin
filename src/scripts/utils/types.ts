@@ -3,15 +3,15 @@ import IView from "Interfaces/IView";
 const TOrient = {
   HORIZONTAL: "horizontal",
   VERTICAL: "vertical",
-}
+};
 
 type TListenerArg = any;
 
 type TListener = (arg1: TListenerArg) => void;
 
 type TListenerArr = {
-  [eventKey: string]: Array<TListener>
-}
+  [eventKey: string]: Array<TListener>;
+};
 
 type TModelData = boolean | number | string;
 
@@ -31,22 +31,22 @@ type TPanelParam = {
 };
 
 type TSettings = {
-  min: number,
-  max: number,
-  range: boolean,
-  currentFirst: number,
-  currentSecond: number,
-  step: number,
-  orientation: string,
-  tooltip: boolean,
-  scale: boolean,
-}
+  min: number;
+  max: number;
+  range: boolean;
+  currentFirst: number;
+  currentSecond: number;
+  step: number;
+  orientation: string;
+  tooltip: boolean;
+  scale: boolean;
+};
 
 type TViewSettings = TSettings & {
-  ifHorizontal: boolean,
-  firstPosition: number,
-  secondPosition: number,
-}
+  ifHorizontal: boolean;
+  firstPosition: number;
+  secondPosition: number;
+};
 
 type TScaleItem = {
   width: number;
