@@ -53,6 +53,9 @@ describe("class View", () => {
       }
       
       view.selectThumb(clickEvt as unknown as PointerEvent);
+      /* jest dom has restricted definition of PointerEvent,
+      so it's not possible to simulate is directly and 
+      workarounds are needed*/
 
       expect(spyOnClick).toHaveBeenCalledTimes(1);
     });
