@@ -19,8 +19,8 @@ export default class ConfigurationPanel implements IPanel {
 
   updateHandler!: { (data: TSettings): void };
   changePanelHandler!: { (evt: Event): void };
-  updateThumbHandler!: { (num: string): void };
-  updateThumbSecondHandler!: { (num: string): void };
+  updateThumbHandler!: { (num: number): void };
+  updateThumbSecondHandler!: { (num: number): void };
 
   constructor(container: HTMLElement, presenter: IPresenter) {
     this.panelContainer = afterCustomElement("div", "panel", container);
@@ -180,23 +180,19 @@ export default class ConfigurationPanel implements IPanel {
     this.stepInput.max = ((this.data.max * multiplyToInt - this.data.min * multiplyToInt) / multiplyToInt).toString();
   }
 
-  private updateThumb(val?: string): void {
-    val
-      ? ((this.currentFirstInput.value = val),
-        (this.data.currentFirst = parseFloat(val)),
-        (this.currentSecondInput.min = val))
-      : (this.currentFirstInput.value = this.data.currentFirst.toString());
+  private updateThumb(val?: number): void {
+    if (typeof val === "number") this.data.currentFirst = val;
+    this.currentFirstInput.value = this.data.currentFirst.toString();
     this.currentFirstInput.min = this.data.min.toString();
     this.currentFirstInput.max = this.data.currentSecond.toString();
     this.currentFirstInput.step = this.data.step.toString();
+    this.currentSecondInput.min = this.currentFirstInput.value;
   }
 
-  private updateThumbSecond(val?: string): void {
-    val
-      ? ((this.currentSecondInput.value = val.toString()),
-        (this.data.currentSecond = parseFloat(val)),
-        (this.currentFirstInput.max = val))
-      : (this.currentSecondInput.value = this.data.currentSecond.toString());
+  private updateThumbSecond(val?: number): void {
+    if (typeof val === "number") this.data.currentSecond = val;
+    this.currentFirstInput.max = this.data.currentSecond.toString();
+    this.currentSecondInput.value = this.data.currentSecond.toString();
     this.currentSecondInput.min = this.data.currentFirst.toString();
     this.currentSecondInput.max = this.data.max.toString();
     this.currentSecondInput.step = this.data.step.toString();
