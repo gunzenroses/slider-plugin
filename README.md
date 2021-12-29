@@ -109,11 +109,11 @@ Initiate slider in js-file with your parameters.
 |min|0|number|set min value|
 |max|100|number|set max value|
 |range|true|boolean|*true* - slider has two handles; *false* - slider has one handle|
-|currentFirst|33|number|starting position for left handle (horizontal slider)lowest handle (vertical slider) or for single handle|
+|currentFirst|33|number|starting position for left handle (horizontal slider) or lowest handle (vertical slider) or for single handle|
 |currentSecond|65|number|starting position for second handle|
 |step|1|number|should be integer number > 0|
 |orientation|horizontal|string|*horizontal* or *vertical* orientation|
-|tooptip|true|boolean|*true* - enable tooltips with value of handle; *false* - hide tooltips;|
+|tooptip|true|boolean|*true* - enable tooltips with value of handle; *false* - hide tooltips|
 |scale|true|boolean| *true* - sets automatic numbering of grid sections; *false* - hides grid.|
 
 Extended API. If you want to see configuration panel next to your slider
