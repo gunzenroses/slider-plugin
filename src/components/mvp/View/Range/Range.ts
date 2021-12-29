@@ -1,8 +1,9 @@
 import IView from "Interfaces/IView";
+import { TListener } from "Utils/types";
 
 export default class Range {
   element!: HTMLElement;
-  private changeHandler!: { (that: IView): void };
+  private changeHandler!: TListener;
 
   constructor(that: IView) {
     this.init(that);

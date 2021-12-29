@@ -7,7 +7,7 @@ const TOrient = {
 
 type TListenerArg = any;
 
-type TListener = (arg1: TListenerArg) => void;
+type TListener = ((arg1: IView) => void) | ((arg1: number) => void);
 
 type TListenerArr = {
   [eventKey: string]: Array<TListener>;
