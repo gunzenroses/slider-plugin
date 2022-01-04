@@ -5,7 +5,11 @@ const TOrient = {
   VERTICAL: "vertical",
 };
 
-type TListenerArg = IView | number | undefined;
+type TListenerArg = any;
+/*
+  TListenerArg may have a type "IView", "number", "Event", "TSettings", "undefined", etc.
+  which makes type cheking excessively complicated
+*/
 
 type TListener = (arg1: TListenerArg) => void;
 
