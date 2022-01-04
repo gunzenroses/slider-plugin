@@ -65,7 +65,7 @@ export default class View implements IView {
 
   dragThumbStart(e: PointerEvent): void {
     if (!e.target) return;
-    this.dragObj = e.target as HTMLElement; 
+    this.dragObj = e.target as HTMLElement;
     /* 'as' is used here 
     cause eventTarget does not ihherit properties from Element like "classList" 
     (not all targets are elements), 

@@ -6,10 +6,6 @@ const TOrient = {
 };
 
 type TListenerArg = any;
-/*
-  TListenerArg is optional and may have a type "IView", "number", "undefined"
-  which makes type cheking excessively complicated, especially in Observable.notify() function
-*/
 
 type TListener = (arg1: TListenerArg) => void;
 

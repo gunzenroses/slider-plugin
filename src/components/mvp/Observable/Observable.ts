@@ -14,7 +14,11 @@ export default class Observable implements IObservable {
 
   notify(eventKey: string, args?: TListenerArg): void {
     if (this.listeners[eventKey]) {
-      this.listeners[eventKey].forEach((listener) => listener(args));
+      if (typeof args === "undefined") {
+        this.listeners[eventKey].forEach((listener) => listener());
+      } else {
+        this.listeners[eventKey].forEach((listener) => listener(args));
+      }
     }
   }
 }
