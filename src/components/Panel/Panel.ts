@@ -17,10 +17,10 @@ export default class ConfigurationPanel implements IPanel {
   private currentFirstInput!: HTMLInputElement;
   private currentSecondInput!: HTMLInputElement;
 
-  updateHandler!: { (data: TSettings): void };
+  updateHandler!: { (): void };
   changePanelHandler!: { (evt: Event): void };
-  updateThumbHandler!: { (num: number): void };
-  updateThumbSecondHandler!: { (num: number): void };
+  updateThumbHandler!: { (num?: number): void };
+  updateThumbSecondHandler!: { (num?: number): void };
 
   constructor(container: HTMLElement, presenter: IPresenter) {
     this.panelContainer = afterCustomElement("div", "panel", container);
