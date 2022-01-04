@@ -14,7 +14,7 @@ export default class Presenter implements IPresenter {
   eventDispatcher: IObservable;
   data!: TSettings;
 
-  private updateDataHandler!: { (data: TSettings): void };
+  private updateDataHandler!: { (): void };
   private modelThumbFirstHandler!: (value: number) => void;
   private modelThumbSecondHandler!: (value: number) => void;
   private changeSecondThumbHandler!: (value: number) => void;
