@@ -11,7 +11,7 @@ type TListenerArg = any;
   which makes type cheking excessively complicated, especially in Observable.notify() function
 */
 
-type TListener = ((arg1: IView) => void) | ((arg1: number) => void) | (() => void);
+type TListener = (arg1: TListenerArg) => void;
 
 type TListenerArr = {
   [eventKey: string]: Array<TListener>;
