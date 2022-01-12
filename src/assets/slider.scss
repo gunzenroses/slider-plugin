@@ -1,3 +1,10 @@
+@import "../components/mvp/View/Tooltip/tooltip.scss";
+@import "../components/mvp/View/Range/range.scss";
+@import "../components/mvp/View/Thumb/thumb.scss";
+@import "../components/mvp/View/Track/track.scss";
+@import "../components/mvp/View/Scale/scale.scss";
+@import "../components/Panel/panel.scss";
+
 $height-basic: 6px;
 $half-thumb: 8px;
 $width-border: 1px;
@@ -11,7 +18,7 @@ $color-dark: #000;
     box-sizing: border-box;
 }
 
-.slider__content {
+.js-slider__content {
     position: relative;
     width: 100%;
     height: fit-content;
@@ -25,29 +32,22 @@ $color-dark: #000;
     touch-action: none;
 
     &_vertical {
-        @extend .slider__content;
+        @extend .js-slider__content;
         width: max-content;
         height: 100%;
         flex-direction: row;
     }
 }
 
-@import "../components/mvp/View/Tooltip/tooltip.scss";
-@import "../components/mvp/View/Range/range.scss";
-@import "../components/mvp/View/Thumb/thumb.scss";
-@import "../components/mvp/View/Track/track.scss";
-@import "../components/mvp/View/Scale/scale.scss";
-@import "../components/Panel/panel.scss";
-
-.disabled {
+.js-disabled {
     display: none;
 }
 
-.hidden {
+.js-hidden {
     visibility: hidden;
 }
 
-.error-message {
+.js-error-message {
     width: 100%;
     height: fit-content;
     background-color: $color-basic;
