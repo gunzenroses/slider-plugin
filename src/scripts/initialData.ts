@@ -12,4 +12,4 @@ const initialData: TSettings = {
   scale: true,
 };
 
-export { initialData };
+export default initialData;
