@@ -6,8 +6,7 @@ module.exports = {
   },
   collectCoverage: true,
   collectCoverageFrom: [
-    "**/mvp/**",
-    "**/Panel/**",
+    "**/components/**",
     "**/scripts/**",
     "!**/interfaces/**",
   ],
