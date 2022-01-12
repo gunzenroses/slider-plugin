@@ -2,12 +2,13 @@ import sliderMaker from "./slider-plugin";
 import "./index.css";
 
 window.onload = function () {
-  $("#horizontal").sliderMaker(
+  $("#default").sliderMaker(
     {
-      min: -10.3,
-      max: 20000,
-      currentSecond: 150,
-      step: 12,
+      min: 0,
+      max: 100,
+      currentFirst: 10,
+      currentSecond: 50,
+      step: 10,
       scale: true,
       range: true,
     },
@@ -27,7 +28,15 @@ window.onload = function () {
     true
   );
 
-  $("#default").sliderMaker({
-    range: false,
-  }, true);
+  $("#horizontal").sliderMaker(
+    {
+      min: -10.3,
+      max: 20000,
+      currentSecond: 150,
+      step: 12,
+      scale: true,
+      range: true,
+    },
+    true
+  );
 }
