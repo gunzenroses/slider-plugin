@@ -3,6 +3,7 @@ all
 .env
 node_modules
 build/
+/dist
 package-lock.json
 *.orig
 .vscode/
