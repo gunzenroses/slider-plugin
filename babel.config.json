@@ -15,13 +15,15 @@
       "module-resolver",
       { 
         "alias": {
-          "assets": "./src/assets/",
-          "mvp": "./src/components/mvp/",
+          "Model": "./src/components/Model/",
+          "View": "./src/components/View/",
+          "Presenter": "./src/components/Presenter/",
           "Panel": "./src/components/Panel/",
-          "Interfaces": "./src/components/interfaces/",
-          "Helpers": "./src/scripts/helpers/",
-          "Utils": "./src/scripts/utils/",
-          "Scripts": "./src/scripts/"
+          "assets": "./src/assets/",
+          "interfaces": "./src/components/interfaces/",
+          "helpers": "./src/scripts/helpers/",
+          "utils": "./src/scripts/utils/",
+          "scripts": "./src/scripts/"
         }
       }
     ]
