@@ -37,7 +37,7 @@ class Tooltip {
     const verticalClass = that.settings.ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
     const totalClass = that.settings.tooltip
       ? [this.className, verticalClass]
-      : [this.className, verticalClass, "disabled"];
+      : [this.className, verticalClass, "js-disabled"];
     this.element = document.createElement("span");
     totalClass.forEach((item) => {
       this.element.classList.add(item);

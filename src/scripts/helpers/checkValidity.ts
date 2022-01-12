@@ -9,7 +9,7 @@ export default class checkValidity {
   constructor(item: HTMLInputElement, parentContainer: HTMLElement) {
     this.item = item;
     this.parentContainer = parentContainer;
-    this.messageContainer = appendCustomElement("div", "error-message", this.parentContainer);
+    this.messageContainer = appendCustomElement("div", "js-error-message", this.parentContainer);
     this.invalidities = [];
     this.checkValidity();
     this.checkMessages();
@@ -59,7 +59,7 @@ export default class checkValidity {
 
   private placeValidityMessages(): void {
     const msg = this.getInvalidities();
-    this.messageContainer.classList.remove("hidden");
+    this.messageContainer.classList.remove("js-hidden");
     this.messageContainer.innerText = msg;
     setTimeout(() => {
       this.deleteValidityMessage();
@@ -69,6 +69,6 @@ export default class checkValidity {
   private deleteValidityMessage(): void {
     this.invalidities = [];
     this.messageContainer.innerText = "";
-    this.messageContainer.classList.add("hidden");
+    this.messageContainer.classList.add("js-hidden");
   }
 }

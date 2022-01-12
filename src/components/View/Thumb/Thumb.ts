@@ -33,7 +33,7 @@ class Thumb {
     const totalClass =
       this.className === "thumb_first" || that.settings.range
         ? ["slider__thumb", typeClass]
-        : ["slider__thumb", typeClass, "disabled"];
+        : ["slider__thumb", typeClass, "js-disabled"];
     totalClass.forEach((item: string) => {
       this.element.classList.add(item);
     });

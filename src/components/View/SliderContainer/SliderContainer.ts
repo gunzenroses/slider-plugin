@@ -9,8 +9,8 @@ class SliderContainer {
 
   private init(that: IView, container: HTMLElement): HTMLElement {
     const sliderContainerClass = that.settings.ifHorizontal
-      ? "slider__content"
-      : "slider__content_vertical";
+      ? "js-slider__content"
+      : "js-slider__content_vertical";
     this.element = document.createElement("div");
     this.element.classList.add(sliderContainerClass);
     container.append(this.element);

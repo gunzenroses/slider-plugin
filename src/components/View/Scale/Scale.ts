@@ -29,7 +29,7 @@ class Scale {
     const scaleClass: string = that.settings.ifHorizontal
       ? "slider__scale"
       : "slider__scale_vertical";
-    const totalClass = that.settings.scale ? [scaleClass] : [scaleClass, "disabled"];
+    const totalClass = that.settings.scale ? [scaleClass] : [scaleClass, "js-disabled"];
     this.element = document.createElement("div");
     this.element.dataset.name = "scale";
     totalClass.forEach((item) => {
