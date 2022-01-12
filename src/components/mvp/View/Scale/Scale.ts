@@ -61,12 +61,7 @@ export default class Scale {
       getNumbersAfterDot(that.settings.step),
       getNumbersAfterDot(that.settings.max)
     );
-    const widthOfScaleNumber =
-      getTextWidth(
-        (that.settings.max - that.settings.step).toFixed(toFixedDecimals),
-        "16px TimesNewRoman"
-      ) + 5;
-    const amountOfSteps = Math.round(this.scaleLength / widthOfScaleNumber);
+    const amountOfSteps = this.countAmountOfSteps(that, toFixedDecimals);
     const weightOfStep = that.settings.max / amountOfSteps;
     if (weightOfStep > 1) {
       let i = that.settings.min;
@@ -78,6 +73,29 @@ export default class Scale {
     } else {
       this.scaleItemRow.push(that.settings.min, that.settings.max);
     }
+  }
+
+  private countAmountOfSteps(that: IView, toFixedDecimals: number): number {
+    let maxSteps;
+    const widthOfScaleNumber =
+      getTextWidth(
+        (that.settings.max - that.settings.step).toFixed(toFixedDecimals),
+        "16px TimesNewRoman"
+      ) + 5;
+    const maxStepsToPlace = Math.round(this.scaleLength / widthOfScaleNumber);
+    const maxStepsCounted = Math.round((that.settings.max - that.settings.min) / that.settings.step);
+    if (maxStepsCounted < maxStepsToPlace){
+      maxSteps = maxStepsCounted;
+    } else {
+      const howManyTimesBigger = Math.ceil(maxStepsCounted / maxStepsToPlace);
+      if (howManyTimesBigger === 1) {
+        maxSteps = maxStepsToPlace;
+      } else {
+        const newStep = howManyTimesBigger * that.settings.step;
+        maxSteps = Math.floor((that.settings.max - that.settings.min) / newStep);
+      }
+    }
+    return maxSteps;
   }
 
   private makeScaleContainer(that: IView): void {
