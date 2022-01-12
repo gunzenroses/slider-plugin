@@ -1,6 +1,6 @@
-import IView from "Interfaces/IView";
+import IView from "interfaces/IView";
 
-export default class Tooltip {
+class Tooltip {
   element!: HTMLElement;
   private className: string;
   private parentNode!: HTMLElement;
@@ -56,3 +56,5 @@ export default class Tooltip {
     this.parentNode.append(this.element);
   }
 }
+
+export default Tooltip;

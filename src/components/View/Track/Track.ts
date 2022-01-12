@@ -1,6 +1,6 @@
-import IView from "Interfaces/IView";
+import IView from "interfaces/IView";
 
-export default class Track {
+class Track {
   element!: HTMLElement;
 
   constructor(that: IView) {
@@ -17,3 +17,5 @@ export default class Track {
     return this.element;
   }
 }
+
+export default Track;

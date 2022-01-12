@@ -1,6 +1,6 @@
-import IView from "Interfaces/IView";
+import IView from "interfaces/IView";
 
-export default class Thumb {
+class Thumb {
   element!: HTMLElement;
   private className: string;
   private changeHandler!: { (that: IView): void };
@@ -48,3 +48,5 @@ export default class Thumb {
       : (this.element.style.bottom = num + "%");
   }
 }
+
+export default Thumb;

@@ -3,11 +3,12 @@ import {
   changeValueToPercents,
   findPosition,
   valueToPercentsApplyStep,
-} from "Utils/common";
-import { TOrient, TSettings, TViewSettings } from "Utils/types";
-import IObservable from "Interfaces/IObservable";
-import IView from "Interfaces/IView";
-import Observable from "../Observable/Observable";
+} from "utils/common";
+import { TOrient, TSettings, TViewSettings } from "utils/types";
+import IObservable from "interfaces/IObservable";
+import IView from "interfaces/IView";
+import Observable from "Observable/Observable";
+
 import SliderContainer from "./SliderContainer/SliderContainer";
 import Range from "./Range/Range";
 import Track from "./Track/Track";
@@ -15,7 +16,7 @@ import Thumb from "./Thumb/Thumb";
 import Scale from "./Scale/Scale";
 import Tooltip from "./Tooltip/Tooltip";
 
-export default class View implements IView {
+class View implements IView {
   eventDispatcher: IObservable;
   private parentContainer: HTMLElement;
 
@@ -229,3 +230,5 @@ export default class View implements IView {
     this.tooltipSecond = new Tooltip(this, "tooltip_second").element;
   }
 }
+
+export default View;

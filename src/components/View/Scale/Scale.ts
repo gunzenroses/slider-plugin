@@ -1,8 +1,8 @@
-import { fromValueToPX, getNumbersAfterDot, getTextWidth } from "Utils/common";
-import { TScaleOptions } from "Utils/types";
-import IView from "Interfaces/IView";
+import { fromValueToPX, getNumbersAfterDot, getTextWidth } from "utils/common";
+import { TScaleOptions } from "utils/types";
+import IView from "interfaces/IView";
 
-export default class Scale {
+class Scale {
   element!: HTMLElement;
   private scaleItemRow!: number[];
   private tailContainer!: number;
@@ -151,3 +151,5 @@ export default class Scale {
     return scaleItemMax;
   }
 }
+
+export default Scale;

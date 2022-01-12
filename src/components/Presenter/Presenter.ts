@@ -1,14 +1,14 @@
-import { TModelData, TSettings } from "Utils/types";
-import { changePercentsToValue } from "Utils/common";
-import IModel from "Interfaces/IModel";
-import IObservable from "Interfaces/IObservable";
-import IPresenter from "Interfaces/IPresenter";
-import IView from "Interfaces/IView";
-import Model from "../Model/Model";
-import Observable from "../Observable/Observable";
-import View from "../View/View";
+import { TModelData, TSettings } from "utils/types";
+import { changePercentsToValue } from "utils/common";
+import IPresenter from "interfaces/IPresenter";
+import IObservable from "interfaces/IObservable";
+import IModel from "interfaces/IModel";
+import IView from "interfaces/IView";
+import Observable from "Observable/Observable";
+import Model from "Model/Model";
+import View from "View/View";
 
-export default class Presenter implements IPresenter {
+class Presenter implements IPresenter {
   model: IModel;
   view: IView;
   eventDispatcher: IObservable;
@@ -84,4 +84,4 @@ export default class Presenter implements IPresenter {
   }
 }
 
-export { IPresenter, Presenter };
+export default Presenter;

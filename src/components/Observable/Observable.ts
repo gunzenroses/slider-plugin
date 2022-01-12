@@ -1,7 +1,7 @@
-import { TListener, TListenerArg, TListenerArr } from "Utils/types";
-import IObservable from "Interfaces/IObservable";
+import { TListener, TListenerArg, TListenerArr } from "utils/types";
+import IObservable from "interfaces/IObservable";
 
-export default class Observable implements IObservable {
+class Observable implements IObservable {
   private listeners: TListenerArr = {};
 
   add(eventKey: string, listener: TListener): void {
@@ -18,3 +18,5 @@ export default class Observable implements IObservable {
     }
   }
 }
+
+export default Observable;

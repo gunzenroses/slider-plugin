@@ -1,11 +1,11 @@
-import { TModelData, TSettings } from "Utils/types";
-import { applyStepOnValue } from "Utils/common";
-import adjustValue from "Helpers/adjustValue";
-import Observable from "mvp/Observable/Observable";
-import IObservable from "Interfaces/IObservable";
-import IModel from "Interfaces/IModel";
+import { TModelData, TSettings } from "utils/types";
+import { applyStepOnValue } from "utils/common";
+import adjustValue from "helpers/adjustValue";
+import Observable from "Observable/Observable";
+import IObservable from "interfaces/IObservable";
+import IModel from "interfaces/IModel";
 
-export default class Model implements IModel {
+class Model implements IModel {
   eventDispatcher: IObservable;
   private data: TSettings;
 
@@ -48,3 +48,5 @@ export default class Model implements IModel {
       : this.eventDispatcher.notify("updateData");
   }
 }
+
+export default Model;

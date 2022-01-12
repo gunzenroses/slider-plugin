@@ -1,6 +1,6 @@
-import IView from "Interfaces/IView";
+import IView from "interfaces/IView";
 
-export default class SliderContainer {
+class SliderContainer {
   element!: HTMLElement;
 
   constructor(that: IView, container: HTMLElement) {
@@ -17,3 +17,5 @@ export default class SliderContainer {
     return this.element;
   }
 }
+
+export default SliderContainer;

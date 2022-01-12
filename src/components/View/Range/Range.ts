@@ -1,7 +1,7 @@
-import IView from "Interfaces/IView";
-import { TListener } from "Utils/types";
+import IView from "interfaces/IView";
+import { TListener } from "utils/types";
 
-export default class Range {
+class Range {
   element!: HTMLElement;
   private changeHandler!: TListener;
 
@@ -57,3 +57,5 @@ export default class Range {
       : (this.element.style.top = 100 - that.settings.secondPosition + "%");
   }
 }
+
+export default Range;
