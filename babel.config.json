@@ -20,7 +20,8 @@
           "Panel": "./src/components/Panel/",
           "Interfaces": "./src/components/interfaces/",
           "Helpers": "./src/scripts/helpers/",
-          "Utils": "./src/scripts/utils/"
+          "Utils": "./src/scripts/utils/",
+          "Scripts": "./src/scripts/"
         }
       }
     ]

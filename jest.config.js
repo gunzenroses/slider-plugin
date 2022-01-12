@@ -29,6 +29,7 @@ module.exports = {
     '^Interfaces/(.*)$': '<rootDir>/src/components/interfaces/$1',
     '^Helpers/(.*)$': '<rootDir>/src/scripts/helpers/$1',
     '^Utils/(.*)$': '<rootDir>/src/scripts/utils/$1',
+    '^Scripts/(.*)$': '<rootDir>/src/scripts/$1',
   },
   moduleDirectories: ['node_modules', 'src'],
 }

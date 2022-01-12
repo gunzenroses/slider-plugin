@@ -8,6 +8,7 @@
       "Interfaces/*": ["src/components/interfaces/*"],
       "Helpers/*": ["src/scripts/helpers/*"],
       "Utils/*": ["src/scripts/utils/*"],
+      "Scripts/*": ["src/scripts/*"],
     },
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     /* Basic Options */

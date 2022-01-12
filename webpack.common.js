@@ -19,6 +19,7 @@ module.exports = {
       Interfaces: path.resolve(__dirname, "src/components/interfaces/"),
       Helpers: path.resolve(__dirname, "src/scripts/helpers/"),
       Utils: path.resolve(__dirname, "src/scripts/utils/"),
+      Scripts: path.resolve(__dirname, "src/scripts/"),
     },
     extensions: [".ts", ".tsx", ".js", ".scss"],
     modules: ["node_modules", path.resolve(__dirname, "src")],
