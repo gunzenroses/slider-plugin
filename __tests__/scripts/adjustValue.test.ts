@@ -1,6 +1,6 @@
-import { initialData } from "src/components/initialData";
-import adjustValue from "Helpers/adjustValue";
-import { applyStepOnValue } from "Utils/common";
+import initialData from "scripts/initialData";
+import adjustValue from "helpers/adjustValue";
+import { applyStepOnValue } from "utils/common";
 
 const data = initialData;
 

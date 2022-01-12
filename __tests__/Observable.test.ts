@@ -1,4 +1,4 @@
-import Observable from "mvp/Observable/Observable";
+import Observable from "Observable/Observable";
 
 describe("Observable", () => {
   const eventDispatcher = new Observable();

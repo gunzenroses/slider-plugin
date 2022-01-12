@@ -1,10 +1,10 @@
-import checkValidity from "Helpers/checkValidity";
-import { TSettings, TPanelParam, TModelData, TOrient } from "Utils/types";
-import { afterCustomElement, appendCustomElement, getNumbersAfterDot } from "Utils/common";
-import IPresenter from "Interfaces/IPresenter";
-import IPanel from "Interfaces/IPanel";
+import checkValidity from "helpers/checkValidity";
+import { TSettings, TPanelParam, TModelData, TOrient } from "utils/types";
+import { afterCustomElement, appendCustomElement, getNumbersAfterDot } from "utils/common";
+import IPresenter from "interfaces/IPresenter";
+import IPanel from "interfaces/IPanel";
 
-export default class ConfigurationPanel implements IPanel {
+class ConfigurationPanel implements IPanel {
   presenter: IPresenter;
   panelContainer: HTMLElement;
   private panelItems: HTMLElement;
@@ -263,3 +263,5 @@ export default class ConfigurationPanel implements IPanel {
       : `<option value="${arg}">${arg}</option> `;
   }
 }
+
+export default ConfigurationPanel;

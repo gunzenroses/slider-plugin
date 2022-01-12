@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 
-import { initialData } from "src/components/initialData";
+import initialData from "scripts/initialData";
 import Panel from "Panel/Panel";
-import Presenter from "mvp/Presenter/Presenter";
+import Presenter from "Presenter/Presenter";
 
 const container = document.createElement("div");
 document.body.append(container);

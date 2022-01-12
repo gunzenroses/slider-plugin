@@ -1,7 +1,7 @@
-import { TSettings, TViewSettings } from "Utils/types";
+import { TSettings, TViewSettings } from "utils/types";
 import IObservable from "./IObservable";
 
-export default interface IView {
+interface IView {
   eventDispatcher: IObservable;
   settings: TViewSettings;
   sliderContainer: HTMLElement;
@@ -24,3 +24,5 @@ export default interface IView {
   changeFirstThumb(val: number): void;
   changeSecondThumb(val: number): void;
 }
+
+export default IView;

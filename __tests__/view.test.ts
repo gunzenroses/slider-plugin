@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 
-import { initialData } from "src/components/initialData";
-import IView from "src/components/interfaces/IView";
-import View from "mvp/View/View";
+import initialData from "scripts/initialData";
+import IView from "interfaces/IView";
+import View from "View/View";
 
 describe("class View", () => {
   const data = initialData;

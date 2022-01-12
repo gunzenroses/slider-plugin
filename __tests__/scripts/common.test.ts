@@ -1,11 +1,11 @@
-import { initialData } from "src/components/initialData";
+import initialData from "src/scripts/initialData";
 import {
   applyRestrictions,
   applyStepOnPercents,
   applyStepOnValue,
   findPosition,
   getNumbersAfterDot,
-} from "Utils/common";
+} from "utils/common";
 
 describe("applyStepOnPercents()", () => {
   test("casual case for 'value' and 'step'", () => {

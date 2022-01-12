@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 
-import { initialData } from "src/components/initialData";
-import { Presenter } from "mvp/Presenter/Presenter";
-import { TOrient } from "Utils/types";
+import initialData from "src/scripts/initialData";
+import Presenter from "Presenter/Presenter";
+import { TOrient } from "utils/types";
 
 const container = document.createElement("div");
 container.innerHTML = "div {width: 400px, height: 400px}";

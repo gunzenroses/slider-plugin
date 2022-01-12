@@ -1,7 +1,9 @@
-import { TListener, TListenerArg } from "Utils/types";
+import { TListener, TListenerArg } from "utils/types";
 
-export default interface IObservable {
+interface IObservable {
   add(eventKey: string, listener: TListener): void;
   notify(eventKey: string, args: TListenerArg): void;
   notify(eventKey: string): void;
 }
+
+export default IObservable;

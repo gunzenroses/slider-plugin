@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import checkValidity from "Helpers/checkValidity";
+import checkValidity from "helpers/checkValidity";
 
 const container = document.createElement("div");
 document.body.append(container);

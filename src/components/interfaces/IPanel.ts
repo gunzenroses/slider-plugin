@@ -1,7 +1,7 @@
-import { TSettings } from "Utils/types";
+import { TSettings } from "utils/types";
 import IPresenter from "./IPresenter";
 
-export default interface IPanel {
+interface IPanel {
   presenter: IPresenter;
   panelContainer: HTMLElement;
   data: TSettings;
@@ -11,3 +11,5 @@ export default interface IPanel {
   changePanel(e: Event): void;
   updatePanel(): void;
 }
+
+export default IPanel;

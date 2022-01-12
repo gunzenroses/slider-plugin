@@ -2,11 +2,11 @@
  * @jest-environment jsdom
  */
 
-import { initialData } from "src/components/initialData";
-import IModel from "Interfaces/IModel";
-import Model from "mvp/Model/Model";
-import { TSettings } from "Utils/types";
-import adjustValue from "Helpers/adjustValue";
+import initialData from "src/scripts/initialData";
+import IModel from "interfaces/IModel";
+import Model from "Model/Model";
+import { TSettings } from "utils/types";
+import adjustValue from "helpers/adjustValue";
 
 describe("class Model", () => {
   let data: TSettings;

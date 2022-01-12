@@ -1,13 +1,13 @@
-import { TSettings } from "Utils/types";
-import IPresenter from "Interfaces/IPresenter";
-import IPanel from "Interfaces/IPanel";
-import Presenter from "mvp/Presenter/Presenter";
+import { TSettings } from "utils/types";
+import IPresenter from "interfaces/IPresenter";
+import IPanel from "interfaces/IPanel";
+import initialData from "scripts/initialData";
+import Presenter from "Presenter/Presenter";
 import Panel from "Panel/Panel";
-import { initialData } from "./initialData";
 
 import "assets/slider.scss";
 
-export default class SliderMaker {
+class SliderMaker {
   private presenter: IPresenter;
   private panel: IPanel | null;
 
@@ -18,3 +18,5 @@ export default class SliderMaker {
     return this;
   }
 }
+
+export default SliderMaker;
