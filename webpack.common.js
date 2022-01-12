@@ -17,6 +17,7 @@ module.exports = {
       View: path.resolve(__dirname, "src/components/View"),
       Presenter: path.resolve(__dirname, "src/components/Presenter"),
       Panel: path.resolve(__dirname, "src/components/Panel/"),
+      Observable: path.resolve(__dirname, "src/components/Observable/"),
       assets: path.resolve(__dirname, "src/assets/"),
       interfaces: path.resolve(__dirname, "src/components/interfaces/"),
       helpers: path.resolve(__dirname, "src/scripts/helpers/"),

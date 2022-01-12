@@ -6,6 +6,7 @@
       "View/*": ["src/components/View/*"],
       "Presenter/*": ["src/components/Presenter/*"],
       "Panel/*": ["src/components/Panel/*"],
+      "Observable/*": ["src/components/Observable/*"],
       "assets/*": ["src/assets/*"],
       "interfaces/*": ["src/components/interfaces/*"],
       "helpers/*": ["src/scripts/helpers/*"],

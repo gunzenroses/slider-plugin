@@ -27,6 +27,7 @@ module.exports = {
     '^View/(.*)$': '<rootDir>/src/components/View/$1',
     '^Presenter/(.*)$': '<rootDir>/src/components/Presenter/$1',
     '^Panel(.*)$': '<rootDir>/src/components/Panel/$1',
+    '^Observable(.*)$': '<rootDir>/src/components/Observable/$1',
     '^assets/(.*)$': '<rootDir>/src/assets/$1',
     '^interfaces/(.*)$': '<rootDir>/src/components/interfaces/$1',
     '^helpers/(.*)$': '<rootDir>/src/scripts/helpers/$1',
