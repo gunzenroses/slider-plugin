@@ -1,8 +1,8 @@
-import sliderMaker from "./slider-plugin";
-import "./index.css";
+import sliderMaker from './slider-plugin';
+import './index.css';
 
 window.onload = function () {
-  $("#default").sliderMaker(
+  $('#default').sliderMaker(
     {
       min: 0,
       max: 100,
@@ -15,8 +15,8 @@ window.onload = function () {
     true
   );
 
-  $("#vertical").sliderMaker({
-    orientation: "vertical",
+  $('#vertical').sliderMaker({
+    orientation: 'vertical',
     step: 6,
     max: 140,
     scale: {
@@ -28,7 +28,7 @@ window.onload = function () {
     true
   );
 
-  $("#horizontal").sliderMaker(
+  $('#horizontal').sliderMaker(
     {
       min: -10.3,
       max: 20000,
