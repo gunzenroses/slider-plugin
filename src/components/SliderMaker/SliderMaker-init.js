@@ -1,4 +1,4 @@
-import SliderMaker from './components/sliderMaker.ts';
+import SliderMaker from './SliderMaker.ts';
 
 (function($){
   $.fn.sliderMaker = function (options, panel) {
