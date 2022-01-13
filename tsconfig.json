@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "SliderMaker/*": ["src/components/SliderMaker/*"],
       "Model/*": ["src/components/Model/*"],
       "View/*": ["src/components/View/*"],
       "Presenter/*": ["src/components/Presenter/*"],

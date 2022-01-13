@@ -15,6 +15,7 @@
       "module-resolver",
       { 
         "alias": {
+          "SliderMaker": "./src/components/SliderMaker/",
           "Model": "./src/components/Model/",
           "View": "./src/components/View/",
           "Presenter": "./src/components/Presenter/",

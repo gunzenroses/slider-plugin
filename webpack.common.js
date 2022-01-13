@@ -13,6 +13,7 @@ module.exports = {
   },
   resolve: {
     alias: {
+      SliderMaker: path.resolve(__dirname, "src/components/SliderMaker"),
       Model: path.resolve(__dirname, "src/components/Model"),
       View: path.resolve(__dirname, "src/components/View"),
       Presenter: path.resolve(__dirname, "src/components/Presenter"),

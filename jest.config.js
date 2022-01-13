@@ -22,6 +22,7 @@ module.exports = {
   modulePaths: ['.'],
   rootDir: '.',
   moduleNameMapper: {
+    '^SliderMaker/(.*)$': '<rootDir>/src/components/SliderMaker/$1',
     '^Model/(.*)$': '<rootDir>/src/components/Model/$1',
     '^View/(.*)$': '<rootDir>/src/components/View/$1',
     '^Presenter/(.*)$': '<rootDir>/src/components/Presenter/$1',

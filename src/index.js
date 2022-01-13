@@ -1,4 +1,4 @@
-import './SliderMaker-init';
+import 'SliderMaker/SliderMaker-init';
 import './index.css';
 
 window.onload = function () {
