@@ -1,23 +1,23 @@
-import { TModelData, TSettings } from "utils/types";
-import { applyStepOnValue, getNumbersAfterDot } from "utils/common";
+import { TModelData, TSettings } from 'utils/types';
+import { applyStepOnValue, getNumbersAfterDot } from 'utils/common';
 
 export default function adjustValue(name: string, value: TModelData, data: TSettings): TModelData {
   const { max, min, step, currentFirst, currentSecond }: TSettings = data;
-  if (typeof value === "string" || typeof value === "number") {
+  if (typeof value === 'string' || typeof value === 'number') {
     switch (name) {
-      case "step":
+      case 'step':
         value = adjustStep(value);
         break;
-      case "min":
+      case 'min':
         value = adjustMin(value);
         break;
-      case "max":
+      case 'max':
         value = adjustMax(value);
         break;
-      case "currentFirst":
+      case 'currentFirst':
         value = adjustCurrentFirst(value);
         break;
-      case "currentSecond":
+      case 'currentSecond':
         value = adjustCurrentSecond(value);
         break;
       default:
@@ -30,7 +30,7 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
 
   function adjustMin(value: number | string): number {
     const minDiff = max - step;
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       return minDiff;
     } else {
       return value <= minDiff ? value : max - step;
@@ -43,7 +43,7 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
     const decimalCommon = Math.max(decimalMin, decimalStep);
     const decimalMultiply = 10 ** decimalCommon;
     const lowestMax = (min * decimalMultiply + step * decimalMultiply) / decimalMultiply;
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       return lowestMax;
     } else {
       return value >= lowestMax ? value : lowestMax;
@@ -51,7 +51,7 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
   }
 
   function adjustStep(value: number | string): number {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       return 1;
     } else {
       return value <= 1
@@ -67,7 +67,7 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
   }
 
   function adjustCurrentFirst(value: number | string): number {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       return min;
     } else {
       return value <= min
@@ -81,7 +81,7 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
   }
 
   function adjustCurrentSecond(value: number | string): number {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       return max;
     } else {
       return value < currentFirst

@@ -1,13 +1,13 @@
-import IView from "interfaces/IView";
+import IView from 'interfaces/IView';
 
 const TOrient = {
-  HORIZONTAL: "horizontal",
-  VERTICAL: "vertical",
+  HORIZONTAL: 'horizontal',
+  VERTICAL: 'vertical',
 };
 
 type TListenerArg = any;
 /*
-  TListenerArg may have a type "IView", "number", "Event", "TSettings", "undefined", etc.
+  TListenerArg may have a type 'IView', 'number', 'Event', 'TSettings', 'undefined', etc.
   which makes type cheking excessively complicated
 */
 

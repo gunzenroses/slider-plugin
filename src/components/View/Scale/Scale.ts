@@ -83,8 +83,10 @@ class Scale {
         '16px TimesNewRoman'
       ) + 5;
     const maxStepsToPlace = Math.round(this.scaleLength / widthOfScaleNumber);
-    const maxStepsCounted = Math.round((that.settings.max - that.settings.min) / that.settings.step);
-    if (maxStepsCounted < maxStepsToPlace){
+    const maxStepsCounted = Math.round(
+      (that.settings.max - that.settings.min) / that.settings.step
+    );
+    if (maxStepsCounted < maxStepsToPlace) {
       maxSteps = maxStepsCounted;
     } else {
       const howManyTimesBigger = Math.ceil(maxStepsCounted / maxStepsToPlace);

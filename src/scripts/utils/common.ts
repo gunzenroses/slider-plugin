@@ -1,4 +1,4 @@
-import { TSettings } from "./types";
+import { TSettings } from './types';
 
 function appendCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement {
   const el = document.createElement(`${type}`);
@@ -79,11 +79,11 @@ function findPosition(
 ): number {
   const newPosition = ifHorizontal
     ? thisElement.style.left
-      ? parseInt(thisElement.style.left.replace("%", ""))
-      : (parseInt(getComputedStyle(thisElement).left.replace("px", "")) / containerSize) * 100
+      ? parseInt(thisElement.style.left.replace('%', ''))
+      : (parseInt(getComputedStyle(thisElement).left.replace('px', '')) / containerSize) * 100
     : thisElement.style.bottom
-    ? parseInt(thisElement.style.bottom.replace("%", ""))
-    : (parseInt(getComputedStyle(thisElement).bottom.replace("px", "")) / containerSize) * 100;
+    ? parseInt(thisElement.style.bottom.replace('%', ''))
+    : (parseInt(getComputedStyle(thisElement).bottom.replace('px', '')) / containerSize) * 100;
   return newPosition;
 }
 
@@ -95,8 +95,8 @@ function changePercentsToValue(valueInPercents: number, data: TSettings): number
 }
 
 function getNumbersAfterDot(value: number): number {
-  const hasTail = value.toString().includes(".");
-  const tail = value.toString().split(".").pop();
+  const hasTail = value.toString().includes('.');
+  const tail = value.toString().split('.').pop();
   if (hasTail && tail != null) {
     return tail.length;
   } else {
@@ -105,8 +105,8 @@ function getNumbersAfterDot(value: number): number {
 }
 
 function getTextWidth(text: string, font: string): number {
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
   if (context) {
     context.font = font;
     const metrics = context.measureText(text);

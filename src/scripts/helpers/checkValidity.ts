@@ -1,4 +1,4 @@
-import { appendCustomElement } from "utils/common";
+import { appendCustomElement } from 'utils/common';
 
 export default class checkValidity {
   private item: HTMLInputElement;
@@ -9,7 +9,7 @@ export default class checkValidity {
   constructor(item: HTMLInputElement, parentContainer: HTMLElement) {
     this.item = item;
     this.parentContainer = parentContainer;
-    this.messageContainer = appendCustomElement("div", "js-error-message", this.parentContainer);
+    this.messageContainer = appendCustomElement('div', 'js-error-message', this.parentContainer);
     this.invalidities = [];
     this.checkValidity();
     this.checkMessages();
@@ -18,26 +18,26 @@ export default class checkValidity {
   checkValidity(): void {
     const validity = this.item.validity;
     const value = this.item.value;
-    const name = this.item.getAttribute("name");
-    const min = this.item.getAttribute("min");
-    const max = this.item.getAttribute("max");
-    const step = this.item.getAttribute("step");
+    const name = this.item.getAttribute('name');
+    const min = this.item.getAttribute('min');
+    const max = this.item.getAttribute('max');
+    const step = this.item.getAttribute('step');
 
-    if (value === "") {
-      this.addInvalidity("Should be a number");
+    if (value === '') {
+      this.addInvalidity('Should be a number');
     }
 
     if (validity.rangeOverflow) {
-      this.addInvalidity("Number should be maximum " + max);
+      this.addInvalidity('Number should be maximum ' + max);
     }
 
     if (validity.rangeUnderflow) {
-      this.addInvalidity("Number should be minimum " + min);
+      this.addInvalidity('Number should be minimum ' + min);
     }
 
     if (validity.stepMismatch) {
-      if (name !== "from" && name !== "to") return;
-      if (min !== null && min !== "0") {
+      if (name !== 'from' && name !== 'to') return;
+      if (min !== null && min !== '0') {
         this.addInvalidity(`Number should be: ${min} + multiple of ${step}`);
       } else {
         this.addInvalidity(`Number should be multiple of ${step}`);
@@ -54,12 +54,12 @@ export default class checkValidity {
   }
 
   private getInvalidities(): string {
-    return this.invalidities.join(". \n");
+    return this.invalidities.join('. \n');
   }
 
   private placeValidityMessages(): void {
     const msg = this.getInvalidities();
-    this.messageContainer.classList.remove("js-hidden");
+    this.messageContainer.classList.remove('js-hidden');
     this.messageContainer.innerText = msg;
     setTimeout(() => {
       this.deleteValidityMessage();
@@ -68,7 +68,7 @@ export default class checkValidity {
 
   private deleteValidityMessage(): void {
     this.invalidities = [];
-    this.messageContainer.innerText = "";
-    this.messageContainer.classList.add("js-hidden");
+    this.messageContainer.innerText = '';
+    this.messageContainer.classList.add('js-hidden');
   }
 }
