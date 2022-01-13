@@ -6,7 +6,7 @@ const { merge } = require("webpack-merge");
 module.exports = merge(common, {
   mode: "production",
   entry: {
-    "slider-plugin": path.resolve(__dirname, "./src/slider-plugin.js"),
+    "slider-plugin": path.resolve(__dirname, "./src/components/SliderMaker/SliderMaker-init.js"),
   },
   output: {
     libraryTarget: 'umd',
