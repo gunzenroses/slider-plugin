@@ -149,13 +149,13 @@ class Scale {
       : 'scale__point_vertical';
     const special: string =
       item === this.maxItem && this.tailContainer < 30
-        ? `style= 'visibility: hidden;'`
+        ? `style='visibility: hidden;'`
         : '';
 
     if (this.itemWidth > 40) {
       return `
         <div class=${this.segmentClass}>
-          <span class='${this.spanClass} ${special}'>
+          <span class='${this.spanClass}' ${special}>
             ${item}
           </span>
         </div>`;
