@@ -1,6 +1,6 @@
 import { appendCustomElement } from 'utils/common';
 
-export default class checkValidity {
+class checkValidity {
   private item: HTMLInputElement;
   private messageContainer!: HTMLElement;
   private parentContainer: HTMLElement;
@@ -72,3 +72,5 @@ export default class checkValidity {
     this.messageContainer.classList.add('js-hidden');
   }
 }
+
+export default checkValidity;

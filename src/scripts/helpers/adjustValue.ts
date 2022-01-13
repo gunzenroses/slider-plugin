@@ -1,7 +1,7 @@
 import { TModelData, TSettings } from 'utils/types';
 import { applyStepOnValue, getNumbersAfterDot } from 'utils/common';
 
-export default function adjustValue(name: string, value: TModelData, data: TSettings): TModelData {
+function adjustValue(name: string, value: TModelData, data: TSettings): TModelData {
   const { max, min, step, currentFirst, currentSecond }: TSettings = data;
   if (typeof value === 'string' || typeof value === 'number') {
     switch (name) {
@@ -100,3 +100,5 @@ export default function adjustValue(name: string, value: TModelData, data: TSett
 
   return value;
 }
+
+export default adjustValue;
