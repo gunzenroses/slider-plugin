@@ -9,6 +9,7 @@ module.exports = {
     "**/components/**",
     "**/scripts/**",
     "!**/interfaces/**",
+    "!**/SliderMaker/**",
   ],
   //coverageReporters: ['text'],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
