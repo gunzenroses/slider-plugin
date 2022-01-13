@@ -64,14 +64,13 @@ class Scale {
       getNumbersAfterDot(that.settings.step),
       getNumbersAfterDot(that.settings.max)
     );
-    const amountOfSteps = this.countAmountOfSteps(that, toFixedDecimals);
-    const weightOfStep = that.settings.max / amountOfSteps;
-    if (weightOfStep > 1) {
+    const newStep = this.countAmountOfSteps(that, toFixedDecimals);
+    if (newStep > 1) {
       let i = that.settings.min;
       while (i < that.settings.max) {
         i = parseFloat(i.toFixed(toFixedDecimals));
         this.scaleItemRow.push(i);
-        i += weightOfStep;
+        i += newStep;
       }
     } else {
       this.scaleItemRow.push(that.settings.min, that.settings.max);
@@ -79,7 +78,6 @@ class Scale {
   }
 
   private countAmountOfSteps(that: IView, toFixedDecimals: number): number {
-    let maxSteps;
     const widthOfScaleNumber =
       getTextWidth(
         (that.settings.max - that.settings.step).toFixed(toFixedDecimals),
@@ -89,20 +87,12 @@ class Scale {
     const maxStepsCounted = Math.round(
       (that.settings.max - that.settings.min) / that.settings.step
     );
-    if (maxStepsCounted < maxStepsToPlace) {
-      maxSteps = maxStepsCounted;
-    } else {
-      const howManyTimesBigger = Math.ceil(maxStepsCounted / maxStepsToPlace);
-      if (howManyTimesBigger === 1) {
-        maxSteps = maxStepsToPlace;
-      } else {
-        const newStep = howManyTimesBigger * that.settings.step;
-        maxSteps = Math.floor(
-          (that.settings.max - that.settings.min) / newStep
-        );
-      }
-    }
-    return maxSteps;
+    const howManyTimesBigger = Math.ceil(maxStepsCounted / maxStepsToPlace);
+    const newStep = (maxStepsCounted > maxStepsToPlace) && (howManyTimesBigger > 1)
+      ? howManyTimesBigger * that.settings.step
+      : that.settings.step;
+    
+    return newStep;
   }
 
   private makeScaleContainer(that: IView): void {
@@ -151,27 +141,12 @@ class Scale {
       item === this.maxItem && this.tailContainer < 30
         ? `style='visibility: hidden;'`
         : '';
-
-    if (this.itemWidth > 40) {
-      return `
-        <div class=${this.segmentClass}>
-          <span class='${this.spanClass}' ${special}>
-            ${item}
-          </span>
-        </div>`;
-    } else {
-      const numOfItems: number = Math.floor(50 / this.itemWidth);
-
-      return item === that.settings.min ||
-        ((item - that.settings.min) % that.settings.step === 0 &&
-          index % numOfItems === 0)
-        ? `<div class=${this.segmentClass}>
-            <span class='${this.spanClass}' ${special}>
-              ${item}
-            </span>
-          </div>`
-        : `<div class=${itemClass}></div>`;
-    }
+    return `
+      <div class=${this.segmentClass}>
+        <span class='${this.spanClass}' ${special}>
+          ${item}
+        </span>
+      </div>`;
   }
 
   private makeMaxItem(that: IView): string {
