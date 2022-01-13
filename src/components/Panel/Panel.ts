@@ -130,14 +130,14 @@ class ConfigurationPanel implements IPanel {
   }
 
   private createChildren(): void {
-    this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name='min']');
-    this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name='max']');
-    this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name='step']');
+    this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
+    this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
+    this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
     this.currentFirstInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name='currentFirst']')
+      this.panelContainer.querySelector('input[name="currentFirst"]')
     );
     this.currentSecondInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name='currentSecond']')
+      this.panelContainer.querySelector('input[name="currentSecond"]')
     );
     this.data.range
       ? (this.currentSecondInput.disabled = false)
