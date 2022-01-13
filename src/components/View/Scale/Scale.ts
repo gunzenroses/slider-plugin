@@ -1,5 +1,4 @@
 import { fromValueToPX, getNumbersAfterDot, getTextWidth } from 'utils/common';
-import { TScaleOptions } from 'utils/types';
 import IView from 'interfaces/IView';
 
 class Scale {
@@ -45,8 +44,7 @@ class Scale {
     this.makeScaleRow(that);
     this.makeScaleContainer(that);
     this.makeElementClasses(that);
-    this.scaleItems.innerHTML =
-      this.makeScaleItems(that) + this.makeMaxItem(that);
+    this.scaleItems.innerHTML = this.makeScaleItems() + this.makeMaxItem(that);
     return this.element;
   }
 
@@ -88,10 +86,11 @@ class Scale {
       (that.settings.max - that.settings.min) / that.settings.step
     );
     const howManyTimesBigger = Math.ceil(maxStepsCounted / maxStepsToPlace);
-    const newStep = (maxStepsCounted > maxStepsToPlace) && (howManyTimesBigger > 1)
-      ? howManyTimesBigger * that.settings.step
-      : that.settings.step;
-    
+    const newStep =
+      maxStepsCounted > maxStepsToPlace && howManyTimesBigger > 1
+        ? howManyTimesBigger * that.settings.step
+        : that.settings.step;
+
     return newStep;
   }
 
@@ -123,20 +122,16 @@ class Scale {
       : 'scale__number_vertical';
   }
 
-  private makeScaleItems(that: IView): string {
+  private makeScaleItems(): string {
     this.itemWidth = Math.round(this.scaleLength / this.scaleItemRow.length);
     this.maxItem = this.scaleItemRow[this.scaleItemRow.length - 1];
 
     return this.scaleItemRow
-      .map((item, index) => this.createScaleItem({ item, index, that }))
+      .map((item) => this.createScaleItem(item))
       .join(' ');
   }
 
-  private createScaleItem(options: TScaleOptions): string {
-    const { item, index, that } = options;
-    const itemClass: string = that.settings.ifHorizontal
-      ? 'scale__point'
-      : 'scale__point_vertical';
+  private createScaleItem(item: number): string {
     const special: string =
       item === this.maxItem && this.tailContainer < 30
         ? `style='visibility: hidden;'`
