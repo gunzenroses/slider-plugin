@@ -1,3 +1,5 @@
+@import 'assets/styles/colors-and-sizes.scss';
+
 $width-tooltip: 3rem;
 $height-tooltip: 2rem;
 
@@ -17,9 +19,9 @@ $height-tooltip: 2rem;
 }
 
 .tooltip_horizontal {
-  transform: translate(-50%, -$height-tooltip);
+  transform: translate(calc(-50% + $height-basic), -$height-tooltip);
 }
 
 .tooltip_vertical {
-  transform: translate(-100%, -50%);
+  transform: translate(-100%, calc(-50% + $height-basic));
 }

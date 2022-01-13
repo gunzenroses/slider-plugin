@@ -5,7 +5,7 @@ import initialData from "scripts/initialData";
 import Presenter from "Presenter/Presenter";
 import Panel from "Panel/Panel";
 
-import "assets/slider.scss";
+import "assets/styles/slider";
 
 class SliderMaker {
   private presenter: IPresenter;
