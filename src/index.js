@@ -1,4 +1,4 @@
-import sliderMaker from './slider-plugin';
+import './SliderMaker-init';
 import './index.css';
 
 window.onload = function () {
