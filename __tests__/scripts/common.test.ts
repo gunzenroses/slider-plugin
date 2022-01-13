@@ -1,14 +1,14 @@
-import initialData from "src/scripts/initialData";
+import initialData from 'src/scripts/initialData';
 import {
   applyRestrictions,
   applyStepOnPercents,
   applyStepOnValue,
   findPosition,
   getNumbersAfterDot,
-} from "utils/common";
+} from 'utils/common';
 
-describe("applyStepOnPercents()", () => {
-  test("casual case for 'value' and 'step'", () => {
+describe('applyStepOnPercents()', () => {
+  test('casual case for "value" and "step"', () => {
     const val = 38;
     const step = 3;
 
@@ -18,7 +18,7 @@ describe("applyStepOnPercents()", () => {
     expect(num).toBe(0);
   });
 
-  test("case when 'value' = 100", () => {
+  test('case when "value" = 100', () => {
     const val = 100;
     const step = 3;
 
@@ -28,8 +28,8 @@ describe("applyStepOnPercents()", () => {
   });
 });
 
-describe("applyRestrictions", () => {
-  test("restrict all numbers between 0 and 100", () => {
+describe('applyRestrictions', () => {
+  test('restrict all numbers between 0 and 100', () => {
     const numArr = [102, 11, -2];
 
     const newArr = numArr.map((item) => applyRestrictions(item));
@@ -40,7 +40,7 @@ describe("applyRestrictions", () => {
   });
 });
 
-describe("applyStepOnValue", () => {
+describe('applyStepOnValue', () => {
   const data = {
     ...initialData,
     max: 122,
@@ -48,7 +48,7 @@ describe("applyStepOnValue", () => {
     step: 3,
   };
 
-  test("return 'min' when (value - min) <= 0", () => {
+  test('return "min" when (value - min) <= 0', () => {
     data.max = 100;
     const value = 6;
 
@@ -57,7 +57,7 @@ describe("applyStepOnValue", () => {
     expect(rtn).toBe(data.min);
   });
 
-  test("return 'max' when ('value' > 'max')", () => {
+  test('return "max" when ("value" > "max")', () => {
     const value = 130;
 
     const rtn = applyStepOnValue(value, data);
@@ -65,8 +65,8 @@ describe("applyStepOnValue", () => {
     expect(rtn).toBe(data.max);
   });
 
-  describe("when 'value' % 'step' != 0", () => {
-    test("return smaller closest stepMatching number", () => {
+  describe('when "value" % "step" != 0', () => {
+    test('return smaller closest stepMatching number', () => {
       const { min, step } = data;
       const value = 30;
       const less = Math.floor((value - min) / step);
@@ -77,7 +77,7 @@ describe("applyStepOnValue", () => {
       expect(rtn).toBe(exp);
     });
 
-    test("return closest bigger stepMatching number", () => {
+    test('return closest bigger stepMatching number', () => {
       const { min, step } = data;
       const value = 31;
       const less = Math.ceil((value - min) / step);
@@ -88,7 +88,7 @@ describe("applyStepOnValue", () => {
       expect(rtn).toBe(exp);
     });
 
-    test("return 'max' when closest stepMatching number is bigger than 'max'", () => {
+    test('return "max" when closest stepMatching number is bigger than "max"', () => {
       data.max = 31;
       const value = 31;
 
@@ -97,7 +97,7 @@ describe("applyStepOnValue", () => {
       expect(rtn).toBe(data.max);
     });
 
-    test("return 'max' when  closest stepMatching number is 'max'", () => {
+    test('return "max" when  closest stepMatching number is "max"', () => {
       data.step = 3;
       data.min = 1;
       data.max = 100;
@@ -110,37 +110,37 @@ describe("applyStepOnValue", () => {
   });
 });
 
-describe("findPosition()", () => {
-  const element = document.createElement("HTMLElements");
-  element.style.left = "100px";
-  element.style.right = "100px";
+describe('findPosition()', () => {
+  const element = document.createElement('HTMLElements');
+  element.style.left = '100px';
+  element.style.right = '100px';
 
-  const element2 = document.createElement("div");
+  const element2 = document.createElement('div');
 
   const container = 400;
 
-  describe("for horizontal slider", () => {
-    test("thumb element", () => {
+  describe('for horizontal slider', () => {
+    test('thumb element', () => {
       const pos = findPosition(element, true, container);
 
       expect(pos).toBeDefined();
     });
 
-    test("thumb element without style", () => {
+    test('thumb element without style', () => {
       const pos = findPosition(element2, true, container);
 
       expect(pos).toBeDefined();
     });
   });
 
-  describe("for vertical slider", () => {
-    test("thumb element", () => {
+  describe('for vertical slider', () => {
+    test('thumb element', () => {
       const pos = findPosition(element, false, container);
 
       expect(pos).toBeDefined();
     });
 
-    test("thumb element without style", () => {
+    test('thumb element without style', () => {
       const pos = findPosition(element2, false, container);
 
       expect(pos).toBeDefined();
@@ -148,14 +148,14 @@ describe("findPosition()", () => {
   });
 });
 
-describe("get amout of numbers after dot", () => {
-  test("should be zero for integer numbers", () => {
+describe('get amout of numbers after dot', () => {
+  test('should be zero for integer numbers', () => {
     const intNum = 8;
 
     expect(getNumbersAfterDot(intNum)).toBe(0);
   });
 
-  test("should be > 0 for float numbers", () => {
+  test('should be > 0 for float numbers', () => {
     const floatNum = 8.123;
 
     expect(getNumbersAfterDot(floatNum)).toBe(3);

@@ -2,18 +2,18 @@
  * @jest-environment jsdom
  */
 
-import initialData from "scripts/initialData";
-import IView from "interfaces/IView";
-import View from "View/View";
+import initialData from 'scripts/initialData';
+import IView from 'interfaces/IView';
+import View from 'View/View';
 
-describe("class View", () => {
+describe('class View', () => {
   const data = initialData;
-  const container = document.createElement("div");
+  const container = document.createElement('div');
   document.body.append(container);
   let view: IView;
 
   beforeEach(() => {
-    container.innerHTML = "";
+    container.innerHTML = '';
     view = new View(container);
     view.init(data);
     view.thumbWidth = 8;
@@ -21,8 +21,8 @@ describe("class View", () => {
     jest.restoreAllMocks();
   });
 
-  describe("method createSettings()", () => {
-    test("create settings for class functionality", () => {
+  describe('method createSettings()', () => {
+    test('create settings for class functionality', () => {
       expect(view.settings.ifHorizontal).toBeDefined();
       expect(view.settings.range).toBeDefined();
       expect(view.settings.tooltip).toBeDefined();
@@ -38,10 +38,10 @@ describe("class View", () => {
     });
   });
 
-  describe("method enable()", () => {
-    test("notify to change one of thumbs when sliderContainer is clicked", () => {
-      const spyOnClick = jest.spyOn(view.eventDispatcher, "notify");
-      const evt = new Event("pointerup", {
+  describe('method enable()', () => {
+    test('notify to change one of thumbs when sliderContainer is clicked', () => {
+      const spyOnClick = jest.spyOn(view.eventDispatcher, 'notify');
+      const evt = new Event('pointerup', {
         bubbles: true,
         cancelable: false, 
         composed: false
@@ -60,9 +60,9 @@ describe("class View", () => {
       expect(spyOnClick).toHaveBeenCalledTimes(1);
     });
 
-    test("should not notify when thumb or thumbSecond is clicked", () => {
-      const spyOnClick = jest.spyOn(view.eventDispatcher, "notify");
-      const evt = new Event("click", {
+    test('should not notify when thumb or thumbSecond is clicked', () => {
+      const spyOnClick = jest.spyOn(view.eventDispatcher, 'notify');
+      const evt = new Event('click', {
         bubbles: true
       });
 
@@ -72,10 +72,10 @@ describe("class View", () => {
       expect(spyOnClick).toHaveBeenCalledTimes(0);
     });
 
-    test("notify when thumbFirst is moved to a position smaller that thumbSecond", () => {
-      const spyOnDragMove = jest.spyOn(view.eventDispatcher, "notify");
+    test('notify when thumbFirst is moved to a position smaller that thumbSecond', () => {
+      const spyOnDragMove = jest.spyOn(view.eventDispatcher, 'notify');
       view.settings.range = true;
-      const pointDowm = new CustomEvent("poinerdown", {
+      const pointDowm = new CustomEvent('poinerdown', {
         bubbles: true,
         cancelable: false, 
         composed: false,
@@ -84,7 +84,7 @@ describe("class View", () => {
         target: view.thumb,
         preventDefault: jest.fn(),
       };
-      const pointMove = new Event("pointermove", {
+      const pointMove = new Event('pointermove', {
         bubbles: true,
         cancelable: false, 
         composed: false
@@ -102,11 +102,11 @@ describe("class View", () => {
       expect(spyOnDragMove).toHaveBeenCalledTimes(1);
     });
 
-    test("notify when thumbSecond moved to a positon bigger than thumbFirst", () => {
-      const spyOnDragMove = jest.spyOn(view.eventDispatcher, "notify");
+    test('notify when thumbSecond moved to a positon bigger than thumbFirst', () => {
+      const spyOnDragMove = jest.spyOn(view.eventDispatcher, 'notify');
       view.settings.range = true;
       
-      const pointDown = new CustomEvent("poinerdown", {
+      const pointDown = new CustomEvent('poinerdown', {
         bubbles: true,
         cancelable: false, 
         composed: false,
@@ -115,7 +115,7 @@ describe("class View", () => {
         target: view.thumbSecond,
         preventDefault: jest.fn(),
       };
-      const pointMove = new Event("pointermove", {
+      const pointMove = new Event('pointermove', {
         bubbles: true,
         cancelable: false, 
         composed: false
@@ -133,11 +133,11 @@ describe("class View", () => {
     });
   });
 
-  describe("method selectThumb()", () => {
-    test("should not notify subscribers if e.target is selectThumb or selectThumbSecond", () => {
-      const spyOnSm = jest.spyOn(view.eventDispatcher, "notify");
+  describe('method selectThumb()', () => {
+    test('should not notify subscribers if e.target is selectThumb or selectThumbSecond', () => {
+      const spyOnSm = jest.spyOn(view.eventDispatcher, 'notify');
 
-      const evt = new MouseEvent("pointerup", {
+      const evt = new MouseEvent('pointerup', {
         bubbles: true
       });
       view.thumb.dispatchEvent(evt);
@@ -146,47 +146,47 @@ describe("class View", () => {
     });
   });
 
-  describe("method dragThumbStart()", () => {
-    test("disable pointerdowm eventListener", () => {
+  describe('method dragThumbStart()', () => {
+    test('disable pointerdowm eventListener', () => {
       const newSet = {
         ...data,
         range: false,
       };
       view.init(newSet);
-      view.thumb.dispatchEvent(new Event("pointerdown"));
-      document.dispatchEvent(new Event("pointermove"));
-      const spyOnDragStart = jest.spyOn(view, "dragThumbStart");
+      view.thumb.dispatchEvent(new Event('pointerdown'));
+      document.dispatchEvent(new Event('pointermove'));
+      const spyOnDragStart = jest.spyOn(view, 'dragThumbStart');
 
-      view.thumb.dispatchEvent(new Event("pointerdowm"));
+      view.thumb.dispatchEvent(new Event('pointerdowm'));
 
       expect(spyOnDragStart).toHaveBeenCalledTimes(0);
     });
   });
 
-  describe("method dragThumbEnd()", () => {
-    test("when pointer is up should end listening to pointermove", () => {
-      const spyOnMoveListener = jest.spyOn(view.eventDispatcher, "notify");
+  describe('method dragThumbEnd()', () => {
+    test('when pointer is up should end listening to pointermove', () => {
+      const spyOnMoveListener = jest.spyOn(view.eventDispatcher, 'notify');
 
-      document.dispatchEvent(new Event("pointerup"));
+      document.dispatchEvent(new Event('pointerup'));
 
       expect(spyOnMoveListener).toBeCalledTimes(0);
     });
   });
 
-  describe("method stopListenDown()", () => {
-    test("do not listen to thumbdown events when thumbmove", () => {
-      const spyOnThumbDowm = jest.spyOn(view, "dragThumbStart");
+  describe('method stopListenDown()', () => {
+    test('do not listen to thumbdown events when thumbmove', () => {
+      const spyOnThumbDowm = jest.spyOn(view, 'dragThumbStart');
 
-      document.dispatchEvent(new Event("pointerdown"));
+      document.dispatchEvent(new Event('pointerdown'));
 
       expect(spyOnThumbDowm).toBeCalledTimes(0);
     });
   });
 
-  describe("method changeFirstThumb()", () => {
-    test("change data", () => {
+  describe('method changeFirstThumb()', () => {
+    test('change data', () => {
       const num = 18;
-      const spyOnChangeThumb = jest.spyOn(view.eventDispatcher, "notify");
+      const spyOnChangeThumb = jest.spyOn(view.eventDispatcher, 'notify');
       view.changeFirstThumb(num);
 
       expect(view.settings.currentFirst).toBe(num);
@@ -194,10 +194,10 @@ describe("class View", () => {
     });
   });
 
-  describe("method changeSecondThumb()", () => {
-    test("change data", () => {
+  describe('method changeSecondThumb()', () => {
+    test('change data', () => {
       const num = 18;
-      const spyOnChangeThumb = jest.spyOn(view.eventDispatcher, "notify");
+      const spyOnChangeThumb = jest.spyOn(view.eventDispatcher, 'notify');
       view.changeSecondThumb(num);
 
       expect(view.settings.currentSecond).toBe(num);
@@ -205,8 +205,8 @@ describe("class View", () => {
     });
   });
 
-  describe("method render()", () => {
-    test("init rendering view elements", () => {
+  describe('method render()', () => {
+    test('init rendering view elements', () => {
       expect(view.sliderContainer).toBeDefined();
       expect(view.track).toBeDefined();
       expect(view.range).toBeDefined();
@@ -217,7 +217,7 @@ describe("class View", () => {
       expect(view.tooltipSecond).toBeDefined();
     });
 
-    test("disable elements when !ifScale, !ifTooltip, !ifRange", () => {
+    test('disable elements when !ifScale, !ifTooltip, !ifRange', () => {
       const newData = {
         scale: false,
         tooltip: false,
@@ -227,8 +227,8 @@ describe("class View", () => {
 
       view.init(updatedData);
 
-      expect(view.scale.classList.contains("js-disabled")).toBe(true);
-      expect(view.tooltipFirst.classList.contains("js-disabled")).toBe(true);
+      expect(view.scale.classList.contains('js-disabled')).toBe(true);
+      expect(view.tooltipFirst.classList.contains('js-disabled')).toBe(true);
     });
   });
 });
