@@ -120,8 +120,8 @@ class Scale {
     this.scaleItems = document.createElement('div');
     this.scaleItems.classList.add(scaleItemClass);
     that.settings.ifHorizontal
-      ? (this.scaleItems.style.width = newContainerSize + 'px')
-      : (this.scaleItems.style.height = newContainerSize + 'px');
+      ? (this.scaleItems.style.width = `${newContainerSize}px`)
+      : (this.scaleItems.style.height = `${newContainerSize}px`);
   }
 
   private makeElementClasses(that: IView): void {

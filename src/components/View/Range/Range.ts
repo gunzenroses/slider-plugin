@@ -44,17 +44,17 @@ class Range {
   private changeFirst(that: IView): void {
     that.settings.range
       ? that.settings.ifHorizontal
-        ? (this.element.style.left = that.settings.firstPosition + '%')
-        : (this.element.style.bottom = that.settings.firstPosition + '%')
+        ? (this.element.style.left = `${that.settings.firstPosition}%`)
+        : (this.element.style.bottom = `${that.settings.firstPosition}%`)
       : that.settings.ifHorizontal
-      ? (this.element.style.right = 100 - that.settings.firstPosition + '%')
-      : (this.element.style.top = 100 - that.settings.firstPosition + '%');
+      ? (this.element.style.right = `${100 - that.settings.firstPosition}%`)
+      : (this.element.style.top = `${100 - that.settings.firstPosition}%`);
   }
 
   private changeSecond(that: IView): void {
     that.settings.ifHorizontal
-      ? (this.element.style.right = 100 - that.settings.secondPosition + '%')
-      : (this.element.style.top = 100 - that.settings.secondPosition + '%');
+      ? (this.element.style.right = `${100 - that.settings.secondPosition}%`)
+      : (this.element.style.top = `${100 - that.settings.secondPosition}%`);
   }
 }
 

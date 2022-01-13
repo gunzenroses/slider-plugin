@@ -32,11 +32,11 @@ class checkValidity {
     }
 
     if (validity.rangeOverflow) {
-      this.addInvalidity('Number should be maximum ' + max);
+      this.addInvalidity(`Number should be maximum ${max}`);
     }
 
     if (validity.rangeUnderflow) {
-      this.addInvalidity('Number should be minimum ' + min);
+      this.addInvalidity(`Number should be minimum ${min}`);
     }
 
     if (validity.stepMismatch) {
