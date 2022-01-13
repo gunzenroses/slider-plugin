@@ -54,7 +54,10 @@ class Presenter implements IPresenter {
     this.view.eventDispatcher.add('firstThumb', this.modelThumbFirstHandler);
     this.view.eventDispatcher.add('secondThumb', this.modelThumbSecondHandler);
     this.model.eventDispatcher.add('thumbUpdate', this.changeFirstThumbHandler);
-    this.model.eventDispatcher.add('thumbSecondUpdate', this.changeSecondThumbHandler);
+    this.model.eventDispatcher.add(
+      'thumbSecondUpdate',
+      this.changeSecondThumbHandler
+    );
     this.model.eventDispatcher.add('updateData', this.updateDataHandler);
   }
 

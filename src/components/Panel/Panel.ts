@@ -1,6 +1,10 @@
 import checkValidity from 'helpers/checkValidity';
 import { TSettings, TPanelParam, TModelData, TOrient } from 'utils/types';
-import { afterCustomElement, appendCustomElement, getNumbersAfterDot } from 'utils/common';
+import {
+  afterCustomElement,
+  appendCustomElement,
+  getNumbersAfterDot,
+} from 'utils/common';
 import IPresenter from 'interfaces/IPresenter';
 import IPanel from 'interfaces/IPanel';
 
@@ -24,7 +28,11 @@ class ConfigurationPanel implements IPanel {
 
   constructor(container: HTMLElement, presenter: IPresenter) {
     this.panelContainer = afterCustomElement('div', 'panel', container);
-    this.panelItems = appendCustomElement('div', 'panel__items', this.panelContainer);
+    this.panelItems = appendCustomElement(
+      'div',
+      'panel__items',
+      this.panelContainer
+    );
     this.presenter = presenter;
     this.init();
     this.updatePanel();
@@ -130,9 +138,15 @@ class ConfigurationPanel implements IPanel {
   }
 
   private createChildren(): void {
-    this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
-    this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
-    this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
+    this.minInput = <HTMLInputElement>(
+      this.panelContainer.querySelector('input[name="min"]')
+    );
+    this.maxInput = <HTMLInputElement>(
+      this.panelContainer.querySelector('input[name="max"]')
+    );
+    this.stepInput = <HTMLInputElement>(
+      this.panelContainer.querySelector('input[name="step"]')
+    );
     this.currentFirstInput = <HTMLInputElement>(
       this.panelContainer.querySelector('input[name="currentFirst"]')
     );
@@ -155,7 +169,10 @@ class ConfigurationPanel implements IPanel {
     this.panelItems.addEventListener('change', this.changePanelHandler);
     this.presenter.eventDispatcher.add('updateAll', this.updateHandler);
     this.presenter.eventDispatcher.add('thumbUpdate', this.updateThumbHandler);
-    this.presenter.eventDispatcher.add('thumbSecondUpdate', this.updateThumbSecondHandler);
+    this.presenter.eventDispatcher.add(
+      'thumbSecondUpdate',
+      this.updateThumbSecondHandler
+    );
   }
 
   private updateMin(): void {
@@ -246,9 +263,11 @@ class ConfigurationPanel implements IPanel {
   private panelItemInput(params: TPanelParam): string {
     const options = params.options ? params.options : [];
     return params.type === 'number'
-      ? `<input class='panel__input' name= ${params.name} type= ${params.type} value= ${params.value} required/>`
+      ? `<input class='panel__input' name= ${params.name} 
+          type= ${params.type} value= ${params.value} required/>`
       : params.type === 'checkbox'
-      ? `<input class='panel__input' name= ${params.name} type= ${params.type} ${params.value}/>`
+      ? `<input class='panel__input' name= ${params.name} 
+          type= ${params.type} ${params.value}/>`
       : params.type === 'select'
       ? `<${params.type} class='panel__input' name= ${params.name}> 
             ${options.map((el: string) => this.selectOptions(el)).join('')} 
@@ -257,7 +276,8 @@ class ConfigurationPanel implements IPanel {
   }
 
   private selectOptions(arg: string): string {
-    const orient = this.data.orientation === TOrient.HORIZONTAL ? 'horizontal' : 'vertical';
+    const orient =
+      this.data.orientation === TOrient.HORIZONTAL ? 'horizontal' : 'vertical';
     return arg === orient
       ? `<option selected value='${arg}'>${arg}</option> `
       : `<option value='${arg}'>${arg}</option> `;

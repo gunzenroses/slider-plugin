@@ -1,7 +1,11 @@
 import { TModelData, TSettings } from 'utils/types';
 import { applyStepOnValue, getNumbersAfterDot } from 'utils/common';
 
-function adjustValue(name: string, value: TModelData, data: TSettings): TModelData {
+function adjustValue(
+  name: string,
+  value: TModelData,
+  data: TSettings
+): TModelData {
   const { max, min, step, currentFirst, currentSecond }: TSettings = data;
   if (typeof value === 'string' || typeof value === 'number') {
     switch (name) {
@@ -42,7 +46,8 @@ function adjustValue(name: string, value: TModelData, data: TSettings): TModelDa
     const decimalStep = getNumbersAfterDot(step);
     const decimalCommon = Math.max(decimalMin, decimalStep);
     const decimalMultiply = 10 ** decimalCommon;
-    const lowestMax = (min * decimalMultiply + step * decimalMultiply) / decimalMultiply;
+    const lowestMax =
+      (min * decimalMultiply + step * decimalMultiply) / decimalMultiply;
     if (typeof value === 'string') {
       return lowestMax;
     } else {

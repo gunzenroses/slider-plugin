@@ -22,12 +22,16 @@
         "fsd"
     ],
     "rules": {
+        "max-len": ["error", {
+            "tabWidth": 2 
+        }],
         "@typescript-eslint/ban-ts-comment": "off",
         "prettier/prettier": [
             "error", 
             { 
                 "endOfLine": "auto",
-                "singleQuote": true
+                "singleQuote": true,
+                "printWidth": 80
             }
         ]
     },

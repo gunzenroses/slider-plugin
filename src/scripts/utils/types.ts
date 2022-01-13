@@ -7,7 +7,8 @@ const TOrient = {
 
 type TListenerArg = any;
 /*
-  TListenerArg may have a type 'IView', 'number', 'Event', 'TSettings', 'undefined', etc.
+  TListenerArg may have a type:
+    'IView', 'number', 'Event', 'TSettings', 'undefined', etc.
   which makes type cheking excessively complicated
 */
 

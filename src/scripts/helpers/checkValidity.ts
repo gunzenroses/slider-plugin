@@ -9,7 +9,11 @@ class checkValidity {
   constructor(item: HTMLInputElement, parentContainer: HTMLElement) {
     this.item = item;
     this.parentContainer = parentContainer;
-    this.messageContainer = appendCustomElement('div', 'js-error-message', this.parentContainer);
+    this.messageContainer = appendCustomElement(
+      'div',
+      'js-error-message',
+      this.parentContainer
+    );
     this.invalidities = [];
     this.checkValidity();
     this.checkMessages();

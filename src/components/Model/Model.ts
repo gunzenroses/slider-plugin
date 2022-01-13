@@ -34,7 +34,10 @@ class Model implements IModel {
   }
 
   private updateCurrentsWithStep(): void {
-    this.data.currentFirst = applyStepOnValue(this.data.currentFirst, this.data);
+    this.data.currentFirst = applyStepOnValue(
+      this.data.currentFirst,
+      this.data
+    );
     this.data.currentSecond = this.data.range
       ? applyStepOnValue(this.data.currentSecond, this.data)
       : this.data.max;
@@ -44,7 +47,10 @@ class Model implements IModel {
     name === 'currentFirst'
       ? this.eventDispatcher.notify('thumbUpdate', this.data.currentFirst)
       : name === 'currentSecond'
-      ? this.eventDispatcher.notify('thumbSecondUpdate', this.data.currentSecond)
+      ? this.eventDispatcher.notify(
+          'thumbSecondUpdate',
+          this.data.currentSecond
+        )
       : this.eventDispatcher.notify('updateData');
   }
 }

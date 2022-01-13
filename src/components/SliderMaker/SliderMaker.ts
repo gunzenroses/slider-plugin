@@ -11,10 +11,16 @@ class SliderMaker {
   private presenter: IPresenter;
   private panel: IPanel | null;
 
-  constructor(container: HTMLElement, options: TSettings, configurationPanel?: boolean) {
+  constructor(
+    container: HTMLElement,
+    options: TSettings,
+    configurationPanel?: boolean
+  ) {
     const data = { ...initialData, ...options };
     this.presenter = new Presenter(container, data);
-    this.panel = configurationPanel ? new Panel(container, this.presenter) : null;
+    this.panel = configurationPanel
+      ? new Panel(container, this.presenter)
+      : null;
     return this;
   }
 }

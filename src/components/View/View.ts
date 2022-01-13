@@ -110,16 +110,31 @@ class View implements IView {
 
   private createSettings(settings: TSettings): void {
     const ifHorizontal = settings.orientation === TOrient.HORIZONTAL;
-    const firstPosition = changeValueToPercents(settings.currentFirst, settings);
-    const secondPosition = changeValueToPercents(settings.currentSecond, settings);
-    this.settings = { ...settings, ifHorizontal, firstPosition, secondPosition };
+    const firstPosition = changeValueToPercents(
+      settings.currentFirst,
+      settings
+    );
+    const secondPosition = changeValueToPercents(
+      settings.currentSecond,
+      settings
+    );
+    this.settings = {
+      ...settings,
+      ifHorizontal,
+      firstPosition,
+      secondPosition,
+    };
   }
 
   private createMetrics(): void {
     this.containerSize = this.settings.ifHorizontal
       ? parseInt(getComputedStyle(this.sliderContainer).width.replace('px', ''))
-      : parseInt(getComputedStyle(this.sliderContainer).height.replace('px', ''));
-    this.thumbWidth = parseInt(getComputedStyle(this.thumb).width.replace('px', ''));
+      : parseInt(
+          getComputedStyle(this.sliderContainer).height.replace('px', '')
+        );
+    this.thumbWidth = parseInt(
+      getComputedStyle(this.thumb).width.replace('px', '')
+    );
   }
 
   private setupHandlers(): void {
@@ -141,14 +156,20 @@ class View implements IView {
   private stopListenPointerDown(): void {
     if (this.settings.range === true) {
       this.thumb.removeEventListener('pointerdown', this.dragThumbHandler);
-      this.thumbSecond.removeEventListener('pointerdown', this.dragThumbHandler);
+      this.thumbSecond.removeEventListener(
+        'pointerdown',
+        this.dragThumbHandler
+      );
     } else {
       this.thumb.removeEventListener('pointerdown', this.dragThumbHandler);
     }
   }
 
   private listenMoveAndUp(): void {
-    this.sliderContainer.removeEventListener('pointerup', this.selectThumbHandler);
+    this.sliderContainer.removeEventListener(
+      'pointerup',
+      this.selectThumbHandler
+    );
     document.addEventListener('pointermove', this.moveThumbHandler);
     document.addEventListener('pointerup', this.dropThumbHandler);
   }
@@ -175,7 +196,10 @@ class View implements IView {
     }
   }
 
-  private countPercents(): { firstThumbPercent: number; secondThumbPercent: number } {
+  private countPercents(): {
+    firstThumbPercent: number;
+    secondThumbPercent: number;
+  } {
     const firstThumbPercent: number = findPosition(
       this.thumb,
       this.settings.ifHorizontal,
@@ -197,7 +221,9 @@ class View implements IView {
 
   private countPosition(e: PointerEvent): number {
     const newVal: number = this.settings.ifHorizontal
-      ? e.clientX - this.sliderContainer.getBoundingClientRect().left + this.thumbWidth / 2
+      ? e.clientX -
+        this.sliderContainer.getBoundingClientRect().left +
+        this.thumbWidth / 2
       : e.clientY - this.sliderContainer.getBoundingClientRect().top;
     const newPos: number = this.settings.ifHorizontal
       ? Math.floor((newVal / this.containerSize) * 100)
@@ -208,7 +234,10 @@ class View implements IView {
   private dragThumbRangeTrue(newPos: number): void {
     if (this.dragObj === null) return;
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
-    if (this.dragObj.classList === this.thumb.classList && newPos <= secondThumbPercent - 1) {
+    if (
+      this.dragObj.classList === this.thumb.classList &&
+      newPos <= secondThumbPercent - 1
+    ) {
       this.eventDispatcher.notify('firstThumb', newPos);
     } else if (
       this.dragObj.classList === this.thumbSecond.classList &&
@@ -220,7 +249,10 @@ class View implements IView {
 
   private render(): void {
     this.parentContainer.innerHTML = '';
-    this.sliderContainer = new SliderContainer(this, this.parentContainer).element;
+    this.sliderContainer = new SliderContainer(
+      this,
+      this.parentContainer
+    ).element;
     this.track = new Track(this).element;
     this.scale = new Scale(this).element;
     this.range = new Range(this).element;

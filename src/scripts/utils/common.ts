@@ -1,13 +1,21 @@
 import { TSettings } from './types';
 
-function appendCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement {
+function appendCustomElement(
+  type: string,
+  className: string,
+  parent: HTMLElement
+): HTMLElement {
   const el = document.createElement(`${type}`);
   el.classList.add(className);
   parent.append(el);
   return el;
 }
 
-function afterCustomElement(type: string, className: string, parent: HTMLElement): HTMLElement {
+function afterCustomElement(
+  type: string,
+  className: string,
+  parent: HTMLElement
+): HTMLElement {
   const el = document.createElement(`${type}`);
   el.classList.add(className);
   parent.after(el);
@@ -24,8 +32,11 @@ function applyRestrictions(value: number): number {
 function applyStepOnPercents(value: number, step: number): number {
   const numberOfSteps = (value * 100) / (step * 100);
   const realNumberOfSteps =
-    value % step >= step / 2 ? Math.ceil(numberOfSteps) : Math.floor(numberOfSteps);
-  const realValue = value === 100 ? value : parseFloat((realNumberOfSteps * step).toFixed(2));
+    value % step >= step / 2
+      ? Math.ceil(numberOfSteps)
+      : Math.floor(numberOfSteps);
+  const realValue =
+    value === 100 ? value : parseFloat((realNumberOfSteps * step).toFixed(2));
   return realValue;
 }
 
@@ -41,10 +52,14 @@ function applyStepOnValue(value: number, data: TSettings): number {
   const decimalStep = getNumbersAfterDot(step);
   const magnifyStep = decimalStep === 0 ? 1 : 10 ** getNumbersAfterDot(step);
   const magnify = Math.max(magnifyMin, magnifyStep, magnifyValue);
-  const numberOfSteps = Math.round(((value - min) * magnify) / (step * magnify));
+  const numberOfSteps = Math.round(
+    ((value - min) * magnify) / (step * magnify)
+  );
   const decimalForSteps = Math.max(decimalStep, decimalMin);
   const valueInSteps = parseFloat(
-    ((numberOfSteps * step * magnify + min * magnify) / magnify).toFixed(decimalForSteps)
+    ((numberOfSteps * step * magnify + min * magnify) / magnify).toFixed(
+      decimalForSteps
+    )
   );
   const realValue = valueInSteps >= max ? max : valueInSteps;
   return realValue;
@@ -65,7 +80,11 @@ function changeStepToPercents(data: TSettings): number {
   return stepInPerc;
 }
 
-function fromValueToPX(value: number, data: TSettings, containerSize: number): number {
+function fromValueToPX(
+  value: number,
+  data: TSettings,
+  containerSize: number
+): number {
   const { max, min } = data;
   const pxPerDivis = containerSize / (max - min);
   const valueInPx = value * pxPerDivis;
@@ -80,15 +99,22 @@ function findPosition(
   const newPosition = ifHorizontal
     ? thisElement.style.left
       ? parseInt(thisElement.style.left.replace('%', ''))
-      : (parseInt(getComputedStyle(thisElement).left.replace('px', '')) / containerSize) * 100
+      : (parseInt(getComputedStyle(thisElement).left.replace('px', '')) /
+          containerSize) *
+        100
     : thisElement.style.bottom
     ? parseInt(thisElement.style.bottom.replace('%', ''))
-    : (parseInt(getComputedStyle(thisElement).bottom.replace('px', '')) / containerSize) * 100;
+    : (parseInt(getComputedStyle(thisElement).bottom.replace('px', '')) /
+        containerSize) *
+      100;
   return newPosition;
 }
 
 // checked: value in %, others are actual
-function changePercentsToValue(valueInPercents: number, data: TSettings): number {
+function changePercentsToValue(
+  valueInPercents: number,
+  data: TSettings
+): number {
   const { max, min } = data;
   const newValue = Math.round((valueInPercents * (max - min)) / 100) + min;
   return newValue;
