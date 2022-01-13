@@ -1,4 +1,4 @@
-import IView from "interfaces/IView";
+import IView from 'interfaces/IView';
 
 class Tooltip {
   element!: HTMLElement;
@@ -22,7 +22,7 @@ class Tooltip {
   }
 
   private createChildren(that: IView): void {
-    this.parentNode = this.className === "tooltip_first" ? that.thumb : that.thumbSecond;
+    this.parentNode = this.className === 'tooltip_first' ? that.thumb : that.thumbSecond;
   }
 
   private setupHandlers(): void {
@@ -30,25 +30,25 @@ class Tooltip {
   }
 
   private enable(that: IView): void {
-    that.eventDispatcher.add("changeView", this.changeHandler);
+    that.eventDispatcher.add('changeView', this.changeHandler);
   }
 
   private make(that: IView): HTMLElement {
-    const verticalClass = that.settings.ifHorizontal ? "tooltip_horizontal" : "tooltip_vertical";
+    const verticalClass = that.settings.ifHorizontal ? 'tooltip_horizontal' : 'tooltip_vertical';
     const totalClass = that.settings.tooltip
       ? [this.className, verticalClass]
-      : [this.className, verticalClass, "js-disabled"];
-    this.element = document.createElement("span");
+      : [this.className, verticalClass, 'js-disabled'];
+    this.element = document.createElement('span');
     totalClass.forEach((item) => {
       this.element.classList.add(item);
     });
-    this.element.dataset.name = "tooltip";
+    this.element.dataset.name = 'tooltip';
     return this.element;
   }
 
   private change(that: IView): void {
     const value =
-      this.className === "tooltip_first" ? that.settings.currentFirst : that.settings.currentSecond;
+      this.className === 'tooltip_first' ? that.settings.currentFirst : that.settings.currentSecond;
     this.element.innerText = value.toString();
   }
 

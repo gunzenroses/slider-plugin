@@ -1,4 +1,4 @@
-import IView from "interfaces/IView";
+import IView from 'interfaces/IView';
 
 class Track {
   element!: HTMLElement;
@@ -9,9 +9,9 @@ class Track {
 
   private init(that: IView): HTMLElement {
     const trackClass: string = that.settings.ifHorizontal
-      ? "slider__track"
-      : "slider__track_vertical";
-    this.element = document.createElement("div");
+      ? 'slider__track'
+      : 'slider__track_vertical';
+    this.element = document.createElement('div');
     this.element.classList.add(trackClass);
     that.sliderContainer.append(this.element);
     return this.element;

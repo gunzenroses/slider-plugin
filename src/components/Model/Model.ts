@@ -1,9 +1,9 @@
-import { TModelData, TSettings } from "utils/types";
-import { applyStepOnValue } from "utils/common";
-import adjustValue from "helpers/adjustValue";
-import Observable from "Observable/Observable";
-import IObservable from "interfaces/IObservable";
-import IModel from "interfaces/IModel";
+import { TModelData, TSettings } from 'utils/types';
+import { applyStepOnValue } from 'utils/common';
+import adjustValue from 'helpers/adjustValue';
+import Observable from 'Observable/Observable';
+import IObservable from 'interfaces/IObservable';
+import IModel from 'interfaces/IModel';
 
 class Model implements IModel {
   eventDispatcher: IObservable;
@@ -41,11 +41,11 @@ class Model implements IModel {
   }
 
   private changeData(name: keyof TSettings): void {
-    name === "currentFirst"
-      ? this.eventDispatcher.notify("thumbUpdate", this.data.currentFirst)
-      : name === "currentSecond"
-      ? this.eventDispatcher.notify("thumbSecondUpdate", this.data.currentSecond)
-      : this.eventDispatcher.notify("updateData");
+    name === 'currentFirst'
+      ? this.eventDispatcher.notify('thumbUpdate', this.data.currentFirst)
+      : name === 'currentSecond'
+      ? this.eventDispatcher.notify('thumbSecondUpdate', this.data.currentSecond)
+      : this.eventDispatcher.notify('updateData');
   }
 }
 

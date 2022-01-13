@@ -1,7 +1,7 @@
-import { TModelData, TSettings } from "utils/types";
-import IModel from "./IModel";
-import IObservable from "./IObservable";
-import IView from "./IView";
+import { TModelData, TSettings } from 'utils/types';
+import IModel from './IModel';
+import IObservable from './IObservable';
+import IView from './IView';
 
 interface IPresenter {
   model: IModel;

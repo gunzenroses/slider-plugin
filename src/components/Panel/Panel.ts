@@ -1,8 +1,8 @@
-import checkValidity from "helpers/checkValidity";
-import { TSettings, TPanelParam, TModelData, TOrient } from "utils/types";
-import { afterCustomElement, appendCustomElement, getNumbersAfterDot } from "utils/common";
-import IPresenter from "interfaces/IPresenter";
-import IPanel from "interfaces/IPanel";
+import checkValidity from 'helpers/checkValidity';
+import { TSettings, TPanelParam, TModelData, TOrient } from 'utils/types';
+import { afterCustomElement, appendCustomElement, getNumbersAfterDot } from 'utils/common';
+import IPresenter from 'interfaces/IPresenter';
+import IPanel from 'interfaces/IPanel';
 
 class ConfigurationPanel implements IPanel {
   presenter: IPresenter;
@@ -23,8 +23,8 @@ class ConfigurationPanel implements IPanel {
   updateThumbSecondHandler!: { (num?: number): void };
 
   constructor(container: HTMLElement, presenter: IPresenter) {
-    this.panelContainer = afterCustomElement("div", "panel", container);
-    this.panelItems = appendCustomElement("div", "panel__items", this.panelContainer);
+    this.panelContainer = afterCustomElement('div', 'panel', container);
+    this.panelItems = appendCustomElement('div', 'panel__items', this.panelContainer);
     this.presenter = presenter;
     this.init();
     this.updatePanel();
@@ -50,10 +50,10 @@ class ConfigurationPanel implements IPanel {
   changePanel(e: Event): void {
     if (e.target == null) return;
     const element = <HTMLInputElement>e.target;
-    const name = element.getAttribute("name");
-    const type = element.getAttribute("type");
-    const data = type === "checkbox" ? element.checked : element.value;
-    if (type === "number") {
+    const name = element.getAttribute('name');
+    const type = element.getAttribute('type');
+    const data = type === 'checkbox' ? element.checked : element.value;
+    if (type === 'number') {
       new checkValidity(element, this.panelContainer);
     }
     if (data === null || name === null) return;
@@ -63,63 +63,63 @@ class ConfigurationPanel implements IPanel {
   render(data: TSettings): void {
     this.listOfPanelItems = [
       {
-        name: "min",
-        text: "min",
+        name: 'min',
+        text: 'min',
         value: data.min,
-        type: "number",
+        type: 'number',
       },
       {
-        name: "max",
-        text: "max",
+        name: 'max',
+        text: 'max',
         value: data.max,
-        type: "number",
+        type: 'number',
       },
       {
-        name: "step",
-        text: "step",
+        name: 'step',
+        text: 'step',
         value: data.step,
-        type: "number",
+        type: 'number',
       },
       {
-        name: "currentFirst",
-        text: "from",
+        name: 'currentFirst',
+        text: 'from',
         value: data.currentFirst,
-        type: "number",
+        type: 'number',
       },
       {
-        name: "currentSecond",
-        text: "to",
+        name: 'currentSecond',
+        text: 'to',
         value: data.currentSecond,
-        type: "number",
+        type: 'number',
       },
       {
-        name: "orientation",
-        text: "orient",
+        name: 'orientation',
+        text: 'orient',
         value: data.orientation,
-        type: "select",
-        options: ["horizontal", "vertical"],
+        type: 'select',
+        options: ['horizontal', 'vertical'],
       },
       {
-        name: "range",
-        text: "range",
-        value: data.range ? "checked" : "",
-        type: "checkbox",
+        name: 'range',
+        text: 'range',
+        value: data.range ? 'checked' : '',
+        type: 'checkbox',
       },
       {
-        name: "scale",
-        text: "scale",
-        value: data.scale ? "checked" : "",
-        type: "checkbox",
+        name: 'scale',
+        text: 'scale',
+        value: data.scale ? 'checked' : '',
+        type: 'checkbox',
       },
       {
-        name: "tooltip",
-        text: "tooltip",
-        value: data.tooltip ? "checked" : "",
-        type: "checkbox",
+        name: 'tooltip',
+        text: 'tooltip',
+        value: data.tooltip ? 'checked' : '',
+        type: 'checkbox',
       },
     ];
 
-    this.panelItems.innerHTML = "";
+    this.panelItems.innerHTML = '';
     for (const item of this.listOfPanelItems) {
       this.panelItems.innerHTML += this.createPanelItem(item);
     }
@@ -130,14 +130,14 @@ class ConfigurationPanel implements IPanel {
   }
 
   private createChildren(): void {
-    this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="min"]');
-    this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="max"]');
-    this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name="step"]');
+    this.minInput = <HTMLInputElement>this.panelContainer.querySelector('input[name='min']');
+    this.maxInput = <HTMLInputElement>this.panelContainer.querySelector('input[name='max']');
+    this.stepInput = <HTMLInputElement>this.panelContainer.querySelector('input[name='step']');
     this.currentFirstInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="currentFirst"]')
+      this.panelContainer.querySelector('input[name='currentFirst']')
     );
     this.currentSecondInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="currentSecond"]')
+      this.panelContainer.querySelector('input[name='currentSecond']')
     );
     this.data.range
       ? (this.currentSecondInput.disabled = false)
@@ -152,10 +152,10 @@ class ConfigurationPanel implements IPanel {
   }
 
   private enable(): void {
-    this.panelItems.addEventListener("change", this.changePanelHandler);
-    this.presenter.eventDispatcher.add("updateAll", this.updateHandler);
-    this.presenter.eventDispatcher.add("thumbUpdate", this.updateThumbHandler);
-    this.presenter.eventDispatcher.add("thumbSecondUpdate", this.updateThumbSecondHandler);
+    this.panelItems.addEventListener('change', this.changePanelHandler);
+    this.presenter.eventDispatcher.add('updateAll', this.updateHandler);
+    this.presenter.eventDispatcher.add('thumbUpdate', this.updateThumbHandler);
+    this.presenter.eventDispatcher.add('thumbSecondUpdate', this.updateThumbSecondHandler);
   }
 
   private updateMin(): void {
@@ -191,7 +191,7 @@ class ConfigurationPanel implements IPanel {
     );
     const multiplyToInt = 10 ** toFixedNum;
     this.stepInput.value = this.data.step.toString();
-    this.stepInput.min = "1";
+    this.stepInput.min = '1';
     this.stepInput.max = (
       (this.data.max * multiplyToInt - this.data.min * multiplyToInt) /
       multiplyToInt
@@ -199,7 +199,7 @@ class ConfigurationPanel implements IPanel {
   }
 
   private updateThumb(val?: number): void {
-    if (typeof val === "number") this.data.currentFirst = val;
+    if (typeof val === 'number') this.data.currentFirst = val;
     this.currentFirstInput.value = this.data.currentFirst.toString();
     this.currentFirstInput.min = this.data.min.toString();
     this.currentFirstInput.max = this.data.currentSecond.toString();
@@ -208,7 +208,7 @@ class ConfigurationPanel implements IPanel {
   }
 
   private updateThumbSecond(val?: number): void {
-    if (typeof val === "number") this.data.currentSecond = val;
+    if (typeof val === 'number') this.data.currentSecond = val;
     this.currentFirstInput.max = this.data.currentSecond.toString();
     this.currentSecondInput.value = this.data.currentSecond.toString();
     this.currentSecondInput.min = this.data.currentFirst.toString();
@@ -221,9 +221,9 @@ class ConfigurationPanel implements IPanel {
   }
 
   private modelData(type: string | null, name: string, data: TModelData): void {
-    type === "number"
+    type === 'number'
       ? setTimeout(() => {
-          if (typeof data === "string") {
+          if (typeof data === 'string') {
             this.presenter.modelData(name, parseFloat(data));
           } else {
             this.presenter.modelData(name, data);
@@ -233,34 +233,34 @@ class ConfigurationPanel implements IPanel {
   }
 
   private createPanelItem(params: TPanelParam): string {
-    const element = `<div class= "panel__item">${this.panelItemName(
+    const element = `<div class= 'panel__item'>${this.panelItemName(
       params.text
     )} ${this.panelItemInput(params)}</div>`;
     return element;
   }
 
   private panelItemName(text: string): string {
-    return `<div class= "panel__name">${text}</div>`;
+    return `<div class= 'panel__name'>${text}</div>`;
   }
 
   private panelItemInput(params: TPanelParam): string {
     const options = params.options ? params.options : [];
-    return params.type === "number"
-      ? `<input class="panel__input" name= ${params.name} type= ${params.type} value= ${params.value} required/>`
-      : params.type === "checkbox"
-      ? `<input class="panel__input" name= ${params.name} type= ${params.type} ${params.value}/>`
-      : params.type === "select"
-      ? `<${params.type} class="panel__input" name= ${params.name}> 
-            ${options.map((el: string) => this.selectOptions(el)).join("")} 
+    return params.type === 'number'
+      ? `<input class='panel__input' name= ${params.name} type= ${params.type} value= ${params.value} required/>`
+      : params.type === 'checkbox'
+      ? `<input class='panel__input' name= ${params.name} type= ${params.type} ${params.value}/>`
+      : params.type === 'select'
+      ? `<${params.type} class='panel__input' name= ${params.name}> 
+            ${options.map((el: string) => this.selectOptions(el)).join('')} 
         </${params.type}>`
-      : "";
+      : '';
   }
 
   private selectOptions(arg: string): string {
-    const orient = this.data.orientation === TOrient.HORIZONTAL ? "horizontal" : "vertical";
+    const orient = this.data.orientation === TOrient.HORIZONTAL ? 'horizontal' : 'vertical';
     return arg === orient
-      ? `<option selected value="${arg}">${arg}</option> `
-      : `<option value="${arg}">${arg}</option> `;
+      ? `<option selected value='${arg}'>${arg}</option> `
+      : `<option value='${arg}'>${arg}</option> `;
   }
 }
 

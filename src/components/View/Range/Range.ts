@@ -1,5 +1,5 @@
-import IView from "interfaces/IView";
-import { TListener } from "utils/types";
+import IView from 'interfaces/IView';
+import { TListener } from 'utils/types';
 
 class Range {
   element!: HTMLElement;
@@ -19,10 +19,10 @@ class Range {
   }
 
   private make(that: IView): HTMLElement {
-    this.element = document.createElement("div");
+    this.element = document.createElement('div');
     const elementClass: string = that.settings.ifHorizontal
-      ? "slider__range"
-      : "slider__range_vertical";
+      ? 'slider__range'
+      : 'slider__range_vertical';
     this.element.classList.add(`${elementClass}`);
     return this.element;
   }
@@ -32,7 +32,7 @@ class Range {
   }
 
   private enable(that: IView): void {
-    that.eventDispatcher.add("changeView", this.changeHandler);
+    that.eventDispatcher.add('changeView', this.changeHandler);
   }
 
   private change(that: IView): void {
@@ -44,17 +44,17 @@ class Range {
   private changeFirst(that: IView): void {
     that.settings.range
       ? that.settings.ifHorizontal
-        ? (this.element.style.left = that.settings.firstPosition + "%")
-        : (this.element.style.bottom = that.settings.firstPosition + "%")
+        ? (this.element.style.left = that.settings.firstPosition + '%')
+        : (this.element.style.bottom = that.settings.firstPosition + '%')
       : that.settings.ifHorizontal
-      ? (this.element.style.right = 100 - that.settings.firstPosition + "%")
-      : (this.element.style.top = 100 - that.settings.firstPosition + "%");
+      ? (this.element.style.right = 100 - that.settings.firstPosition + '%')
+      : (this.element.style.top = 100 - that.settings.firstPosition + '%');
   }
 
   private changeSecond(that: IView): void {
     that.settings.ifHorizontal
-      ? (this.element.style.right = 100 - that.settings.secondPosition + "%")
-      : (this.element.style.top = 100 - that.settings.secondPosition + "%");
+      ? (this.element.style.right = 100 - that.settings.secondPosition + '%')
+      : (this.element.style.top = 100 - that.settings.secondPosition + '%');
   }
 }
 

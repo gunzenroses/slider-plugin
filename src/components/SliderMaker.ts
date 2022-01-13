@@ -1,11 +1,11 @@
-import { TSettings } from "utils/types";
-import IPresenter from "interfaces/IPresenter";
-import IPanel from "interfaces/IPanel";
-import initialData from "scripts/initialData";
-import Presenter from "Presenter/Presenter";
-import Panel from "Panel/Panel";
+import { TSettings } from 'utils/types';
+import IPresenter from 'interfaces/IPresenter';
+import IPanel from 'interfaces/IPanel';
+import initialData from 'scripts/initialData';
+import Presenter from 'Presenter/Presenter';
+import Panel from 'Panel/Panel';
 
-import "assets/styles/slider";
+import 'assets/styles/slider';
 
 class SliderMaker {
   private presenter: IPresenter;

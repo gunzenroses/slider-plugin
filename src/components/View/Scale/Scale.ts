@@ -1,6 +1,6 @@
-import { fromValueToPX, getNumbersAfterDot, getTextWidth } from "utils/common";
-import { TScaleOptions } from "utils/types";
-import IView from "interfaces/IView";
+import { fromValueToPX, getNumbersAfterDot, getTextWidth } from 'utils/common';
+import { TScaleOptions } from 'utils/types';
+import IView from 'interfaces/IView';
 
 class Scale {
   element!: HTMLElement;
@@ -27,11 +27,11 @@ class Scale {
 
   private make(that: IView): HTMLElement {
     const scaleClass: string = that.settings.ifHorizontal
-      ? "slider__scale"
-      : "slider__scale_vertical";
-    const totalClass = that.settings.scale ? [scaleClass] : [scaleClass, "js-disabled"];
-    this.element = document.createElement("div");
-    this.element.dataset.name = "scale";
+      ? 'slider__scale'
+      : 'slider__scale_vertical';
+    const totalClass = that.settings.scale ? [scaleClass] : [scaleClass, 'js-disabled'];
+    this.element = document.createElement('div');
+    this.element.dataset.name = 'scale';
     totalClass.forEach((item) => {
       this.element.classList.add(item);
     });
@@ -80,7 +80,7 @@ class Scale {
     const widthOfScaleNumber =
       getTextWidth(
         (that.settings.max - that.settings.step).toFixed(toFixedDecimals),
-        "16px TimesNewRoman"
+        '16px TimesNewRoman'
       ) + 5;
     const maxStepsToPlace = Math.round(this.scaleLength / widthOfScaleNumber);
     const maxStepsCounted = Math.round((that.settings.max - that.settings.min) / that.settings.step);
@@ -104,17 +104,17 @@ class Scale {
       this.scaleLength - fromValueToPX(lengthOfLeft, that.settings, this.scaleLength) - 1;
     this.tailContainer = Math.floor(this.scaleLength - newContainerSize);
 
-    const scaleItemClass = that.settings.ifHorizontal ? "scale__row" : "scale__row_vertical";
-    this.scaleItems = document.createElement("div");
+    const scaleItemClass = that.settings.ifHorizontal ? 'scale__row' : 'scale__row_vertical';
+    this.scaleItems = document.createElement('div');
     this.scaleItems.classList.add(scaleItemClass);
     that.settings.ifHorizontal
-      ? (this.scaleItems.style.width = newContainerSize + "px")
-      : (this.scaleItems.style.height = newContainerSize + "px");
+      ? (this.scaleItems.style.width = newContainerSize + 'px')
+      : (this.scaleItems.style.height = newContainerSize + 'px');
   }
 
   private makeElementClasses(that: IView): void {
-    this.segmentClass = that.settings.ifHorizontal ? "scale__segment" : "scale__segment_vertical";
-    this.spanClass = that.settings.ifHorizontal ? "scale__number" : "scale__number_vertical";
+    this.segmentClass = that.settings.ifHorizontal ? 'scale__segment' : 'scale__segment_vertical';
+    this.spanClass = that.settings.ifHorizontal ? 'scale__number' : 'scale__number_vertical';
   }
 
   private makeScaleItems(that: IView): string {
@@ -123,31 +123,31 @@ class Scale {
 
     return this.scaleItemRow
       .map((item, index) => this.createScaleItem({ item, index, that }))
-      .join(" ");
+      .join(' ');
   }
 
   private createScaleItem(options: TScaleOptions): string {
     const { item, index, that } = options;
-    const itemClass: string = that.settings.ifHorizontal ? "scale__point" : "scale__point_vertical";
+    const itemClass: string = that.settings.ifHorizontal ? 'scale__point' : 'scale__point_vertical';
     const special: string =
-      item === this.maxItem && this.tailContainer < 30 ? `style= "visibility: hidden;"` : "";
+      item === this.maxItem && this.tailContainer < 30 ? `style= 'visibility: hidden;'` : '';
 
     if (this.itemWidth > 40) {
-      return `<div class=${this.segmentClass}><span class="${this.spanClass}" ${special}>${item}</span></div>`;
+      return `<div class=${this.segmentClass}><span class='${this.spanClass}' ${special}>${item}</span></div>`;
     } else {
       const numOfItems: number = Math.floor(50 / this.itemWidth);
 
       return item === that.settings.min ||
         ((item - that.settings.min) % that.settings.step === 0 && index % numOfItems === 0)
-        ? `<div class=${this.segmentClass}><span class="${this.spanClass}" ${special}>${item}</span></div>`
+        ? `<div class=${this.segmentClass}><span class='${this.spanClass}' ${special}>${item}</span></div>`
         : `<div class=${itemClass}></div>`;
     }
   }
 
   private makeMaxItem(that: IView): string {
-    const maxType: string = that.settings.ifHorizontal ? "right" : "top";
+    const maxType: string = that.settings.ifHorizontal ? 'right' : 'top';
     const maxStyle = `position: absolute; ${maxType}: 0;`;
-    const scaleItemMax = `<div class=${this.segmentClass} style="${maxStyle}""><span class="${this.spanClass}">${that.settings.max}</span></div>`;
+    const scaleItemMax = `<div class=${this.segmentClass} style='${maxStyle}''><span class='${this.spanClass}'>${that.settings.max}</span></div>`;
     return scaleItemMax;
   }
 }

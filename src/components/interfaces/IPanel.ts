@@ -1,5 +1,5 @@
-import { TSettings } from "utils/types";
-import IPresenter from "./IPresenter";
+import { TSettings } from 'utils/types';
+import IPresenter from './IPresenter';
 
 interface IPanel {
   presenter: IPresenter;
