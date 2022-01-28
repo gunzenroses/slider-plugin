@@ -1,6 +1,6 @@
 @import 'assets/styles/colors-and-sizes.scss';
 
-.slider__range {
+.range {
   position: absolute;
   z-index: 2;
   height: 100%;
@@ -12,25 +12,12 @@
   border-radius: 3px;
   background: $color-basic;
 
-  &-true {
-    @extend .slider__range;
-    left: 33%;
-    right: 33%;
-  }
-
   &_vertical {
-    @extend .slider__range;
     width: 100%;
     height: auto;
     left: 0;
     right: 0;
     top: 66%;
     bottom: 0;
-
-    &-true {
-      @extend .slider__range_vertical;
-      top: 33%;
-      bottom: 33%;
-    }
   }
 }

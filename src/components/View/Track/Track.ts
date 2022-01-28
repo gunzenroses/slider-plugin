@@ -9,8 +9,8 @@ class Track {
 
   private init(that: IView): HTMLElement {
     const trackClass: string = that.settings.ifHorizontal
-      ? 'slider__track'
-      : 'slider__track_vertical';
+      ? 'track'
+      : 'track_vertical';
     this.element = document.createElement('div');
     this.element.classList.add(trackClass);
     that.sliderContainer.append(this.element);

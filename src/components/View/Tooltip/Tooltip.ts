@@ -8,7 +8,6 @@ class Tooltip {
 
   private parentNode!: HTMLElement;
 
-
   constructor(that: IView, className: string) {
     this.className = className;
     this.init(that);
@@ -37,8 +36,8 @@ class Tooltip {
       ? "tooltip_horizontal"
       : "tooltip_vertical";
     const totalClass = that.settings.tooltip
-      ? [this.className, verticalClass]
-      : [this.className, verticalClass, "js-disabled"];
+      ? ["tooltip", this.className, verticalClass]
+      : ["tooltip", this.className, verticalClass, "js-disabled"];
     this.element = document.createElement("span");
     totalClass.forEach((item) => {
       this.element.classList.add(item);

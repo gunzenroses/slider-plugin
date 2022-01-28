@@ -1,6 +1,6 @@
 @import 'assets/styles/colors-and-sizes.scss';
 
-.slider__thumb {
+.thumb {
   position: absolute;
   z-index: 3;
   width: $half-thumb * 2;
@@ -8,20 +8,20 @@
   border-radius: 10px;
   background: $color-basic;
   border: 2px solid $color-light;
-}
 
-.thumb_first {
-  transform: translate(-$half-thumb, -$height-basic);
-}
+  &_first {
+    transform: translate(-$half-thumb, -$height-basic);
+  }
 
-.thumb_second {
-  transform: translate(-$half-thumb, -$height-basic);
-}
+  &_second {
+    transform: translate(-$half-thumb, -$height-basic);
+  }
 
-.thumb_first-vertical {
-  transform: translate(-$height-basic, $half-thumb);
-}
+  &_first-vertical {
+    transform: translate(-$height-basic, $half-thumb);
+  }
 
-.thumb_second-vertical {
-  transform: translate(-$height-basic, $height-basic);
+  &_second-vertical {
+    transform: translate(-$height-basic, $height-basic);
+  }
 }

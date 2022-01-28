@@ -33,15 +33,15 @@ class Scale {
   }
 
   private make(that: IView): HTMLElement {
-    const scaleClass: string = that.settings.ifHorizontal
-      ? 'slider__scale'
-      : 'slider__scale_vertical';
-    const totalClass = that.settings.scale
-      ? [scaleClass]
-      : [scaleClass, 'js-disabled'];
+    const scaleClass: Array<string> = that.settings.ifHorizontal
+      ? ['scale']
+      : ['scale', 'scale_vertical'];
+    if (!that.settings.scale) {
+      scaleClass.push('js-disabled');
+    }
     this.element = document.createElement('div');
     this.element.dataset.name = 'scale';
-    totalClass.forEach((item) => {
+    scaleClass.forEach((item) => {
       this.element.classList.add(item);
     });
     return this.element;
@@ -112,10 +112,10 @@ class Scale {
     this.tailContainer = Math.floor(this.scaleLength - newContainerSize);
 
     const scaleItemClass = that.settings.ifHorizontal
-      ? 'scale__row'
-      : 'scale__row_vertical';
+      ? ['scale__row']
+      : ['scale__row', 'scale__row_vertical'];
     this.scaleItems = document.createElement('div');
-    this.scaleItems.classList.add(scaleItemClass);
+    scaleItemClass.forEach(item => this.scaleItems.classList.add(item));
     if (that.settings.ifHorizontal) {
       this.scaleItems.style.width = `${ newContainerSize }px`;
     } else {
@@ -125,11 +125,11 @@ class Scale {
 
   private makeElementClasses(that: IView): void {
     this.segmentClass = that.settings.ifHorizontal
-      ? 'scale__segment'
-      : 'scale__segment_vertical';
+      ? "scale__segment"
+      : "scale__segment scale__segment_vertical";
     this.spanClass = that.settings.ifHorizontal
-      ? 'scale__number'
-      : 'scale__number_vertical';
+      ? "scale__number"
+      : "scale__number scale__number_vertical";
   }
 
   private makeScaleItems(): string {
@@ -143,11 +143,11 @@ class Scale {
 
   private createScaleItem(item: number): string {
     const special: string = item === this.maxItem && this.tailContainer < 30
-      ? "style='visibility: hidden;'"
+      ? 'style= "isibility: hidden;"'
       : '';
     return `
-      <div class=${ this.segmentClass }>
-        <span class='${ this.spanClass }' ${ special }>
+      <div class= '${ this.segmentClass }'>
+        <span class= '${ this.spanClass }' ${ special }>
           ${ item }
         </span>
       </div>`;
@@ -157,8 +157,8 @@ class Scale {
     const maxType: string = that.settings.ifHorizontal ? 'right' : 'top';
     const maxStyle = `position: absolute; ${ maxType }: 0;`;
     const scaleItemMax = `
-      <div class=${ this.segmentClass } style='${ maxStyle }'>
-        <span class='${ this.spanClass }'>
+      <div class= '${ this.segmentClass }' style= '${ maxStyle }'>
+        <span class= '${ this.spanClass }'>
           ${ that.settings.max }
         </span>
       </div>`;

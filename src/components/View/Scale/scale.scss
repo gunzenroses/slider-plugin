@@ -4,7 +4,7 @@ $bigger-side: 100%;
 $smaller-side: 10px;
 $border-width: 1px;
 
-.slider__scale {
+.scale {
   position: relative;
   width: $bigger-side;
   height: $smaller-side;
@@ -15,68 +15,45 @@ $border-width: 1px;
   margin-bottom: 1rem;
 
   &_vertical {
-    position: relative;
     width: $smaller-side;
     height: $bigger-side;
+    border-bottom: none;
     border-right: $border-width solid $color-dark;
-    display: flex;
-    align-items: flex-end;
     flex-direction: column-reverse;
+    margin-bottom: 0;
     margin-right: 1.5rem;
   }
-}
 
-.scale__row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
+  &__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
 
-  &_vertical {
-    @extend .scale__row;
-    flex-direction: column-reverse;
+    &_vertical {
+      flex-direction: column-reverse;
+    }
+  }
+
+  &__segment {
+    background: $color-dark;
+    width: 1px;
+    height: 6px;
+    flex-shrink: 0;
+
+    &_vertical {
+      height: 1px;
+      width: 6px;
+    }
+  }
+
+  &__number {
+    position: absolute;
+    transform: translate(-50%, 10px);
+    user-select: none;
+
+    &_vertical {
+      transform: translate(10px, -50%);
+    }
   }
 }
-
-.scale__point {
-  background: $color-dark;
-  width: 1px;
-  height: 3px;
-  flex-shrink: 0;
-  &_vertical {
-    @extend .scale__point;
-    width: 3px;
-    height: 1px;
-  }
-}
-
-.scale__segment {
-  @extend .scale__point;
-  height: 6px;
-
-  &_vertical {
-    @extend .scale__point_vertical;
-    width: 6px;
-  }
-}
-
-.scale__number {
-  position: absolute;
-  transform: translate(-50%, 10px);
-  user-select: none;
-  &_vertical {
-    @extend .scale__number;
-    transform: translate(10px, -50%);
-  }
-}
-
-.scale-last__number {
-  position: absolute;
-  transform: translate(-25%, 10px);
-  user-select: none;
-  &_vertical {
-    @extend .scale__number;
-    transform: translate(10px, -60%);
-  }
-}
-

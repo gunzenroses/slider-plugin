@@ -18,10 +18,10 @@ class Range {
 
   private make(that: IView): HTMLElement {
     this.element = document.createElement("div");
-    const elementClass: string = that.settings.ifHorizontal
-      ? "slider__range"
-      : "slider__range_vertical";
-    this.element.classList.add(`${elementClass}`);
+    const elementClass: Array<string> = that.settings.ifHorizontal
+      ? ["range"]
+      : ["range", "range_vertical"];
+    elementClass.forEach(item => this.element.classList.add(`${ item }`));
     return this.element;
   }
 
