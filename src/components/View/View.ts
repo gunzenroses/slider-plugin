@@ -77,7 +77,7 @@ class View implements IView {
   @boundMethod
   dragThumbStart(e: PointerEvent): void {
     if (!e.target) return;
-    this.dragObj = e.target as HTMLElement;
+    this.dragObj = (e.target as HTMLElement).closest(".thumb");
     /* 'as' is used here
     cause eventTarget does not ihherit properties from Element like 'classList'
     (not all targets are elements),
@@ -123,40 +123,13 @@ class View implements IView {
     this.eventDispatcher.notify("changeView", this);
   }
 
-  private createSettings(settings: TSettings): void {
-    const ifHorizontal = settings.orientation === TOrient.HORIZONTAL;
-    const firstPosition = changeValueToPercents(
-      settings.currentFirst,
-      settings
-    );
-    const secondPosition = changeValueToPercents(
-      settings.currentSecond,
-      settings
-    );
-    this.settings = {
-      ...settings,
-      ifHorizontal,
-      firstPosition,
-      secondPosition,
-    };
-  }
-
-  private createMetrics(): void {
-    const containerMeasures = getComputedStyle(this.sliderContainer);
-    this.containerSize = this.settings.ifHorizontal
-      ? parseInt(containerMeasures.width.replace("px", ""), 10)
-      : parseInt(containerMeasures.height.replace("px", ""), 10);
-    const thumbMeasures = getComputedStyle(this.thumb);
-    this.thumbWidth = parseInt(thumbMeasures.width.replace("px", ""), 10);
-  }
-
   private listenPointerDown(): void {
-    if (this.settings.range) {
-      this.thumb.addEventListener("pointerdown", this.dragThumbStart);
-      this.thumbSecond.addEventListener("pointerdown", this.dragThumbStart);
-    } else {
-      this.thumb.addEventListener("pointerdown", this.dragThumbStart);
-    }
+    const elements = this.settings.range
+      ? [this.thumb, this.thumbSecond, this.tooltipFirst, this.tooltipSecond]
+      : [this.thumb, this.tooltipFirst];
+    elements.forEach((element) =>
+      element.addEventListener("pointerdown", this.dragThumbStart)
+    );
   }
 
   private stopListenPointerDown(): void {
@@ -246,6 +219,33 @@ class View implements IView {
     ) {
       this.eventDispatcher.notify("secondThumb", newPos);
     }
+  }
+
+  private createSettings(settings: TSettings): void {
+    const ifHorizontal = settings.orientation === TOrient.HORIZONTAL;
+    const firstPosition = changeValueToPercents(
+      settings.currentFirst,
+      settings
+    );
+    const secondPosition = changeValueToPercents(
+      settings.currentSecond,
+      settings
+    );
+    this.settings = {
+      ...settings,
+      ifHorizontal,
+      firstPosition,
+      secondPosition,
+    };
+  }
+
+  private createMetrics(): void {
+    const containerMeasures = getComputedStyle(this.sliderContainer);
+    this.containerSize = this.settings.ifHorizontal
+      ? parseInt(containerMeasures.width.replace("px", ""), 10)
+      : parseInt(containerMeasures.height.replace("px", ""), 10);
+    const thumbMeasures = getComputedStyle(this.thumb);
+    this.thumbWidth = parseInt(thumbMeasures.width.replace("px", ""), 10);
   }
 
   private render(): void {

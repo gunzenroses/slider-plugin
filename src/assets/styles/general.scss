@@ -1,4 +1,5 @@
 @import "./colors-and-sizes.scss";
+@import './mixins.scss';
 
 * {
   box-sizing: border-box;
@@ -8,10 +9,7 @@
   position: relative;
   width: 100%;
   height: fit-content;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
+  @include isFlex($direction: column, $justify: center, $align: center);
   margin: 0 auto;
   border: 1px solid transparent;
   user-select: none;
