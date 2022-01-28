@@ -84,11 +84,16 @@ class Scale {
   }
 
   private countAmountOfSteps(that: IView, toFixedDecimals: number): number {
-    const widthOfScaleNumber = getTextWidth(
+    const widthOfMaxNumber = getTextWidth(
       (that.settings.max - that.settings.step).toFixed(toFixedDecimals),
       '16px TimesNewRoman'
     ) + 5;
-    const maxStepsToPlace = Math.round(this.scaleLength / widthOfScaleNumber);
+    const widthOfMinNumber = getTextWidth(
+      (that.settings.min + that.settings.step).toFixed(toFixedDecimals),
+      "16px TimesNewRoman"
+    ) + 5;
+    const widthOfScaleNumber = Math.max(widthOfMaxNumber, widthOfMinNumber);
+    const maxStepsToPlace = Math.floor(this.scaleLength / widthOfScaleNumber);
     const maxStepsCounted = Math.round(
       (that.settings.max - that.settings.min) / that.settings.step
     );
