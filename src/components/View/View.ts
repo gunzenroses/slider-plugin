@@ -10,7 +10,7 @@ import { TOrient, TSettings, TViewSettings } from "utils/types";
 import IObservable from "interfaces/IObservable";
 import IView from "interfaces/IView";
 import Observable from "Observable/Observable";
-import SliderContainer from "./SliderContainer/SliderContainer";
+import Container from "./Container/Container";
 import Range from "./Range/Range";
 import Track from "./Track/Track";
 import Thumb from "./Thumb/Thumb";
@@ -22,7 +22,7 @@ class View implements IView {
 
   settings!: TViewSettings;
 
-  sliderContainer!: HTMLElement;
+  container!: HTMLElement;
 
   thumb!: HTMLElement;
 
@@ -59,7 +59,7 @@ class View implements IView {
   }
 
   enable(): void {
-    this.sliderContainer.addEventListener("pointerup", this.selectThumb);
+    this.container.addEventListener("pointerup", this.selectThumb);
     this.listenPointerDown();
   }
 
@@ -142,13 +142,13 @@ class View implements IView {
   }
 
   private listenMoveAndUp(): void {
-    this.sliderContainer.removeEventListener("pointerup", this.selectThumb);
+    this.container.removeEventListener("pointerup", this.selectThumb);
     document.addEventListener("pointermove", this.dragThumbMove);
     document.addEventListener("pointerup", this.dragThumbEnd);
   }
 
   private stopListenMoveAndUp(): void {
-    this.sliderContainer.addEventListener("pointerup", this.selectThumb);
+    this.container.addEventListener("pointerup", this.selectThumb);
     document.removeEventListener("pointermove", this.dragThumbMove);
     document.removeEventListener("pointerup", this.dragThumbEnd);
   }
@@ -195,7 +195,7 @@ class View implements IView {
   }
 
   private countPosition(e: PointerEvent): number {
-    const containerClientRect = this.sliderContainer.getBoundingClientRect();
+    const containerClientRect = this.container.getBoundingClientRect();
     const newVal: number = this.settings.ifHorizontal
       ? e.clientX - containerClientRect.left + this.thumbWidth / 2
       : e.clientY - containerClientRect.top;
@@ -240,7 +240,7 @@ class View implements IView {
   }
 
   private createMetrics(): void {
-    const containerMeasures = getComputedStyle(this.sliderContainer);
+    const containerMeasures = getComputedStyle(this.container);
     this.containerSize = this.settings.ifHorizontal
       ? parseInt(containerMeasures.width.replace("px", ""), 10)
       : parseInt(containerMeasures.height.replace("px", ""), 10);
@@ -250,7 +250,7 @@ class View implements IView {
 
   private render(): void {
     this.parentContainer.innerHTML = "";
-    this.sliderContainer = new SliderContainer(
+    this.container = new Container(
       this,
       this.parentContainer
     ).element;

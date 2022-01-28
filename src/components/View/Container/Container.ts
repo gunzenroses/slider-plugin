@@ -1,6 +1,6 @@
 import IView from 'interfaces/IView';
 
-class SliderContainer {
+class Container {
   element!: HTMLElement;
 
   constructor(that: IView, container: HTMLElement) {
@@ -8,14 +8,14 @@ class SliderContainer {
   }
 
   private init(that: IView, container: HTMLElement): HTMLElement {
-    const sliderContainerClass = that.settings.ifHorizontal
-      ? 'js-slider__content'
-      : 'js-slider__content_vertical';
+    const containerClass: Array<string> = that.settings.ifHorizontal
+      ? ['slider__content']
+      : ['slider__content', 'slider__content_vertical'];
     this.element = document.createElement('div');
-    this.element.classList.add(sliderContainerClass);
+    containerClass.forEach(item => this.element.classList.add(item));
     container.append(this.element);
     return this.element;
   }
 }
 
-export default SliderContainer;
+export default Container;

@@ -5,21 +5,20 @@
   box-sizing: border-box;
 }
 
-.js-slider__content {
+.slider__content {
+  @include isFlex($direction: column, $justify: center, $align: center);
   position: relative;
   width: 100%;
   height: fit-content;
-  @include isFlex($direction: column, $justify: center, $align: center);
   margin: 0 auto;
   border: 1px solid transparent;
   user-select: none;
   touch-action: none;
 
   &_vertical {
-    @extend .js-slider__content;
+    flex-direction: row;
     width: max-content;
     height: 100%;
-    flex-direction: row;
   }
 }
 
