@@ -5,6 +5,12 @@ const TOrient = {
   VERTICAL: 'vertical'
 };
 
+type TDataInfo = {
+  type: string | null,
+  name: string,
+  data: TModelData
+};
+
 type TListenerArg = any;
 /*
   TListenerArg may have a type:
@@ -67,6 +73,7 @@ type TScaleOptions = {
 };
 
 export {
+  TDataInfo,
   TModelData,
   TListenerArg,
   TListener,

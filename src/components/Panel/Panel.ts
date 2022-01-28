@@ -1,7 +1,7 @@
 import { boundMethod } from "autobind-decorator";
 
 import CheckValidity from "helpers/CheckValidity";
-import { TSettings, TPanelParam, TModelData, TOrient } from "utils/types";
+import { TSettings, TPanelParam, TModelData, TOrient, TDataInfo } from "utils/types";
 import {
   afterCustomElement,
   appendCustomElement,
@@ -15,9 +15,9 @@ class ConfigurationPanel implements IPanel {
 
   panelContainer: HTMLElement;
 
-  private panelItems: HTMLElement;
-
   data!: TSettings;
+
+  private panelItems: HTMLElement;
 
   private listOfPanelItems!: Array<TPanelParam>;
 
@@ -71,7 +71,7 @@ class ConfigurationPanel implements IPanel {
       this.validate(element);
     }
     if (data === null || name === null) return;
-    this.modelData(type, name, data);
+    this.modelData({ type: type, name: name, data: data });
   }
 
   validate(element: HTMLInputElement): void {
@@ -171,7 +171,7 @@ class ConfigurationPanel implements IPanel {
     this.presenter.eventDispatcher.add("updateAll", this.updatePanel);
     this.presenter.eventDispatcher.add("thumbUpdate", this.updateThumb);
     this.presenter.eventDispatcher.add(
-      "thumbSecondUpdate", 
+      "thumbSecondUpdate",
       this.updateThumbSecond
     );
   }
@@ -239,7 +239,8 @@ class ConfigurationPanel implements IPanel {
       : this.data.max.toString();
   }
 
-  private modelData(type: string | null, name: string, data: TModelData): void {
+  private modelData(options: TDataInfo): void {
+    const { type, name, data } = options;
     if (type === "number") {
       setTimeout(() => {
         if (typeof data === "string") {
