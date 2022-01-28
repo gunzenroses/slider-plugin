@@ -12,7 +12,7 @@ type TListenerArg = any;
   which makes type cheking excessively complicated
 */
 
-type TListener = (arg1: TListenerArg) => void;
+type TListener = (args: any) => void;
 
 type TListenerArr = {
   [eventKey: string]: Array<TListener>;
