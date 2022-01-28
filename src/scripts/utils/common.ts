@@ -126,7 +126,9 @@ function changePercentsToValue(
   data: TSettings
 ): number {
   const { max, min } = data;
-  const newValue = Math.round((valueInPercents * (max - min)) / 100) + min;
+  const newValue = valueInPercents === 100
+    ? max
+    : Math.round((valueInPercents * (max - min)) / 100) + min;
   return newValue;
 }
 
@@ -142,12 +144,16 @@ function getTextWidth(text: string, font: string): number {
 }
 
 function valueToPercentsApplyStep(value: number, data: TSettings): number {
-  const total = data.max - data.min;
-  const currentValue = value - data.min;
-  const currentInSteps = Math.ceil(currentValue / data.step);
-  const currentActual = currentInSteps * data.step;
-  const newValue = (currentActual / total) * 100;
-  return newValue;
+  if (value >= data.max) {
+    return 100;
+  } else {
+    const total = data.max - data.min;
+    const currentValue = value - data.min;
+    const currentInSteps = Math.ceil(currentValue / data.step);
+    const currentActual = currentInSteps * data.step;
+    const newValue = (currentActual / total) * 100;
+    return newValue;
+  }
 }
 
 export {
