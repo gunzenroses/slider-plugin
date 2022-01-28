@@ -7,25 +7,25 @@
   margin: 2rem auto;
   background-color: aqua;
   font-size: 1rem;
-}
 
-.panel__items {
-  @include isFlex($align: center, $wrap: wrap);
-  width: 100%;
-  height: 120px;
-  padding: 2rem;
-  text-align: center;
-}
+  &__items {
+    @include isFlex($align: center, $wrap: wrap);
+    width: 100%;
+    height: 120px;
+    padding: 2rem;
+    text-align: center;
+  }
 
-.panel__item {
-  @include isFlex();
-  width: 140px;
-}
+  &__item {
+    @include isFlex();
+    width: 140px;
+  }
 
-.panel__name {
-  width: 40%;
-}
+  &__name {
+    width: 40%;
+  }
 
-.panel__input {
-  width: 60%;
+  &__input {
+    width: 60%;
+  }
 }
