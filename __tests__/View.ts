@@ -39,7 +39,7 @@ describe('class View', () => {
   });
 
   describe('method enable()', () => {
-    test('notify to change one of thumbs when sliderContainer is clicked', () => {
+    test('notify to change one of thumbs when container is clicked', () => {
       const spyOnClick = jest.spyOn(view.eventDispatcher, 'notify');
       const evt = new Event('pointerup', {
         bubbles: true,
@@ -207,7 +207,7 @@ describe('class View', () => {
 
   describe('method render()', () => {
     test('init rendering view elements', () => {
-      expect(view.sliderContainer).toBeDefined();
+      expect(view.container).toBeDefined();
       expect(view.track).toBeDefined();
       expect(view.range).toBeDefined();
       expect(view.thumb).toBeDefined();

@@ -13,7 +13,7 @@ class Track {
       : ['track', 'track_vertical'];
     this.element = document.createElement('div');
     trackClass.forEach(item => this.element.classList.add(item));
-    that.sliderContainer.append(this.element);
+    that.container.append(this.element);
     return this.element;
   }
 }

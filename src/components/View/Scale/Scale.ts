@@ -28,7 +28,7 @@ class Scale {
     this.make(that);
     this.change(that);
     this.element.append(this.scaleItems);
-    that.sliderContainer.append(this.element);
+    that.container.append(this.element);
     return this.element;
   }
 
@@ -57,7 +57,7 @@ class Scale {
   }
 
   private countContainerSize(that: IView): void {
-    const parentNodeStyle = getComputedStyle(that.sliderContainer);
+    const parentNodeStyle = getComputedStyle(that.container);
     this.scaleLength = that.settings.ifHorizontal
       ? Math.ceil(parseFloat(parentNodeStyle.width))
       : Math.ceil(parseFloat(parentNodeStyle.height));
