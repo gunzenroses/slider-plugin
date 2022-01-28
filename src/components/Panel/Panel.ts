@@ -62,7 +62,7 @@ class ConfigurationPanel implements IPanel {
 
   @boundMethod
   changePanel(e: Event): void {
-    if (e.target == null) return;
+    if (e.target === null) return;
     const element = <HTMLInputElement>e.target;
     const name = element.getAttribute("name");
     const type = element.getAttribute("type");
