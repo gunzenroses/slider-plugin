@@ -51,29 +51,43 @@ function adjustValue(
   }
 
   function adjustCurrentFirst(val: number | string): number {
+    const between = value > currentFirst && value < currentSecond;
+    const inOneStep = currentSecond - currentFirst === step;
     if (typeof val === 'string') {
       return min;
-    } if (val <= min) {
+    } else if (val <= min) {
       return min;
-    } if (val > currentSecond) {
+    } else if (val > currentSecond) {
       return currentSecond;
-    } if (val <= currentSecond) {
+    } else if (between && inOneStep) {
+      if (value > currentFirst + step / 4) {
+        return currentSecond;
+      } else {
+        return currentFirst;
+      }
+    } else {
       return applyStepOnValue(val, data);
     }
-    return min;
   }
 
   function adjustCurrentSecond(val: number | string): number {
+    const between = value > currentFirst && value < currentSecond;
+    const inOneStep = currentSecond - currentFirst === step;
     if (typeof val === 'string') {
       return max;
-    } if (val < currentFirst) {
+    } else if (val < currentFirst) {
       return currentFirst;
-    } if (val > max) {
+    } else if (val > max) {
       return max;
-    } if (val <= max) {
+    } else if (between && inOneStep) {
+      if (value > currentFirst + 0.75 * step) {
+        return currentSecond;
+      } else {
+        return currentFirst;
+      }
+    } else {
       return applyStepOnValue(val, data);
     }
-    return max;
   }
 
   function adjustAsIs(val: TModelData): TModelData {
