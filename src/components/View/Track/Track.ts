@@ -12,7 +12,7 @@ class Track {
       ? ['track']
       : ['track', 'track_vertical'];
     this.element = document.createElement('div');
-    trackClass.forEach(item => this.element.classList.add(item));
+    trackClass.forEach((item) => this.element.classList.add(item));
     that.container.append(this.element);
     return this.element;
   }

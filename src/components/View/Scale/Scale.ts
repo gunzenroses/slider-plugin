@@ -115,7 +115,7 @@ class Scale {
       ? ['scale__row']
       : ['scale__row', 'scale__row_vertical'];
     this.scaleItems = document.createElement('div');
-    scaleItemClass.forEach(item => this.scaleItems.classList.add(item));
+    scaleItemClass.forEach((item) => this.scaleItems.classList.add(item));
     if (that.settings.ifHorizontal) {
       this.scaleItems.style.width = `${ newContainerSize }px`;
     } else {
@@ -125,11 +125,11 @@ class Scale {
 
   private makeElementClasses(that: IView): void {
     this.segmentClass = that.settings.ifHorizontal
-      ? "scale__segment"
-      : "scale__segment scale__segment_vertical";
+      ? 'scale__segment'
+      : 'scale__segment scale__segment_vertical';
     this.spanClass = that.settings.ifHorizontal
-      ? "scale__number"
-      : "scale__number scale__number_vertical";
+      ? 'scale__number'
+      : 'scale__number scale__number_vertical';
   }
 
   private makeScaleItems(): string {

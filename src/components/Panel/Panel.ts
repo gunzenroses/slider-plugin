@@ -1,14 +1,16 @@
-import { boundMethod } from "autobind-decorator";
+import { boundMethod } from 'autobind-decorator';
 
-import CheckValidity from "helpers/CheckValidity";
-import { TSettings, TPanelParam, TModelData, TOrient, TDataInfo } from "utils/types";
+import CheckValidity from 'helpers/CheckValidity';
+import {
+  TSettings, TPanelParam, TOrient, TDataInfo
+} from 'utils/types';
 import {
   afterCustomElement,
   appendCustomElement,
-  getNumbersAfterDot,
-} from "utils/common";
-import IPresenter from "interfaces/IPresenter";
-import IPanel from "interfaces/IPanel";
+  getNumbersAfterDot
+} from 'utils/common';
+import IPresenter from 'interfaces/IPresenter';
+import IPanel from 'interfaces/IPanel';
 
 class ConfigurationPanel implements IPanel {
   presenter: IPresenter;
@@ -32,10 +34,10 @@ class ConfigurationPanel implements IPanel {
   private currentSecondInput!: HTMLInputElement;
 
   constructor(container: HTMLElement, presenter: IPresenter) {
-    this.panelContainer = afterCustomElement("div", "panel", container);
+    this.panelContainer = afterCustomElement('div', 'panel', container);
     this.panelItems = appendCustomElement(
-      "div",
-      "panel__items",
+      'div',
+      'panel__items',
       this.panelContainer
     );
     this.presenter = presenter;
@@ -64,14 +66,14 @@ class ConfigurationPanel implements IPanel {
   changePanel(e: Event): void {
     if (e.target === null) return;
     const element = <HTMLInputElement>e.target;
-    const name = element.getAttribute("name");
-    const type = element.getAttribute("type");
-    const data = type === "checkbox" ? element.checked : element.value;
-    if (type === "number") {
+    const name = element.getAttribute('name');
+    const type = element.getAttribute('type');
+    const data = type === 'checkbox' ? element.checked : element.value;
+    if (type === 'number') {
       this.validate(element);
     }
     if (data === null || name === null) return;
-    this.modelData({ type: type, name: name, data: data });
+    this.modelData({ type, name, data });
   }
 
   validate(element: HTMLInputElement): void {
@@ -81,63 +83,63 @@ class ConfigurationPanel implements IPanel {
   render(data: TSettings): void {
     this.listOfPanelItems = [
       {
-        name: "min",
-        text: "min",
+        name: 'min',
+        text: 'min',
         value: data.min,
-        type: "number",
+        type: 'number'
       },
       {
-        name: "max",
-        text: "max",
+        name: 'max',
+        text: 'max',
         value: data.max,
-        type: "number",
+        type: 'number'
       },
       {
-        name: "step",
-        text: "step",
+        name: 'step',
+        text: 'step',
         value: data.step,
-        type: "number",
+        type: 'number'
       },
       {
-        name: "currentFirst",
-        text: "from",
+        name: 'currentFirst',
+        text: 'from',
         value: data.currentFirst,
-        type: "number",
+        type: 'number'
       },
       {
-        name: "currentSecond",
-        text: "to",
+        name: 'currentSecond',
+        text: 'to',
         value: data.currentSecond,
-        type: "number",
+        type: 'number'
       },
       {
-        name: "orientation",
-        text: "orient",
+        name: 'orientation',
+        text: 'orient',
         value: data.orientation,
-        type: "select",
-        options: ["horizontal", "vertical"],
+        type: 'select',
+        options: ['horizontal', 'vertical']
       },
       {
-        name: "range",
-        text: "range",
-        value: data.range ? "checked" : "",
-        type: "checkbox",
+        name: 'range',
+        text: 'range',
+        value: data.range ? 'checked' : '',
+        type: 'checkbox'
       },
       {
-        name: "scale",
-        text: "scale",
-        value: data.scale ? "checked" : "",
-        type: "checkbox",
+        name: 'scale',
+        text: 'scale',
+        value: data.scale ? 'checked' : '',
+        type: 'checkbox'
       },
       {
-        name: "tooltip",
-        text: "tooltip",
-        value: data.tooltip ? "checked" : "",
-        type: "checkbox",
-      },
+        name: 'tooltip',
+        text: 'tooltip',
+        value: data.tooltip ? 'checked' : '',
+        type: 'checkbox'
+      }
     ];
 
-    this.panelItems.innerHTML = "";
+    this.panelItems.innerHTML = '';
     this.listOfPanelItems.forEach((item) => {
       this.panelItems.innerHTML += this.createPanelItem(item);
     });
@@ -167,11 +169,11 @@ class ConfigurationPanel implements IPanel {
   }
 
   private enable(): void {
-    this.panelItems.addEventListener("change", this.changePanel);
-    this.presenter.eventDispatcher.add("updateAll", this.updatePanel);
-    this.presenter.eventDispatcher.add("thumbUpdate", this.updateThumb);
+    this.panelItems.addEventListener('change', this.changePanel);
+    this.presenter.eventDispatcher.add('updateAll', this.updatePanel);
+    this.presenter.eventDispatcher.add('thumbUpdate', this.updateThumb);
     this.presenter.eventDispatcher.add(
-      "thumbSecondUpdate",
+      'thumbSecondUpdate',
       this.updateThumbSecond
     );
   }
@@ -184,8 +186,8 @@ class ConfigurationPanel implements IPanel {
     const multiplyToInt = 10 ** toFixedNum;
     this.minInput.value = this.data.min.toString();
     this.minInput.max = (
-      (this.data.max * multiplyToInt - this.data.step * multiplyToInt) /
-      multiplyToInt
+      (this.data.max * multiplyToInt - this.data.step * multiplyToInt)
+      / multiplyToInt
     ).toString();
   }
 
@@ -197,8 +199,8 @@ class ConfigurationPanel implements IPanel {
     const multiplyToInt = 10 ** toFixedNum;
     this.maxInput.value = this.data.max.toString();
     this.maxInput.min = (
-      (this.data.min * multiplyToInt + this.data.step * multiplyToInt) /
-      multiplyToInt
+      (this.data.min * multiplyToInt + this.data.step * multiplyToInt)
+      / multiplyToInt
     ).toString();
   }
 
@@ -209,16 +211,16 @@ class ConfigurationPanel implements IPanel {
     );
     const multiplyToInt = 10 ** toFixedNum;
     this.stepInput.value = this.data.step.toString();
-    this.stepInput.min = "1";
+    this.stepInput.min = '1';
     this.stepInput.max = (
-      (this.data.max * multiplyToInt - this.data.min * multiplyToInt) /
-      multiplyToInt
+      (this.data.max * multiplyToInt - this.data.min * multiplyToInt)
+      / multiplyToInt
     ).toString();
   }
 
   @boundMethod
   private updateThumb(val?: number): void {
-    if (typeof val === "number") this.data.currentFirst = val;
+    if (typeof val === 'number') this.data.currentFirst = val;
     this.currentFirstInput.value = this.data.currentFirst.toString();
     this.currentFirstInput.min = this.data.min.toString();
     this.currentFirstInput.max = this.data.currentSecond.toString();
@@ -228,7 +230,7 @@ class ConfigurationPanel implements IPanel {
 
   @boundMethod
   private updateThumbSecond(val?: number): void {
-    if (typeof val === "number") this.data.currentSecond = val;
+    if (typeof val === 'number') this.data.currentSecond = val;
     this.currentFirstInput.max = this.data.currentSecond.toString();
     this.currentSecondInput.min = this.data.currentFirst.toString();
     this.currentSecondInput.max = this.data.max.toString();
@@ -241,9 +243,9 @@ class ConfigurationPanel implements IPanel {
 
   private modelData(options: TDataInfo): void {
     const { type, name, data } = options;
-    if (type === "number") {
+    if (type === 'number') {
       setTimeout(() => {
-        if (typeof data === "string") {
+        if (typeof data === 'string') {
           this.presenter.modelData(name, parseFloat(data));
         } else {
           this.presenter.modelData(name, data);
@@ -255,41 +257,41 @@ class ConfigurationPanel implements IPanel {
   }
 
   private createPanelItem(params: TPanelParam): string {
-    const panelItemName = `<div class= 'panel__name'>${params.text}</div>`;
-    const element = `<div class= 'panel__item'>${panelItemName} ${this.panelItemInput(
-      params
-    )}
+    const panelItemName = `<div class= 'panel__name'>${ params.text }</div>`;
+    const element = `<div class= 'panel__item'>
+        ${ panelItemName } ${ this.panelItemInput(params) }
       </div>`;
     return element;
   }
 
   private panelItemInput(params: TPanelParam): string {
     const options = params.options ? params.options : [];
-    if (params.type === "number") {
+    if (params.type === 'number') {
       return `
-      <input class='panel__input' name= ${params.name} 
-          type= ${params.type} value= ${params.value} required/>`;
+      <input class='panel__input' name= ${ params.name } 
+          type= ${ params.type } value= ${ params.value } required/>`;
     }
-    if (params.type === "checkbox") {
+    if (params.type === 'checkbox') {
       return `
-        <input class='panel__input' name= ${params.name} 
-          type= ${params.type} ${params.value}/>`;
+        <input class='panel__input' name= ${ params.name } 
+          type= ${ params.type } ${ params.value }/>`;
     }
-    if (params.type === "select") {
+    if (params.type === 'select') {
       return `
-        <${params.type} class='panel__input' name= ${params.name}> 
-            ${options.map((el: string) => this.selectOptions(el)).join("")} 
-        </${params.type}>`;
+        <${ params.type } class='panel__input' name= ${ params.name }> 
+            ${ options.map((el: string) => this.selectOptions(el)).join('') } 
+        </${ params.type }>`;
     }
-    return "";
+    return '';
   }
 
   private selectOptions(arg: string): string {
-    const orient =
-      this.data.orientation === TOrient.HORIZONTAL ? "horizontal" : "vertical";
+    const orient = this.data.orientation === TOrient.HORIZONTAL
+      ? 'horizontal'
+      : 'vertical';
     return arg === orient
-      ? `<option selected value='${arg}'>${arg}</option> `
-      : `<option value='${arg}'>${arg}</option> `;
+      ? `<option selected value='${ arg }'>${ arg }</option> `
+      : `<option value='${ arg }'>${ arg }</option> `;
   }
 }
 

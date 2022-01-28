@@ -5,6 +5,8 @@ const TOrient = {
   VERTICAL: 'vertical'
 };
 
+type TModelData = boolean | number | string;
+
 type TDataInfo = {
   type: string | null,
   name: string,
@@ -18,13 +20,11 @@ type TListenerArg = any;
   which makes type cheking excessively complicated
 */
 
-type TListener = (args: any) => void;
+type TListener = (args: TListenerArg) => void;
 
 type TListenerArr = {
   [eventKey: string]: Array<TListener>;
 };
-
-type TModelData = boolean | number | string;
 
 type TRangeStyle = {
   newThumbCurrent: number;

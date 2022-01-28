@@ -17,18 +17,18 @@ class Range {
   }
 
   private make(that: IView): HTMLElement {
-    this.element = document.createElement("div");
+    this.element = document.createElement('div');
     const elementClass: Array<string> = that.settings.ifHorizontal
-      ? ["range"]
-      : ["range", "range_vertical"];
-    elementClass.forEach(item => this.element.classList.add(`${ item }`));
+      ? ['range']
+      : ['range', 'range_vertical'];
+    elementClass.forEach((item) => this.element.classList.add(`${ item }`));
     return this.element;
   }
 
   private enable(that: IView): void {
-    that.eventDispatcher.add("changeView", this.change);
+    that.eventDispatcher.add('changeView', this.change);
   }
-  
+
   @boundMethod
   private change(that: IView): void {
     if (that.settings.range) {
@@ -41,19 +41,19 @@ class Range {
 
   private changeFirst(that: IView): void {
     if (that.settings.range) {
-      const position = that.settings.ifHorizontal ? "left" : "bottom";
-      this.element.style[position] = `${that.settings.firstPosition}%`;
+      const position = that.settings.ifHorizontal ? 'left' : 'bottom';
+      this.element.style[position] = `${ that.settings.firstPosition }%`;
     } else {
-      const position = that.settings.ifHorizontal ? "right" : "top";
-      this.element.style[position] = `${100 - that.settings.firstPosition}%`;
+      const position = that.settings.ifHorizontal ? 'right' : 'top';
+      this.element.style[position] = `${ 100 - that.settings.firstPosition }%`;
     }
   }
 
   private changeSecond(that: IView): void {
     if (that.settings.ifHorizontal) {
-      this.element.style.right = `${100 - that.settings.secondPosition}%`;
+      this.element.style.right = `${ 100 - that.settings.secondPosition }%`;
     } else {
-      this.element.style.top = `${100 - that.settings.secondPosition}%`;
+      this.element.style.top = `${ 100 - that.settings.secondPosition }%`;
     }
   }
 }

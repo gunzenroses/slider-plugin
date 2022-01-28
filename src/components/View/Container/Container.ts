@@ -12,7 +12,7 @@ class Container {
       ? ['slider__content']
       : ['slider__content', 'slider__content_vertical'];
     this.element = document.createElement('div');
-    containerClass.forEach(item => this.element.classList.add(item));
+    containerClass.forEach((item) => this.element.classList.add(item));
     container.append(this.element);
     return this.element;
   }
