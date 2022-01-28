@@ -8,11 +8,11 @@ class Track {
   }
 
   private init(that: IView): HTMLElement {
-    const trackClass: string = that.settings.ifHorizontal
-      ? 'track'
-      : 'track_vertical';
+    const trackClass: Array<string> = that.settings.ifHorizontal
+      ? ['track']
+      : ['track', 'track_vertical'];
     this.element = document.createElement('div');
-    this.element.classList.add(trackClass);
+    trackClass.forEach(item => this.element.classList.add(item));
     that.sliderContainer.append(this.element);
     return this.element;
   }
