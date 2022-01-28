@@ -142,9 +142,11 @@ function getTextWidth(text: string, font: string): number {
 }
 
 function valueToPercentsApplyStep(value: number, data: TSettings): number {
-  const valuePerc = changeValueToPercents(value, data);
-  const stepPerc = changeStepToPercents(data);
-  const newValue = applyStepOnPercents(valuePerc, stepPerc);
+  const total = data.max - data.min;
+  const currentValue = value - data.min;
+  const currentInSteps = Math.ceil(currentValue / data.step);
+  const currentActual = currentInSteps * data.step;
+  const newValue = (currentActual / total) * 100;
   return newValue;
 }
 
