@@ -6,104 +6,106 @@ function adjustValue(
   value: TModelData,
   data: TSettings
 ): TModelData {
-  const { max, min, step, currentFirst, currentSecond }: TSettings = data;
-  if (typeof value === 'string' || typeof value === 'number') {
-    switch (name) {
-      case 'step':
-        value = adjustStep(value);
-        break;
-      case 'min':
-        value = adjustMin(value);
-        break;
-      case 'max':
-        value = adjustMax(value);
-        break;
-      case 'currentFirst':
-        value = adjustCurrentFirst(value);
-        break;
-      case 'currentSecond':
-        value = adjustCurrentSecond(value);
-        break;
-      default:
-        value = adjustAsIs(value);
-        break;
-    }
-  } else {
-    value = adjustAsIs(value);
-  }
+  const {
+    max,
+    min,
+    step,
+    currentFirst,
+    currentSecond
+  }: TSettings = data;
 
-  function adjustMin(value: number | string): number {
+  function adjustMin(val: number | string): number {
     const minDiff = max - step;
-    if (typeof value === 'string') {
+    if (typeof val === 'string') {
       return minDiff;
-    } else {
-      return value <= minDiff ? value : max - step;
     }
+    return val <= minDiff ? val : max - step;
   }
 
-  function adjustMax(value: number | string): number {
+  function adjustMax(val: number | string): number {
     const decimalMin = getNumbersAfterDot(min);
     const decimalStep = getNumbersAfterDot(step);
     const decimalCommon = Math.max(decimalMin, decimalStep);
     const decimalMultiply = 10 ** decimalCommon;
-    const lowestMax =
-      (min * decimalMultiply + step * decimalMultiply) / decimalMultiply;
-    if (typeof value === 'string') {
+    const lowestMax = (min * decimalMultiply + step * decimalMultiply)
+      / decimalMultiply;
+    if (typeof val === 'string') {
       return lowestMax;
-    } else {
-      return value >= lowestMax ? value : lowestMax;
     }
+    return val >= lowestMax ? val : lowestMax;
   }
 
-  function adjustStep(value: number | string): number {
-    if (typeof value === 'string') {
+  function adjustStep(val: number | string): number {
+    if (typeof val === 'string') {
       return 1;
-    } else {
-      return value <= 1
-        ? 1
-        : value > max - min
-        ? max - min
-        : value < max - min
-        ? value
-        : value === max - min
-        ? max - min
-        : 1;
+    } if (val <= 1) {
+      return 1;
+    } if (val > max - min) {
+      return max - min;
+    } if (val < max - min) {
+      return val;
+    } if (val === max - min) {
+      return max - min;
     }
+    return 1;
   }
 
-  function adjustCurrentFirst(value: number | string): number {
-    if (typeof value === 'string') {
+  function adjustCurrentFirst(val: number | string): number {
+    if (typeof val === 'string') {
       return min;
-    } else {
-      return value <= min
-        ? min
-        : value > currentSecond
-        ? currentSecond
-        : value <= currentSecond
-        ? applyStepOnValue(value, data)
-        : min;
+    } if (val <= min) {
+      return min;
+    } if (val > currentSecond) {
+      return currentSecond;
+    } if (val <= currentSecond) {
+      return applyStepOnValue(val, data);
     }
+    return min;
   }
 
-  function adjustCurrentSecond(value: number | string): number {
-    if (typeof value === 'string') {
+  function adjustCurrentSecond(val: number | string): number {
+    if (typeof val === 'string') {
       return max;
-    } else {
-      return value < currentFirst
-        ? currentFirst
-        : value > max
-        ? max
-        : value <= max
-        ? applyStepOnValue(value, data)
-        : max;
+    } if (val < currentFirst) {
+      return currentFirst;
+    } if (val > max) {
+      return max;
+    } if (val <= max) {
+      return applyStepOnValue(val, data);
     }
+    return max;
   }
 
-  function adjustAsIs(value: TModelData): TModelData {
-    return value;
+  function adjustAsIs(val: TModelData): TModelData {
+    return val;
   }
 
-  return value;
+  let newValue;
+  if (typeof value === 'string' || typeof value === 'number') {
+    switch (name) {
+      case 'step':
+        newValue = adjustStep(value);
+        break;
+      case 'min':
+        newValue = adjustMin(value);
+        break;
+      case 'max':
+        newValue = adjustMax(value);
+        break;
+      case 'currentFirst':
+        newValue = adjustCurrentFirst(value);
+        break;
+      case 'currentSecond':
+        newValue = adjustCurrentSecond(value);
+        break;
+      default:
+        newValue = adjustAsIs(value);
+        break;
+    }
+  } else {
+    newValue = adjustAsIs(value);
+  }
+  return newValue;
 }
 
 export default adjustValue;

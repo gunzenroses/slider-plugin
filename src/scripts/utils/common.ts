@@ -5,7 +5,7 @@ function appendCustomElement(
   className: string,
   parent: HTMLElement
 ): HTMLElement {
-  const el = document.createElement(`${type}`);
+  const el = document.createElement(`${ type }`);
   el.classList.add(className);
   parent.append(el);
   return el;
@@ -16,31 +16,41 @@ function afterCustomElement(
   className: string,
   parent: HTMLElement
 ): HTMLElement {
-  const el = document.createElement(`${type}`);
+  const el = document.createElement(`${ type }`);
   el.classList.add(className);
   parent.after(el);
   return el;
 }
 
-//checked
-function applyRestrictions(value: number): number {
-  const newValue = value > 100 ? 100 : value < 0 ? 0 : value;
-  return newValue;
+function getNumbersAfterDot(value: number): number {
+  const hasTail = value.toString().includes('.');
+  const tail = value.toString().split('.').pop();
+  if (hasTail && tail != null) {
+    return tail.length;
+  }
+  return 0;
 }
 
-//all in %
+function applyRestrictions(value: number): number {
+  if (value > 100) {
+    return 100;
+  } if (value < 0) {
+    return 0;
+  }
+  return value;
+}
+
 function applyStepOnPercents(value: number, step: number): number {
   const numberOfSteps = (value * 100) / (step * 100);
-  const realNumberOfSteps =
-    value % step >= step / 2
-      ? Math.ceil(numberOfSteps)
-      : Math.floor(numberOfSteps);
-  const realValue =
-    value === 100 ? value : parseFloat((realNumberOfSteps * step).toFixed(2));
+  const realNumberOfSteps = value % step >= step / 2
+    ? Math.ceil(numberOfSteps)
+    : Math.floor(numberOfSteps);
+  const realValue = value === 100
+    ? value
+    : parseFloat((realNumberOfSteps * step).toFixed(2));
   return realValue;
 }
 
-//checked: all values are actual
 function applyStepOnValue(value: number, data: TSettings): number {
   const { max, min, step } = data;
   if (value - min <= 0) return min;
@@ -65,14 +75,12 @@ function applyStepOnValue(value: number, data: TSettings): number {
   return realValue;
 }
 
-//done: initial values are actual, return %
 function changeValueToPercents(value: number, data: TSettings): number {
   const { max, min } = data;
   const newValue = parseFloat((((value - min) / (max - min)) * 100).toFixed(2));
   return newValue;
 }
 
-//done: initial values are actual, return %
 function changeStepToPercents(data: TSettings): number {
   const { max, min, step } = data;
   const newValue = (step / (max - min)) * 100;
@@ -96,21 +104,23 @@ function findPosition(
   ifHorizontal: boolean,
   containerSize: number
 ): number {
-  const newPosition = ifHorizontal
-    ? thisElement.style.left
-      ? parseInt(thisElement.style.left.replace('%', ''))
-      : (parseInt(getComputedStyle(thisElement).left.replace('px', '')) /
-          containerSize) *
-        100
-    : thisElement.style.bottom
-    ? parseInt(thisElement.style.bottom.replace('%', ''))
-    : (parseInt(getComputedStyle(thisElement).bottom.replace('px', '')) /
-        containerSize) *
-      100;
-  return newPosition;
+  let newPos;
+  if (ifHorizontal) {
+    newPos = thisElement.style.left
+      ? parseInt(thisElement.style.left.replace('%', ''), 10)
+      : (parseInt(getComputedStyle(thisElement).left.replace('px', ''), 10)
+          / containerSize)
+        * 100;
+  } else {
+    newPos = thisElement.style.bottom
+      ? parseInt(thisElement.style.bottom.replace('%', ''), 10)
+      : (parseInt(getComputedStyle(thisElement).bottom.replace('px', ''), 10)
+          / containerSize)
+        * 100;
+  }
+  return newPos;
 }
 
-// checked: value in %, others are actual
 function changePercentsToValue(
   valueInPercents: number,
   data: TSettings
@@ -120,16 +130,6 @@ function changePercentsToValue(
   return newValue;
 }
 
-function getNumbersAfterDot(value: number): number {
-  const hasTail = value.toString().includes('.');
-  const tail = value.toString().split('.').pop();
-  if (hasTail && tail != null) {
-    return tail.length;
-  } else {
-    return 0;
-  }
-}
-
 function getTextWidth(text: string, font: string): number {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
@@ -137,12 +137,10 @@ function getTextWidth(text: string, font: string): number {
     context.font = font;
     const metrics = context.measureText(text);
     return metrics.width + 6;
-  } else {
-    return 40;
   }
+  return 40;
 }
 
-//values are actual
 function valueToPercentsApplyStep(value: number, data: TSettings): number {
   const valuePerc = changeValueToPercents(value, data);
   const stepPerc = changeStepToPercents(data);
@@ -162,5 +160,5 @@ export {
   fromValueToPX,
   changeValueToPercents,
   changePercentsToValue,
-  valueToPercentsApplyStep,
+  valueToPercentsApplyStep
 };

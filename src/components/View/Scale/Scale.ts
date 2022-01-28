@@ -3,13 +3,21 @@ import IView from 'interfaces/IView';
 
 class Scale {
   element!: HTMLElement;
+
   private scaleItemRow!: number[];
+
   private tailContainer!: number;
+
   private scaleLength!: number;
+
   private scaleItems!: HTMLDivElement;
+
   private segmentClass!: string;
+
   private spanClass!: string;
+
   private itemWidth!: number;
+
   private maxItem!: number;
 
   constructor(that: IView) {
@@ -76,31 +84,31 @@ class Scale {
   }
 
   private countAmountOfSteps(that: IView, toFixedDecimals: number): number {
-    const widthOfScaleNumber =
-      getTextWidth(
-        (that.settings.max - that.settings.step).toFixed(toFixedDecimals),
-        '16px TimesNewRoman'
-      ) + 5;
+    const widthOfScaleNumber = getTextWidth(
+      (that.settings.max - that.settings.step).toFixed(toFixedDecimals),
+      '16px TimesNewRoman'
+    ) + 5;
     const maxStepsToPlace = Math.round(this.scaleLength / widthOfScaleNumber);
     const maxStepsCounted = Math.round(
       (that.settings.max - that.settings.min) / that.settings.step
     );
     const howManyTimesBigger = Math.ceil(maxStepsCounted / maxStepsToPlace);
-    const newStep =
-      maxStepsCounted > maxStepsToPlace && howManyTimesBigger > 1
-        ? howManyTimesBigger * that.settings.step
-        : that.settings.step;
+    const newStep = maxStepsCounted > maxStepsToPlace && howManyTimesBigger > 1
+      ? howManyTimesBigger * that.settings.step
+      : that.settings.step;
 
     return newStep;
   }
 
   private makeScaleContainer(that: IView): void {
-    const lengthOfLeft =
-      that.settings.max - this.scaleItemRow[this.scaleItemRow.length - 1];
-    const newContainerSize =
-      this.scaleLength -
-      fromValueToPX(lengthOfLeft, that.settings, this.scaleLength) -
-      1;
+    const penultimateItem = this.scaleItemRow[this.scaleItemRow.length - 1];
+    const lengthOfLeft = that.settings.max - penultimateItem;
+    const leftLengthInPx = fromValueToPX(
+      lengthOfLeft,
+      that.settings,
+      this.scaleLength
+    );
+    const newContainerSize = this.scaleLength - leftLengthInPx - 1;
     this.tailContainer = Math.floor(this.scaleLength - newContainerSize);
 
     const scaleItemClass = that.settings.ifHorizontal
@@ -108,9 +116,11 @@ class Scale {
       : 'scale__row_vertical';
     this.scaleItems = document.createElement('div');
     this.scaleItems.classList.add(scaleItemClass);
-    that.settings.ifHorizontal
-      ? (this.scaleItems.style.width = `${newContainerSize}px`)
-      : (this.scaleItems.style.height = `${newContainerSize}px`);
+    if (that.settings.ifHorizontal) {
+      this.scaleItems.style.width = `${ newContainerSize }px`;
+    } else {
+      this.scaleItems.style.height = `${ newContainerSize }px`;
+    }
   }
 
   private makeElementClasses(that: IView): void {
@@ -132,25 +142,24 @@ class Scale {
   }
 
   private createScaleItem(item: number): string {
-    const special: string =
-      item === this.maxItem && this.tailContainer < 30
-        ? `style='visibility: hidden;'`
-        : '';
+    const special: string = item === this.maxItem && this.tailContainer < 30
+      ? "style='visibility: hidden;'"
+      : '';
     return `
-      <div class=${this.segmentClass}>
-        <span class='${this.spanClass}' ${special}>
-          ${item}
+      <div class=${ this.segmentClass }>
+        <span class='${ this.spanClass }' ${ special }>
+          ${ item }
         </span>
       </div>`;
   }
 
   private makeMaxItem(that: IView): string {
     const maxType: string = that.settings.ifHorizontal ? 'right' : 'top';
-    const maxStyle = `position: absolute; ${maxType}: 0;`;
+    const maxStyle = `position: absolute; ${ maxType }: 0;`;
     const scaleItemMax = `
-      <div class=${this.segmentClass} style='${maxStyle}'>
-        <span class='${this.spanClass}'>
-          ${that.settings.max}
+      <div class=${ this.segmentClass } style='${ maxStyle }'>
+        <span class='${ this.spanClass }'>
+          ${ that.settings.max }
         </span>
       </div>`;
     return scaleItemMax;

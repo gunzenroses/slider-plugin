@@ -1,9 +1,12 @@
 import { appendCustomElement } from 'utils/common';
 
-class checkValidity {
+class CheckValidity {
   private item: HTMLInputElement;
+
   private messageContainer!: HTMLElement;
+
   private parentContainer: HTMLElement;
+
   invalidities: Array<string>;
 
   constructor(item: HTMLInputElement, parentContainer: HTMLElement) {
@@ -20,8 +23,7 @@ class checkValidity {
   }
 
   checkValidity(): void {
-    const validity = this.item.validity;
-    const value = this.item.value;
+    const { validity, value } = this.item;
     const name = this.item.getAttribute('name');
     const min = this.item.getAttribute('min');
     const max = this.item.getAttribute('max');
@@ -32,25 +34,29 @@ class checkValidity {
     }
 
     if (validity.rangeOverflow) {
-      this.addInvalidity(`Number should be maximum ${max}`);
+      this.addInvalidity(`Number should be maximum ${ max }`);
     }
 
     if (validity.rangeUnderflow) {
-      this.addInvalidity(`Number should be minimum ${min}`);
+      this.addInvalidity(`Number should be minimum ${ min }`);
     }
 
     if (validity.stepMismatch) {
       if (name !== 'from' && name !== 'to') return;
       if (min !== null && min !== '0') {
-        this.addInvalidity(`Number should be: ${min} + multiple of ${step}`);
+        this.addInvalidity(
+          `Number should be: ${ min } + multiple of ${ step }`
+        );
       } else {
-        this.addInvalidity(`Number should be multiple of ${step}`);
+        this.addInvalidity(`Number should be multiple of ${ step }`);
       }
     }
   }
 
   private checkMessages() {
-    this.invalidities.length >= 1 ? this.placeValidityMessages() : null;
+    if (this.invalidities.length >= 1) {
+      this.placeValidityMessages();
+    }
   }
 
   private addInvalidity(message: string): void {
@@ -77,4 +83,4 @@ class checkValidity {
   }
 }
 
-export default checkValidity;
+export default CheckValidity;

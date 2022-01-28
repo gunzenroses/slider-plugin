@@ -9,7 +9,7 @@ const initialData: TSettings = {
   step: 1,
   orientation: TOrient.HORIZONTAL,
   tooltip: true,
-  scale: true,
+  scale: true
 };
 
 export default initialData;

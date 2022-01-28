@@ -2,13 +2,12 @@ import {
   applyRestrictions,
   changeValueToPercents,
   findPosition,
-  valueToPercentsApplyStep,
+  valueToPercentsApplyStep
 } from 'utils/common';
 import { TOrient, TSettings, TViewSettings } from 'utils/types';
 import IObservable from 'interfaces/IObservable';
 import IView from 'interfaces/IView';
 import Observable from 'Observable/Observable';
-
 import SliderContainer from './SliderContainer/SliderContainer';
 import Range from './Range/Range';
 import Track from './Track/Track';
@@ -18,24 +17,39 @@ import Tooltip from './Tooltip/Tooltip';
 
 class View implements IView {
   eventDispatcher: IObservable;
-  private parentContainer: HTMLElement;
 
   settings!: TViewSettings;
+
   sliderContainer!: HTMLElement;
+
   thumb!: HTMLElement;
+
   thumbSecond!: HTMLElement;
+
   range!: HTMLElement;
+
   track!: HTMLElement;
+
   scale!: HTMLElement;
+
   tooltipFirst!: HTMLElement;
+
   tooltipSecond!: HTMLElement;
+
   containerSize!: number;
+
   thumbWidth!: number;
 
+  private parentContainer: HTMLElement;
+
   private dragObj!: HTMLElement | null;
+
   private selectThumbHandler!: { (ev: PointerEvent): void };
+
   private dragThumbHandler!: { (ev: PointerEvent): void };
+
   private moveThumbHandler!: { (ev: PointerEvent): void };
+
   private dropThumbHandler!: () => void;
 
   constructor(container: HTMLElement) {
@@ -59,18 +73,20 @@ class View implements IView {
   selectThumb(e: PointerEvent): void {
     if (e.target === this.thumb || e.target === this.thumbSecond) return;
     const pos = this.countPosition(e);
-    this.settings.range
-      ? this.selectRangeTrue(pos)
-      : this.eventDispatcher.notify('firstThumb', pos);
+    if (this.settings.range) {
+      this.selectRangeTrue(pos);
+    } else {
+      this.eventDispatcher.notify('firstThumb', pos);
+    }
   }
 
   dragThumbStart(e: PointerEvent): void {
     if (!e.target) return;
     this.dragObj = e.target as HTMLElement;
-    /* 'as' is used here 
-    cause eventTarget does not ihherit properties from Element like 'classList' 
-    (not all targets are elements), 
-    but in our case (event happened on a DOM Element) it is*/
+    /* 'as' is used here
+    cause eventTarget does not ihherit properties from Element like 'classList'
+    (not all targets are elements),
+    but in our case (event happened on a DOM Element) it is */
     e.preventDefault();
     this.listenMoveAndUp();
   }
@@ -79,9 +95,11 @@ class View implements IView {
     this.stopListenPointerDown();
     e.preventDefault();
     const pos = this.countPosition(e);
-    this.settings.range
-      ? this.dragThumbRangeTrue(pos)
-      : this.eventDispatcher.notify('firstThumb', pos);
+    if (this.settings.range) {
+      this.dragThumbRangeTrue(pos);
+    } else {
+      this.eventDispatcher.notify('firstThumb', pos);
+    }
   }
 
   dragThumbEnd(): void {
@@ -122,19 +140,17 @@ class View implements IView {
       ...settings,
       ifHorizontal,
       firstPosition,
-      secondPosition,
+      secondPosition
     };
   }
 
   private createMetrics(): void {
+    const containerMeasures = getComputedStyle(this.sliderContainer);
     this.containerSize = this.settings.ifHorizontal
-      ? parseInt(getComputedStyle(this.sliderContainer).width.replace('px', ''))
-      : parseInt(
-          getComputedStyle(this.sliderContainer).height.replace('px', '')
-        );
-    this.thumbWidth = parseInt(
-      getComputedStyle(this.thumb).width.replace('px', '')
-    );
+      ? parseInt(containerMeasures.width.replace('px', ''), 10)
+      : parseInt(containerMeasures.height.replace('px', ''), 10);
+    const thumbMeasures = getComputedStyle(this.thumb);
+    this.thumbWidth = parseInt(thumbMeasures.width.replace('px', ''), 10);
   }
 
   private setupHandlers(): void {
@@ -199,7 +215,7 @@ class View implements IView {
   private countPercents(): {
     firstThumbPercent: number;
     secondThumbPercent: number;
-  } {
+    } {
     const firstThumbPercent: number = findPosition(
       this.thumb,
       this.settings.ifHorizontal,
@@ -214,17 +230,18 @@ class View implements IView {
   }
 
   private findClosestThumb(newPlace: number, thumbPlace: number): void {
-    newPlace < thumbPlace
-      ? this.eventDispatcher.notify('firstThumb', newPlace)
-      : this.eventDispatcher.notify('secondThumb', newPlace);
+    if (newPlace < thumbPlace) {
+      this.eventDispatcher.notify('firstThumb', newPlace);
+    } else {
+      this.eventDispatcher.notify('secondThumb', newPlace);
+    }
   }
 
   private countPosition(e: PointerEvent): number {
+    const containerClientRect = this.sliderContainer.getBoundingClientRect();
     const newVal: number = this.settings.ifHorizontal
-      ? e.clientX -
-        this.sliderContainer.getBoundingClientRect().left +
-        this.thumbWidth / 2
-      : e.clientY - this.sliderContainer.getBoundingClientRect().top;
+      ? e.clientX - containerClientRect.left + this.thumbWidth / 2
+      : e.clientY - containerClientRect.top;
     const newPos: number = this.settings.ifHorizontal
       ? Math.floor((newVal / this.containerSize) * 100)
       : Math.floor(((this.containerSize - newVal) / this.containerSize) * 100);
@@ -235,13 +252,13 @@ class View implements IView {
     if (this.dragObj === null) return;
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
     if (
-      this.dragObj.classList === this.thumb.classList &&
-      newPos <= secondThumbPercent - 1
+      this.dragObj.classList === this.thumb.classList
+      && newPos <= secondThumbPercent - 1
     ) {
       this.eventDispatcher.notify('firstThumb', newPos);
     } else if (
-      this.dragObj.classList === this.thumbSecond.classList &&
-      newPos >= firstThumbPercent + 1
+      this.dragObj.classList === this.thumbSecond.classList
+      && newPos >= firstThumbPercent + 1
     ) {
       this.eventDispatcher.notify('secondThumb', newPos);
     }

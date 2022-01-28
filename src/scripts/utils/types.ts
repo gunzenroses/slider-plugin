@@ -2,7 +2,7 @@ import IView from 'interfaces/IView';
 
 const TOrient = {
   HORIZONTAL: 'horizontal',
-  VERTICAL: 'vertical',
+  VERTICAL: 'vertical'
 };
 
 type TListenerArg = any;
@@ -77,5 +77,5 @@ export {
   TScaleItem,
   TOrient,
   TSettings,
-  TViewSettings,
+  TViewSettings
 };

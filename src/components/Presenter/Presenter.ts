@@ -10,14 +10,21 @@ import View from 'View/View';
 
 class Presenter implements IPresenter {
   model: IModel;
+
   view: IView;
+
   eventDispatcher: IObservable;
+
   data!: TSettings;
 
   private updateDataHandler!: { (): void };
+
   private modelThumbFirstHandler!: (value: number) => void;
+
   private modelThumbSecondHandler!: (value: number) => void;
+
   private changeSecondThumbHandler!: (value: number) => void;
+
   private changeFirstThumbHandler!: (value: number) => void;
 
   constructor(container: HTMLElement, data: TSettings) {

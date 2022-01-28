@@ -3,6 +3,7 @@ import { TListener } from 'utils/types';
 
 class Range {
   element!: HTMLElement;
+
   private changeHandler!: TListener;
 
   constructor(that: IView) {
@@ -23,7 +24,7 @@ class Range {
     const elementClass: string = that.settings.ifHorizontal
       ? 'slider__range'
       : 'slider__range_vertical';
-    this.element.classList.add(`${elementClass}`);
+    this.element.classList.add(`${ elementClass }`);
     return this.element;
   }
 
@@ -36,25 +37,30 @@ class Range {
   }
 
   private change(that: IView): void {
-    that.settings.range
-      ? (this.changeFirst(that), this.changeSecond(that))
-      : this.changeFirst(that);
+    if (that.settings.range) {
+      this.changeFirst(that);
+      this.changeSecond(that);
+    } else {
+      this.changeFirst(that);
+    }
   }
 
   private changeFirst(that: IView): void {
-    that.settings.range
-      ? that.settings.ifHorizontal
-        ? (this.element.style.left = `${that.settings.firstPosition}%`)
-        : (this.element.style.bottom = `${that.settings.firstPosition}%`)
-      : that.settings.ifHorizontal
-      ? (this.element.style.right = `${100 - that.settings.firstPosition}%`)
-      : (this.element.style.top = `${100 - that.settings.firstPosition}%`);
+    if (that.settings.range) {
+      const position = that.settings.ifHorizontal ? 'left' : 'bottom';
+      this.element.style[position] = `${ that.settings.firstPosition }%`;
+    } else {
+      const position = that.settings.ifHorizontal ? 'right' : 'top';
+      this.element.style[position] = `${ 100 - that.settings.firstPosition }%`;
+    }
   }
 
   private changeSecond(that: IView): void {
-    that.settings.ifHorizontal
-      ? (this.element.style.right = `${100 - that.settings.secondPosition}%`)
-      : (this.element.style.top = `${100 - that.settings.secondPosition}%`);
+    if (that.settings.ifHorizontal) {
+      this.element.style.right = `${ 100 - that.settings.secondPosition }%`;
+    } else {
+      this.element.style.top = `${ 100 - that.settings.secondPosition }%`;
+    }
   }
 }
 

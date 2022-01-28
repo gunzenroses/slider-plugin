@@ -2,8 +2,11 @@ import IView from 'interfaces/IView';
 
 class Tooltip {
   element!: HTMLElement;
+
   private className: string;
+
   private parentNode!: HTMLElement;
+
   private changeHandler!: { (that: IView): void };
 
   constructor(that: IView, className: string) {
@@ -22,8 +25,9 @@ class Tooltip {
   }
 
   private createChildren(that: IView): void {
-    this.parentNode =
-      this.className === 'tooltip_first' ? that.thumb : that.thumbSecond;
+    this.parentNode = this.className === 'tooltip_first'
+      ? that.thumb
+      : that.thumbSecond;
   }
 
   private setupHandlers(): void {
@@ -50,10 +54,9 @@ class Tooltip {
   }
 
   private change(that: IView): void {
-    const value =
-      this.className === 'tooltip_first'
-        ? that.settings.currentFirst
-        : that.settings.currentSecond;
+    const value = this.className === 'tooltip_first'
+      ? that.settings.currentFirst
+      : that.settings.currentSecond;
     this.element.innerText = value.toString();
   }
 

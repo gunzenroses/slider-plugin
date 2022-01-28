@@ -7,6 +7,7 @@ import IModel from 'interfaces/IModel';
 
 class Model implements IModel {
   eventDispatcher: IObservable;
+
   private data: TSettings;
 
   constructor(settings: TSettings) {
@@ -28,8 +29,8 @@ class Model implements IModel {
   private updateData(name: keyof TSettings, data: TModelData): void {
     const oldData = this.getData();
     if (oldData[name] === data) return;
-    data = adjustValue(name, data, oldData);
-    const newData = { [name]: data };
+    const updData = adjustValue(name, data, oldData);
+    const newData = { [name]: updData };
     this.data = { ...oldData, ...newData };
   }
 
@@ -44,14 +45,13 @@ class Model implements IModel {
   }
 
   private changeData(name: keyof TSettings): void {
-    name === 'currentFirst'
-      ? this.eventDispatcher.notify('thumbUpdate', this.data.currentFirst)
-      : name === 'currentSecond'
-      ? this.eventDispatcher.notify(
-          'thumbSecondUpdate',
-          this.data.currentSecond
-        )
-      : this.eventDispatcher.notify('updateData');
+    if (name === 'currentFirst') {
+      this.eventDispatcher.notify('thumbUpdate', this.data.currentFirst);
+    } else if (name === 'currentSecond') {
+      this.eventDispatcher.notify('thumbSecondUpdate', this.data.currentSecond);
+    } else {
+      this.eventDispatcher.notify('updateData');
+    }
   }
 }
 
