@@ -1,42 +1,42 @@
 @import "./colors-and-sizes.scss";
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .js-slider__content {
-    position: relative;
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 auto;
-    border: 1px solid transparent;
-    user-select: none;
-    touch-action: none;
+  position: relative;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  border: 1px solid transparent;
+  user-select: none;
+  touch-action: none;
 
-    &_vertical {
-        @extend .js-slider__content;
-        width: max-content;
-        height: 100%;
-        flex-direction: row;
-    }
+  &_vertical {
+    @extend .js-slider__content;
+    width: max-content;
+    height: 100%;
+    flex-direction: row;
+  }
 }
 
 .js-disabled {
-    display: none;
+  display: none;
 }
 
 .js-hidden {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .js-error-message {
-    width: 100%;
-    height: fit-content;
-    background-color: $color-basic;
-    color: $color-light;
-    text-align: center;
+  width: 100%;
+  height: fit-content;
+  background-color: $color-basic;
+  color: $color-light;
+  text-align: center;
 }
