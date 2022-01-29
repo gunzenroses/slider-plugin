@@ -15,6 +15,7 @@ describe('helpers: class CheckValidity', () => {
     item.value = '';
 
     const checkItem = new CheckValidity(item, container);
+    checkItem.init();
 
     expect(checkItem.checkValidity()).toBeFalsy();
   });
@@ -23,6 +24,7 @@ describe('helpers: class CheckValidity', () => {
     item.value = 'cat';
 
     const checkItem = new CheckValidity(item, container);
+    checkItem.init();
 
     expect(checkItem.invalidities).toContain('Should be a number');
   });
@@ -34,6 +36,7 @@ describe('helpers: class CheckValidity', () => {
     item.max = '30';
 
     const checkItem = new CheckValidity(item, container);
+    checkItem.init();
 
     expect(checkItem.invalidities).toEqual([]);
   });
@@ -43,6 +46,7 @@ describe('helpers: class CheckValidity', () => {
     item.max = '30';
 
     const checkItem = new CheckValidity(item, container);
+    checkItem.init();
 
     expect(checkItem.invalidities).toContain('Number should be maximum 30');
   });
@@ -54,6 +58,7 @@ describe('helpers: class CheckValidity', () => {
     item.name = 'from';
 
     const checkItem = new CheckValidity(item, container);
+    checkItem.init();
 
     expect(checkItem.invalidities).toContain('Number should be multiple of 4');
   });
@@ -65,6 +70,7 @@ describe('helpers: class CheckValidity', () => {
     item.name = 'from'
     
     const checkItem = new CheckValidity(item, container);
+    checkItem.init();
 
     expect(checkItem.invalidities).toContain('Number should be: 10 + multiple of 8');
   });
@@ -74,6 +80,7 @@ describe('helpers: class CheckValidity', () => {
     item.value = '0';
 
     const checkItem = new CheckValidity(item, container);
+    checkItem.init();
 
     expect(checkItem.invalidities).toContain('Number should be minimum 1');
   });
