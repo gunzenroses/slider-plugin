@@ -65,8 +65,10 @@ function adjustValue(
       } else {
         return currentFirst;
       }
-    } else {
+    } else if (value <= currentSecond) {
       return applyStepOnValue(val, data);
+    } else {
+      return min;
     }
   }
 
@@ -85,8 +87,10 @@ function adjustValue(
       } else {
         return currentFirst;
       }
-    } else {
+    } else if (val <= max) {
       return applyStepOnValue(val, data);
+    } else {
+      return max;
     }
   }
 
