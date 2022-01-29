@@ -5,7 +5,16 @@
   box-sizing: border-box;
 }
 
-.slider__content {
+.slider {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 200px;
+}
+
+.content {
   @include isFlex($direction: column, $justify: center, $align: center);
   position: relative;
   width: 100%;
