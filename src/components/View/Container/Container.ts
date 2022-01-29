@@ -9,8 +9,8 @@ class Container {
 
   private init(that: IView, container: HTMLElement): HTMLElement {
     const containerClass: Array<string> = that.settings.ifHorizontal
-      ? ['slider__content']
-      : ['slider__content', 'slider__content_vertical'];
+      ? ['content']
+      : ['content', 'content_vertical'];
     this.element = document.createElement('div');
     containerClass.forEach((item) => this.element.classList.add(item));
     container.append(this.element);
