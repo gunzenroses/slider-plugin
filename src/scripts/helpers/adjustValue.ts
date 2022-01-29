@@ -32,10 +32,10 @@ function adjustValue(
   }
 
   function adjustStep(val: number | string): number {
-    if (val <= 1 || typeof val === 'string') {
-      return 1;
+    if (typeof val === "number" && val >= 1) {
+      return val
     } else {
-      return val;
+      return 1;
     }
   }
 
