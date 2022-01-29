@@ -32,18 +32,11 @@ function adjustValue(
   }
 
   function adjustStep(val: number | string): number {
-    if (typeof val === 'string') {
+    if (val <= 1 || typeof val === 'string') {
       return 1;
-    } if (val <= 1) {
-      return 1;
-    } if (val > max - min) {
-      return max - min;
-    } if (val < max - min) {
+    } else {
       return val;
-    } if (val === max - min) {
-      return max - min;
     }
-    return 1;
   }
 
   function adjustCurrentFirst(val: number | string): number {
