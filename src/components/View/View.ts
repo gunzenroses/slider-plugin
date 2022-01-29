@@ -210,14 +210,14 @@ class View implements IView {
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
     if (
       this.dragObj.classList === this.thumb.classList
-      && newPos <= secondThumbPercent
     ) {
-      this.eventDispatcher.notify('firstThumb', newPos);
+      const value = newPos > secondThumbPercent ? secondThumbPercent : newPos;
+      this.eventDispatcher.notify("firstThumb", value);
     } else if (
       this.dragObj.classList === this.thumbSecond.classList
-      && newPos >= firstThumbPercent
     ) {
-      this.eventDispatcher.notify('secondThumb', newPos);
+      const value = newPos < firstThumbPercent ? firstThumbPercent : newPos;
+      this.eventDispatcher.notify("secondThumb", value);
     }
   }
 
