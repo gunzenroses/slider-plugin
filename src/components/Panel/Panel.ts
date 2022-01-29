@@ -244,13 +244,11 @@ class ConfigurationPanel implements IPanel {
   private modelData(options: TDataInfo): void {
     const { type, name, data } = options;
     if (type === 'number') {
-      setTimeout(() => {
-        if (typeof data === 'string') {
-          this.presenter.modelData(name, parseFloat(data));
-        } else {
-          this.presenter.modelData(name, data);
-        }
-      });
+      if (typeof data === 'string') {
+        this.presenter.modelData(name, parseFloat(data));
+      } else {
+        this.presenter.modelData(name, data);
+      };
     } else {
       this.presenter.modelData(name, data);
     }
