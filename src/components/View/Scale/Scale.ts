@@ -148,7 +148,7 @@ class Scale {
 
   private createScaleItem(item: number): string {
     const special: string = item === this.maxItem && this.tailContainer < 30
-      ? 'style= "isibility: hidden;"'
+      ? 'style= "visibility: hidden;"'
       : '';
     return `
       <div class= '${ this.segmentClass }'>
