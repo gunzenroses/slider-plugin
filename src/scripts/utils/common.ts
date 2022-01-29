@@ -81,13 +81,6 @@ function changeValueToPercents(value: number, data: TSettings): number {
   return newValue;
 }
 
-function changeStepToPercents(data: TSettings): number {
-  const { max, min, step } = data;
-  const newValue = (step / (max - min)) * 100;
-  const stepInPerc = max > 500000 ? newValue : parseFloat(newValue.toFixed(2));
-  return stepInPerc;
-}
-
 function fromValueToPX(
   value: number,
   data: TSettings,
@@ -146,14 +139,13 @@ function getTextWidth(text: string, font: string): number {
 function valueToPercentsApplyStep(value: number, data: TSettings): number {
   if (value >= data.max) {
     return 100;
-  } else {
-    const total = data.max - data.min;
-    const currentValue = value - data.min;
-    const currentInSteps = Math.ceil(currentValue / data.step);
-    const currentActual = currentInSteps * data.step;
-    const newValue = (currentActual / total) * 100;
-    return newValue;
   }
+  const total = data.max - data.min;
+  const currentValue = value - data.min;
+  const currentInSteps = Math.ceil(currentValue / data.step);
+  const currentActual = currentInSteps * data.step;
+  const newValue = (currentActual / total) * 100;
+  return newValue;
 }
 
 export {

@@ -18,9 +18,8 @@ function adjustValue(
     const minDiff = max - 1;
     if (typeof val === 'string') {
       return minDiff;
-    } else {
-      return val <= minDiff ? val : minDiff;
     }
+    return val <= minDiff ? val : minDiff;
   }
 
   function adjustMax(val: number | string): number {
@@ -32,49 +31,48 @@ function adjustValue(
   }
 
   function adjustStep(val: number | string): number {
-    if (typeof val === "number" && val >= 1) {
-      return val
-    } else {
-      return 1;
+    if (typeof val === 'number' && val >= 1) {
+      return val;
     }
+    return 1;
   }
 
   function adjustCurrentFirst(val: number | string): number {
     const between = value > currentFirst && value < currentSecond;
     const inOneStep = currentSecond - currentFirst === step;
+    const betweenInOneStep = between && inOneStep;
     const moreThanHalfWay = value > currentFirst + step / 2;
     if (typeof val === 'string') {
       return min;
-    } else if (val <= min) {
+    } if (val <= min) {
       return min;
-    } else if (val > currentSecond) {
+    } if (val > currentSecond) {
       return currentSecond;
-    } else if (between && inOneStep && moreThanHalfWay) {
+    } if (betweenInOneStep && moreThanHalfWay) {
       return currentSecond;
-    } else if (value <= currentSecond) {
+    } if (value <= currentSecond) {
       return applyStepOnValue(val, data);
-    } else {
-      return min;
     }
+    return min;
   }
 
   function adjustCurrentSecond(val: number | string): number {
     const between = value > currentFirst && value < currentSecond;
     const inOneStep = currentSecond - currentFirst === step;
+    const betweenInOneStep = between && inOneStep;
     const moreThanHalfWay = value > currentFirst + 0.5 * step;
     if (typeof val === 'string') {
       return max;
-    } else if (val < currentFirst) {
+    } if (val < currentFirst) {
       return currentFirst;
-    } else if (val > max) {
+    } if (val > max) {
       return max;
-    } else if (between && inOneStep && moreThanHalfWay) {
+    } if (betweenInOneStep && moreThanHalfWay) {
       return currentSecond;
-    } else if (val <= max) {
+    } if (val <= max) {
       return applyStepOnValue(val, data);
-    } else {
-      return max;
     }
+    return max;
   }
 
   function adjustAsIs(val: TModelData): TModelData {

@@ -90,7 +90,7 @@ class Scale {
     ) + 5;
     const widthOfMinNumber = getTextWidth(
       (that.settings.min + that.settings.step).toFixed(toFixedDecimals),
-      "16px TimesNewRoman"
+      '16px TimesNewRoman'
     ) + 5;
     const widthOfScaleNumber = Math.max(widthOfMaxNumber, widthOfMinNumber);
     const maxStepsToPlace = Math.floor(this.scaleLength / widthOfScaleNumber);

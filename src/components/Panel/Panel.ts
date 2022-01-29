@@ -6,8 +6,7 @@ import {
 } from 'utils/types';
 import {
   afterCustomElement,
-  appendCustomElement,
-  getNumbersAfterDot
+  appendCustomElement
 } from 'utils/common';
 import IPresenter from 'interfaces/IPresenter';
 import IPanel from 'interfaces/IPanel';
@@ -77,7 +76,8 @@ class ConfigurationPanel implements IPanel {
   }
 
   validate(element: HTMLInputElement): void {
-    new CheckValidity(element, this.panelContainer);
+    const validation = new CheckValidity(element, this.panelContainer);
+    validation.init();
   }
 
   render(data: TSettings): void {
@@ -225,7 +225,7 @@ class ConfigurationPanel implements IPanel {
         this.presenter.modelData(name, parseFloat(data));
       } else {
         this.presenter.modelData(name, data);
-      };
+      }
     } else {
       this.presenter.modelData(name, data);
     }

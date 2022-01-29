@@ -3,11 +3,11 @@ import { appendCustomElement } from 'utils/common';
 class CheckValidity {
   private item: HTMLInputElement;
 
-  private messageContainer!: HTMLElement;
-
   private parentContainer: HTMLElement;
 
-  invalidities: Array<string>;
+  private messageContainer!: HTMLElement;
+
+  invalidities!: Array<string>;
 
   constructor(item: HTMLInputElement, parentContainer: HTMLElement) {
     this.item = item;
@@ -17,6 +17,9 @@ class CheckValidity {
       'js-error-message',
       this.parentContainer
     );
+  }
+
+  init(): void {
     this.invalidities = [];
     this.checkValidity();
     this.checkMessages();
