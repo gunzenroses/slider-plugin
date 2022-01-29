@@ -136,7 +136,7 @@ describe('adjustValue', () => {
     test('grater (max - min)', () => {
       const step = adjustValue('step', 108, data);
 
-      expect(step).toBe(100);
+      expect(step).toBe(108);
     });
 
     test('smaller (max - min)', () => {
