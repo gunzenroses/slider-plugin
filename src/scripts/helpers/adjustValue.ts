@@ -1,5 +1,5 @@
 import { TModelData, TSettings } from 'utils/types';
-import { applyStepOnValue, getNumbersAfterDot } from 'utils/common';
+import { applyStepOnValue } from 'utils/common';
 
 function adjustValue(
   name: string,
@@ -42,18 +42,15 @@ function adjustValue(
   function adjustCurrentFirst(val: number | string): number {
     const between = value > currentFirst && value < currentSecond;
     const inOneStep = currentSecond - currentFirst === step;
+    const moreThanHalfWay = value > currentFirst + step / 2;
     if (typeof val === 'string') {
       return min;
     } else if (val <= min) {
       return min;
     } else if (val > currentSecond) {
       return currentSecond;
-    } else if (between && inOneStep) {
-      if (value > currentFirst + step / 4) {
-        return currentSecond;
-      } else {
-        return currentFirst;
-      }
+    } else if (between && inOneStep && moreThanHalfWay) {
+      return currentSecond;
     } else if (value <= currentSecond) {
       return applyStepOnValue(val, data);
     } else {
@@ -64,18 +61,15 @@ function adjustValue(
   function adjustCurrentSecond(val: number | string): number {
     const between = value > currentFirst && value < currentSecond;
     const inOneStep = currentSecond - currentFirst === step;
+    const moreThanHalfWay = value > currentFirst + 0.5 * step;
     if (typeof val === 'string') {
       return max;
     } else if (val < currentFirst) {
       return currentFirst;
     } else if (val > max) {
       return max;
-    } else if (between && inOneStep) {
-      if (value > currentFirst + 0.75 * step) {
-        return currentSecond;
-      } else {
-        return currentFirst;
-      }
+    } else if (between && inOneStep && moreThanHalfWay) {
+      return currentSecond;
     } else if (val <= max) {
       return applyStepOnValue(val, data);
     } else {
