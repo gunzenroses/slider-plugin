@@ -15,24 +15,20 @@ function adjustValue(
   }: TSettings = data;
 
   function adjustMin(val: number | string): number {
-    const minDiff = max - step;
+    const minDiff = max - 1;
     if (typeof val === 'string') {
       return minDiff;
+    } else {
+      return val <= minDiff ? val : minDiff;
     }
-    return val <= minDiff ? val : max - step;
   }
 
   function adjustMax(val: number | string): number {
-    const decimalMin = getNumbersAfterDot(min);
-    const decimalStep = getNumbersAfterDot(step);
-    const decimalCommon = Math.max(decimalMin, decimalStep);
-    const decimalMultiply = 10 ** decimalCommon;
-    const lowestMax = (min * decimalMultiply + step * decimalMultiply)
-      / decimalMultiply;
+    const minDiff = min + 1;
     if (typeof val === 'string') {
-      return lowestMax;
+      return minDiff;
     }
-    return val >= lowestMax ? val : lowestMax;
+    return val >= minDiff ? val : minDiff;
   }
 
   function adjustStep(val: number | string): number {

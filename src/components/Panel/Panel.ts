@@ -179,29 +179,13 @@ class ConfigurationPanel implements IPanel {
   }
 
   private updateMin(): void {
-    const toFixedNum = Math.max(
-      getNumbersAfterDot(this.data.max),
-      getNumbersAfterDot(this.data.step)
-    );
-    const multiplyToInt = 10 ** toFixedNum;
     this.minInput.value = this.data.min.toString();
-    this.minInput.max = (
-      (this.data.max * multiplyToInt - this.data.step * multiplyToInt)
-      / multiplyToInt
-    ).toString();
+    this.minInput.max = (this.data.max - 1).toString();
   }
 
   private updateMax(): void {
-    const toFixedNum = Math.max(
-      getNumbersAfterDot(this.data.min),
-      getNumbersAfterDot(this.data.step)
-    );
-    const multiplyToInt = 10 ** toFixedNum;
     this.maxInput.value = this.data.max.toString();
-    this.maxInput.min = (
-      (this.data.min * multiplyToInt + this.data.step * multiplyToInt)
-      / multiplyToInt
-    ).toString();
+    this.maxInput.min = (this.data.min + 1).toString();
   }
 
   private updateStep(): void {
