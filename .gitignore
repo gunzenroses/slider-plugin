@@ -3,7 +3,7 @@ all
 .env
 node_modules
 build/
-/dist
+dist/
 package-lock.json
 yarn.lock
 *.orig
