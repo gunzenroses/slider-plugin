@@ -1,5 +1,5 @@
 import { fromValueToPX, getNumbersAfterDot, getTextWidth } from 'utils/common';
-import IView from 'interfaces/IView';
+import IView from 'src/components/Interfaces/IView';
 
 class Scale {
   element!: HTMLElement;

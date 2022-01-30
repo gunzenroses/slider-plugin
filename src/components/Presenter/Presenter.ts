@@ -2,10 +2,10 @@ import { boundMethod } from 'autobind-decorator';
 
 import { TModelData, TSettings } from 'utils/types';
 import { changePercentsToValue } from 'utils/common';
-import IPresenter from 'interfaces/IPresenter';
-import IObservable from 'interfaces/IObservable';
-import IModel from 'interfaces/IModel';
-import IView from 'interfaces/IView';
+import IPresenter from 'src/components/Interfaces/IPresenter';
+import IObservable from 'src/components/Interfaces/IObservable';
+import IModel from 'src/components/Interfaces/IModel';
+import IView from 'src/components/Interfaces/IView';
 import Observable from 'Observable/Observable';
 import Model from 'Model/Model';
 import View from 'View/View';

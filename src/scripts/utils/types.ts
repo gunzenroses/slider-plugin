@@ -1,4 +1,4 @@
-import IView from 'interfaces/IView';
+import IView from 'src/components/Interfaces/IView';
 
 const TOrient = {
   HORIZONTAL: 'horizontal',

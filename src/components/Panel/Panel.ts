@@ -8,8 +8,8 @@ import {
   afterCustomElement,
   appendCustomElement
 } from 'utils/common';
-import IPresenter from 'interfaces/IPresenter';
-import IPanel from 'interfaces/IPanel';
+import IPresenter from 'src/components/Interfaces/IPresenter';
+import IPanel from 'src/components/Interfaces/IPanel';
 
 class ConfigurationPanel implements IPanel {
   presenter: IPresenter;

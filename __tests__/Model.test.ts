@@ -3,7 +3,7 @@
  */
 
 import initialData from 'src/scripts/initialData';
-import IModel from 'interfaces/IModel';
+import IModel from 'src/components/Interfaces/IModel';
 import Model from 'Model/Model';
 import { TSettings } from 'utils/types';
 import adjustValue from 'helpers/adjustValue';

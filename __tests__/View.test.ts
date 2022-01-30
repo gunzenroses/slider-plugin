@@ -3,7 +3,7 @@
  */
 
 import initialData from 'scripts/initialData';
-import IView from 'interfaces/IView';
+import IView from 'src/components/Interfaces/IView';
 import View from 'View/View';
 
 describe('class View', () => {

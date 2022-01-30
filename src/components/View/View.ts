@@ -7,8 +7,8 @@ import {
   valueToPercentsApplyStep
 } from 'utils/common';
 import { TOrient, TSettings, TViewSettings } from 'utils/types';
-import IObservable from 'interfaces/IObservable';
-import IView from 'interfaces/IView';
+import IObservable from 'src/components/Interfaces/IObservable';
+import IView from 'src/components/Interfaces/IView';
 import Observable from 'Observable/Observable';
 import Container from './Container/Container';
 import Range from './Range/Range';

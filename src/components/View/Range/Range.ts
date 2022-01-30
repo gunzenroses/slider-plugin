@@ -1,5 +1,5 @@
 import { boundMethod } from 'autobind-decorator';
-import IView from 'interfaces/IView';
+import IView from 'src/components/Interfaces/IView';
 
 class Range {
   element!: HTMLElement;
