@@ -12,6 +12,12 @@ describe('class View', () => {
   document.body.append(container);
   let view: IView;
 
+  const pointerUpEvt = new Event("pointerup", {
+    bubbles: true,
+    cancelable: false,
+    composed: false,
+  });
+
   beforeEach(() => {
     container.innerHTML = '';
     view = new View(container);
@@ -41,21 +47,18 @@ describe('class View', () => {
   describe('method enable()', () => {
     test('notify to change one of thumbs when container is clicked', () => {
       const spyOnClick = jest.spyOn(view.eventDispatcher, 'notify');
-      const evt = new Event('pointerup', {
-        bubbles: true,
-        cancelable: false, 
-        composed: false
-      });
-      const clickEvt = {... evt,
+
+      const clickEvt = {
+        ...pointerUpEvt,
         clientX: 100,
         clientY: 100,
         preventDefault: jest.fn(),
-      }
+      };
       
       view.selectThumb(clickEvt as unknown as PointerEvent);
-      /* jest dom has restricted definition of PointerEvent,
-      so it's not possible to simulate is directly and 
-      workarounds are needed*/
+      /* jest dom has a restricted definition of PointerEvent,
+      so it's not possible to simulate it directly and 
+      workaround is needed*/
 
       expect(spyOnClick).toHaveBeenCalledTimes(1);
     });
@@ -143,6 +146,54 @@ describe('class View', () => {
       view.thumb.dispatchEvent(evt);
 
       expect(spyOnSm).toBeCalledTimes(0);
+    });
+
+    test('should notify eventDispatcher when range is false ', () => {
+      view.settings.range = false;
+      const spyOnSm = jest.spyOn(view.eventDispatcher, "notify");
+
+      const evt = new MouseEvent("pointerup", {
+        bubbles: true,
+      });
+      view.container.dispatchEvent(evt);
+
+      expect(spyOnSm).toBeCalledTimes(1);
+    });
+
+    test('should notify eventDispatcher when range is true', () => {
+      const spyOnSm = jest.spyOn(view.eventDispatcher, "notify");
+
+      const clickEvt = {
+        ...pointerUpEvt,
+        clientX: 200,
+        clientY: 200,
+        preventDefault: jest.fn(),
+      };
+
+      view.selectThumb(clickEvt as unknown as PointerEvent);
+      /* jest dom has a restricted definition of PointerEvent,
+      so it's not possible to simulate it directly and 
+      workaround is needed*/
+
+      expect(spyOnSm).toBeCalledTimes(1);
+    });
+
+    test('should notify eventDispatcher when distances from firstThumb and secondThumb to newPos are equal', () => {
+      const spyOnSm = jest.spyOn(view.eventDispatcher, "notify");
+
+      const clickEvt = {
+        ...pointerUpEvt,
+        clientX: 193,
+        clientY: 193,
+        preventDefault: jest.fn(),
+      };
+
+      view.selectThumb(clickEvt as unknown as PointerEvent);
+      /* jest dom has a restricted definition of PointerEvent,
+      so it's not possible to simulate it directly and 
+      workaround is needed*/
+
+      expect(spyOnSm).toBeCalledTimes(1);
     });
   });
 
