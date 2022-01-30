@@ -8,7 +8,7 @@ module.exports = {
   collectCoverageFrom: [
     "**/components/**",
     "**/scripts/**",
-    "!**/interfaces/**",
+    "!**/Interfaces/**",
     "!**/SliderMaker/**",
   ],
   //coverageReporters: ['text'],
