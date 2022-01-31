@@ -21,8 +21,8 @@
           "Presenter": "./src/components/Presenter/",
           "Panel": "./src/components/Panel/",
           "Observable": "./src/components/Observable/",
+          "Interfaces": "./src/components/Interfaces/",
           "assets": "./src/assets/",
-          "interfaces": "./src/components/interfaces/",
           "helpers": "./src/scripts/helpers/",
           "utils": "./src/scripts/utils/",
           "scripts": "./src/scripts/"

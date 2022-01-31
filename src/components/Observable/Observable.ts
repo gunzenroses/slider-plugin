@@ -1,5 +1,5 @@
 import { TListener, TListenerArg, TListenerArr } from 'utils/types';
-import IObservable from 'src/components/Interfaces/IObservable';
+import IObservable from 'Interfaces/IObservable';
 
 class Observable implements IObservable {
   private listeners: TListenerArr = {};

@@ -1,7 +1,7 @@
 import { TSettings } from 'utils/types';
-import IPresenter from 'src/components/Interfaces/IPresenter';
-import IPanel from 'src/components/Interfaces/IPanel';
 import initialData from 'scripts/initialData';
+import IPresenter from 'Interfaces/IPresenter';
+import IPanel from 'Interfaces/IPanel';
 import Presenter from 'Presenter/Presenter';
 import Panel from 'Panel/Panel';
 

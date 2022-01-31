@@ -1,9 +1,9 @@
 import { TModelData, TSettings } from 'utils/types';
 import { applyStepOnValue } from 'utils/common';
 import adjustValue from 'helpers/adjustValue';
+import IObservable from 'Interfaces/IObservable';
+import IModel from 'Interfaces/IModel';
 import Observable from 'Observable/Observable';
-import IObservable from 'src/components/Interfaces/IObservable';
-import IModel from 'src/components/Interfaces/IModel';
 
 class Model implements IModel {
   eventDispatcher: IObservable;

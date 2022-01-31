@@ -1,5 +1,5 @@
 import { boundMethod } from 'autobind-decorator';
-import IView from 'src/components/Interfaces/IView';
+import IView from 'Interfaces/IView';
 
 class Tooltip {
   element!: HTMLElement;

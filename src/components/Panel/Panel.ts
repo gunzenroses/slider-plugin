@@ -8,8 +8,8 @@ import {
   afterCustomElement,
   appendCustomElement
 } from 'utils/common';
-import IPresenter from 'src/components/Interfaces/IPresenter';
-import IPanel from 'src/components/Interfaces/IPanel';
+import IPresenter from 'Interfaces/IPresenter';
+import IPanel from 'Interfaces/IPanel';
 
 class ConfigurationPanel implements IPanel {
   presenter: IPresenter;
@@ -75,11 +75,6 @@ class ConfigurationPanel implements IPanel {
     this.modelData({ type, name, data });
   }
 
-  validate(element: HTMLInputElement): void {
-    const validation = new CheckValidity(element, this.panelContainer);
-    validation.init();
-  }
-
   render(data: TSettings): void {
     this.listOfPanelItems = [
       {
@@ -143,6 +138,11 @@ class ConfigurationPanel implements IPanel {
     this.listOfPanelItems.forEach((item) => {
       this.panelItems.innerHTML += this.createPanelItem(item);
     });
+  }
+
+  private validate(element: HTMLInputElement): void {
+    const validation = new CheckValidity(element, this.panelContainer);
+    validation.init();
   }
 
   private assignData(): void {
