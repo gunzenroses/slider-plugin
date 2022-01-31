@@ -1,5 +1,3 @@
-import IView from 'Interfaces/IView';
-
 const TOrient = {
   HORIZONTAL: 'horizontal',
   VERTICAL: 'vertical'
@@ -66,12 +64,6 @@ type TScaleItem = {
   spanClass: string;
 };
 
-type TScaleOptions = {
-  item: number;
-  index: number;
-  that: IView;
-};
-
 export {
   TDataInfo,
   TModelData,
@@ -80,7 +72,6 @@ export {
   TListenerArr,
   TPanelParam,
   TRangeStyle,
-  TScaleOptions,
   TScaleItem,
   TOrient,
   TSettings,

@@ -172,7 +172,7 @@ class View implements IView {
   private countPercents(): {
     firstThumbPercent: number;
     secondThumbPercent: number;
-    } {
+  } {
     const firstThumbPercent: number = findPosition(
       this.thumb,
       this.settings.ifHorizontal,

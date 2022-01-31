@@ -8,12 +8,14 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:jest/recommended",
     "airbnb-base",
+    "airbnb-typescript/base",
     "plugin:fsd/all",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 12,
     sourceType: "module",
+    project: ["./tsconfig.json"]
   },
   settings: {
     "import/resolver": {
@@ -53,9 +55,13 @@ module.exports = {
     ],
     "import/extensions": ["error", "never"],
     "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-unused-vars": ["warn", {
-      "args": "none"
-    }]
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        args: "none",
+      },
+    ],
+    "@typescript-eslint/comma-dangle": "off"
   },
   globals: {
     page: true,
