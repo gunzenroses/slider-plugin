@@ -14,7 +14,7 @@ class CheckValidity {
     this.parentContainer = parentContainer;
     this.messageContainer = appendCustomElement(
       'div',
-      'js-error-message',
+      'error-message',
       this.parentContainer
     );
   }
@@ -72,7 +72,7 @@ class CheckValidity {
 
   private placeValidityMessages(): void {
     const msg = this.getInvalidities();
-    this.messageContainer.classList.remove('js-hidden');
+    this.messageContainer.classList.remove('hidden');
     this.messageContainer.innerText = msg;
     setTimeout(() => {
       this.deleteValidityMessage();
@@ -82,7 +82,7 @@ class CheckValidity {
   private deleteValidityMessage(): void {
     this.invalidities = [];
     this.messageContainer.innerText = '';
-    this.messageContainer.classList.add('js-hidden');
+    this.messageContainer.classList.add('hidden');
   }
 }
 

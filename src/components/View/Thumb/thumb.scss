@@ -24,4 +24,8 @@
   &_second-vertical {
     transform: translate(-$height-basic, $height-basic);
   }
+
+  &_disabled {
+    display: none;
+  }
 }

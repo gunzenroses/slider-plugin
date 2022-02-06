@@ -5,7 +5,7 @@ function appendCustomElement(
   className: string,
   parent: HTMLElement
 ): HTMLElement {
-  const el = document.createElement(`${ type }`);
+  const el = document.createElement(type);
   el.classList.add(className);
   parent.append(el);
   return el;
@@ -16,7 +16,7 @@ function afterCustomElement(
   className: string,
   parent: HTMLElement
 ): HTMLElement {
-  const el = document.createElement(`${ type }`);
+  const el = document.createElement(type);
   el.classList.add(className);
   parent.after(el);
   return el;

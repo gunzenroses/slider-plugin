@@ -31,15 +31,11 @@
   }
 }
 
-.js-disabled {
-  display: none;
-}
-
-.js-hidden {
+.hidden {
   visibility: hidden;
 }
 
-.js-error-message {
+.error-message {
   width: 100%;
   height: fit-content;
   background-color: $color-basic;

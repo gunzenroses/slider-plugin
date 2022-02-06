@@ -23,4 +23,8 @@ $height-tooltip: 2rem;
   &_vertical {
     transform: translate(-100%, calc(-50% + $height-basic));
   }
+
+  &_disabled {
+    display: none;
+  }
 }

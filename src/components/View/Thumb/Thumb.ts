@@ -30,7 +30,7 @@ class Thumb {
       : `${ this.className }-vertical`;
     const totalClass = this.className === 'thumb_first' || that.settings.range
       ? ['thumb', typeClass]
-      : ['thumb', typeClass, 'js-disabled'];
+      : ['thumb', typeClass, 'thumb_disabled'];
     totalClass.forEach((item: string) => {
       this.element.classList.add(item);
     });
@@ -43,9 +43,9 @@ class Thumb {
       ? that.settings.firstPosition
       : that.settings.secondPosition;
     if (that.settings.ifHorizontal) {
-      this.element.style.left = `${ num }%`;
+      this.element.style.left = num.toString();
     } else {
-      this.element.style.bottom = `${ num }%`;
+      this.element.style.bottom = num.toString();
     }
   }
 }

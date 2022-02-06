@@ -38,7 +38,7 @@ class Tooltip {
       : 'tooltip_vertical';
     const totalClass = that.settings.tooltip
       ? ['tooltip', this.className, verticalClass]
-      : ['tooltip', this.className, verticalClass, 'js-disabled'];
+      : ['tooltip', this.className, verticalClass, 'tooltip_disabled'];
     this.element = document.createElement('span');
     totalClass.forEach((item) => {
       this.element.classList.add(item);

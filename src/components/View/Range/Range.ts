@@ -21,7 +21,7 @@ class Range {
     const elementClass: Array<string> = that.settings.ifHorizontal
       ? ['range']
       : ['range', 'range_vertical'];
-    elementClass.forEach((item) => this.element.classList.add(`${ item }`));
+    elementClass.forEach((item) => this.element.classList.add(item));
     return this.element;
   }
 

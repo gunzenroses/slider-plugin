@@ -278,8 +278,8 @@ describe('class View', () => {
 
       view.init(updatedData);
 
-      expect(view.scale.classList.contains('js-disabled')).toBe(true);
-      expect(view.tooltipFirst.classList.contains('js-disabled')).toBe(true);
+      expect(view.scale.classList.contains('scale_disabled')).toBe(true);
+      expect(view.tooltipFirst.classList.contains('tooltip_disabled')).toBe(true);
     });
   });
 });

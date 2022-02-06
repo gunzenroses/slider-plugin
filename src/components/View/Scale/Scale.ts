@@ -37,7 +37,7 @@ class Scale {
       ? ['scale']
       : ['scale', 'scale_vertical'];
     if (!that.settings.scale) {
-      scaleClass.push('js-disabled');
+      scaleClass.push('scale_disabled');
     }
     this.element = document.createElement('div');
     this.element.dataset.name = 'scale';

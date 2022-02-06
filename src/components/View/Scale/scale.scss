@@ -23,6 +23,10 @@ $border-width: 1px;
     border-right: $border-width solid $color-dark;
   }
 
+  &_disabled {
+    display: none;
+  }
+
   &__row {
     @include isFlex($align: flex-end);
 
