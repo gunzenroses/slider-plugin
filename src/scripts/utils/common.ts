@@ -1,19 +1,21 @@
-function appendCustomElement(
+function appendCustomElement(options: {
   type: string,
   className: string,
   parent: HTMLElement
-): HTMLElement {
+}): HTMLElement {
+  const { type, className, parent } = options;
   const el = document.createElement(type);
   el.classList.add(className);
   parent.append(el);
   return el;
 }
 
-function afterCustomElement(
+function afterCustomElement(options: {
   type: string,
   className: string,
   parent: HTMLElement
-): HTMLElement {
+}): HTMLElement {
+  const { type, className, parent } = options;
   const el = document.createElement(type);
   el.classList.add(className);
   parent.after(el);
@@ -79,22 +81,24 @@ function changeValueToPercents(value: number, data: TSettings): number {
   return newValue;
 }
 
-function fromValueToPX(
+function fromValueToPX(options: {
   value: number,
   data: TSettings,
   containerSize: number
-): number {
+}): number {
+  const { value, data, containerSize } = options;
   const { max, min } = data;
   const pxPerDivis = containerSize / (max - min);
   const valueInPx = value * pxPerDivis;
   return valueInPx;
 }
 
-function findPosition(
+function findPosition(options: {
   thisElement: HTMLElement,
   ifHorizontal: boolean,
   containerSize: number
-): number {
+}): number {
+  const { thisElement, ifHorizontal, containerSize } = options;
   let newPos;
   if (ifHorizontal) {
     newPos = thisElement.style.left

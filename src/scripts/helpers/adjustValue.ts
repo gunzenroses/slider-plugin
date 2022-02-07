@@ -1,17 +1,12 @@
 import { applyStepOnValue } from 'utils/common';
 
-function adjustValue(
+function adjustValue(options: {
   name: string,
   value: TModelData,
-  data: TSettings
-): TModelData {
-  const {
-    max,
-    min,
-    step,
-    currentFirst,
-    currentSecond
-  }: TSettings = data;
+  data: TSettings,
+}): TModelData {
+  const { name, value, data } = options;
+  const { max, min, step, currentFirst, currentSecond }: TSettings = data;
 
   function adjustMin(val: number | string): number {
     const minDiff = max - 1;
@@ -43,13 +38,17 @@ function adjustValue(
     const moreThanHalfWay = value > currentFirst + step / 2;
     if (typeof val === 'string') {
       return min;
-    } if (val <= min) {
+    }
+    if (val <= min) {
       return min;
-    } if (val > currentSecond) {
+    }
+    if (val > currentSecond) {
       return currentSecond;
-    } if (betweenInOneStep && moreThanHalfWay) {
+    }
+    if (betweenInOneStep && moreThanHalfWay) {
       return currentSecond;
-    } if (value <= currentSecond) {
+    }
+    if (value <= currentSecond) {
       return applyStepOnValue(val, data);
     }
     return min;
@@ -62,13 +61,17 @@ function adjustValue(
     const moreThanHalfWay = value > currentFirst + 0.5 * step;
     if (typeof val === 'string') {
       return max;
-    } if (val < currentFirst) {
+    }
+    if (val < currentFirst) {
       return currentFirst;
-    } if (val > max) {
+    }
+    if (val > max) {
       return max;
-    } if (betweenInOneStep && moreThanHalfWay) {
+    }
+    if (betweenInOneStep && moreThanHalfWay) {
       return currentSecond;
-    } if (val <= max) {
+    }
+    if (val <= max) {
       return applyStepOnValue(val, data);
     }
     return max;

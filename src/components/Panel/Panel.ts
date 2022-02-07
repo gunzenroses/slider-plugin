@@ -31,12 +31,16 @@ class ConfigurationPanel implements IPanel {
   private currentSecondInput!: HTMLInputElement;
 
   constructor(container: HTMLElement, presenter: IPresenter) {
-    this.panelContainer = afterCustomElement('div', 'panel', container);
-    this.panelItems = appendCustomElement(
-      'div',
-      'panel__items',
-      this.panelContainer
-    );
+    this.panelContainer = afterCustomElement({
+      type: 'div', 
+      className: 'panel',
+      parent: container
+    });
+    this.panelItems = appendCustomElement({
+      type: 'div',
+      className: 'panel__items',
+      parent: this.panelContainer
+    });
     this.presenter = presenter;
     this.init();
     this.updatePanel();

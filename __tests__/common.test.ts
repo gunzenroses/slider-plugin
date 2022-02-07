@@ -121,13 +121,21 @@ describe('findPosition()', () => {
 
   describe('for horizontal slider', () => {
     test('thumb element', () => {
-      const pos = findPosition(element, true, container);
+      const pos = findPosition({
+        thisElement: element,
+        ifHorizontal: true,
+        containerSize: container,
+      });
 
       expect(pos).toBeDefined();
     });
 
     test('thumb element without style', () => {
-      const pos = findPosition(element2, true, container);
+      const pos = findPosition({
+        thisElement: element2,
+        ifHorizontal: true,
+        containerSize: container
+      });
 
       expect(pos).toBeDefined();
     });
@@ -135,13 +143,21 @@ describe('findPosition()', () => {
 
   describe('for vertical slider', () => {
     test('thumb element', () => {
-      const pos = findPosition(element, false, container);
+      const pos = findPosition({
+        thisElement: element, 
+        ifHorizontal: false, 
+        containerSize: container
+      });
 
       expect(pos).toBeDefined();
     });
 
     test('thumb element without style', () => {
-      const pos = findPosition(element2, false, container);
+      const pos = findPosition({
+        thisElement: element2,
+        ifHorizontal: false,
+        containerSize: container
+      });
 
       expect(pos).toBeDefined();
     });

@@ -173,16 +173,16 @@ class View implements IView {
     firstThumbPercent: number;
     secondThumbPercent: number;
   } {
-    const firstThumbPercent: number = findPosition(
-      this.thumb,
-      this.settings.ifHorizontal,
-      this.containerSize
-    );
-    const secondThumbPercent: number = findPosition(
-      this.thumbSecond,
-      this.settings.ifHorizontal,
-      this.containerSize
-    );
+    const firstThumbPercent: number = findPosition({
+      thisElement: this.thumb,
+      ifHorizontal: this.settings.ifHorizontal,
+      containerSize: this.containerSize
+    });
+    const secondThumbPercent: number = findPosition({
+      thisElement: this.thumbSecond,
+      ifHorizontal: this.settings.ifHorizontal,
+      containerSize: this.containerSize
+    });
     return { firstThumbPercent, secondThumbPercent };
   }
 

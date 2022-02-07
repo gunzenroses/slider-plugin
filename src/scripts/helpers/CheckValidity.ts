@@ -12,11 +12,11 @@ class CheckValidity {
   constructor(item: HTMLInputElement, parentContainer: HTMLElement) {
     this.item = item;
     this.parentContainer = parentContainer;
-    this.messageContainer = appendCustomElement(
-      'div',
-      'error-message',
-      this.parentContainer
-    );
+    this.messageContainer = appendCustomElement({
+      type: 'div',
+      className: 'error-message',
+      parent: this.parentContainer
+    });
   }
 
   init(): void {

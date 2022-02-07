@@ -19,9 +19,21 @@ describe('class Model', () => {
 
   describe('method setData', () => {
     test('should update data in model', () => {
-      const min = adjustValue('min', 2, model.getData());
-      const max = adjustValue('max', 130, model.getData());
-      const step = adjustValue('step', 2, model.getData());
+      const min = adjustValue({
+        name: 'min',
+        value: 2, 
+        data: model.getData()
+      });
+      const max = adjustValue({
+        name: 'max',
+        value: 130, 
+        data: model.getData()
+      });
+      const step = adjustValue({
+        name: 'step',
+        value: 2, 
+        data: model.getData()
+      });
 
       model.setData('step', step);
       model.setData('min', min);

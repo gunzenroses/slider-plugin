@@ -108,11 +108,11 @@ class Scale {
   private makeScaleContainer(that: IView): void {
     const penultimateItem = this.scaleItemRow[this.scaleItemRow.length - 1];
     const lengthOfLeft = that.settings.max - penultimateItem;
-    const leftLengthInPx = fromValueToPX(
-      lengthOfLeft,
-      that.settings,
-      this.scaleLength
-    );
+    const leftLengthInPx = fromValueToPX({
+      value: lengthOfLeft,
+      data: that.settings,
+      containerSize: this.scaleLength
+    });
     const newContainerSize = this.scaleLength - leftLengthInPx - 1;
     this.tailContainer = Math.floor(this.scaleLength - newContainerSize);
 

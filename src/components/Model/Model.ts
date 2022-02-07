@@ -28,7 +28,11 @@ class Model implements IModel {
   private updateData(name: keyof TSettings, data: TModelData): void {
     const oldData = this.getData();
     if (oldData[name] === data) return;
-    const updData = adjustValue(name, data, oldData);
+    const updData = adjustValue({
+      name: name, 
+      value: data, 
+      data: oldData
+    });
     const newData = { [name]: updData };
     this.data = { ...oldData, ...newData };
   }
