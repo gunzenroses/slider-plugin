@@ -1,8 +1,3 @@
-const TOrient = {
-  HORIZONTAL: 'horizontal',
-  VERTICAL: 'vertical'
-};
-
 type TModelData = boolean | number | string;
 
 type TDataInfo = {
@@ -62,18 +57,4 @@ type TScaleItem = {
   stepPerDiv: number;
   segmentClass: string;
   spanClass: string;
-};
-
-export {
-  TDataInfo,
-  TModelData,
-  TListenerArg,
-  TListener,
-  TListenerArr,
-  TPanelParam,
-  TRangeStyle,
-  TScaleItem,
-  TOrient,
-  TSettings,
-  TViewSettings
 };
