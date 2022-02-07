@@ -43,9 +43,9 @@ class Thumb {
       ? that.settings.firstPosition
       : that.settings.secondPosition;
     if (that.settings.ifHorizontal) {
-      this.element.style.left = num.toString();
+      this.element.style.left = `${ num }%`;
     } else {
-      this.element.style.bottom = num.toString();
+      this.element.style.bottom = `${ num }%`;
     }
   }
 }
