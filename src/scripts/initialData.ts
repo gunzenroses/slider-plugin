@@ -1,4 +1,4 @@
-import { TOrient, TSettings } from 'utils/types';
+import { TOrient } from 'utils/const';
 
 const initialData: TSettings = {
   min: 0,
@@ -9,7 +9,7 @@ const initialData: TSettings = {
   step: 1,
   orientation: TOrient.HORIZONTAL,
   tooltip: true,
-  scale: true
+  scale: true,
 };
 
 export default initialData;

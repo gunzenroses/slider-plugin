@@ -2,12 +2,10 @@ import { boundMethod } from 'autobind-decorator';
 
 import CheckValidity from 'helpers/CheckValidity';
 import {
-  TSettings, TPanelParam, TOrient, TDataInfo
-} from 'utils/types';
-import {
   afterCustomElement,
   appendCustomElement
 } from 'utils/common';
+import { TOrient } from 'utils/const';
 import IPresenter from 'Interfaces/IPresenter';
 import IPanel from 'Interfaces/IPanel';
 

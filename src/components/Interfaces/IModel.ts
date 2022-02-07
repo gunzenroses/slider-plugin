@@ -1,4 +1,3 @@
-import { TModelData, TSettings } from 'utils/types';
 import IObservable from './IObservable';
 
 interface IModel {

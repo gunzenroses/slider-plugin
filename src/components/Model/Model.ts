@@ -1,4 +1,3 @@
-import { TModelData, TSettings } from 'utils/types';
 import { applyStepOnValue } from 'utils/common';
 import adjustValue from 'helpers/adjustValue';
 import IObservable from 'Interfaces/IObservable';

@@ -1,6 +1,5 @@
 import { boundMethod } from 'autobind-decorator';
 
-import { TModelData, TSettings } from 'utils/types';
 import { changePercentsToValue } from 'utils/common';
 import IPresenter from 'Interfaces/IPresenter';
 import IObservable from 'Interfaces/IObservable';

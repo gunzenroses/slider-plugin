@@ -1,4 +1,3 @@
-import { TSettings } from 'utils/types';
 import initialData from 'scripts/initialData';
 import IPresenter from 'Interfaces/IPresenter';
 import IPanel from 'Interfaces/IPanel';
@@ -15,11 +14,11 @@ class SliderMaker {
   constructor(
     container: HTMLElement,
     options: TSettings,
-    configurationPanel?: boolean
+    ifPanel?: boolean
   ) {
     const data = { ...initialData, ...options };
     this.presenter = new Presenter(container, data);
-    this.panel = configurationPanel
+    this.panel = ifPanel
       ? new Panel(container, this.presenter)
       : null;
   }

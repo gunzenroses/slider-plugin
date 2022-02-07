@@ -1,4 +1,3 @@
-import { TSettings, TViewSettings } from 'utils/types';
 import IObservable from './IObservable';
 
 interface IView {

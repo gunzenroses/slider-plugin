@@ -1,5 +1,3 @@
-import { TSettings } from './types';
-
 function appendCustomElement(
   type: string,
   className: string,

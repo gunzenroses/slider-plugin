@@ -1,4 +1,3 @@
-import { TSettings } from 'utils/types';
 import IPresenter from './IPresenter';
 
 interface IPanel {

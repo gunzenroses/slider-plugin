@@ -1,4 +1,3 @@
-import { TModelData, TSettings } from 'utils/types';
 import { applyStepOnValue } from 'utils/common';
 
 function adjustValue(
