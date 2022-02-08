@@ -3,8 +3,11 @@ import {
   applyRestrictions,
   applyStepOnPercents,
   applyStepOnValue,
+  changeValueToPercents,
   findPosition,
+  fromValueToPX,
   getNumbersAfterDot,
+  valueToPercentsApplyStep,
 } from 'utils/common';
 
 describe('applyStepOnPercents()', () => {
@@ -119,6 +122,18 @@ describe('findPosition()', () => {
 
   const container = 400;
 
+  test('should return 0 if containerSize === 0', () => {
+    const nullContainer = 0;
+
+    const pos = findPosition({
+      thisElement: element,
+      ifHorizontal: true,
+      containerSize: nullContainer,
+    });
+    
+    expect(pos).toBe(0);
+  });
+
   describe('for horizontal slider', () => {
     test('thumb element', () => {
       const pos = findPosition({
@@ -164,7 +179,7 @@ describe('findPosition()', () => {
   });
 });
 
-describe('get amout of numbers after dot', () => {
+describe('getNumbersAfterDot()', () => {
   test('should be zero for integer numbers', () => {
     const intNum = 8;
 
@@ -175,6 +190,70 @@ describe('get amout of numbers after dot', () => {
     const floatNum = 8.123;
 
     expect(getNumbersAfterDot(floatNum)).toBe(3);
+  });
+});
+
+describe('changeValueToPercents()', () => {
+  test('should return 100 if max === min', () => {
+    const newData = {
+      ...initialData,
+      max: 100,
+      min: 100
+    };
+
+    const perc = changeValueToPercents(10, newData);
+
+    expect(perc).toBe(100);
+  });
+});
+
+describe('fromValueToPX()', () => {
+  test('should return containerSize when max === min', () => {
+    const newData = {
+      ...initialData,
+      max: 100,
+      min: 100,
+    };
+    const containerSize = 20;
+    const value = 11;
+
+    const pix = fromValueToPX({
+      value: value,
+      data: newData,
+      containerSize: containerSize
+    })
+
+    expect(pix).toBe(containerSize);
   })
-  
-})
+});
+
+
+describe('valueToPercentsApplyStep()', () => {
+  test('should return 100 if value >= max', () => {
+    const newMax = 1000;
+    const newData = {
+      ...initialData,
+      max: newMax
+    }
+    const value = newMax + 10;
+
+    const returnValue = valueToPercentsApplyStep(value, newData);
+
+    expect(returnValue).toBe(100);
+  });
+
+  test('should return 100 if max === min', () => {
+    const newMax = 1000;
+    const newMin = 1000;
+    const newData = {
+      ...initialData,
+      max: newMax,
+      min: newMin
+    };
+    const value = 10;
+
+    const returnValue = valueToPercentsApplyStep(value, newData);
+
+    expect(returnValue).toBe(100);
+  })
+});
