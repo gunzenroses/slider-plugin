@@ -77,8 +77,12 @@ function applyStepOnValue(value: number, data: TSettings): number {
 
 function changeValueToPercents(value: number, data: TSettings): number {
   const { max, min } = data;
-  const newValue = parseFloat((((value - min) / (max - min)) * 100).toFixed(2));
-  return newValue;
+  if (max === min) {
+    return 100;
+  } else {
+    const newValue = parseFloat((((value - min) / (max - min)) * 100).toFixed(2));
+    return newValue;
+  }
 }
 
 function fromValueToPX(options: {
