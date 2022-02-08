@@ -6,7 +6,9 @@ function adjustValue(options: {
   data: TSettings,
 }): TModelData {
   const { name, value, data } = options;
-  const { max, min, step, currentFirst, currentSecond }: TSettings = data;
+  const {
+    max, min, step, currentFirst, currentSecond
+  }: TSettings = data;
 
   function adjustMin(val: number | string): number {
     const minDiff = max - 1;

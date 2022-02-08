@@ -80,12 +80,11 @@ function changeValueToPercents(value: number, data: TSettings): number {
   const diff = max - min;
   if (diff === 0) {
     return 100;
-  } else {
-    const newValue = parseFloat(
-      (((value - min) / (diff)) * 100).toFixed(2)
-    );
-    return newValue;
   }
+  const newValue = parseFloat(
+    (((value - min) / (diff)) * 100).toFixed(2)
+  );
+  return newValue;
 }
 
 function fromValueToPX(options: {
@@ -96,13 +95,12 @@ function fromValueToPX(options: {
   const { value, data, containerSize } = options;
   const { max, min } = data;
   const diff = max - min;
-  if ( diff === 0) {
+  if (diff === 0) {
     return containerSize;
-  } else {
-    const pxPerDivis = containerSize / (max - min);
-    const valueInPx = value * pxPerDivis;
-    return valueInPx;
   }
+  const pxPerDivis = containerSize / (max - min);
+  const valueInPx = value * pxPerDivis;
+  return valueInPx;
 }
 
 function findPosition(options: {
@@ -114,21 +112,18 @@ function findPosition(options: {
   let newPos;
   if (containerSize === 0) {
     newPos = 0;
-  }
-  else {
-    if (ifHorizontal) {
-      newPos = thisElement.style.left
-        ? parseInt(thisElement.style.left.replace('%', ''), 10)
-        : (parseInt(getComputedStyle(thisElement).left.replace('px', ''), 10)
+  } else if (ifHorizontal) {
+    newPos = thisElement.style.left
+      ? parseInt(thisElement.style.left.replace('%', ''), 10)
+      : (parseInt(getComputedStyle(thisElement).left.replace('px', ''), 10)
             / containerSize)
           * 100;
-    } else {
-      newPos = thisElement.style.bottom
-        ? parseInt(thisElement.style.bottom.replace('%', ''), 10)
-        : (parseInt(getComputedStyle(thisElement).bottom.replace('px', ''), 10)
+  } else {
+    newPos = thisElement.style.bottom
+      ? parseInt(thisElement.style.bottom.replace('%', ''), 10)
+      : (parseInt(getComputedStyle(thisElement).bottom.replace('px', ''), 10)
             / containerSize)
           * 100;
-    }
   }
   return newPos;
 }
@@ -151,9 +146,8 @@ function getTextWidth(text: string, font: string): number {
     context.font = font;
     const metrics = context.measureText(text);
     return metrics.width + 6;
-  } else {
-    return 40;
   }
+  return 40;
 }
 
 function valueToPercentsApplyStep(value: number, data: TSettings): number {

@@ -148,11 +148,11 @@ class Scale {
 
   private createScaleItem(item: number): string {
     const special: string = item === this.maxItem && this.tailContainer < 30
-      ? 'style= "visibility: hidden;"'
+      ? 'style = "visibility: hidden;"'
       : '';
     return `
-      <div class= '${ this.segmentClass }'>
-        <span class= '${ this.spanClass }' ${ special }>
+      <div class = '${ this.segmentClass }'>
+        <span class = '${ this.spanClass }' ${ special }>
           ${ item }
         </span>
       </div>`;
@@ -162,8 +162,8 @@ class Scale {
     const maxType: string = that.settings.ifHorizontal ? 'right' : 'top';
     const maxStyle = `position: absolute; ${ maxType }: 0;`;
     const scaleItemMax = `
-      <div class= '${ this.segmentClass }' style= '${ maxStyle }'>
-        <span class= '${ this.spanClass }'>
+      <div class = '${ this.segmentClass }' style = '${ maxStyle }'>
+        <span class = '${ this.spanClass }'>
           ${ that.settings.max }
         </span>
       </div>`;

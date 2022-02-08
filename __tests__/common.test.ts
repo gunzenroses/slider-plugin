@@ -21,7 +21,7 @@ describe('applyStepOnPercents()', () => {
     expect(num).toBe(0);
   });
 
-  test('case when "value" = 100', () => {
+  test('case when "value" === 100', () => {
     const val = 100;
     const step = 3;
 

@@ -91,7 +91,7 @@ describe('class Model', () => {
       expect(model.getData().currentFirst).toBe(multiple);
     });
 
-    test('should make currentThumbSecond multiple of "step", when "range"=true', () => {
+    test('should make currentThumbSecond multiple of "step", when "range" === true', () => {
       const newCF = { name: 'currentSecond', data: 35 };
       const step = model.getData().step;
       const multiple = Math.trunc((newCF.data / step) * step);
@@ -102,7 +102,7 @@ describe('class Model', () => {
       expect(model.getData().currentSecond).toBe(multiple);
     });
 
-    test('should make "currentThumbSecond"="max", when "range"=false', () => {
+    test('should make "currentThumbSecond" === "max", when "range" === false', () => {
       model.setData('range', false);
 
       expect(model.getData().currentSecond).toBe(model.getData().max);

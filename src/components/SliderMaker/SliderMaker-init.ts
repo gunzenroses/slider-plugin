@@ -8,4 +8,4 @@ import SliderMaker from './SliderMaker';
     }
     return this;
   };
-})(jQuery);
+}(jQuery));

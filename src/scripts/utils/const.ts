@@ -1,6 +1,6 @@
 const TOrient = {
   HORIZONTAL: 'horizontal',
-  VERTICAL: 'vertical',
+  VERTICAL: 'vertical'
 };
 
-export { TOrient }
+export { TOrient };

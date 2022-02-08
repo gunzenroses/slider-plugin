@@ -29,8 +29,8 @@ class Model implements IModel {
     const oldData = this.getData();
     if (oldData[name] === data) return;
     const updData = adjustValue({
-      name: name, 
-      value: data, 
+      name,
+      value: data,
       data: oldData
     });
     const newData = { [name]: updData };

@@ -83,7 +83,8 @@ describe('class View', () => {
         cancelable: false, 
         composed: false,
       });
-      const startEvent = {...pointDowm, 
+      const startEvent = { 
+        ...pointDowm, 
         target: view.thumb,
         preventDefault: jest.fn(),
       };
@@ -92,7 +93,8 @@ describe('class View', () => {
         cancelable: false, 
         composed: false
       });
-      const moveEvent = {... pointMove,
+      const moveEvent = {
+        ... pointMove,
         clientX: 2,
         clientY: 2,
         preventDefault: jest.fn(),
@@ -114,7 +116,8 @@ describe('class View', () => {
         cancelable: false, 
         composed: false,
       });
-      const startEvent = {...pointDown, 
+      const startEvent = {
+        ...pointDown, 
         target: view.thumbSecond,
         preventDefault: jest.fn(),
       };
@@ -123,7 +126,8 @@ describe('class View', () => {
         cancelable: false, 
         composed: false
       });
-      const moveEvent = {... pointMove,
+      const moveEvent = {
+        ... pointMove,
         clientX: 300,
         clientY: 300,
         preventDefault: jest.fn(),

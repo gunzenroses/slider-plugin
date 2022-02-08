@@ -10,21 +10,22 @@ window.onload = function () {
       currentSecond: 50,
       step: 10,
       scale: true,
-      range: true,
+      range: true
     },
     true
   );
 
-  $('#vertical').sliderMaker({
-    orientation: 'vertical',
-    step: 6,
-    max: 140,
-    scale: {
-      stepPerDiv: 2,
+  $('#vertical').sliderMaker(
+    {
+      orientation: 'vertical',
+      step: 6,
+      max: 140,
+      scale: {
+        stepPerDiv: 2
+      },
+      range: true,
+      tooltip: false
     },
-    range: true,
-    tooltip: false,
-  }, 
     true
   );
 
@@ -35,8 +36,8 @@ window.onload = function () {
       currentSecond: 150,
       step: 12,
       scale: true,
-      range: true,
+      range: true
     },
     true
   );
-}
+};

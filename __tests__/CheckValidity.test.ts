@@ -11,7 +11,7 @@ const item = document.createElement('input');
 item.type = 'number';
 
 describe('helpers: class CheckValidity', () => {
-  test('return false when input.value=""', () => {
+  test('return false when input.value === "" ', () => {
     item.value = '';
 
     const checkItem = new CheckValidity(item, container);
@@ -51,7 +51,7 @@ describe('helpers: class CheckValidity', () => {
     expect(checkItem.invalidities).toContain('Number should be maximum 30');
   });
 
-  test('add error-message when stepMismatch and min=0', () => {
+  test('add error-message when stepMismatch and min === 0', () => {
     item.min = '0';
     item.step = '4';
     item.value = '11';
@@ -63,7 +63,7 @@ describe('helpers: class CheckValidity', () => {
     expect(checkItem.invalidities).toContain('Number should be multiple of 4');
   });
 
-  test('add error-message when stepMismatch and min>0', () => {
+  test('add error-message when stepMismatch and min > 0', () => {
     item.min = '10';
     item.step = '8';
     item.value = '25';

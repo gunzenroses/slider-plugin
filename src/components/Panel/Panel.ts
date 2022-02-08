@@ -32,7 +32,7 @@ class ConfigurationPanel implements IPanel {
 
   constructor(container: HTMLElement, presenter: IPresenter) {
     this.panelContainer = afterCustomElement({
-      type: 'div', 
+      type: 'div',
       className: 'panel',
       parent: container
     });
@@ -153,19 +153,19 @@ class ConfigurationPanel implements IPanel {
 
   private createChildren(): void {
     this.minInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="min"]')
+      this.panelContainer.querySelector('input[name = "min"]')
     );
     this.maxInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="max"]')
+      this.panelContainer.querySelector('input[name = "max"]')
     );
     this.stepInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="step"]')
+      this.panelContainer.querySelector('input[name = "step"]')
     );
     this.currentFirstInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="currentFirst"]')
+      this.panelContainer.querySelector('input[name = "currentFirst"]')
     );
     this.currentSecondInput = <HTMLInputElement>(
-      this.panelContainer.querySelector('input[name="currentSecond"]')
+      this.panelContainer.querySelector('input[name = "currentSecond"]')
     );
     this.currentSecondInput.disabled = !this.data.range;
   }
@@ -234,8 +234,8 @@ class ConfigurationPanel implements IPanel {
   }
 
   private createPanelItem(params: TPanelParam): string {
-    const panelItemName = `<div class= 'panel__name'>${ params.text }</div>`;
-    const element = `<div class= 'panel__item'>
+    const panelItemName = `<div class = 'panel__name'>${ params.text }</div>`;
+    const element = `<div class = 'panel__item'>
         ${ panelItemName } ${ this.panelItemInput(params) }
       </div>`;
     return element;
@@ -245,17 +245,17 @@ class ConfigurationPanel implements IPanel {
     const options = params.options ? params.options : [];
     if (params.type === 'number') {
       return `
-      <input class='panel__input' name= ${ params.name } 
-          type= ${ params.type } value= ${ params.value } required/>`;
+      <input class = 'panel__input' name = ${ params.name } 
+          type = ${ params.type } value = ${ params.value } required/>`;
     }
     if (params.type === 'checkbox') {
       return `
-        <input class='panel__input' name= ${ params.name } 
-          type= ${ params.type } ${ params.value }/>`;
+        <input class = 'panel__input' name = ${ params.name } 
+          type = ${ params.type } ${ params.value }/>`;
     }
     if (params.type === 'select') {
       return `
-        <${ params.type } class='panel__input' name= ${ params.name }> 
+        <${ params.type } class = 'panel__input' name = ${ params.name }> 
             ${ options.map((el: string) => this.selectOptions(el)).join('') } 
         </${ params.type }>`;
     }
@@ -267,8 +267,8 @@ class ConfigurationPanel implements IPanel {
       ? 'horizontal'
       : 'vertical';
     return arg === orient
-      ? `<option selected value='${ arg }'>${ arg }</option> `
-      : `<option value='${ arg }'>${ arg }</option> `;
+      ? `<option selected value = '${ arg }'>${ arg }</option> `
+      : `<option value = '${ arg }'>${ arg }</option> `;
   }
 }
 
