@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = merge(common, {
   mode: "production",
   entry: {
-    "index": path.resolve(__dirname, "./src/index.js"),
+    "index": path.resolve(__dirname, "./src/index.ts"),
   },
   output: {
     libraryTarget: 'umd',
