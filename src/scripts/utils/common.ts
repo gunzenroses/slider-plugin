@@ -77,10 +77,13 @@ function applyStepOnValue(value: number, data: TSettings): number {
 
 function changeValueToPercents(value: number, data: TSettings): number {
   const { max, min } = data;
-  if (max === min) {
+  const diff = max - min;
+  if (diff === 0) {
     return 100;
   } else {
-    const newValue = parseFloat((((value - min) / (max - min)) * 100).toFixed(2));
+    const newValue = parseFloat(
+      (((value - min) / (diff)) * 100).toFixed(2)
+    );
     return newValue;
   }
 }
@@ -92,9 +95,14 @@ function fromValueToPX(options: {
 }): number {
   const { value, data, containerSize } = options;
   const { max, min } = data;
-  const pxPerDivis = containerSize / (max - min);
-  const valueInPx = value * pxPerDivis;
-  return valueInPx;
+  const diff = max - min;
+  if ( diff === 0) {
+    return containerSize;
+  } else {
+    const pxPerDivis = containerSize / (max - min);
+    const valueInPx = value * pxPerDivis;
+    return valueInPx;
+  }
 }
 
 function findPosition(options: {
@@ -104,18 +112,23 @@ function findPosition(options: {
 }): number {
   const { thisElement, ifHorizontal, containerSize } = options;
   let newPos;
-  if (ifHorizontal) {
-    newPos = thisElement.style.left
-      ? parseInt(thisElement.style.left.replace('%', ''), 10)
-      : (parseInt(getComputedStyle(thisElement).left.replace('px', ''), 10)
-          / containerSize)
-        * 100;
-  } else {
-    newPos = thisElement.style.bottom
-      ? parseInt(thisElement.style.bottom.replace('%', ''), 10)
-      : (parseInt(getComputedStyle(thisElement).bottom.replace('px', ''), 10)
-          / containerSize)
-        * 100;
+  if (containerSize === 0) {
+    newPos = 0;
+  }
+  else {
+    if (ifHorizontal) {
+      newPos = thisElement.style.left
+        ? parseInt(thisElement.style.left.replace('%', ''), 10)
+        : (parseInt(getComputedStyle(thisElement).left.replace('px', ''), 10)
+            / containerSize)
+          * 100;
+    } else {
+      newPos = thisElement.style.bottom
+        ? parseInt(thisElement.style.bottom.replace('%', ''), 10)
+        : (parseInt(getComputedStyle(thisElement).bottom.replace('px', ''), 10)
+            / containerSize)
+          * 100;
+    }
   }
   return newPos;
 }
@@ -150,7 +163,12 @@ function valueToPercentsApplyStep(value: number, data: TSettings): number {
   const currentValue = value - data.min;
   const currentInSteps = Math.ceil(currentValue / data.step);
   const currentActual = currentInSteps * data.step;
-  const newValue = (currentActual / total) * 100;
+  let newValue;
+  if (total === 0) {
+    newValue = 100;
+  } else {
+    newValue = (currentActual / total) * 100;
+  }
   return newValue;
 }
 
