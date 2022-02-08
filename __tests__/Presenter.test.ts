@@ -4,7 +4,7 @@
 
 import initialData from 'src/scripts/initialData';
 import Presenter from 'Presenter/Presenter';
-import { TOrient } from 'utils/const';
+import TOrient from 'utils/const';
 
 const container = document.createElement('div');
 container.innerHTML = 'div {width: 400px, height: 400px}';

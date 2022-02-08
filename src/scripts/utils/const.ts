@@ -3,4 +3,4 @@ const TOrient = {
   VERTICAL: 'vertical'
 };
 
-export { TOrient };
+export default TOrient;

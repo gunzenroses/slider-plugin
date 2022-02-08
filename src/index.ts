@@ -1,7 +1,7 @@
 import 'SliderMaker/SliderMaker-init';
 import './index.css';
 
-window.onload = function () {
+window.onload = function makeSliderExamples() {
   $('#default').sliderMaker(
     {
       min: 0,

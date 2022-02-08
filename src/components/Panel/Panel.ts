@@ -5,7 +5,7 @@ import {
   afterCustomElement,
   appendCustomElement
 } from 'utils/common';
-import { TOrient } from 'utils/const';
+import TOrient from 'utils/const';
 import IPresenter from 'Interfaces/IPresenter';
 import IPanel from 'Interfaces/IPanel';
 

@@ -6,7 +6,7 @@ import {
   findPosition,
   valueToPercentsApplyStep
 } from 'utils/common';
-import { TOrient } from 'utils/const';
+import TOrient from 'utils/const';
 import IObservable from 'Interfaces/IObservable';
 import IView from 'Interfaces/IView';
 import Observable from 'Observable/Observable';

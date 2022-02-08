@@ -39,6 +39,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "fsd"],
   rules: {
+    "no-new": "off",
     "linebreak-style": [
       "error",
       process.platform === "win32" ? "windows" : "unix",

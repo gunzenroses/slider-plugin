@@ -1,4 +1,4 @@
-import { TOrient } from 'utils/const';
+import TOrient from 'utils/const';
 
 const initialData: TSettings = {
   min: 0,
