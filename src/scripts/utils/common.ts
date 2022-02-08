@@ -151,8 +151,9 @@ function getTextWidth(text: string, font: string): number {
     context.font = font;
     const metrics = context.measureText(text);
     return metrics.width + 6;
+  } else {
+    return 40;
   }
-  return 40;
 }
 
 function valueToPercentsApplyStep(value: number, data: TSettings): number {
