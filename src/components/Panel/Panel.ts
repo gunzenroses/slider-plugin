@@ -245,18 +245,25 @@ class ConfigurationPanel implements IPanel {
     const options = params.options ? params.options : [];
     if (params.type === 'number') {
       return `
-      <input class = 'panel__input' name = ${ params.name } 
-          type = ${ params.type } value = ${ params.value } required/>`;
+      <input 
+        class = 'panel__input' 
+        name = ${ params.name } 
+        type = ${ params.type } 
+        value = ${ params.value } required/>`;
     }
     if (params.type === 'checkbox') {
       return `
-        <input class = 'panel__input' name = ${ params.name } 
+        <input 
+          class = 'panel__input' 
+          name = ${ params.name } 
           type = ${ params.type } ${ params.value }/>`;
     }
     if (params.type === 'select') {
       return `
-        <${ params.type } class = 'panel__input' name = ${ params.name }> 
-            ${ options.map((el: string) => this.selectOptions(el)).join('') } 
+        <${ params.type } 
+          class = 'panel__input' 
+          name = ${ params.name }> 
+          ${ options.map((el: string) => this.selectOptions(el)).join('') } 
         </${ params.type }>`;
     }
     return '';
