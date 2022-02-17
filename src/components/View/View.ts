@@ -79,7 +79,7 @@ class View implements IView {
     if (!e.target) return;
     this.dragObj = (e.target as HTMLElement).closest('.thumb');
     /* 'as' is used here
-    cause eventTarget does not ihherit properties from Element like 'classList'
+    cause eventTarget does not inherit properties from Element like 'classList'
     (not all targets are elements),
     but in our case (event happened on a DOM Element) it is */
     e.preventDefault();

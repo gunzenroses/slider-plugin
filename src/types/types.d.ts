@@ -10,7 +10,7 @@ type TListenerArg = any;
 /*
   TListenerArg may have a type:
     'IView', 'number', 'Event', 'TSettings', 'undefined', etc.
-  which makes type cheking excessively complicated
+  which makes type checking excessively complicated
 */
 
 type TListener = (args: TListenerArg) => void;

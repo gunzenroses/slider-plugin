@@ -98,8 +98,8 @@ function fromValueToPX(options: {
   if (diff === 0) {
     return containerSize;
   }
-  const pxPerDivis = containerSize / (max - min);
-  const valueInPx = value * pxPerDivis;
+  const pxPerDivision = containerSize / (max - min);
+  const valueInPx = value * pxPerDivision;
   return valueInPx;
 }
 
