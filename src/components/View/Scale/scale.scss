@@ -36,14 +36,14 @@ $border-width: 1px;
   }
 
   &__segment {
-    background: $color-dark;
+    flex-shrink: 0;
     width: 1px;
     height: 6px;
-    flex-shrink: 0;
+    background: $color-dark;
 
     &_vertical {
-      height: 1px;
       width: 6px;
+      height: 1px;
     }
   }
 

@@ -2,13 +2,13 @@
 
 .track {
   position: relative;
-  z-index: 1;
   width: 100%;
   height: $height-basic;
   margin-top: 2rem;
+  border: $width-border solid $color-border;
   border-radius: 3px;
   background-color: $color-light;
-  border: $width-border solid $color-border;
+  z-index: 1;
 
   &_vertical {
     width: $height-basic;

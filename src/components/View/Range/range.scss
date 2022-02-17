@@ -2,22 +2,22 @@
 
 .range {
   position: absolute;
-  z-index: 2;
-  height: 100%;
-  width: auto;
   top: 0%;
   left: 0%;
   right: 66%;
+  width: auto;
+  height: 100%;
   border: $width-border solid $color-border;
   border-radius: 3px;
   background: $color-basic;
+  z-index: 2;
 
   &_vertical {
-    width: 100%;
-    height: auto;
     left: 0;
     right: 0;
     top: 66%;
     bottom: 0;
+    width: 100%;
+    height: auto;
   }
 }

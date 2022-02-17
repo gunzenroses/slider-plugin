@@ -2,12 +2,12 @@
 
 .thumb {
   position: absolute;
-  z-index: 3;
   width: $half-thumb * 2;
   height: $half-thumb * 2;
+  border: 2px solid $color-light;
   border-radius: 10px;
   background: $color-basic;
-  border: 2px solid $color-light;
+  z-index: 3;
 
   &_first {
     transform: translate(-$half-thumb, -$height-basic);
