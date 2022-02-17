@@ -154,9 +154,12 @@ function valueToPercentsApplyStep(value: number, data: TSettings): number {
   if (value >= data.max) {
     return 100;
   }
+  if (value <= data.min) {
+    return 0;
+  }
   const total = data.max - data.min;
   const currentValue = value - data.min;
-  const currentInSteps = Math.ceil(currentValue / data.step);
+  const currentInSteps = Math.round(currentValue / data.step);
   const currentActual = currentInSteps * data.step;
   let newValue;
   if (total === 0) {
