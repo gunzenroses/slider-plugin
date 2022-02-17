@@ -164,6 +164,10 @@ function valueToPercentsApplyStep(value: number, data: TSettings): number {
   let newValue;
   if (total === 0) {
     newValue = 100;
+  } else if (currentActual < 0) {
+    newValue = 0;
+  } else if (currentActual > 100) {
+    newValue = 100;
   } else {
     newValue = (currentActual / total) * 100;
   }
