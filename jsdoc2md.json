@@ -6,7 +6,7 @@
     "node_modules/jsdoc-babel",
     {
       "babel": {
-        "extentions": [
+        "extensions": [
           "ts"
         ],
         "presets": [

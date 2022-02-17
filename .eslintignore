@@ -7,7 +7,7 @@ node_modules
 jest.config.js
 babel.config.js
 tsconfig.json
-tscondif.prod.js
+tsconfig.prod.js
 webpack.common.js
 webpack.dev.js
 webpack.prod.js

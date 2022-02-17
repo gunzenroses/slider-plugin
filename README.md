@@ -29,7 +29,7 @@ View:
 
 - implements IView interface;
 - visualizes data;
-- manipulates (renders and updates) subviews;
+- manipulates (renders and updates) subViews;
 - handles events;
 - notifies methods of IPresenter interface (using instance of IObservable interface).
 
@@ -117,7 +117,7 @@ Initiate slider in js-file with your parameters.
 |currentSecond|65|number|starting position for second handle|
 |step|1|number|should be integer number > 0|
 |orientation|horizontal|string|*horizontal* or *vertical* orientation|
-|tooptip|true|boolean|*true* - enable tooltips with value of handle; *false* - hide tooltips|
+|tooltip|true|boolean|*true* - enable tooltips with value of handle; *false* - hide tooltips|
 |scale|true|boolean| *true* - sets automatic numbering of grid sections; *false* - hides grid.|
 
 Extended API. If you want to see configuration panel next to your slider
