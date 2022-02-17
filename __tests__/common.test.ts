@@ -201,9 +201,9 @@ describe('changeValueToPercents()', () => {
       min: 100
     };
 
-    const perc = changeValueToPercents(10, newData);
+    const percents = changeValueToPercents(10, newData);
 
-    expect(perc).toBe(100);
+    expect(percents).toBe(100);
   });
 });
 

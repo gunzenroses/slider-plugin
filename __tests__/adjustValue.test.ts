@@ -87,10 +87,10 @@ describe('adjustValue', () => {
 
     test('"currentFirst" > "currentSecond"', () => {
       const currentSecond = data.currentSecond;
-      const morethanCS = currentSecond + 10;
+      const moreThanCS = currentSecond + 10;
       const currentFirst = adjustValue({
         name: 'currentFirst', 
-        value: morethanCS, 
+        value: moreThanCS, 
         data: data
       });
 

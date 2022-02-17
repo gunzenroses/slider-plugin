@@ -39,23 +39,23 @@ describe('Presenter', () => {
     describe('should process events from model', () => {
       test('should notify subscribers for changes in currentThumb', () => {
         const value = 18;
-        const spyfromModelUpdate = jest.spyOn(presenter.eventDispatcher, 'notify');
+        const spyFromModelUpdate = jest.spyOn(presenter.eventDispatcher, 'notify');
         const spyFromModelChangeView = jest.spyOn(presenter.view, 'changeFirstThumb').mockImplementation();
 
         presenter.model.eventDispatcher.notify('thumbUpdate', value);
 
-        expect(spyfromModelUpdate).toHaveBeenCalledWith('thumbUpdate', value);
+        expect(spyFromModelUpdate).toHaveBeenCalledWith('thumbUpdate', value);
         expect(spyFromModelChangeView).toHaveBeenCalledWith(value);
       });
 
       test('should notify subscribers for changes in currentThumbSecond', () => {
         const value = 18;
-        const spyfromModelUpdate = jest.spyOn(presenter.eventDispatcher, 'notify');
+        const spyFromModelUpdate = jest.spyOn(presenter.eventDispatcher, 'notify');
         const spyFromModelChangeView = jest.spyOn(presenter.view, 'changeSecondThumb').mockImplementation();
 
         presenter.model.eventDispatcher.notify('thumbSecondUpdate', value);
 
-        expect(spyfromModelUpdate).toHaveBeenCalledWith('thumbSecondUpdate', value);
+        expect(spyFromModelUpdate).toHaveBeenCalledWith('thumbSecondUpdate', value);
         expect(spyFromModelChangeView).toHaveBeenCalledWith(value);
       });
     });

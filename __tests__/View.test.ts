@@ -78,13 +78,13 @@ describe('class View', () => {
     test('notify when thumbFirst is moved to a position smaller that thumbSecond', () => {
       const spyOnDragMove = jest.spyOn(view.eventDispatcher, 'notify');
       view.settings.range = true;
-      const pointDowm = new CustomEvent('poinerdown', {
+      const pointDown = new CustomEvent('poinerdown', {
         bubbles: true,
         cancelable: false, 
         composed: false,
       });
       const startEvent = { 
-        ...pointDowm, 
+        ...pointDown, 
         target: view.thumb,
         preventDefault: jest.fn(),
       };
@@ -202,7 +202,7 @@ describe('class View', () => {
   });
 
   describe('method dragThumbStart()', () => {
-    test('disable pointerdowm eventListener', () => {
+    test('disable pointerdown eventListener', () => {
       const newSet = {
         ...data,
         range: false,
@@ -229,12 +229,12 @@ describe('class View', () => {
   });
 
   describe('method stopListenDown()', () => {
-    test('do not listen to thumbdown events when thumbmove', () => {
-      const spyOnThumbDowm = jest.spyOn(view, 'dragThumbStart');
+    test('do not listen to thumbDown events when thumbMove', () => {
+      const spyOnThumbDown = jest.spyOn(view, 'dragThumbStart');
 
       document.dispatchEvent(new Event('pointerdown'));
 
-      expect(spyOnThumbDowm).toBeCalledTimes(0);
+      expect(spyOnThumbDown).toBeCalledTimes(0);
     });
   });
 
