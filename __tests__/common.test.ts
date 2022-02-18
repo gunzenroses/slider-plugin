@@ -256,4 +256,19 @@ describe('valueToPercentsApplyStep()', () => {
 
     expect(returnValue).toBe(100);
   })
+
+  test('should return 0 if value is less than min', () => {
+    const value = 5;
+    const newMin = 11;
+    const newStep = 10;
+    const newData = {
+      ... initialData,
+      min: newMin,
+      step: newStep
+    }
+
+    const returnValue = valueToPercentsApplyStep(value, newData);
+
+    expect(returnValue).toBe(0);
+  })
 });
