@@ -34,6 +34,12 @@ type TPanelParam = {
   options?: Array<string>;
 };
 
+type TScaleItemSettings = {
+  item: number;
+  direction: string;
+  settings: TSettings
+};
+
 type TSettings = {
   min: number;
   max: number;
