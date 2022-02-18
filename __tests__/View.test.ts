@@ -107,7 +107,7 @@ describe('class View', () => {
       expect(spyOnDragMove).toHaveBeenCalledTimes(1);
     });
 
-    test('notify when thumbSecond moved to a positon bigger than thumbFirst', () => {
+    test('notify when thumbSecond moved to a position bigger than thumbFirst', () => {
       const spyOnDragMove = jest.spyOn(view.eventDispatcher, 'notify');
       view.settings.range = true;
       
@@ -159,7 +159,7 @@ describe('class View', () => {
       const evt = new MouseEvent("pointerup", {
         bubbles: true,
       });
-      view.container.dispatchEvent(evt);
+      view.parentContainer.dispatchEvent(evt);
 
       expect(spyOnSm).toBeCalledTimes(1);
     });
@@ -262,7 +262,7 @@ describe('class View', () => {
 
   describe('method render()', () => {
     test('init rendering view elements', () => {
-      expect(view.container).toBeDefined();
+      expect(view.parentContainer).toBeDefined();
       expect(view.track).toBeDefined();
       expect(view.range).toBeDefined();
       expect(view.thumb).toBeDefined();

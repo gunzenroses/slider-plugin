@@ -10,7 +10,6 @@ import TOrient from 'utils/const';
 import IObservable from 'Interfaces/IObservable';
 import IView from 'Interfaces/IView';
 import Observable from 'Observable/Observable';
-import Container from './Container/Container';
 import Range from './Range/Range';
 import Track from './Track/Track';
 import Thumb from './Thumb/Thumb';
@@ -18,11 +17,11 @@ import Scale from './Scale/Scale';
 import Tooltip from './Tooltip/Tooltip';
 
 class View implements IView {
+  parentContainer: HTMLElement;
+
   eventDispatcher: IObservable;
 
   settings!: TViewSettings;
-
-  container!: HTMLElement;
 
   thumb!: HTMLElement;
 
@@ -42,8 +41,6 @@ class View implements IView {
 
   thumbWidth!: number;
 
-  private parentContainer: HTMLElement;
-
   private dragObj!: HTMLElement | null;
 
   constructor(container: HTMLElement) {
@@ -59,7 +56,7 @@ class View implements IView {
   }
 
   enable(): void {
-    this.container.addEventListener('pointerup', this.selectThumb);
+    this.parentContainer.addEventListener('pointerup', this.selectThumb);
     window.addEventListener('resize', this.createMetrics);
     this.listenPointerDown();
   }
@@ -128,10 +125,9 @@ class View implements IView {
     const elements = this.settings.range
       ? [this.thumb, this.thumbSecond, this.tooltipFirst, this.tooltipSecond]
       : [this.thumb, this.tooltipFirst];
-    elements.forEach((element) => element.addEventListener(
-      'pointerdown',
-      this.dragThumbStart
-    ));
+    elements.forEach((element) =>
+      element.addEventListener('pointerdown', this.dragThumbStart)
+    );
   }
 
   private stopListenPointerDown(): void {
@@ -144,13 +140,13 @@ class View implements IView {
   }
 
   private listenMoveAndUp(): void {
-    this.container.removeEventListener('pointerup', this.selectThumb);
+    this.parentContainer.removeEventListener('pointerup', this.selectThumb);
     document.addEventListener('pointermove', this.dragThumbMove);
     document.addEventListener('pointerup', this.dragThumbEnd);
   }
 
   private stopListenMoveAndUp(): void {
-    this.container.addEventListener('pointerup', this.selectThumb);
+    this.parentContainer.addEventListener('pointerup', this.selectThumb);
     document.removeEventListener('pointermove', this.dragThumbMove);
     document.removeEventListener('pointerup', this.dragThumbEnd);
   }
@@ -178,12 +174,12 @@ class View implements IView {
     const firstThumbPercent: number = findPosition({
       thisElement: this.thumb,
       ifHorizontal: this.settings.ifHorizontal,
-      containerSize: this.containerSize
+      containerSize: this.containerSize,
     });
     const secondThumbPercent: number = findPosition({
       thisElement: this.thumbSecond,
       ifHorizontal: this.settings.ifHorizontal,
-      containerSize: this.containerSize
+      containerSize: this.containerSize,
     });
     return { firstThumbPercent, secondThumbPercent };
   }
@@ -197,7 +193,7 @@ class View implements IView {
   }
 
   private countPosition(e: PointerEvent): number {
-    const containerClientRect = this.container.getBoundingClientRect();
+    const containerClientRect = this.parentContainer.getBoundingClientRect();
     const newVal: number = this.settings.ifHorizontal
       ? e.clientX - containerClientRect.left + this.thumbWidth / 2
       : e.clientY - containerClientRect.top;
@@ -210,14 +206,10 @@ class View implements IView {
   private dragThumbRangeTrue(newPos: number): void {
     if (this.dragObj === null) return;
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
-    if (
-      this.dragObj.classList === this.thumb.classList
-    ) {
+    if (this.dragObj.classList === this.thumb.classList) {
       const value = newPos > secondThumbPercent ? secondThumbPercent : newPos;
       this.eventDispatcher.notify('firstThumb', value);
-    } else if (
-      this.dragObj.classList === this.thumbSecond.classList
-    ) {
+    } else if (this.dragObj.classList === this.thumbSecond.classList) {
       const value = newPos < firstThumbPercent ? firstThumbPercent : newPos;
       this.eventDispatcher.notify('secondThumb', value);
     }
@@ -237,13 +229,13 @@ class View implements IView {
       ...settings,
       ifHorizontal,
       firstPosition,
-      secondPosition
+      secondPosition,
     };
   }
 
   @boundMethod
   private createMetrics(): void {
-    const containerMeasures = getComputedStyle(this.container);
+    const containerMeasures = getComputedStyle(this.parentContainer);
     this.containerSize = this.settings.ifHorizontal
       ? parseInt(containerMeasures.width.replace('px', ''), 10)
       : parseInt(containerMeasures.height.replace('px', ''), 10);
@@ -253,17 +245,17 @@ class View implements IView {
 
   private render(): void {
     this.parentContainer.innerHTML = '';
-    this.container = new Container(
-      this,
-      this.parentContainer
-    ).element;
-    this.track = new Track(this).element;
-    this.scale = new Scale(this).element;
+
+    const container = document.createDocumentFragment();
+    this.track = new Track(container, this).element;
+    this.scale = new Scale(container, this).element;
     this.range = new Range(this).element;
     this.thumb = new Thumb(this, 'thumb_first').element;
     this.thumbSecond = new Thumb(this, 'thumb_second').element;
     this.tooltipFirst = new Tooltip(this, 'tooltip_first').element;
     this.tooltipSecond = new Tooltip(this, 'tooltip_second').element;
+
+    this.parentContainer.append(container);
   }
 }
 

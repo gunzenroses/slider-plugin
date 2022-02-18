@@ -18,14 +18,14 @@ class Scale {
 
   private newStep!: number;
 
-  constructor(that: IView) {
-    this.init(that);
+  constructor(container: DocumentFragment, that: IView) {
+    this.init(container, that);
   }
 
-  private init(that: IView): HTMLElement {
+  private init(container: DocumentFragment, that: IView): HTMLElement {
     this.make(that);
     this.change(that);
-    that.container.append(this.element);
+    container.append(this.element);
     return this.element;
   }
 
@@ -60,7 +60,7 @@ class Scale {
   }
 
   private countContainerSize(that: IView): void {
-    const parentNodeStyle = getComputedStyle(that.container);
+    const parentNodeStyle = getComputedStyle(that.parentContainer);
     this.scaleLength = that.settings.ifHorizontal
       ? Math.ceil(parseFloat(parentNodeStyle.width))
       : Math.ceil(parseFloat(parentNodeStyle.height));

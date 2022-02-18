@@ -3,17 +3,17 @@ import IView from 'Interfaces/IView';
 class Track {
   element!: HTMLElement;
 
-  constructor(that: IView) {
-    this.init(that);
+  constructor(container: DocumentFragment, that: IView) {
+    this.init(container, that);
   }
 
-  private init(that: IView): HTMLElement {
+  private init(container: DocumentFragment, that: IView): HTMLElement {
     const trackClass: Array<string> = that.settings.ifHorizontal
       ? ['track']
       : ['track', 'track_vertical'];
     this.element = document.createElement('div');
     trackClass.forEach((item) => this.element.classList.add(item));
-    that.container.append(this.element);
+    container.append(this.element);
     return this.element;
   }
 }

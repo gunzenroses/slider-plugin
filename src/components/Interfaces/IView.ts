@@ -3,7 +3,7 @@ import IObservable from './IObservable';
 interface IView {
   eventDispatcher: IObservable;
   settings: TViewSettings;
-  container: HTMLElement;
+  parentContainer: HTMLElement;
   thumb: HTMLElement;
   thumbSecond: HTMLElement;
   track: HTMLElement;
