@@ -1,5 +1,5 @@
 import 'SliderMaker/SliderMaker-init';
-import './index.css';
+import './index.scss';
 
 window.onload = function makeSliderExamples() {
   $('#default').sliderMaker(
