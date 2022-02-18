@@ -1,4 +1,6 @@
-import { fromValueToPX, getNumbersAfterDot, getTextWidth, valueToPercentsApplyStep } from 'utils/common';
+import {
+  fromValueToPX, getNumbersAfterDot, getTextWidth, valueToPercentsApplyStep
+} from 'utils/common';
 import IView from 'Interfaces/IView';
 
 class Scale {
@@ -53,8 +55,7 @@ class Scale {
     this.makeScaleRow(that, toFixedDecimals);
     this.countDistanceBetweenLastItems(that);
     this.makeElementClasses(that);
-    this.element.innerHTML =
-      this.makeScaleItems(that) + this.makeMaxItem(that);
+    this.element.innerHTML = this.makeScaleItems(that) + this.makeMaxItem(that);
     return this.element;
   }
 
@@ -66,16 +67,14 @@ class Scale {
   }
 
   private countScaleStep(that: IView, toFixedDecimals: number): void {
-    const widthOfMaxNumber =
-      getTextWidth(
-        (that.settings.max - that.settings.step).toFixed(toFixedDecimals),
-        '16px TimesNewRoman'
-      ) + 5;
-    const widthOfMinNumber =
-      getTextWidth(
-        (that.settings.min + that.settings.step).toFixed(toFixedDecimals),
-        '16px TimesNewRoman'
-      ) + 5;
+    const widthOfMaxNumber = getTextWidth(
+      (that.settings.max - that.settings.step).toFixed(toFixedDecimals),
+      '16px TimesNewRoman'
+    ) + 5;
+    const widthOfMinNumber = getTextWidth(
+      (that.settings.min + that.settings.step).toFixed(toFixedDecimals),
+      '16px TimesNewRoman'
+    ) + 5;
     const widthOfScaleNumber = Math.max(widthOfMaxNumber, widthOfMinNumber);
     const maxStepsToPlace = Math.floor(this.scaleLength / widthOfScaleNumber);
     const maxStepsCounted = Math.round(
@@ -83,10 +82,9 @@ class Scale {
     );
     const howManyTimesBigger = Math.ceil(maxStepsCounted / maxStepsToPlace);
 
-    this.newStep =
-      maxStepsCounted > maxStepsToPlace && howManyTimesBigger > 1
-        ? howManyTimesBigger * that.settings.step
-        : that.settings.step;
+    this.newStep = maxStepsCounted > maxStepsToPlace && howManyTimesBigger > 1
+      ? howManyTimesBigger * that.settings.step
+      : that.settings.step;
   }
 
   private makeScaleRow(that: IView, toFixedDecimals: number): void {
@@ -109,11 +107,10 @@ class Scale {
     const leftLengthInPx = fromValueToPX({
       value: lengthOfLeft,
       data: that.settings,
-      containerSize: this.scaleLength,
+      containerSize: this.scaleLength
     });
     const newContainerSize = this.scaleLength - leftLengthInPx - 1;
     this.tailContainer = Math.floor(this.scaleLength - newContainerSize);
-    console.log(this.tailContainer)
   }
 
   private makeElementClasses(that: IView): void {
@@ -127,11 +124,9 @@ class Scale {
 
   private makeScaleItems(that: IView): string {
     const direction = that.settings.ifHorizontal ? 'left' : 'bottom';
-    const settings = that.settings;
+    const { settings } = that;
     return this.scaleItemRow
-      .map((item) =>
-        this.createScaleItem({ item, direction, settings })
-      )
+      .map((item) => this.createScaleItem({ item, direction, settings }))
       .join(' ');
   }
 
@@ -141,27 +136,26 @@ class Scale {
     const notEnoughSpaceForMaxItem = this.tailContainer < 30;
     const itemIsMaxItem = item === maxItem;
     const distance = valueToPercentsApplyStep(item, settings);
-    
-    const segmentStyle: string =
-      itemIsMaxItem && notEnoughSpaceForMaxItem
-        ? 'visibility: hidden;'
-        : `${direction}: ${distance}%`;
+
+    const segmentStyle: string = itemIsMaxItem && notEnoughSpaceForMaxItem
+      ? 'visibility: hidden;'
+      : `${ direction }: ${ distance }%`;
 
     return `
-      <div class = '${this.segmentClass}' style = '${segmentStyle}'>
-        <span class = '${this.spanClass}'>
-          ${item}
+      <div class = '${ this.segmentClass }' style = '${ segmentStyle }'>
+        <span class = '${ this.spanClass }'>
+          ${ item }
         </span>
       </div>`;
   }
 
   private makeMaxItem(that: IView): string {
     const maxType: string = that.settings.ifHorizontal ? 'right' : 'top';
-    const maxStyle = `position: absolute; ${maxType}: 0;`;
+    const maxStyle = `position: absolute; ${ maxType }: 0;`;
     const scaleItemMax = `
-      <div class = '${this.segmentClass}' style = '${maxStyle}'>
-        <span class = '${this.spanClass}'>
-          ${that.settings.max}
+      <div class = '${ this.segmentClass }' style = '${ maxStyle }'>
+        <span class = '${ this.spanClass }'>
+          ${ that.settings.max }
         </span>
       </div>`;
     return scaleItemMax;

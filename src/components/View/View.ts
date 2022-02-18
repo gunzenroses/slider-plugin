@@ -128,9 +128,10 @@ class View implements IView {
     const elements = this.settings.range
       ? [this.thumb, this.thumbSecond, this.tooltipFirst, this.tooltipSecond]
       : [this.thumb, this.tooltipFirst];
-    elements.forEach((element) =>
-      element.addEventListener('pointerdown', this.dragThumbStart)
-    );
+    elements.forEach((element) => element.addEventListener(
+      'pointerdown',
+      this.dragThumbStart
+    ));
   }
 
   private stopListenPointerDown(): void {
