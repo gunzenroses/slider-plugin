@@ -2,7 +2,7 @@
 
 .track {
   position: relative;
-  width: 100%;
+  width: calc(2 * $width-border + 100%);
   height: $height-basic;
   margin-top: 2rem;
   border: $width-border solid $color-border;
