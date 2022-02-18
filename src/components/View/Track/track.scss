@@ -3,7 +3,7 @@
 .track {
   position: relative;
   width: calc(2 * $width-border + 100%);
-  height: $height-basic;
+  height: calc(2 * $width-border + $height-basic);
   margin-top: 2rem;
   border: $width-border solid $color-border;
   border-radius: 3px;
