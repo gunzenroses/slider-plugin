@@ -60,6 +60,7 @@ class View implements IView {
 
   enable(): void {
     this.container.addEventListener('pointerup', this.selectThumb);
+    window.addEventListener('resize', this.createMetrics);
     this.listenPointerDown();
   }
 
@@ -127,8 +128,8 @@ class View implements IView {
     const elements = this.settings.range
       ? [this.thumb, this.thumbSecond, this.tooltipFirst, this.tooltipSecond]
       : [this.thumb, this.tooltipFirst];
-    elements.forEach(
-      (element) => element.addEventListener('pointerdown', this.dragThumbStart)
+    elements.forEach((element) =>
+      element.addEventListener('pointerdown', this.dragThumbStart)
     );
   }
 
@@ -239,6 +240,7 @@ class View implements IView {
     };
   }
 
+  @boundMethod
   private createMetrics(): void {
     const containerMeasures = getComputedStyle(this.container);
     this.containerSize = this.settings.ifHorizontal
