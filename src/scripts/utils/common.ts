@@ -154,9 +154,6 @@ function valueToPercentsApplyStep(value: number, data: TSettings): number {
   if (value >= data.max) {
     return 100;
   }
-  if (value <= data.min) {
-    return 0;
-  }
   const total = data.max - data.min;
   const currentValue = value - data.min;
   const currentInSteps = Math.round(currentValue / data.step);
@@ -166,8 +163,6 @@ function valueToPercentsApplyStep(value: number, data: TSettings): number {
     newValue = 100;
   } else if (currentActual < 0) {
     newValue = 0;
-  } else if (currentActual > 100) {
-    newValue = 100;
   } else {
     newValue = (currentActual / total) * 100;
   }

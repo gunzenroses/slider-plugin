@@ -10,8 +10,6 @@ class Scale {
 
   private scaleLength!: number;
 
-  private scaleItems!: HTMLDivElement;
-
   private segmentClass!: string;
 
   private spanClass!: string;
@@ -25,7 +23,6 @@ class Scale {
   private init(that: IView): HTMLElement {
     this.make(that);
     this.change(that);
-    this.element.append(this.scaleItems);
     that.container.append(this.element);
     return this.element;
   }
@@ -55,9 +52,8 @@ class Scale {
     this.countScaleStep(that, toFixedDecimals);
     this.makeScaleRow(that, toFixedDecimals);
     this.countDistanceBetweenLastItems(that);
-    this.makeScaleContainer(that);
     this.makeElementClasses(that);
-    this.scaleItems.innerHTML =
+    this.element.innerHTML =
       this.makeScaleItems(that) + this.makeMaxItem(that);
     return this.element;
   }
@@ -120,14 +116,6 @@ class Scale {
     console.log(this.tailContainer)
   }
 
-  private makeScaleContainer(that: IView): void {
-    const scaleItemClass = that.settings.ifHorizontal
-      ? ['scale__row']
-      : ['scale__row', 'scale__row_vertical'];
-    this.scaleItems = document.createElement('div');
-    scaleItemClass.forEach((item) => this.scaleItems.classList.add(item));
-  }
-
   private makeElementClasses(that: IView): void {
     this.segmentClass = that.settings.ifHorizontal
       ? 'scale__segment'
@@ -141,14 +129,14 @@ class Scale {
     const direction = that.settings.ifHorizontal ? 'left' : 'bottom';
     const settings = that.settings;
     return this.scaleItemRow
-      .map((item, index) =>
-        this.createScaleItem({ item, index, direction, settings })
+      .map((item) =>
+        this.createScaleItem({ item, direction, settings })
       )
       .join(' ');
   }
 
   private createScaleItem(data: TScaleItemSettings): string {
-    const { item, index, direction, settings } = data;
+    const { item, direction, settings } = data;
     const maxItem = this.scaleItemRow[this.scaleItemRow.length - 1];
     const notEnoughSpaceForMaxItem = this.tailContainer < 30;
     const itemIsMaxItem = item === maxItem;

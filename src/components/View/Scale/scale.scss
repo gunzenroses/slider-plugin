@@ -27,16 +27,8 @@ $border-width: 1px;
     display: none;
   }
 
-  &__row {
-    @include isFlex($align: flex-end);
-
-    &_vertical {
-      flex-direction: column-reverse;
-    }
-  }
-
   &__segment {
-    flex-shrink: 0;
+    position: absolute;
     width: 1px;
     height: 6px;
     background: $color-dark;
