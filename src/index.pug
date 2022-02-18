@@ -1,125 +1,125 @@
 block variables
-  - var slidersId = ["default", "vertical", "horizontal"]
+  - var slidersId = ['default', 'vertical', 'horizontal']
 
 doctype html
-html(lang = "ru")
+html(lang = 'ru')
   head
     //- Meta
-    meta(charset = "UTF-8")
+    meta(charset = 'UTF-8')
     meta(
-      name = "viewport", 
-      content = "width = device-width, initial-scale = 1, maximum-scale = 1, shrink-to-fit = no")
-    meta(http-equiv = "X-UA-Compatible", content = "ie = edge")
+      name = 'viewport', 
+      content = 'width = device-width, initial-scale = 1, maximum-scale = 1, shrink-to-fit = no')
+    meta(http-equiv = 'X-UA-Compatible', content = 'ie = edge')
     
     //- Basic 
-    Seo 
-     block basicSeo 
-      meta(name = "description" content = "exapmles of range-slider")
-      meta(name = "keywords", content = "slider, range-slider, js-pluging")
-      meta(name = "author" content = "gunzenroses")
+    block basicSeo 
+      meta(name = 'description' content = 'exapmles of range-slider')
+      meta(name = 'keywords', content = 'slider, range-slider, js-pluging')
+      meta(name = 'author' content = 'gunzenroses')
+
     //- Favicons
     block favIcons
       //- android and chrome
       link(
-        rel = "manifest" 
-        type = "application/manifest+json" 
-        href = "./assets/favicons/site.webmanifest" 
-        crossorigin = "use-credentials")
+        rel = 'manifest' 
+        type = 'application/manifest+json' 
+        href = './assets/favicons/site.webmanifest' 
+        crossorigin = 'use-credentials')
       link(
-        rel = "icon" 
-        type = "image/png" 
-        sizes = "192x192" 
-        href = "./assets/favicons/android-icon-192x192.png")
+        rel = 'icon' 
+        type = 'image/png' 
+        sizes = '192x192' 
+        href = './assets/favicons/android-icon-192x192.png')
       link(
-        rel = "icon" 
-        type = "image/png" 
-        sizes = "96x96" 
-        href = "./assets/favicons/android-icon-96x96.png")
+        rel = 'icon' 
+        type = 'image/png' 
+        sizes = '96x96' 
+        href = './assets/favicons/android-icon-96x96.png')
       link(
-        rel = "icon" 
-        type = "image/png" 
-        sizes = "72x72" 
-        href = "./assets/favicons/android-icon-72x72.png")
+        rel = 'icon' 
+        type = 'image/png' 
+        sizes = '72x72' 
+        href = './assets/favicons/android-icon-72x72.png')
       link(
-        rel = "icon" 
-        type = "image/png" 
-        sizes = "48x48" 
-        href = "./assets/favicons/android-icon-48x48.png")
+        rel = 'icon' 
+        type = 'image/png' 
+        sizes = '48x48' 
+        href = './assets/favicons/android-icon-48x48.png')
       link(
-        rel = "icon" 
-        type = "image/png" 
-        sizes = "36x36" 
-        href = "./assets/favicons/android-icon-36x36.png")
+        rel = 'icon' 
+        type = 'image/png' 
+        sizes = '36x36' 
+        href = './assets/favicons/android-icon-36x36.png')
       //- iOs
       link(
-        rel = "apple-touch-icon" 
-        sizes = "57x57" 
-        href = "./assets/favicons/apple-icon-57x57.png")
+        rel = 'apple-touch-icon' 
+        sizes = '57x57' 
+        href = './assets/favicons/apple-icon-57x57.png')
       link(
-        rel = "apple-touch-icon" 
-        sizes = "60x60" 
-        href = "./assets/favicons/apple-icon-60x60.png")
+        rel = 'apple-touch-icon' 
+        sizes = '60x60' 
+        href = './assets/favicons/apple-icon-60x60.png')
       link(
-        rel = "apple-touch-icon" 
-        sizes = "72x72" 
-        href = "./assets/favicons/apple-icon-72x72.png")
+        rel = 'apple-touch-icon' 
+        sizes = '72x72' 
+        href = './assets/favicons/apple-icon-72x72.png')
       link(
-        rel = "apple-touch-icon" 
-        sizes = "76x76" 
-        href = "./assets/favicons/apple-icon-76x76.png")
+        rel = 'apple-touch-icon' 
+        sizes = '76x76' 
+        href = './assets/favicons/apple-icon-76x76.png')
       link(
-        rel = "apple-touch-icon" 
-        sizes = "114x114" 
-        href = "./assets/favicons/apple-icon-114x114.png")
+        rel = 'apple-touch-icon' 
+        sizes = '114x114' 
+        href = './assets/favicons/apple-icon-114x114.png')
       link(
-        rel = "apple-touch-icon" 
-        sizes = "120x120" 
-        href = "./assets/favicons/apple-icon-120x120.png")
+        rel = 'apple-touch-icon' 
+        sizes = '120x120' 
+        href = './assets/favicons/apple-icon-120x120.png')
       link(
-        rel = "apple-touch-icon" 
-        sizes = "144x144" 
-        href = "./assets/favicons/apple-icon-144x144.png")
+        rel = 'apple-touch-icon' 
+        sizes = '144x144' 
+        href = './assets/favicons/apple-icon-144x144.png')
       link(
-        rel = "apple-touch-icon" 
-        sizes = "152x152" 
-        href = "./assets/favicons/apple-icon-152x152.png")
+        rel = 'apple-touch-icon' 
+        sizes = '152x152' 
+        href = './assets/favicons/apple-icon-152x152.png')
       link(
-        rel = "apple-touch-icon" 
-        sizes = "180x180" 
-        href = "./assets/favicons/apple-icon-180x180.png")
+        rel = 'apple-touch-icon' 
+        sizes = '180x180' 
+        href = './assets/favicons/apple-icon-180x180.png')
       //- desktop
       link(
-        rel = "shortcut icon" 
-        type = "image/x-icon" 
-        href = "./assets/favicons/favicon.ico")
+        rel = 'shortcut icon' 
+        type = 'image/x-icon' 
+        href = './assets/favicons/favicon.ico')
       link(
-        rel = "icon" 
-        type = "image/png" 
-        sizes = "32x32" 
-        href = "./assets/favicons/favicon-32x32.png")
+        rel = 'icon' 
+        type = 'image/png' 
+        sizes = '32x32' 
+        href = './assets/favicons/favicon-32x32.png')
       link(
-        rel = "icon" 
-        type = "image/png" 
-        sizes = "96x96" 
-        href = "./assets/favicons/favicon-96x96.png")
+        rel = 'icon' 
+        type = 'image/png' 
+        sizes = '96x96' 
+        href = './assets/favicons/favicon-96x96.png')
       link(
-        rel = "icon" 
-        type = "image/png" 
-        sizes = "16x16" 
-        href = "./assets/favicons/favicon-16x16.png")
+        rel = 'icon' 
+        type = 'image/png' 
+        sizes = '16x16' 
+        href = './assets/favicons/favicon-16x16.png')
       //- windows
       meta(
-        name = "msapplication-config" 
-        content = "./assets/favicons/browserconfig.xml")
+        name = 'msapplication-config' 
+        content = './assets/favicons/browserconfig.xml')
       meta(
-        name = "msapplication-TileColor" 
-        content = "#ffffff")
+        name = 'msapplication-TileColor' 
+        content = '#ffffff')
       meta(
-        name = "msapplication-TileImage" 
-        content = "./assets/favicons/ms-icon-144x144.png")
+        name = 'msapplication-TileImage' 
+        content = './assets/favicons/ms-icon-144x144.png')
       meta(
-        name = "theme-color" 
-        content = "#ffffff")
+        name = 'theme-color' 
+        content = '#ffffff')
       
     //- Title
     block title 
