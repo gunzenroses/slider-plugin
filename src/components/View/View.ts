@@ -244,8 +244,7 @@ class View implements IView {
   }
 
   private render(): void {
-    this.parentContainer.innerHTML = '';
-
+    this.renderParentContainer();
     const container = document.createDocumentFragment();
     this.track = new Track(container, this).element;
     this.scale = new Scale(container, this).element;
@@ -254,8 +253,16 @@ class View implements IView {
     this.thumbSecond = new Thumb(this, 'thumb_second').element;
     this.tooltipFirst = new Tooltip(this, 'tooltip_first').element;
     this.tooltipSecond = new Tooltip(this, 'tooltip_second').element;
-
     this.parentContainer.append(container);
+  }
+
+  private renderParentContainer(): void {
+    this.parentContainer.innerHTML = '';
+    if (this.settings.ifHorizontal) {
+      this.parentContainer.classList.remove('slider_vertical');
+    } else {
+      this.parentContainer.classList.add('slider_vertical');
+    }
   }
 }
 

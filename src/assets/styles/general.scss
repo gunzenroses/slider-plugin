@@ -6,31 +6,25 @@
 }
 
 .slider {
-  @include isFlex($justify: center, $align: center);
-  width: 400px;
-  margin: 20px auto;
+  @include isFlex($direction: column, $justify: center, $align: center);
+  position: relative;
+  width: 40%;
+  min-width: 320px;
   height: fit-content;
+  margin: 20px auto;
+  border: 1px solid transparent;
+  user-select: none;
+  touch-action: none;
 
   @media (max-width: 400px) {
     width: 90vmin;
     height: 80vmin;
   }
-}
-
-.content {
-  @include isFlex($direction: column, $justify: center, $align: center);
-  position: relative;
-  width: 100%;
-  height: fit-content;
-  margin: 0 auto;
-  border: 1px solid transparent;
-  user-select: none;
-  touch-action: none;
 
   &_vertical {
     flex-direction: row;
-    width: max-content;
-    height: 100%;
+    width: fit-content;
+    height: 320px;
   }
 }
 
