@@ -155,7 +155,6 @@ class View implements IView {
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
     const firstDiff: number = Math.abs(firstThumbPercent - newPos);
     const secondDiff: number = Math.abs(secondThumbPercent - newPos);
-
     if (firstDiff < secondDiff && newPos < secondThumbPercent) {
       this.eventDispatcher.notify('firstThumb', newPos);
     }

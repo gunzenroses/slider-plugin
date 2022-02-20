@@ -183,18 +183,18 @@ class ConfigurationPanel implements IPanel {
   private updateMin(): void {
     this.minInput.value = this.data.min.toString();
     this.minInput.step = this.data.step.toString();
-    this.minInput.max = (this.data.max - 1).toString();
+    this.minInput.max = this.data.max.toString();
   }
 
   private updateMax(): void {
     this.maxInput.value = this.data.max.toString();
     this.maxInput.step = this.data.step.toString();
-    this.maxInput.min = (this.data.min + 1).toString();
+    this.maxInput.min = this.data.min.toString();
   }
 
   private updateStep(): void {
     this.stepInput.value = this.data.step.toString();
-    this.stepInput.min = '1';
+    this.stepInput.min = '0';
   }
 
   @boundMethod

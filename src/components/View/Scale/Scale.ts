@@ -89,7 +89,7 @@ class Scale {
 
   private makeScaleRow(that: IView, toFixedDecimals: number): void {
     this.scaleItemRow = [];
-    if (this.newStep > 1) {
+    if (this.newStep > 0) {
       let i = that.settings.min;
       while (i < that.settings.max) {
         i = parseFloat(i.toFixed(toFixedDecimals));

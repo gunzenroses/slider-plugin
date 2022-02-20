@@ -41,7 +41,7 @@ class CheckValidity {
     }
 
     if (validity.rangeUnderflow) {
-      this.addInvalidity(`Number should be minimum ${ min }`);
+      this.addInvalidity(`Number should be more than ${ min }`);
     }
 
     if (validity.stepMismatch) {

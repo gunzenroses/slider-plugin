@@ -14,23 +14,26 @@ function adjustValue(options: {
     const minDiff = max - 1;
     if (typeof val === 'string') {
       return minDiff;
+    } else {
+      return val <= max ? val : max;
     }
-    return val <= minDiff ? val : minDiff;
   }
 
   function adjustMax(val: number | string): number {
     const minDiff = min + 1;
     if (typeof val === 'string') {
       return minDiff;
+    } else {
+      return val >= min ? val : min;
     }
-    return val >= minDiff ? val : minDiff;
   }
 
   function adjustStep(val: number | string): number {
-    if (typeof val === 'number' && val >= 1) {
+    if (typeof val === 'number' && val > 0) {
       return val;
+    } else {
+      return 1;
     }
-    return 1;
   }
 
   function adjustCurrentFirst(val: number | string): number {
