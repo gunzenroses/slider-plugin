@@ -1,4 +1,4 @@
-import { applyStepOnValue } from 'utils/common';
+import { applyStepOnValue, getNumbersAfterDot } from 'utils/common';
 
 function adjustValue(options: {
   name: string,
@@ -32,7 +32,12 @@ function adjustValue(options: {
     if (typeof val === 'number' && val > 0) {
       return val;
     } else {
-      return 1;
+      const toFixedDecimals = Math.max(
+        getNumbersAfterDot(max),
+        getNumbersAfterDot(min)
+      );
+      const newStep = parseFloat((max - min).toFixed(toFixedDecimals));
+      return newStep;
     }
   }
 
