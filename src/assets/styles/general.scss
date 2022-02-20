@@ -8,13 +8,17 @@
 .slider {
   @include isFlex($direction: column, $justify: center, $align: center);
   position: relative;
-  width: 40%;
-  min-width: 320px;
+  width: 45%;
+  min-width: 280px;
   height: fit-content;
   margin: 20px auto;
   border: 1px solid transparent;
   user-select: none;
   touch-action: none;
+
+  @media (max-width: 900px) {
+    width: 90%;
+  }
 
   @media (max-width: 400px) {
     width: 90vmin;
