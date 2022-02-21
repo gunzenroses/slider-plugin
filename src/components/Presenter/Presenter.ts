@@ -71,13 +71,13 @@ class Presenter implements IPresenter {
   @boundMethod
   private changeFirstThumb(value: number): void {
     this.eventDispatcher.notify('thumbUpdate', value);
-    this.view.changeFirstThumb(value);
+    this.view.changeThumb('thumbFirst', value);
   }
 
   @boundMethod
   private changeSecondThumb(value: number): void {
     this.eventDispatcher.notify('thumbSecondUpdate', value);
-    this.view.changeSecondThumb(value);
+    this.view.changeThumb('thumbSecond', value);
   }
 }
 

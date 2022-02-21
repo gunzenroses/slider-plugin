@@ -20,8 +20,7 @@ interface IView {
   dragThumbStart(e: PointerEvent): void;
   dragThumbMove(e: PointerEvent): void;
   dragThumbEnd(): void;
-  changeFirstThumb(val: number): void;
-  changeSecondThumb(val: number): void;
+  changeThumb(name: string, val: number): void;
 }
 
 export default IView;

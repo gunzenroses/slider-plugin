@@ -238,11 +238,11 @@ describe('class View', () => {
     });
   });
 
-  describe('method changeFirstThumb()', () => {
+  describe('method changeThumb()', () => {
     test('change data', () => {
       const num = 18;
       const spyOnChangeThumb = jest.spyOn(view.eventDispatcher, 'notify');
-      view.changeFirstThumb(num);
+      view.changeThumb('thumbFirst', num);
 
       expect(view.settings.currentFirst).toBe(num);
       expect(spyOnChangeThumb).toBeCalledTimes(1);
@@ -253,7 +253,7 @@ describe('class View', () => {
     test('change data', () => {
       const num = 18;
       const spyOnChangeThumb = jest.spyOn(view.eventDispatcher, 'notify');
-      view.changeSecondThumb(num);
+      view.changeThumb('thumbSecond', num);
 
       expect(view.settings.currentSecond).toBe(num);
       expect(spyOnChangeThumb).toBeCalledTimes(1);
