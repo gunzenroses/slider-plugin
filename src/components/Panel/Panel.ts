@@ -251,13 +251,15 @@ class ConfigurationPanel implements IPanel {
         name = ${ params.name } 
         type = ${ params.type } 
         value = ${ params.value } required/>`;
-    } if (params.type === 'checkbox') {
+    } 
+    if (params.type === 'checkbox') {
       return `
         <input 
           class = 'panel__input' 
           name = ${ params.name } 
           type = ${ params.type } ${ params.value }/>`;
-    } else return `
+    } 
+    return `
         <${ params.type } 
           class = 'panel__input' 
           name = ${ params.name }> 
