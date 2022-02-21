@@ -209,19 +209,15 @@ describe('changeValueToPercents()', () => {
 
 describe('fromValueToPX()', () => {
   test('should return containerSize when max === min', () => {
-    const newData = {
-      ...initialData,
-      max: 100,
-      min: 100,
-    };
     const containerSize = 20;
     const value = 11;
 
     const pix = fromValueToPX({
       value: value,
-      data: newData,
-      containerSize: containerSize
-    })
+      max: 100,
+      min: 100,
+      containerSize: containerSize,
+    });
 
     expect(pix).toBe(containerSize);
   })
@@ -231,13 +227,17 @@ describe('fromValueToPX()', () => {
 describe('valueToPercentsApplyStep()', () => {
   test('should return 100 if value >= max', () => {
     const newMax = 1000;
+    const value = newMax + 10;
+    const { min, step } = initialData;
     const newData = {
       ...initialData,
-      max: newMax
+      value: value,
+      min: min,
+      max: newMax,
+      step: step
     }
-    const value = newMax + 10;
 
-    const returnValue = valueToPercentsApplyStep(value, newData);
+    const returnValue = valueToPercentsApplyStep(newData);
 
     expect(returnValue).toBe(100);
   });
@@ -245,14 +245,16 @@ describe('valueToPercentsApplyStep()', () => {
   test('should return 100 if max === min', () => {
     const newMax = 1000;
     const newMin = 1000;
-    const newData = {
-      ...initialData,
-      max: newMax,
-      min: newMin
-    };
+    const step = initialData.step;
     const value = 10;
+    const newData = {
+      value: value,
+      max: newMax,
+      min: newMin,
+      step: step,
+    };
 
-    const returnValue = valueToPercentsApplyStep(value, newData);
+    const returnValue = valueToPercentsApplyStep(newData);
 
     expect(returnValue).toBe(100);
   })
@@ -260,14 +262,16 @@ describe('valueToPercentsApplyStep()', () => {
   test('should return 0 if value is less than min', () => {
     const value = 5;
     const newMin = 11;
+    const max = initialData.max;
     const newStep = 10;
     const newData = {
-      ... initialData,
+      value: value,
       min: newMin,
+      max: max,
       step: newStep
     }
 
-    const returnValue = valueToPercentsApplyStep(value, newData);
+    const returnValue = valueToPercentsApplyStep(newData);
 
     expect(returnValue).toBe(0);
   })
