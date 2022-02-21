@@ -16,7 +16,8 @@ class Model implements IModel {
   }
 
   getData(): TSettings {
-    return this.data;
+    const requiredData = { ... this.data };
+    return requiredData;
   }
 
   setData(name: keyof TSettings, data: TModelData): void {
