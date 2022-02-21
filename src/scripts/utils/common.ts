@@ -133,13 +133,13 @@ function changePercentsToValue(
   data: TSettings
 ): number {
   const { max, step, min } = data;
-  const stepInPercents = step / (max - min) * 100;
-  const newStep = stepInPercents > 0 
-    ? stepInPercents 
+  const stepInPercents = (step / (max - min)) * 100;
+  const newStep = stepInPercents > 0
+    ? stepInPercents
     : 1;
   const amountInSteps = Math.round(valueInPercents / newStep);
-  const newValue = valueInPercents === 100 
-    ? max 
+  const newValue = valueInPercents === 100
+    ? max
     : amountInSteps * step + min;
   return newValue;
 }
