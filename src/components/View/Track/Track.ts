@@ -1,14 +1,15 @@
-import IView from 'Interfaces/IView';
-
 class Track {
   element!: HTMLElement;
 
-  constructor(container: DocumentFragment, that: IView) {
-    this.init(container, that);
+  constructor(container: DocumentFragment, ifHorizontal: boolean) {
+    this.init(container, ifHorizontal);
   }
 
-  private init(container: DocumentFragment, that: IView): HTMLElement {
-    const trackClass: Array<string> = that.settings.ifHorizontal
+  private init(
+    container: DocumentFragment,
+    ifHorizontal: boolean
+  ): HTMLElement {
+    const trackClass: Array<string> = ifHorizontal
       ? ['track']
       : ['track', 'track_vertical'];
     this.element = document.createElement('div');

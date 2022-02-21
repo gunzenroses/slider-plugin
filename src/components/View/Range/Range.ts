@@ -1,18 +1,19 @@
 import { boundMethod } from 'autobind-decorator';
-import IView from 'Interfaces/IView';
+import IObservable from 'Interfaces/IObservable';
 
 class Range {
   element!: HTMLElement;
 
-  constructor(that: IView) {
-    this.init(that);
+  constructor(data: TTrackElementsData) {
+    this.init(data);
   }
 
-  private init(that: IView): HTMLElement {
-    this.make(that.settings);
-    this.enable(that);
-    this.change(that.settings);
-    that.track.append(this.element);
+  private init(data: TTrackElementsData): HTMLElement {
+    const { container, eventDispatcher, settings } = data;
+    this.make(settings);
+    this.enable(eventDispatcher);
+    this.change(settings);
+    container.append(this.element);
     return this.element;
   }
 
@@ -26,8 +27,8 @@ class Range {
     return this.element;
   }
 
-  private enable(that: IView): void {
-    that.eventDispatcher.add('changeView', this.change);
+  private enable(eventDispatcher: IObservable): void {
+    eventDispatcher.add('changeView', this.change);
   }
 
   @boundMethod
@@ -44,19 +45,19 @@ class Range {
     const { ifHorizontal, firstPosition, range } = settings;
     if (range) {
       const position = ifHorizontal ? 'left' : 'bottom';
-      this.element.style[position] = `${ firstPosition }%`;
+      this.element.style[position] = `${firstPosition}%`;
     } else {
       const position = ifHorizontal ? 'right' : 'top';
-      this.element.style[position] = `${ 100 - firstPosition }%`;
+      this.element.style[position] = `${100 - firstPosition}%`;
     }
   }
 
   private changeSecond(settings: TViewSettings): void {
     const { ifHorizontal, secondPosition } = settings;
     if (ifHorizontal) {
-      this.element.style.right = `${ 100 - secondPosition }%`;
+      this.element.style.right = `${100 - secondPosition}%`;
     } else {
-      this.element.style.top = `${ 100 - secondPosition }%`;
+      this.element.style.top = `${100 - secondPosition}%`;
     }
   }
 }

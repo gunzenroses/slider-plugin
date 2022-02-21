@@ -33,10 +33,6 @@ class View implements IView {
 
   scale!: HTMLElement;
 
-  tooltipFirst!: HTMLElement;
-
-  tooltipSecond!: HTMLElement;
-
   containerSize!: number;
 
   thumbWidth!: number;
@@ -103,30 +99,30 @@ class View implements IView {
     this.listenPointerDown();
   }
 
-  changeFirstThumb(num: number): void {
-    const newValue = valueToPercentsApplyStep(num, this.settings);
-    this.thumb.style.zIndex = '4';
-    this.thumbSecond.style.zIndex = '3';
-    this.settings.firstPosition = newValue;
-    this.settings.currentFirst = num;
-    const newSettings = this.settings;
-    this.eventDispatcher.notify('changeView', newSettings);
-  }
-
-  changeSecondThumb(num: number): void {
-    const newValue = valueToPercentsApplyStep(num, this.settings);
-    this.thumb.style.zIndex = '3';
-    this.thumbSecond.style.zIndex = '4';
-    this.settings.secondPosition = newValue;
-    this.settings.currentSecond = num;
+  changeThumb(name: string, value: number): void {
+    const { min, max, step } = this.settings;
+    const newValue = valueToPercentsApplyStep({
+      value, min, max, step
+    });
+    if (name === 'thumbFirst') {
+      this.thumb.classList.add('thumb_active');
+      this.thumbSecond.classList.remove('thumb_active');
+      this.settings.firstPosition = newValue;
+      this.settings.currentFirst = value;
+    } else {
+      this.thumbSecond.classList.add('thumb_active');
+      this.thumb.classList.remove('thumb_active');
+      this.settings.secondPosition = newValue;
+      this.settings.currentSecond = value;
+    }
     const newSettings = this.settings;
     this.eventDispatcher.notify('changeView', newSettings);
   }
 
   private listenPointerDown(): void {
     const elements = this.settings.range
-      ? [this.thumb, this.thumbSecond, this.tooltipFirst, this.tooltipSecond]
-      : [this.thumb, this.tooltipFirst];
+      ? [this.thumb, this.thumbSecond]
+      : [this.thumb];
     elements.forEach((element) => element.addEventListener(
       'pointerdown',
       this.dragThumbStart
@@ -248,13 +244,20 @@ class View implements IView {
   private render(): void {
     this.renderParentContainer();
     const container = document.createDocumentFragment();
-    this.track = new Track(container, this).element;
-    this.scale = new Scale(container, this).element;
-    this.range = new Range(this).element;
-    this.thumb = new Thumb(this, 'thumb_first').element;
-    this.thumbSecond = new Thumb(this, 'thumb_second').element;
-    this.tooltipFirst = new Tooltip(this, 'tooltip_first').element;
-    this.tooltipSecond = new Tooltip(this, 'tooltip_second').element;
+    this.track = new Track(container, this.settings.ifHorizontal).element;
+    this.scale = new Scale(
+      container,
+      this.settings,
+      this.parentContainer
+    ).element;
+    const trackElementsData: TTrackElementsData = {
+      container: this.track,
+      eventDispatcher: this.eventDispatcher,
+      settings: this.settings,
+    };
+    this.range = new Range(trackElementsData).element;
+    this.thumb = new Thumb(trackElementsData, 'first').element;
+    this.thumbSecond = new Thumb(trackElementsData, 'second').element;
     this.parentContainer.append(container);
   }
 
