@@ -11,25 +11,25 @@ function adjustValue(options: {
   }: TSettings = data;
 
   function adjustMin(val: number | string): number {
-    const minDiff = max - 1;
-    if (typeof val === 'string') {
-      return minDiff;
+    if (typeof val === 'string' || Number.isNaN(val)) {
+      return min;
     } else {
       return val <= max ? val : max;
     }
   }
 
   function adjustMax(val: number | string): number {
-    const minDiff = min + 1;
-    if (typeof val === 'string') {
-      return minDiff;
+    if (typeof val === 'string' || Number.isNaN(val)) {
+      return max;
     } else {
       return val >= min ? val : min;
     }
   }
 
   function adjustStep(val: number | string): number {
-    if (typeof val === 'number' && val > 0) {
+    if (typeof val === 'string' || Number.isNaN(val)) {
+      return step;
+    } else if (typeof val === 'number' && val > 0) {
       return val;
     } else {
       const toFixedDecimals = Math.max(
@@ -46,22 +46,17 @@ function adjustValue(options: {
     const inOneStep = currentSecond - currentFirst === step;
     const betweenInOneStep = between && inOneStep;
     const moreThanHalfWay = value > currentFirst + step / 2;
-    if (typeof val === 'string') {
+    if (typeof val === 'string' || Number.isNaN(val)) {
+      return currentFirst;
+    } else if (val <= min) {
       return min;
-    }
-    if (val <= min) {
-      return min;
-    }
-    if (val > currentSecond) {
+    } else if (val > currentSecond) {
       return currentSecond;
-    }
-    if (betweenInOneStep && moreThanHalfWay) {
+    } else if (betweenInOneStep && moreThanHalfWay) {
       return currentSecond;
-    }
-    if (value <= currentSecond) {
+    } else if (value <= currentSecond) {
       return applyStepOnValue(val, data);
-    }
-    return min;
+    } else return min;
   }
 
   function adjustCurrentSecond(val: number | string): number {
@@ -69,22 +64,17 @@ function adjustValue(options: {
     const inOneStep = currentSecond - currentFirst === step;
     const betweenInOneStep = between && inOneStep;
     const moreThanHalfWay = value > currentFirst + 0.5 * step;
-    if (typeof val === 'string') {
-      return max;
-    }
-    if (val < currentFirst) {
-      return currentFirst;
-    }
-    if (val > max) {
-      return max;
-    }
-    if (betweenInOneStep && moreThanHalfWay) {
+    if (typeof val === 'string' || Number.isNaN(val)) {
       return currentSecond;
-    }
-    if (val <= max) {
+    } else if (val < currentFirst) {
+      return currentFirst;
+    } else if (val > max) {
+      return max;
+    } else if (betweenInOneStep && moreThanHalfWay) {
+      return currentSecond;
+    } else if (val <= max) {
       return applyStepOnValue(val, data);
-    }
-    return max;
+    } else return max;
   }
 
   function adjustAsIs(val: TModelData): TModelData {
