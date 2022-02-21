@@ -12,9 +12,9 @@ class Thumb {
   }
 
   private init(that: IView): HTMLElement {
-    this.make(that);
+    this.make(that.settings);
     this.enable(that);
-    this.change(that);
+    this.change(that.settings);
     that.track.append(this.element);
     return this.element;
   }
@@ -23,12 +23,13 @@ class Thumb {
     that.eventDispatcher.add('changeView', this.change);
   }
 
-  private make(that: IView): HTMLElement {
+  private make(settings: TViewSettings): HTMLElement {
+    const { ifHorizontal, range } = settings;
     this.element = document.createElement('div');
-    const typeClass = that.settings.ifHorizontal
+    const typeClass = ifHorizontal
       ? this.className
       : `${ this.className }-vertical`;
-    const totalClass = this.className === 'thumb_first' || that.settings.range
+    const totalClass = this.className === 'thumb_first' || range
       ? ['thumb', typeClass]
       : ['thumb', typeClass, 'thumb_disabled'];
     totalClass.forEach((item: string) => {
@@ -38,11 +39,12 @@ class Thumb {
   }
 
   @boundMethod
-  private change(that: IView): void {
+  private change(settings: TViewSettings): void {
+    const { firstPosition, secondPosition, ifHorizontal } = settings;
     const num = this.className === 'thumb_first'
-      ? that.settings.firstPosition
-      : that.settings.secondPosition;
-    if (that.settings.ifHorizontal) {
+      ? firstPosition
+      : secondPosition;
+    if (ifHorizontal) {
       this.element.style.left = `${ num }%`;
     } else {
       this.element.style.bottom = `${ num }%`;

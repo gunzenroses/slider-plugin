@@ -109,7 +109,8 @@ class View implements IView {
     this.thumbSecond.style.zIndex = '3';
     this.settings.firstPosition = newValue;
     this.settings.currentFirst = num;
-    this.eventDispatcher.notify('changeView', this);
+    const newSettings = this.settings;
+    this.eventDispatcher.notify('changeView', newSettings);
   }
 
   changeSecondThumb(num: number): void {
@@ -118,16 +119,18 @@ class View implements IView {
     this.thumbSecond.style.zIndex = '4';
     this.settings.secondPosition = newValue;
     this.settings.currentSecond = num;
-    this.eventDispatcher.notify('changeView', this);
+    const newSettings = this.settings;
+    this.eventDispatcher.notify('changeView', newSettings);
   }
 
   private listenPointerDown(): void {
     const elements = this.settings.range
       ? [this.thumb, this.thumbSecond, this.tooltipFirst, this.tooltipSecond]
       : [this.thumb, this.tooltipFirst];
-    elements.forEach((element) =>
-      element.addEventListener('pointerdown', this.dragThumbStart)
-    );
+    elements.forEach((element) => element.addEventListener(
+      'pointerdown',
+      this.dragThumbStart
+    ));
   }
 
   private stopListenPointerDown(): void {
@@ -173,12 +176,12 @@ class View implements IView {
     const firstThumbPercent: number = findPosition({
       thisElement: this.thumb,
       ifHorizontal: this.settings.ifHorizontal,
-      containerSize: this.containerSize,
+      containerSize: this.containerSize
     });
     const secondThumbPercent: number = findPosition({
       thisElement: this.thumbSecond,
       ifHorizontal: this.settings.ifHorizontal,
-      containerSize: this.containerSize,
+      containerSize: this.containerSize
     });
     return { firstThumbPercent, secondThumbPercent };
   }
@@ -228,7 +231,7 @@ class View implements IView {
       ...settings,
       ifHorizontal,
       firstPosition,
-      secondPosition,
+      secondPosition
     };
   }
 

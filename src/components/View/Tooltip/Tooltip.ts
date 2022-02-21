@@ -15,9 +15,9 @@ class Tooltip {
 
   private init(that: IView): HTMLElement {
     this.createChildren(that);
-    this.make(that);
+    this.make(that.settings);
     this.enable(that);
-    this.change(that);
+    this.change(that.settings);
     this.append();
     return this.element;
   }
@@ -32,11 +32,12 @@ class Tooltip {
     that.eventDispatcher.add('changeView', this.change);
   }
 
-  private make(that: IView): HTMLElement {
-    const verticalClass = that.settings.ifHorizontal
+  private make(settings: TViewSettings): HTMLElement {
+    const { ifHorizontal, tooltip } = settings;
+    const verticalClass = ifHorizontal
       ? 'tooltip_horizontal'
       : 'tooltip_vertical';
-    const totalClass = that.settings.tooltip
+    const totalClass = tooltip
       ? ['tooltip', this.className, verticalClass]
       : ['tooltip', this.className, verticalClass, 'tooltip_disabled'];
     this.element = document.createElement('span');
@@ -48,10 +49,11 @@ class Tooltip {
   }
 
   @boundMethod
-  private change(that: IView): void {
+  private change(settings: TViewSettings): void {
+    const { currentFirst, currentSecond } = settings;
     const value = this.className === 'tooltip_first'
-      ? that.settings.currentFirst
-      : that.settings.currentSecond;
+      ? currentFirst
+      : currentSecond;
     this.element.innerText = value.toString();
   }
 

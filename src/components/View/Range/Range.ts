@@ -9,16 +9,17 @@ class Range {
   }
 
   private init(that: IView): HTMLElement {
-    this.make(that);
+    this.make(that.settings);
     this.enable(that);
-    this.change(that);
+    this.change(that.settings);
     that.track.append(this.element);
     return this.element;
   }
 
-  private make(that: IView): HTMLElement {
+  private make(settings: TViewSettings): HTMLElement {
+    const { ifHorizontal } = settings;
     this.element = document.createElement('div');
-    const elementClass: Array<string> = that.settings.ifHorizontal
+    const elementClass: Array<string> = ifHorizontal
       ? ['range']
       : ['range', 'range_vertical'];
     elementClass.forEach((item) => this.element.classList.add(item));
@@ -30,30 +31,32 @@ class Range {
   }
 
   @boundMethod
-  private change(that: IView): void {
-    if (that.settings.range) {
-      this.changeFirst(that);
-      this.changeSecond(that);
+  private change(settings: TViewSettings): void {
+    if (settings.range) {
+      this.changeFirst(settings);
+      this.changeSecond(settings);
     } else {
-      this.changeFirst(that);
+      this.changeFirst(settings);
     }
   }
 
-  private changeFirst(that: IView): void {
-    if (that.settings.range) {
-      const position = that.settings.ifHorizontal ? 'left' : 'bottom';
-      this.element.style[position] = `${ that.settings.firstPosition }%`;
+  private changeFirst(settings: TViewSettings): void {
+    const { ifHorizontal, firstPosition, range } = settings;
+    if (range) {
+      const position = ifHorizontal ? 'left' : 'bottom';
+      this.element.style[position] = `${ firstPosition }%`;
     } else {
-      const position = that.settings.ifHorizontal ? 'right' : 'top';
-      this.element.style[position] = `${ 100 - that.settings.firstPosition }%`;
+      const position = ifHorizontal ? 'right' : 'top';
+      this.element.style[position] = `${ 100 - firstPosition }%`;
     }
   }
 
-  private changeSecond(that: IView): void {
-    if (that.settings.ifHorizontal) {
-      this.element.style.right = `${ 100 - that.settings.secondPosition }%`;
+  private changeSecond(settings: TViewSettings): void {
+    const { ifHorizontal, secondPosition } = settings;
+    if (ifHorizontal) {
+      this.element.style.right = `${ 100 - secondPosition }%`;
     } else {
-      this.element.style.top = `${ 100 - that.settings.secondPosition }%`;
+      this.element.style.top = `${ 100 - secondPosition }%`;
     }
   }
 }
