@@ -9,8 +9,6 @@ interface IView {
   track: HTMLElement;
   range: HTMLElement;
   scale: HTMLElement;
-  tooltipFirst: HTMLElement;
-  tooltipSecond: HTMLElement;
   thumbWidth: number;
   containerSize: number;
 
