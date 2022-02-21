@@ -6,6 +6,13 @@ type TDataInfo = {
   data: TModelData
 };
 
+type TFromValueToPercents = {
+  value: number,
+  min: number,
+  max: number,
+  step: number
+};
+
 type TListenerArg = any;
 /*
   TListenerArg may have a type:
@@ -19,13 +26,6 @@ type TListenerArr = {
   [eventKey: string]: Array<TListener>;
 };
 
-type TRangeStyle = {
-  newThumbCurrent: number;
-  ifHorizontal: boolean;
-  ifRange: boolean;
-  ifThumbFirst: boolean;
-};
-
 type TPanelParam = {
   name: string;
   text: string;
@@ -34,10 +34,20 @@ type TPanelParam = {
   options?: Array<string>;
 };
 
+type TScaleItemData = {
+  ifHorizontal: boolean;
+  min: number;
+  max: number;
+  step: number;
+  toFixedDecimals: number;
+};
+
 type TScaleItemSettings = {
   item: number;
   direction: string;
-  settings: TSettings
+  min: number;
+  max: number;
+  step: number;
 };
 
 type TSettings = {
@@ -58,9 +68,8 @@ type TViewSettings = TSettings & {
   secondPosition: number;
 };
 
-type TScaleItem = {
-  width: number;
-  stepPerDiv: number;
-  segmentClass: string;
-  spanClass: string;
-};
+type TTrackElementsData = {
+  container: HTMLElement,
+  eventDispatcher: IObservable,
+  settings: TViewSettings
+}
