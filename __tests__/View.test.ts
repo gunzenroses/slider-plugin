@@ -268,8 +268,6 @@ describe('class View', () => {
       expect(view.thumb).toBeDefined();
       expect(view.thumbSecond).toBeDefined();
       expect(view.scale).toBeDefined();
-      expect(view.tooltipFirst).toBeDefined();
-      expect(view.tooltipSecond).toBeDefined();
     });
 
     test('disable elements when !ifScale, !ifTooltip, !ifRange', () => {
@@ -283,7 +281,6 @@ describe('class View', () => {
       view.init(updatedData);
 
       expect(view.scale.classList.contains('scale_disabled')).toBe(true);
-      expect(view.tooltipFirst.classList.contains('tooltip_disabled')).toBe(true);
     });
   });
 });
