@@ -76,12 +76,14 @@ describe('helpers: class CheckValidity', () => {
   });
 
   test('add error-message when value < min', () => {
+    item.step = '11';
     item.min = '1';
     item.value = '0';
 
     const checkItem = new CheckValidity(item, container);
     checkItem.init();
 
-    expect(checkItem.invalidities).toContain('Number should be minimum 1');
+    expect(checkItem.invalidities).toContain(`Number should be more that ${ 
+      item.min }, Number should be: ${ item.min } + multiple of ${ item.step }`);
   });
 });

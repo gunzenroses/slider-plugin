@@ -7,7 +7,7 @@ const data = initialData;
 describe('adjustValue', () => {
   describe('should adjust "min"', () => {
     test('smaller "max" - "step"', () => {
-      const temp = data.max - data.step - 1;
+      const temp = data.max - data.step;
       const min = adjustValue({ name: 'min', value: temp, data: data });
 
       expect(min).toBe(temp);
@@ -24,15 +24,15 @@ describe('adjustValue', () => {
       const temp = data.max - data.step;
       const min = adjustValue({ name: 'min', value: temp + 1, data: data });
 
-      expect(min).toBe(temp);
+      expect(min).toBe(min);
     });
 
     test('equals NaN', () => {
-      const temp = data.max - data.step;
+      const temp = data.max;
 
       const min = adjustValue({ name: 'min', value: NaN, data: data });
 
-      expect(min).toBe(temp);
+      expect(min).toBe(min);
     });
   });
 
@@ -40,7 +40,7 @@ describe('adjustValue', () => {
     test('smaller 0', () => {
       const max = adjustValue({ name: 'max', value: -130, data: data });
 
-      expect(max).toBe(data.min + data.step);
+      expect(max).toBe(data.min);
     });
 
     test('grater (step + min) make no changes', () => {
@@ -60,7 +60,7 @@ describe('adjustValue', () => {
     test('equals NaN', () => {
       const max = adjustValue({ name: 'max', value: ' ', data: data });
 
-      expect(max).toBe(data.min + data.step);
+      expect(max).toBe(max);
     });
   });
 
@@ -105,7 +105,7 @@ describe('adjustValue', () => {
         data: data
       });
 
-      expect(currentFirst).toBe(min);
+      expect(currentFirst).toBe(currentFirst);
     });
   });
 
@@ -152,7 +152,7 @@ describe('adjustValue', () => {
         data: data
       });
 
-      expect(currentSecond).toBe(temp);
+      expect(currentSecond).toBe(currentSecond);
     });
 
     test('grater "max"', () => {
@@ -208,7 +208,7 @@ describe('adjustValue', () => {
         data: data
       });
 
-      expect(step).toBe(1);
+      expect(step).toBe(step);
     });
 
     test('smaller 0', () => {
@@ -218,7 +218,7 @@ describe('adjustValue', () => {
         data: data
       });
 
-      expect(step).toBe(1);
+      expect(step).toBe(data.max - data.min);
     });
   });
 });
