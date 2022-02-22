@@ -127,5 +127,13 @@ html(lang = 'ru')
 
   body
     for slider in slidersId 
-      div.slider-panel
-        div.slider(id = slider)
+      .slider-panel
+        .slider(id = slider)
+    .slider-panel 
+      .js-slider-init(
+        data-min = '10.2' 
+        data-max = '20' 
+        data-step = '0.25' 
+        data-current-first = '10.5' 
+        data-current-second = '15'
+      )

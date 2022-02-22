@@ -2,6 +2,9 @@ import 'SliderMaker/SliderMaker-init';
 import './index.scss';
 
 window.onload = function makeSliderExamples() {
+
+  $().sliderMaker()
+
   $('#default').sliderMaker(
     {
       min: 0,
@@ -33,10 +36,7 @@ window.onload = function makeSliderExamples() {
     {
       min: -10.3,
       max: 20000,
-      currentSecond: 150,
-      step: 12,
-      scale: true,
-      range: true
+      step: 12
     },
     true
   );
