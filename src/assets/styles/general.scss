@@ -1,35 +1,7 @@
 @import './colors-and-sizes.scss';
-@import './mixins.scss';
 
 * {
   box-sizing: border-box;
-}
-
-.slider {
-  @include isFlex($direction: column, $justify: center, $align: center);
-  position: relative;
-  width: 45%;
-  min-width: 280px;
-  height: fit-content;
-  margin: 20px auto;
-  border: 1px solid transparent;
-  user-select: none;
-  touch-action: none;
-
-  @media (max-width: 900px) {
-    width: 90%;
-  }
-
-  @media (max-width: 400px) {
-    width: 90vmin;
-    height: 80vmin;
-  }
-
-  &_vertical {
-    flex-direction: row;
-    width: fit-content;
-    height: 320px;
-  }
 }
 
 .hidden {
