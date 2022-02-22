@@ -1,14 +1,15 @@
+import { boundMethod } from 'autobind-decorator';
+
 import initialData from 'scripts/initialData';
+import IObservable from 'Interfaces/IObservable';
 import IPresenter from 'Interfaces/IPresenter';
 import IModel from 'Interfaces/IModel';
 import IPanel from 'Interfaces/IPanel';
+import Observable from 'Observable/Observable';
 import Presenter from 'Presenter/Presenter';
 import Panel from 'Panel/Panel';
 
 import 'assets/styles/slider.scss';
-import { boundMethod } from 'autobind-decorator';
-import IObservable from 'Interfaces/IObservable';
-import Observable from 'Observable/Observable';
 
 class SliderMaker {
   private presenter!: IPresenter;
@@ -23,28 +24,6 @@ class SliderMaker {
   ) {
     this.init(ifPanel, container, options);
     this.enable();
-  }
-
-  init(ifPanel: boolean, container: HTMLElement, options?: TSettings) {
-    const data = this.makeData(container, options);
-    if (container) {
-      this.presenter = new Presenter(container, data);
-      this.panel = new Panel(container, this.presenter);
-    }
-    this.model = this.presenter.model;
-    this.eventDispatcher = new Observable();
-    if (!ifPanel) {
-      this.panel.container.classList.add('panel_hidden');
-    }
-  }
-
-  enable() {
-    this.presenter.eventDispatcher.add('updateAll', this.updateAll);
-    this.presenter.eventDispatcher.add('thumbUpdate', this.thumbUpdate);
-    this.presenter.eventDispatcher.add(
-      'thumbSecondUpdate',
-      this.thumbSecondUpdate
-    );
   }
 
   getOptions(name?: TModelData): string | TSettings {
@@ -76,7 +55,7 @@ class SliderMaker {
     return this;
   }
 
-  subscribe(name: string, method: any) {
+  subscribe(name: string, method: any): SliderMaker {
     this.eventDispatcher.add(name, method);
     return this;
   }
@@ -86,8 +65,35 @@ class SliderMaker {
     return this;
   }
 
+  private init(
+    ifPanel: boolean, 
+    container: HTMLElement, 
+    options?: TSettings): SliderMaker {
+    const data = this.makeData(container, options);
+    if (container) {
+      this.presenter = new Presenter(container, data);
+      this.panel = new Panel(container, this.presenter);
+    }
+    this.model = this.presenter.model;
+    this.eventDispatcher = new Observable();
+    if (!ifPanel) {
+      this.panel.container.classList.add('panel_hidden');
+    }
+    return this;
+  }
+
+  private enable(): SliderMaker {
+    this.presenter.eventDispatcher.add('updateAll', this.updateAll);
+    this.presenter.eventDispatcher.add('thumbUpdate', this.thumbUpdate);
+    this.presenter.eventDispatcher.add(
+      'thumbSecondUpdate',
+      this.thumbSecondUpdate
+    );
+    return this;
+  }
+
   private makeData(container: HTMLElement, options?: TSettings): TSettings {
-    const data = { ...container.dataset, ... options };
+    const data = { ...container.dataset, ...options };
     let dataArr: TArrayOfEntries = [];
     Object.entries(data).map((entry, index) => {
       const key = entry[0];
@@ -99,7 +105,6 @@ class SliderMaker {
         key === 'currentFirst' ||
         key === 'currentSecond';
       const valueTypeString = typeof value === 'string';
-      //const valueTypeTModelData = typeof value === 'string' || 'boolean' || 'number';
       if (keyOfNumValue && valueTypeString) {
         dataArr[index] = [key, parseFloat(value)];
       } else if (typeof value !== 'undefined') {
@@ -107,7 +112,7 @@ class SliderMaker {
       }
     });
     const newData = Object.fromEntries(dataArr);
-    return { ... initialData, ... newData };
+    return { ...initialData, ...newData };
   }
 
   @boundMethod
