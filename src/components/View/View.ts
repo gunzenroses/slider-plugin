@@ -263,6 +263,7 @@ class View implements IView {
 
   private renderParentContainer(): void {
     this.parentContainer.innerHTML = '';
+    this.parentContainer.classList.add('slider');
     if (this.settings.ifHorizontal) {
       this.parentContainer.classList.remove('slider_vertical');
     } else {
