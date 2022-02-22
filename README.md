@@ -7,9 +7,7 @@ The aim of this project is to get known with:
 - unit-testing and bdd approach;
 - webpack.
 
-### Example of slider-plugin usage
-
-[Link to example](https://gunzenroses.github.io/slider-plugin/)
+### [Example of slider-plugin usage](https://gunzenroses.github.io/slider-plugin/)
 
 ### Plugins info
 
@@ -49,9 +47,7 @@ According interfaces we have the following streams:
 - UI event (View) -> notify method that process data (Presenter) -> change data (Model);
 - change data outside MVP (Panel) -> notify method that process data (Presenter) -> change data (Model) -> notify method that process data (Presenter) -> change UI (View).
 
-### UML diagram
-
-[Link to uml diagram](https://github.com/gunzenroses/slider-plugin/blob/master/src/UML.png)
+### [UML diagram](https://github.com/gunzenroses/slider-plugin/blob/master/src/UML.png)
 
 ### Used technologies and libraries
 
@@ -62,54 +58,73 @@ According interfaces we have the following streams:
 - eslint;
 - babel.
 
-### How to work with project
+### How to work with the project
 
 Clone repository
->`git clone https://github.com/gunzenroses/slider-plugin.git`
+```sh
+git clone https://github.com/gunzenroses/slider-plugin.git
+```
 
 Install dependencies
->`npm i`
+```sh
+npm i
+```
 
 Run tests
->`npm test`
+```sh
+npm run test
+```
 
 Run development mode (on localhost:8081)
->`npm run dev`
+```sh
+npm run dev
+```
 
 Run production mode(to assemble slider-plugin files)
->`npm run prod`
+```sh
+npm run prod
+```
 
 Run debug mode
->`npm run debug`
+```sh
+npm run debug
+```
 
 Run statical analyzer for code
->`npm run eslint`
+```sh
+npm run eslint
+```
 
 ### How to use plugin
 
-Copy css-file from `dist/` to your project folder, add link in the `<head>`.
+##### 1. Copy css-file from `dist/` to your project folder, add link in the `<head>`.
 
-```html
-<head>
-    <link rel="stylesheet" href="slider-plugin.min.css">
-<head>
+    ```html
+    <head>
+        <link rel="stylesheet" href="slider-plugin.min.css">
+    <head>
+    ```
+
+##### 2.Install jQuery 3.6.0 `npm install jquery@3.6.0` or link to it directly at the end of `<body>`.
+##### 3.Copy js file from `dist/` to your project folder, add after jQuery.
+
+    ```html
+    <body>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="slider-plugin.min.js"></script>
+    </body>
+    ```
+
+##### 5.Initialize slider:
+
+##### 5.1. In js-file with your options.
+
+```js
+`$( selector ).sliderMaker({ your options })`
 ```
 
-Install jQuery 3.6.0 `npm install jquery@3.6.0` or link to it directly at the end of `<body>`.
-Copy js file from `dist/` to your project folder, add after jQuery.
-
-```html
-<body>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="slider-plugin.min.js"></script>
-</body>
-```
-
-Initiate slider in js-file with your parameters.
->`$(`selector`).sliderMaker({` *your parameters* `})`
-
-|Option|Defaults|Type|Description|
-|-----|----|----|----------|
+|Options|Defaults|Type|Description|
+|-|-|-|-|
 |min|0|number|set min value|
 |max|100|number|set max value|
 |range|true|boolean|*true* - slider has two handles; *false* - slider has one handle|
@@ -120,5 +135,59 @@ Initiate slider in js-file with your parameters.
 |tooltip|true|boolean|*true* - enable tooltips with value of handle; *false* - hide tooltips|
 |scale|true|boolean| *true* - sets automatic numbering of grid sections; *false* - hides grid.|
 
-Extended API. If you want to see configuration panel next to your slider
->`$(`selector`).sliderMaker({` *your parameters* `},`true`)`
+
+If you want to see configuration panel next to your slider add 'true' after object with your options.
+
+```js
+`$( selector ).sliderMaker({ your options }, true )`
+```
+
+##### 5.2. By adding a class 'js-slider-plugin' to your div element.
+
+```html
+<div class='js-slider-plugin'></div>
+```
+
+Then call a sliderMaker() in js-file without any selector
+
+```js
+`$().sliderMaker()`
+```
+
+This way plugin will add slider to every element with 'js-slider-plugin' class.
+
+If you want to configure slider, just add options as *data-* attributes. For example:
+
+```html
+<div class='js-slider-plugin' data-max='80' data-current-first='30'>
+```
+
+Feel free to combine different approaches of setting options and initiating slider.
+
+### Slider API
+
+After initiating a slider you can use following methods:
+
+|Method|Parameters|Description|
+|-|-|-|
+|getOptions()| | Return current slider parameters |
+|setOptions(name, data)|**name** should match option name | Set new parameters |
+||**data** should match option type||
+|showPanel()| | Show configurational panel |
+|hidePanel()| | Hide configurational panel |
+|subscribe(name, method)| **name** equals one of the following: /  'updateThumb'  /  'updateThumbSecond'  /  'updateAll'  /| Call method with new value every time when it's changed |
+|| **method** matches function name that should be called ||
+|unsubscribe(name, method?)| **name**: 'updateThumb' / 'updateThumbSecond' / 'updateAll' | When only **name** is used, all subscriptions to the event are removed. |
+||**method**: optional parameter|When used with **method** it removes this method from event subscribers|
+
+All methods except **getOptions()** can be used in a chain. For example:
+
+```js
+let $slider = $( selector ).sliderMaker({ max: 2000, min: -12.12 });
+$slider.getOptions();
+$slider.showPanel().subscribe('updateThumb', updateInput);
+
+function updateInput(value: number | TSettings): void {
+    $('#input').val(value.toString());
+}
+```
