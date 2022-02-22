@@ -13,6 +13,10 @@
     width: 100%;
   }
 
+  &_hidden {
+    display: none;
+  }
+
   &__items {
     @include isFlex($align: center, $wrap: wrap);
     width: 100%;
