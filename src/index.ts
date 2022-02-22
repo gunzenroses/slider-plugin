@@ -3,7 +3,7 @@ import './index.scss';
 
 window.onload = function makeSliderExamples() {
 
-  $().sliderMaker()
+  $().sliderMaker({}, true)
 
   $('#default').sliderMaker(
     {
