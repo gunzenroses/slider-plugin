@@ -1,8 +1,8 @@
 import IPresenter from './IPresenter';
 
 interface IPanel {
+  container: HTMLElement;
   presenter: IPresenter;
-  panelContainer: HTMLElement;
   data: TSettings;
 
   init(): void;

@@ -53,7 +53,7 @@ describe('Panel for double slider', () => {
   describe('method changePanel()', () => {
     test('should update data', () => {
       const spyPresenter = jest.spyOn(panel.presenter, 'modelData').mockImplementation();
-      const trg = panel.panelContainer.querySelector('input[name="range"]');
+      const trg = panel.container.querySelector('input[name="range"]');
       const evt = {
         ...new Event('click'),
         target: trg,
@@ -67,7 +67,7 @@ describe('Panel for double slider', () => {
     test('should use setTimeout to update data with type "number"', async () => {
       jest.useFakeTimers();
       const spyPresenter = jest.spyOn(panel.presenter, 'modelData').mockImplementation();
-      const trg: HTMLInputElement | null = panel.panelContainer.querySelector('input[name = "max"]');
+      const trg: HTMLInputElement | null = panel.container.querySelector('input[name = "max"]');
       if (trg !== null) {
         const event = new Event('change');
         trg.value = '';
@@ -102,7 +102,7 @@ const panelS = new Panel(container, presenterS);
 describe('Panel for single slider', () => {
   test('should disable input for currentSecond', () => {
     const currentSecondInput = <HTMLInputElement>(
-      panelS.panelContainer.querySelector("input[name = 'currentSecond']")
+      panelS.container.querySelector("input[name = 'currentSecond']")
     );
 
     expect(currentSecondInput.disabled).toBe(true);

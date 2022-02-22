@@ -16,6 +16,22 @@ class Observable implements IObservable {
       this.listeners[eventKey].forEach((listener) => listener(args));
     }
   }
+
+  delete(eventKey: string, listener?: TListener): void {
+    if (!listener) {
+      delete this.listeners[eventKey];
+    };
+    if (listener) {
+      const index = this.listeners[eventKey].indexOf(listener);
+      if (index !== -1) {
+        this.listeners[eventKey].splice(index, 1);
+      }
+      const lengthOfListeners = this.listeners[eventKey].length;
+      if (lengthOfListeners === 0) {
+        delete this.listeners[eventKey];
+      }
+    }
+  }
 }
 
 export default Observable;
