@@ -6,6 +6,8 @@ type TDataInfo = {
   data: TModelData
 };
 
+type TArrayOfEntries = Array<[string, TModelData]>;
+
 type TFromValueToPercents = {
   value: number,
   min: number,
