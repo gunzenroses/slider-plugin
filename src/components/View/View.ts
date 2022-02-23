@@ -18,7 +18,7 @@ import Scale from './Scale/Scale';
 class View implements IView {
   parentContainer: HTMLElement;
 
-  eventDispatcher!: IObservable;
+  eventDispatcher: IObservable;
 
   settings!: TViewSettings;
 
@@ -40,10 +40,10 @@ class View implements IView {
 
   constructor(container: HTMLElement) {
     this.parentContainer = container;
+    this.eventDispatcher = new Observable();
   }
 
   init(settings: TSettings): void {
-    this.eventDispatcher = new Observable();
     this.createSettings(settings);
     this.render();
     this.createMetrics();
@@ -115,7 +115,7 @@ class View implements IView {
       this.settings.currentSecond = value;
     }
     const newSettings = this.settings;
-    this.eventDispatcher.notify('changeView', newSettings);
+    this.eventDispatcher.notify('updateSubViews', newSettings);
   }
 
   private listenPointerDown(): void {
@@ -213,6 +213,7 @@ class View implements IView {
   }
 
   private createSettings(settings: TSettings): void {
+    this.eventDispatcher.delete('updateSubViews');
     const ifHorizontal = settings.orientation === TOrient.HORIZONTAL;
     const firstPosition = changeValueToPercents(
       settings.currentFirst,

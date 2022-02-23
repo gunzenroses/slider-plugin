@@ -28,7 +28,7 @@ class Range {
   }
 
   private enable(eventDispatcher: IObservable): void {
-    eventDispatcher.add('changeView', this.change);
+    eventDispatcher.add('updateSubViews', this.change);
   }
 
   @boundMethod
