@@ -13,7 +13,7 @@ module.exports = merge(common, {
     libraryExport: 'default',
     path: path.resolve(__dirname, "./dist"),
     filename: "[name].min.js",
-    publicPath: "https://gunzenroses.github.io/slider-plugin/",
+    publicPath: "/",
   },
   externals: {
     jquery: 'jQuery',
