@@ -36,8 +36,7 @@ class Tooltip {
   @boundMethod
   change(settings: TViewSettings): void {
     const { currentFirst, currentSecond } = settings;
-    const value =
-      this.className === 'first' ? currentFirst : currentSecond;
+    const value = this.className === 'first' ? currentFirst : currentSecond;
     this.element.innerText = value.toString();
   }
 }

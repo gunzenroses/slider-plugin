@@ -45,19 +45,19 @@ class Range {
     const { ifHorizontal, firstPosition, range } = settings;
     if (range) {
       const position = ifHorizontal ? 'left' : 'bottom';
-      this.element.style[position] = `${firstPosition}%`;
+      this.element.style[position] = `${ firstPosition }%`;
     } else {
       const position = ifHorizontal ? 'right' : 'top';
-      this.element.style[position] = `${100 - firstPosition}%`;
+      this.element.style[position] = `${ 100 - firstPosition }%`;
     }
   }
 
   private changeSecond(settings: TViewSettings): void {
     const { ifHorizontal, secondPosition } = settings;
     if (ifHorizontal) {
-      this.element.style.right = `${100 - secondPosition}%`;
+      this.element.style.right = `${ 100 - secondPosition }%`;
     } else {
-      this.element.style.top = `${100 - secondPosition}%`;
+      this.element.style.top = `${ 100 - secondPosition }%`;
     }
   }
 }

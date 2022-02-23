@@ -34,12 +34,12 @@ class ConfigurationPanel implements IPanel {
     this.container = afterCustomElement({
       type: 'div',
       className: 'panel',
-      parent: container,
+      parent: container
     });
     this.panelItems = appendCustomElement({
       type: 'div',
       className: 'panel__items',
-      parent: this.container,
+      parent: this.container
     });
     this.presenter = presenter;
     this.init();
@@ -83,57 +83,57 @@ class ConfigurationPanel implements IPanel {
         name: 'min',
         text: 'min',
         value: data.min,
-        type: 'number',
+        type: 'number'
       },
       {
         name: 'max',
         text: 'max',
         value: data.max,
-        type: 'number',
+        type: 'number'
       },
       {
         name: 'step',
         text: 'step',
         value: data.step,
-        type: 'number',
+        type: 'number'
       },
       {
         name: 'currentFirst',
         text: 'from',
         value: data.currentFirst,
-        type: 'number',
+        type: 'number'
       },
       {
         name: 'currentSecond',
         text: 'to',
         value: data.currentSecond,
-        type: 'number',
+        type: 'number'
       },
       {
         name: 'orientation',
         text: 'orient',
         value: data.orientation,
         type: 'select',
-        options: ['horizontal', 'vertical'],
+        options: ['horizontal', 'vertical']
       },
       {
         name: 'range',
         text: 'range',
         value: data.range ? 'checked' : '',
-        type: 'checkbox',
+        type: 'checkbox'
       },
       {
         name: 'scale',
         text: 'scale',
         value: data.scale ? 'checked' : '',
-        type: 'checkbox',
+        type: 'checkbox'
       },
       {
         name: 'tooltip',
         text: 'tooltip',
         value: data.tooltip ? 'checked' : '',
-        type: 'checkbox',
-      },
+        type: 'checkbox'
+      }
     ];
 
     this.panelItems.innerHTML = '';
@@ -235,9 +235,9 @@ class ConfigurationPanel implements IPanel {
   }
 
   private createPanelItem(params: TPanelParam): string {
-    const panelItemName = `<div class = 'panel__name'>${params.text}</div>`;
+    const panelItemName = `<div class = 'panel__name'>${ params.text }</div>`;
     const element = `<div class = 'panel__item'>
-        ${panelItemName} ${this.panelItemInput(params)}
+        ${ panelItemName } ${ this.panelItemInput(params) }
       </div>`;
     return element;
   }
@@ -248,31 +248,32 @@ class ConfigurationPanel implements IPanel {
       return `
       <input 
         class = 'panel__input' 
-        name = ${params.name} 
-        type = ${params.type} 
-        value = ${params.value} required/>`;
+        name = ${ params.name } 
+        type = ${ params.type } 
+        value = ${ params.value } required/>`;
     }
     if (params.type === 'checkbox') {
       return `
         <input 
           class = 'panel__input' 
-          name = ${params.name} 
-          type = ${params.type} ${params.value}/>`;
+          name = ${ params.name } 
+          type = ${ params.type } ${ params.value }/>`;
     }
     return `
-        <${params.type} 
+        <${ params.type } 
           class = 'panel__input' 
-          name = ${params.name}> 
-          ${options.map((el: string) => this.selectOptions(el)).join('')} 
-        </${params.type}>`;
+          name = ${ params.name }> 
+          ${ options.map((el: string) => this.selectOptions(el)).join('') } 
+        </${ params.type }>`;
   }
 
   private selectOptions(arg: string): string {
-    const orient =
-      this.data.orientation === TOrient.HORIZONTAL ? 'horizontal' : 'vertical';
+    const orient = this.data.orientation === TOrient.HORIZONTAL
+      ? 'horizontal'
+      : 'vertical';
     return arg === orient
-      ? `<option selected value = '${arg}'>${arg}</option> `
-      : `<option value = '${arg}'>${arg}</option> `;
+      ? `<option selected value = '${ arg }'>${ arg }</option> `
+      : `<option value = '${ arg }'>${ arg }</option> `;
   }
 }
 

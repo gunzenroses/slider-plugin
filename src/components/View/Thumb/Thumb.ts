@@ -9,8 +9,7 @@ class Thumb {
 
   private className: string;
 
-  constructor(data: TTrackElementsData, className: string
-  ) {
+  constructor(data: TTrackElementsData, className: string) {
     this.className = className;
     this.init(data);
   }

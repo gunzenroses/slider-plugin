@@ -20,7 +20,7 @@ class Observable implements IObservable {
   delete(eventKey: string, listener?: TListener): void {
     if (!listener) {
       delete this.listeners[eventKey];
-    };
+    }
     if (listener) {
       const index = this.listeners[eventKey].indexOf(listener);
       if (index !== -1) {

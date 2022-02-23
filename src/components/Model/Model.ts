@@ -11,8 +11,8 @@ class Model implements IModel {
 
   constructor(settings: TSettings) {
     this.eventDispatcher = new Observable();
-    const improvedData = this.improveData(settings);
-    this.data = improvedData;
+    this.data = settings;
+    this.improveData();
     this.updateCurrentsWithStep();
   }
 
@@ -27,7 +27,8 @@ class Model implements IModel {
     this.changeData(name);
   }
 
-  private improveData(settings: TSettings): TSettings {
+  private improveData(): void {
+    const settings = this.data;
     if (settings.min > settings.max) {
       settings.min = settings.max;
     }
@@ -43,7 +44,7 @@ class Model implements IModel {
     if (settings.currentSecond < settings.currentFirst) {
       settings.currentSecond = settings.currentFirst;
     }
-    return settings;
+    this.data = settings;
   }
 
   private updateData(name: keyof TSettings, data: TModelData): void {

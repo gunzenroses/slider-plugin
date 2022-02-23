@@ -14,7 +14,6 @@ import Range from './Range/Range';
 import Track from './Track/Track';
 import Thumb from './Thumb/Thumb';
 import Scale from './Scale/Scale';
-import Tooltip from './Tooltip/Tooltip';
 
 class View implements IView {
   parentContainer: HTMLElement;
@@ -253,7 +252,7 @@ class View implements IView {
     const trackElementsData: TTrackElementsData = {
       container: this.track,
       eventDispatcher: this.eventDispatcher,
-      settings: this.settings,
+      settings: this.settings
     };
     this.range = new Range(trackElementsData).element;
     this.thumb = new Thumb(trackElementsData, 'first').element;

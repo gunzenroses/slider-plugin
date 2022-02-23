@@ -74,4 +74,4 @@ type TTrackElementsData = {
   container: HTMLElement,
   eventDispatcher: IObservable,
   settings: TViewSettings
-}
+};
