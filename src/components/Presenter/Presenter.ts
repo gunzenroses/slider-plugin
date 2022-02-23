@@ -27,21 +27,21 @@ class Presenter implements IPresenter {
 
   init(): void {
     this.updateView();
-    this.enable();
+    this.enableModelListeners();
   }
 
   updateView(): void {
     this.data = this.model.getData();
     this.view.init(this.data);
+    this.view.eventDispatcher.add('firstThumb', this.modelThumbFirst);
+    this.view.eventDispatcher.add('secondThumb', this.modelThumbSecond);
   }
 
   modelData(name: keyof TSettings, data: TModelData): void {
     this.model.setData(name, data);
   }
 
-  private enable(): void {
-    this.view.eventDispatcher.add('firstThumb', this.modelThumbFirst);
-    this.view.eventDispatcher.add('secondThumb', this.modelThumbSecond);
+  private enableModelListeners(): void {
     this.model.eventDispatcher.add('thumbUpdate', this.changeFirstThumb);
     this.model.eventDispatcher.add(
       'thumbSecondUpdate',

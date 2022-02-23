@@ -18,7 +18,7 @@ import Scale from './Scale/Scale';
 class View implements IView {
   parentContainer: HTMLElement;
 
-  eventDispatcher: IObservable;
+  eventDispatcher!: IObservable;
 
   settings!: TViewSettings;
 
@@ -39,11 +39,11 @@ class View implements IView {
   private dragObj!: HTMLElement | null;
 
   constructor(container: HTMLElement) {
-    this.eventDispatcher = new Observable();
     this.parentContainer = container;
   }
 
   init(settings: TSettings): void {
+    this.eventDispatcher = new Observable();
     this.createSettings(settings);
     this.render();
     this.createMetrics();
