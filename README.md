@@ -9,39 +9,39 @@ The aim of this project is to get known with:
 
 ### [Example of slider-plugin usage](https://gunzenroses.github.io/slider-plugin/)
 
-### Plugins info
+### Plugin info
 
 The project works with node@14.16.1, npm@8.1.0, git@2.34 and jquery@3.6.0.
 
 ### Plugin architecture
 
-Plugin has MVP-architecture with Passive View.
+The plugin has an MVP-architecture with a Passive View. Model and View do not interact with any other part directly, they are mediated by Presenter. Methods of Presenter are notified about updates in Model and changes in View with the help of Observer. Then Presenter calls public methods of View or Model.
+
+This way, the interaction between Presenter, View and Model is based on a contract: Presenter use only methods and parameters which are declared by IView and IModel interfaces. With such approach UI and data parts can be easily replaced by other classes, that use the same contract.
+
+Summing up:
 
 Model:
 
 - implements IModel interface;
 - contains and updates data;
-- notifies methods of presenter when data is updated (using instance of IObservable interface).
+- notifies presenter when data is updated (using instance of IObservable interface).
 
 View:
 
 - implements IView interface;
 - visualizes data;
 - manipulates (renders and updates) subViews;
-- handles events;
-- notifies methods of IPresenter interface (using instance of IObservable interface).
+- notifies presenter when it's changed (using instance of IObservable interface).
 
 Presenter:
 
 - serves as mediator between data and UI;
 - manipulates instances of Model and View classes using methods of IModel and IView interfaces;
-- handles user input using methods defined by the IView interface;
-- updates Model and View settings (using methods of their interfaces).
+- handles user input;
+- updates Model and rerenders View (using methods of their interfaces).
 
-Contract:
-The interaction between Presenter, its View and Model is based on Contract (IPresenter, IView and IModel interfaces).
-
-According interfaces we have the following streams:
+According these interfaces we have the following streams:
 
 - change data (Model) -> notify method that process data (Presenter) -> change UI (View);
 - UI event (View) -> notify method that process data (Presenter) -> change data (Model);
@@ -70,27 +70,27 @@ Install dependencies
 npm i
 ```
 
-Run tests
+Run tests in terminal with coverage report
 ```sh
 npm run test
 ```
 
-Run development mode (on localhost:8081)
+Development mode to assemble the project on localhost:8081
 ```sh
 npm run dev
 ```
 
-Run production mode(to assemble slider-plugin files)
+Production mode to assemble slider-plugin files
 ```sh
 npm run prod
 ```
 
-Run debug mode
+Debug mode to check how tests are running
 ```sh
 npm run debug
 ```
 
-Run statical analyzer for code
+Run statical analyzer which check style for code
 ```sh
 npm run eslint
 ```
@@ -115,9 +115,9 @@ npm run eslint
     </body>
     ```
 
-##### 5.Initialize slider:
+##### 4.Initialize slider:
 
-##### 5.1. In js-file with your options.
+##### 4.1. In js-file with your options.
 
 ```js
 `$( selector ).sliderMaker({ your options })`
@@ -142,7 +142,7 @@ If you want to see configuration panel next to your slider add 'true' after obje
 `$( selector ).sliderMaker({ your options }, true )`
 ```
 
-##### 5.2. By adding a class 'js-slider-init' to your div element.
+##### 4.2. By adding a class 'js-slider-init' to your div element.
 
 ```html
 <div class='js-slider-init'></div>
@@ -160,7 +160,7 @@ If you want to configure slider, just add options as *data-* attributes. For exa
 
 ### Slider API
 
-After initiating a slider you can use following methods:
+After initialization of slider you can use following methods in js-file:
 
 |Method|Parameters|Description|
 |-|-|-|
@@ -169,7 +169,7 @@ After initiating a slider you can use following methods:
 ||**data** should match option type||
 |showPanel()| | Show configurational panel |
 |hidePanel()| | Hide configurational panel |
-|subscribe(name, method)| **name** equals one of the following: /  'updateThumb'  /  'updateThumbSecond'  /  'updateAll'  /| Call method with new value every time when it's changed |
+|subscribe(name, method)| **name** equals one of the following: /  'updateThumb'  /  'updateThumbSecond'  /  'updateAll'  /| Calls a method with new value every time when it's changed |
 || **method** matches function name that should be called ||
 |unsubscribe(name, method?)| **name**: 'updateThumb' / 'updateThumbSecond' / 'updateAll' | When only **name** is used, all subscriptions to the event are removed. |
 ||**method**: optional parameter|When used with **method** it removes this method from event subscribers|
