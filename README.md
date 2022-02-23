@@ -142,27 +142,21 @@ If you want to see configuration panel next to your slider add 'true' after obje
 `$( selector ).sliderMaker({ your options }, true )`
 ```
 
-##### 5.2. By adding a class 'js-slider-plugin' to your div element.
+##### 5.2. By adding a class 'js-slider-init' to your div element.
 
 ```html
-<div class='js-slider-plugin'></div>
+<div class='js-slider-init'></div>
 ```
 
-Then call a sliderMaker() in js-file without any selector
+This way plugin will add slider to every element with 'js-slider-init' class.
 
-```js
-`$().sliderMaker()`
-```
-
-This way plugin will add slider to every element with 'js-slider-plugin' class.
+> Note that your <div class='js-slider-init'> should not contain any nested elements! Otherwise it won't work:-(
 
 If you want to configure slider, just add options as *data-* attributes. For example:
 
 ```html
-<div class='js-slider-plugin' data-max='80' data-current-first='30'>
+<div class='js-slider-init' data-max='80' data-current-first='30'>
 ```
-
-Feel free to combine different approaches of setting options and initiating slider.
 
 ### Slider API
 
