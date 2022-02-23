@@ -16,7 +16,7 @@ import Thumb from './Thumb/Thumb';
 import Scale from './Scale/Scale';
 
 class View implements IView {
-  parentContainer: HTMLElement;
+  container: HTMLElement;
 
   eventDispatcher: IObservable;
 
@@ -39,7 +39,7 @@ class View implements IView {
   private dragObj!: HTMLElement | null;
 
   constructor(container: HTMLElement) {
-    this.parentContainer = container;
+    this.container = container;
     this.eventDispatcher = new Observable();
   }
 
@@ -51,7 +51,7 @@ class View implements IView {
   }
 
   enable(): void {
-    this.parentContainer.addEventListener('pointerup', this.selectThumb);
+    this.container.addEventListener('pointerup', this.selectThumb);
     window.addEventListener('resize', this.createMetrics);
     this.listenPointerDown();
   }
@@ -138,13 +138,13 @@ class View implements IView {
   }
 
   private listenMoveAndUp(): void {
-    this.parentContainer.removeEventListener('pointerup', this.selectThumb);
+    this.container.removeEventListener('pointerup', this.selectThumb);
     document.addEventListener('pointermove', this.dragThumbMove);
     document.addEventListener('pointerup', this.dragThumbEnd);
   }
 
   private stopListenMoveAndUp(): void {
-    this.parentContainer.addEventListener('pointerup', this.selectThumb);
+    this.container.addEventListener('pointerup', this.selectThumb);
     document.removeEventListener('pointermove', this.dragThumbMove);
     document.removeEventListener('pointerup', this.dragThumbEnd);
   }
@@ -190,7 +190,7 @@ class View implements IView {
   }
 
   private countPosition(e: PointerEvent): number {
-    const containerClientRect = this.parentContainer.getBoundingClientRect();
+    const containerClientRect = this.container.getBoundingClientRect();
     const newVal: number = this.settings.ifHorizontal
       ? e.clientX - containerClientRect.left + this.thumbWidth / 2
       : e.clientY - containerClientRect.top;
@@ -233,7 +233,7 @@ class View implements IView {
 
   @boundMethod
   private createMetrics(): void {
-    const containerMeasures = getComputedStyle(this.parentContainer);
+    const containerMeasures = getComputedStyle(this.container);
     this.containerSize = this.settings.ifHorizontal
       ? parseInt(containerMeasures.width.replace('px', ''), 10)
       : parseInt(containerMeasures.height.replace('px', ''), 10);
@@ -248,7 +248,7 @@ class View implements IView {
     this.scale = new Scale(
       container,
       this.settings,
-      this.parentContainer
+      this.container
     ).element;
     const trackElementsData: TTrackElementsData = {
       container: this.track,
@@ -258,16 +258,16 @@ class View implements IView {
     this.range = new Range(trackElementsData).element;
     this.thumb = new Thumb(trackElementsData, 'first').element;
     this.thumbSecond = new Thumb(trackElementsData, 'second').element;
-    this.parentContainer.append(container);
+    this.container.append(container);
   }
 
   private renderParentContainer(): void {
-    this.parentContainer.innerHTML = '';
-    this.parentContainer.classList.add('slider');
+    this.container.innerHTML = '';
+    this.container.classList.add('slider');
     if (this.settings.ifHorizontal) {
-      this.parentContainer.classList.remove('slider_vertical');
+      this.container.classList.remove('slider_vertical');
     } else {
-      this.parentContainer.classList.add('slider_vertical');
+      this.container.classList.add('slider_vertical');
     }
   }
 }

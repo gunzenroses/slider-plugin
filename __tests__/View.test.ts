@@ -159,7 +159,7 @@ describe('class View', () => {
       const evt = new MouseEvent("pointerup", {
         bubbles: true,
       });
-      view.parentContainer.dispatchEvent(evt);
+      view.container.dispatchEvent(evt);
 
       expect(spyOnSm).toBeCalledTimes(1);
     });
@@ -262,7 +262,7 @@ describe('class View', () => {
 
   describe('method render()', () => {
     test('init rendering view elements', () => {
-      expect(view.parentContainer).toBeDefined();
+      expect(view.container).toBeDefined();
       expect(view.track).toBeDefined();
       expect(view.range).toBeDefined();
       expect(view.thumb).toBeDefined();
