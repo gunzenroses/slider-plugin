@@ -48,7 +48,8 @@ describe('helpers: class CheckValidity', () => {
     const checkItem = new CheckValidity(item, container);
     checkItem.init();
 
-    expect(checkItem.invalidities).toContain('Number should be maximum 30');
+    expect(checkItem.invalidities).toContain(`Number should be maximum ${ 
+      item. max }`);
   });
 
   test('add error-message when stepMismatch and min === 0', () => {
@@ -60,7 +61,8 @@ describe('helpers: class CheckValidity', () => {
     const checkItem = new CheckValidity(item, container);
     checkItem.init();
 
-    expect(checkItem.invalidities).toContain('Number should be multiple of 4');
+    expect(checkItem.invalidities).toContain(`Number should be multiple of ${ 
+      item.step }`);
   });
 
   test('add error-message when stepMismatch and min > 0', () => {
@@ -72,18 +74,18 @@ describe('helpers: class CheckValidity', () => {
     const checkItem = new CheckValidity(item, container);
     checkItem.init();
 
-    expect(checkItem.invalidities).toContain('Number should be: 10 + multiple of 8');
+    expect(checkItem.invalidities).toContain(`Number should be: ${ 
+      item.min } + multiple of ${ item.step }`);
   });
 
   test('add error-message when value < min', () => {
-    item.step = '11';
     item.min = '1';
     item.value = '0';
 
     const checkItem = new CheckValidity(item, container);
     checkItem.init();
 
-    expect(checkItem.invalidities).toContain(`Number should be more that ${ 
-      item.min }, Number should be: ${ item.min } + multiple of ${ item.step }`);
+    expect(checkItem.invalidities).toContain(`Number should be more than ${ 
+      item.min }`);
   });
 });
