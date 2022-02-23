@@ -126,9 +126,11 @@ html(lang = 'ru')
       title demo slider-plugin
 
   body
+    h2.header Manually initialized sliders
     for slider in slidersId 
       .slider-panel
         .slider(id = slider)
+    h2.header Slider initialized by class name
     .slider-panel 
       .js-slider-init(
         data-min = '10.2' 
