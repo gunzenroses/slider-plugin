@@ -71,7 +71,7 @@ class Scale {
       step,
       toFixedDecimals
     };
-    this.countContainerSize(this.parentContainer, ifHorizontal);
+    this.countContainerSize(ifHorizontal);
     this.countScaleStep(scaleItemData);
     this.makeScaleRow(scaleItemData);
     this.countDistanceBetweenLastItems(min, max);
@@ -82,10 +82,9 @@ class Scale {
   }
 
   private countContainerSize(
-    parentContainer: HTMLElement,
     ifHorizontal: boolean
   ): void {
-    const parentNodeStyle = getComputedStyle(parentContainer);
+    const parentNodeStyle = getComputedStyle(this.parentContainer);
     this.scaleLength = ifHorizontal
       ? Math.ceil(parseFloat(parentNodeStyle.width))
       : Math.ceil(parseFloat(parentNodeStyle.height));
