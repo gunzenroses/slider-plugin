@@ -75,3 +75,5 @@ type TTrackElementsData = {
   eventDispatcher: IObservable,
   settings: TViewSettings
 };
+
+type TCallBackFunction = (value: number | TSettings) => TListenerArg;
