@@ -1,8 +1,9 @@
+@import 'assets/styles/colors-and-sizes.scss';
 @import 'assets/styles/mixins.scss';
 
 .panel {
   @include isFlex($direction: column);
-  width: 45%;
+  width: calc(100% - $slider-width - 40px);
   min-width: 320px;
   height: fit-content;
   margin: 2rem auto;
