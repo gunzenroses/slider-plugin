@@ -108,4 +108,42 @@ describe('class Model', () => {
       expect(model.getData().currentSecond).toBe(model.getData().max);
     });
   });
+
+  describe('when initiated should improve data', () => {
+    test('correct when values are grater that they should be', () => {
+      const uncorrectedData = {
+        min: 100,
+        max: 10,
+        currentSecond: 200,
+        currentFirst: 300,
+      };
+      const newData = { ...initialData, ...uncorrectedData }
+      model = new Model(newData);
+
+      const correctedData = model.getData();
+
+      const { min, max, currentFirst, currentSecond } = correctedData;
+
+      expect(min).toBeLessThanOrEqual(max);
+      expect(currentFirst).toBeLessThanOrEqual(currentSecond);
+      expect(currentSecond).toBeLessThanOrEqual(max);
+    });
+    test('correct when values are smaller than they should be', () => {
+      const uncorrectedData = {
+        min: 10,
+        max: 100,
+        currentSecond: -12,
+        currentFirst: 5,
+      };
+      const newData = { ...initialData, ...uncorrectedData }
+      model = new Model(newData);
+
+      const correctedData = model.getData();
+
+      const { min, max, currentFirst, currentSecond } = correctedData;
+
+      expect(currentFirst).toBeGreaterThanOrEqual(min);
+      expect(currentSecond).toBeGreaterThanOrEqual(currentFirst);
+    })
+  });
 });
