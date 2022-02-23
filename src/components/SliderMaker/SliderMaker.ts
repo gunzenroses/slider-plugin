@@ -12,13 +12,15 @@ import Panel from 'Panel/Panel';
 import 'assets/styles/slider.scss';
 
 class SliderMaker {
+  eventDispatcher!: IObservable;
+
   private presenter!: IPresenter;
 
   private panel!: IPanel;
 
   private model!: IModel;
 
-  eventDispatcher!: IObservable;
+  private data!: TSettings;
 
   constructor(
     container: HTMLElement,
@@ -56,12 +58,12 @@ class SliderMaker {
     return this;
   }
 
-  subscribe(name: string, method: any): SliderMaker {
+  subscribe(name: string, method: TCallBackFunction): SliderMaker {
     this.eventDispatcher.add(name, method);
     return this;
   }
 
-  unsubscribe(name: string, method?: any): SliderMaker {
+  unsubscribe(name: string, method?: TCallBackFunction): SliderMaker {
     this.eventDispatcher.delete(name, method);
     return this;
   }
@@ -81,8 +83,8 @@ class SliderMaker {
     ifPanel: boolean,
     options?: TSettings
   ): SliderMaker {
-    const data = this.makeData(container, options);
-    this.presenter = new Presenter(container, data);
+    this.makeData(container, options);
+    this.presenter = new Presenter(container, this.data);
     this.panel = new Panel(container, this.presenter);
     this.model = this.presenter.model;
     this.eventDispatcher = new Observable();
@@ -110,10 +112,10 @@ class SliderMaker {
     return this;
   }
 
-  private makeData(container: HTMLElement, options?: TSettings): TSettings {
+  private makeData(container: HTMLElement, options?: TSettings): void {
     const data = { ...container.dataset, ...options };
     const dataArr: TArrayOfEntries = [];
-    Object.entries(data).map((entry, index) => {
+    Object.entries(data).forEach((entry, _) => {
       const key = entry[0];
       const value = entry[1];
       const undefinedValue = typeof value === 'undefined';
@@ -125,13 +127,13 @@ class SliderMaker {
         || key === 'currentSecond';
       const valueTypeString = typeof value === 'string';
       if (keyOfNumValue && valueTypeString) {
-        dataArr[index] = [key, parseFloat(value)];
+        dataArr.push([key, parseFloat(value)]);
       } else if (!undefinedValue && !panelKey) {
-        dataArr[index] = [key, value];
+        dataArr.push([key, value]);
       }
     });
     const newData = Object.fromEntries(dataArr);
-    return { ...initialData, ...newData };
+    this.data = { ...initialData, ...newData };
   }
 
   @boundMethod
