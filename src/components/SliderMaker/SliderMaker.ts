@@ -13,17 +13,19 @@ import 'assets/styles/slider.scss';
 
 class SliderMaker {
   private presenter!: IPresenter;
+
   private panel!: IPanel;
+
   private model!: IModel;
+
   eventDispatcher!: IObservable;
 
   constructor(
-    ifPanel: boolean = false,
     container: HTMLElement,
+    ifPanel = false,
     options?: TSettings
   ) {
-    this.init(ifPanel, container, options);
-    this.enable();
+    this.init(container, ifPanel, options);
   }
 
   getOptions(name?: TModelData): string | TSettings {
@@ -31,10 +33,9 @@ class SliderMaker {
     if (name) {
       Object.entries(newData).forEach((entry) => {
         if (entry[0] === name) {
-          return `${entry[0]}: ${entry[1]}`;
-        } else {
-          return 'this option does not exist';
+          return `${ entry[0] }: ${ entry[1] }`;
         }
+        return 'this option does not exist';
       });
     }
     return newData;
@@ -66,20 +67,37 @@ class SliderMaker {
   }
 
   private init(
-    ifPanel: boolean, 
-    container: HTMLElement, 
-    options?: TSettings): SliderMaker {
+    container: HTMLElement,
+    ifPanel: boolean,
+    options?: TSettings
+  ): SliderMaker {
+    this.makeSlider(container, ifPanel, options);
+    this.enable();
+    return this;
+  }
+
+  private makeSlider(
+    container: HTMLElement,
+    ifPanel: boolean,
+    options?: TSettings
+  ): SliderMaker {
     const data = this.makeData(container, options);
-    if (container) {
-      this.presenter = new Presenter(container, data);
-      this.panel = new Panel(container, this.presenter);
-    }
+    this.presenter = new Presenter(container, data);
+    this.panel = new Panel(container, this.presenter);
     this.model = this.presenter.model;
     this.eventDispatcher = new Observable();
-    if (!ifPanel) {
-      this.panel.container.classList.add('panel_hidden');
-    }
+    if (container.dataset.panel === 'true') {
+      this.changePanel(true);
+    } else this.changePanel(ifPanel);
     return this;
+  }
+
+  private changePanel(ifPanel: boolean): void {
+    if (ifPanel) {
+      this.showPanel();
+    } else {
+      this.hidePanel();
+    }
   }
 
   private enable(): SliderMaker {
@@ -94,20 +112,21 @@ class SliderMaker {
 
   private makeData(container: HTMLElement, options?: TSettings): TSettings {
     const data = { ...container.dataset, ...options };
-    let dataArr: TArrayOfEntries = [];
+    const dataArr: TArrayOfEntries = [];
     Object.entries(data).map((entry, index) => {
       const key = entry[0];
       const value = entry[1];
-      const keyOfNumValue =
-        key === 'min' ||
-        key === 'max' ||
-        key === 'step' ||
-        key === 'currentFirst' ||
-        key === 'currentSecond';
+      const undefinedValue = typeof value === 'undefined';
+      const panelKey = key === 'panel';
+      const keyOfNumValue = key === 'min'
+        || key === 'max'
+        || key === 'step'
+        || key === 'currentFirst'
+        || key === 'currentSecond';
       const valueTypeString = typeof value === 'string';
       if (keyOfNumValue && valueTypeString) {
         dataArr[index] = [key, parseFloat(value)];
-      } else if (typeof value !== 'undefined') {
+      } else if (!undefinedValue && !panelKey) {
         dataArr[index] = [key, value];
       }
     });
