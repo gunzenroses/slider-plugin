@@ -9,6 +9,7 @@ yarn.lock
 *.orig
 .vscode/
 coverage/
+.prettierignore
 
 #log files
 npm-debug.log*
