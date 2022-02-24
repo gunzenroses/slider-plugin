@@ -148,7 +148,7 @@ class ConfigurationPanel implements IPanel {
   }
 
   private assignData(): void {
-    this.data = this.presenter.data;
+    this.data = this.presenter.getData();
   }
 
   private createChildren(): void {

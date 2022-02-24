@@ -80,20 +80,6 @@ describe('Panel for double slider', () => {
       }
     });
   });
-
-  describe('method updatePanel()', () => {
-    test('should update data', () => {
-      presenter.data.step = 8;
-      presenter.data.min = 10;
-      presenter.data.max = 100;
-
-      panel.updatePanel();
-
-      expect(panel.data.step).toBe(presenter.data.step);
-      expect(panel.data.min).toBe(presenter.data.min);
-      expect(panel.data.max).toBe(presenter.data.max);
-    });
-  });
 });
 
 const newData = { ...initialData, range: false, tooltip: false, scale: false };
