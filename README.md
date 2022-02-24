@@ -70,27 +70,30 @@ Install dependencies
 npm i
 ```
 
-Run tests in terminal with coverage report
+Then you can use following scripts in terminal to:
+
+Test code in terminal with coverage report.
 ```sh
 npm run test
 ```
 
-Development mode to assemble the project on localhost:8081
+Assemble the project (without producing files) and run it on localhost:8081.
 ```sh
 npm run dev
 ```
 
-Production mode to assemble slider-plugin files
+Assemble slider-plugin files in 'dist' folder. 
+In order to learn how to work with them check the section "How to use plugin".
 ```sh
 npm run prod
 ```
 
-Debug mode to check how tests are running
+Find particular actions that reproduce a bug in tests (you can find debugger at chrome://inspect)
 ```sh
 npm run debug
 ```
 
-Run statical analyzer which check style for code
+Analyze code style
 ```sh
 npm run eslint
 ```
