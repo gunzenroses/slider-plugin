@@ -22,13 +22,13 @@ class View implements IView {
 
   settings!: TViewSettings;
 
-  thumb!: HTMLElement;
-
-  thumbSecond!: HTMLElement;
+  track!: HTMLElement;
 
   range!: HTMLElement;
 
-  track!: HTMLElement;
+  thumb!: HTMLElement;
+
+  thumbSecond!: HTMLElement;
 
   scale!: HTMLElement;
 
