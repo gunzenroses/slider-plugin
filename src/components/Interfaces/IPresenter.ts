@@ -5,10 +5,11 @@ import IView from './IView';
 interface IPresenter {
   model: IModel;
   view: IView;
-  data: TSettings;
   eventDispatcher: IObservable;
 
   init(): void;
+  updateView(): void;
+  getData(): TSettings;
   modelData(name: string, data: TModelData): void;
 }
 

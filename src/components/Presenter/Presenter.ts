@@ -10,13 +10,13 @@ import Model from 'Model/Model';
 import View from 'View/View';
 
 class Presenter implements IPresenter {
+  eventDispatcher: IObservable;
+
   model: IModel;
 
   view: IView;
 
-  eventDispatcher: IObservable;
-
-  data!: TSettings;
+  private data!: TSettings;
 
   constructor(container: HTMLElement, data: TSettings) {
     this.model = new Model(data);
@@ -33,6 +33,11 @@ class Presenter implements IPresenter {
   updateView(): void {
     this.data = this.model.getData();
     this.view.init(this.data);
+  }
+
+  getData(): TSettings {
+    const requiredData = this.data;
+    return requiredData;
   }
 
   modelData(name: keyof TSettings, data: TModelData): void {
