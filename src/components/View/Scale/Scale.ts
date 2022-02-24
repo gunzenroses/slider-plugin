@@ -7,7 +7,7 @@ class Scale {
 
   private scaleItemRow!: number[];
 
-  private parentContainer!: HTMLElement;
+  private container!: HTMLElement;
 
   private tailContainer!: number;
 
@@ -20,22 +20,22 @@ class Scale {
   private newStep!: number;
 
   constructor(
-    container: DocumentFragment,
+    parentContainer: DocumentFragment,
     settings: TViewSettings,
-    parentContainer: HTMLElement
+    container: HTMLElement
   ) {
-    this.init(container, settings, parentContainer);
+    this.init(parentContainer, settings, container);
   }
 
   private init(
-    container: DocumentFragment,
+    parentContainer: DocumentFragment,
     settings: TViewSettings,
-    parentContainer: HTMLElement
+    container: HTMLElement
   ): HTMLElement {
-    this.parentContainer = parentContainer;
+    this.container = container;
     this.make(settings);
     this.change(settings);
-    container.append(this.element);
+    parentContainer.append(this.element);
     return this.element;
   }
 
@@ -74,7 +74,7 @@ class Scale {
     this.countContainerSize(ifHorizontal);
     this.countScaleStep(scaleItemData);
     this.makeScaleRow(scaleItemData);
-    this.countDistanceBetweenLastItems(min, max);
+    this.countLastDistance(min, max);
     this.makeElementClasses(ifHorizontal);
     this.element.innerHTML = this.makeScaleItems(scaleItemData)
       + this.makeMaxItem(ifHorizontal, max);
@@ -84,7 +84,7 @@ class Scale {
   private countContainerSize(
     ifHorizontal: boolean
   ): void {
-    const parentNodeStyle = getComputedStyle(this.parentContainer);
+    const parentNodeStyle = getComputedStyle(this.container);
     this.scaleLength = ifHorizontal
       ? Math.ceil(parseFloat(parentNodeStyle.width))
       : Math.ceil(parseFloat(parentNodeStyle.height));
@@ -131,7 +131,7 @@ class Scale {
     }
   }
 
-  private countDistanceBetweenLastItems(min: number, max: number): void {
+  private countLastDistance(min: number, max: number): void {
     const penultimateItem = this.scaleItemRow[this.scaleItemRow.length - 1];
     const lengthOfLeft = max - penultimateItem;
     const leftLengthInPx = fromValueToPX({
