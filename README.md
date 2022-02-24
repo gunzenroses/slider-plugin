@@ -47,7 +47,7 @@ According these interfaces we have the following streams:
 - UI event (View) -> notify method that process data (Presenter) -> change data (Model);
 - change data outside MVP (Panel) -> notify method that process data (Presenter) -> change data (Model) -> notify method that process data (Presenter) -> change UI (View).
 
-### [UML diagram](https://github.com/gunzenroses/slider-plugin/blob/master/src/UML.png)
+### [UML diagram](https://github.com/gunzenroses/slider-plugin/blob/master/src/UML.jpg)
 
 ### 3. Used technologies and libraries
 
