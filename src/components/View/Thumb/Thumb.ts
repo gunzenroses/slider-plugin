@@ -5,7 +5,7 @@ import Tooltip from 'View/Tooltip/Tooltip';
 class Thumb {
   element!: HTMLElement;
 
-  tooltip!: Tooltip;
+  private tooltip!: Tooltip;
 
   private className: string;
 
