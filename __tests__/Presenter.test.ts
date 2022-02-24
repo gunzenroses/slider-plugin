@@ -103,7 +103,9 @@ describe('Presenter', () => {
     test('should get data from model', () => {
       presenter.init();
 
-      expect(presenter.data).toEqual(presenter.model.getData());
+      const data = presenter.getData();
+
+      expect(data).toEqual(presenter.model.getData());
     });
 
     test('should initiate view', () => {
