@@ -9,11 +9,11 @@ The aim of this project is to get known with:
 
 ### [Example of slider-plugin usage](https://gunzenroses.github.io/slider-plugin/)
 
-### Plugin info
+### 1. Plugin info
 
 The project works with node@14.16.1, npm@8.1.0, git@2.34 and jquery@3.6.0.
 
-### Plugin architecture
+### 2. Plugin architecture
 
 The plugin has an MVP-architecture with a Passive View. Model and View do not interact with any other part directly, they are mediated by Presenter. Methods of Presenter are notified about updates in Model and changes in View with the help of Observer. Then Presenter calls public methods of View or Model.
 
@@ -49,7 +49,7 @@ According these interfaces we have the following streams:
 
 ### [UML diagram](https://github.com/gunzenroses/slider-plugin/blob/master/src/UML.png)
 
-### Used technologies and libraries
+### 3. Used technologies and libraries
 
 - webpack (path aliases, plugins, rules, development and production modes);
 - scss;
@@ -58,69 +58,93 @@ According these interfaces we have the following streams:
 - eslint;
 - babel.
 
-### How to work with the project
+### 4. How to work with the project
 
-Clone repository
+##### 4.1. Clone repository
 ```sh
 git clone https://github.com/gunzenroses/slider-plugin.git
 ```
 
-Install dependencies
+##### 4.2. Install dependencies
 ```sh
 npm i
 ```
 
-Then you can use following scripts in terminal to:
+##### 4.3. Then you can use following scripts in terminal to:
 
-Test code in terminal with coverage report.
+1). Test code in terminal with coverage report:
+
 ```sh
 npm run test
 ```
 
-Assemble the project (without producing files) and run it on localhost:8081.
+2). Assemble the project (without producing files) and run it on `localhost:8081`:
+
 ```sh
 npm run dev
 ```
 
-Assemble slider-plugin files in 'dist' folder. 
-In order to learn how to work with them check the section "How to use plugin".
+3). Assemble slider-plugin files in `/dist` folder:
+In order to learn how to work with them check the section `"How to use plugin"`.
+
 ```sh
 npm run prod
 ```
 
-Find particular actions that reproduce a bug in tests (you can find debugger at chrome://inspect)
+4). Find particular actions that reproduce a bug in tests (with the help of `chrome://inspect` devtools):
+
 ```sh
 npm run debug
 ```
 
-Analyze code style
+5). Analyze code style:
+
 ```sh
 npm run eslint
 ```
 
-### How to use plugin
+### 5. How to use plugin
 
-##### 1. Copy css-file from `dist/` to your project folder, add link in the `<head>`.
+##### 5.1. Copy css-file from `dist/` to your project folder, add link in the `<head>`.
 
-    ```html
-    <head>
-        <link rel="stylesheet" href="slider-plugin.min.css">
-    <head>
-    ```
+```html
+<head>
+    <link rel="stylesheet" href="slider-plugin.min.css">
+<head>
+```
 
-##### 2.Install jQuery 3.6.0 `npm install jquery@3.6.0` or link to it directly at the end of `<body>`.
-##### 3.Copy js file from `dist/` to your project folder, add after jQuery.
+##### 5.2.Install jQuery 3.6.0 `npm install jquery@3.6.0` or add following script at the end of `<body>`.
 
-    ```html
-    <body>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="slider-plugin.min.js"></script>
-    </body>
-    ```
+```html
+<body>
+    ...
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+```
 
-##### 4.Initialize slider:
+##### 5.3.Copy js file from `dist/` to your project folder, add after jQuery.
 
-##### 4.1. In js-file with your options.
+```html
+<body>
+    ...
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./slider-plugin.min.js"></script>
+</body>
+```
+##### 5.4. Add your js-file after `jQuery` and `slider-plugin.min.js`.
+
+```html
+<body>
+    ...
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./slider-plugin.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+```
+
+##### 5.5.You can initialize slider:
+
+##### 5.5.1. In js-file with your options.
 
 ```js
 `$( selector ).sliderMaker({ your options })`
@@ -145,10 +169,10 @@ If you want to see configuration panel next to your slider add 'true' after obje
 `$( selector ).sliderMaker({ your options }, true )`
 ```
 
-##### 4.2. By adding a class 'js-slider-init' to your div element.
+##### 5.5.2. By adding a class 'js-slider-init' to your div element.
 
 ```html
-<div class='js-slider-init'></div>
+ <div class='js-slider-init'></div>
 ```
 
 This way plugin will add slider to every element with 'js-slider-init' class.
@@ -161,9 +185,9 @@ If you want to configure slider, just add options as *data-* attributes. For exa
 <div class='js-slider-init' data-max='80' data-current-first='30'>
 ```
 
-### Slider API
+### 6. Slider API
 
-After initialization of slider you can use following methods in js-file:
+After initialization of slider you can use following methods in your `js-file`:
 
 |Method|Parameters|Description|
 |-|-|-|
@@ -181,7 +205,7 @@ All methods except **getOptions()** can be used in a chain. For example:
 
 ```js
 let $slider = $( selector ).sliderMaker({ max: 2000, min: -12.12 });
-$slider.getOptions();
+const currentData = $slider.getOptions();
 $slider.showPanel().subscribe('updateThumb', updateInput);
 
 function updateInput(value: number | TSettings): void {
