@@ -2,7 +2,7 @@ import 'SliderMaker/SliderMaker-init';
 import './index.scss';
 
 window.onload = function makeSliderExamples() {
-  $('#default').sliderMaker(
+  let $slider = $('#default').sliderMaker(
     {
       min: 0,
       max: 100,
@@ -11,9 +11,9 @@ window.onload = function makeSliderExamples() {
       step: 10,
       scale: true,
       range: true
-    },
-    true
+    }
   );
+  $slider.showPanel();
 
   $('#vertical').sliderMaker(
     {
