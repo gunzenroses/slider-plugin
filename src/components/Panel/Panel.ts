@@ -235,14 +235,21 @@ class ConfigurationPanel implements IPanel {
   }
 
   private createPanelItem(params: TPanelParam): string {
-    const panelItemName = `<div class = 'panel__name'>${ params.text }</div>`;
-    const element = `<div class = 'panel__item'>
-        ${ panelItemName } ${ this.panelItemInput(params) }
+    const panelItemClass = params.type === 'checkbox'
+      ? 'panel__item panel__item_type_checkbox'
+      : 'panel__item';
+    const panelNameClass = params.type === 'checkbox'
+      ? 'panel__name panel__name_type_checkbox'
+      : 'panel__name';
+    const panelName = `<div class = '${ 
+      panelNameClass }'>${ params.text }</div>`;
+    const panelItem = `<div class = '${ panelItemClass }'>
+        ${ panelName } ${ this.panelInput(params) }
       </div>`;
-    return element;
+    return panelItem;
   }
 
-  private panelItemInput(params: TPanelParam): string {
+  private panelInput(params: TPanelParam): string {
     const options = params.options ? params.options : [];
     if (params.type === 'number') {
       return `
@@ -255,7 +262,7 @@ class ConfigurationPanel implements IPanel {
     if (params.type === 'checkbox') {
       return `
         <input 
-          class = 'panel__input' 
+          class = 'panel__input panel__input_type_checkbox' 
           name = ${ params.name } 
           type = ${ params.type } ${ params.value }/>`;
     }

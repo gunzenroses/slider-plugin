@@ -40,13 +40,27 @@
     &:last-of-type {
       margin-bottom: 0;
     }
+
+    &_type_checkbox {
+      width: 100px;
+    }
   }
 
   &__name {
     width: 40%;
+    user-select: none;
+
+    &_type_checkbox {
+      width: 60px;
+    }
   }
 
   &__input {
     width: 60%;
+    cursor: pointer;
+
+    &_type_checkbox {
+      width: auto;
+    }
   }
 }
