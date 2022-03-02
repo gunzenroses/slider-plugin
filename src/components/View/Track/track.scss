@@ -4,7 +4,6 @@
   position: relative;
   width: calc(2 * $width-border + 100%);
   height: calc(2 * $width-border + $height-basic);
-  margin-top: 2rem;
   border: $width-border solid $color-border;
   border-radius: 3px;
   background-color: $color-light;
@@ -13,7 +12,5 @@
   &_vertical {
     width: $height-basic;
     height: 100%;
-    margin-top: 0;
-    margin-left: 3rem;
   }
 }
