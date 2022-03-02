@@ -80,6 +80,7 @@
   },
   "dependencies": {
     "autobind-decorator": "^2.4.0",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "rimraf": "^3.0.2"
   }
 }
