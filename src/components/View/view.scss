@@ -17,6 +17,7 @@
   border: 1px solid transparent;
   user-select: none;
   touch-action: none;
+  cursor: pointer;
 
   @media (max-width: 900px) {
     width: 90%;
