@@ -2,7 +2,7 @@ import SliderMaker from './SliderMaker';
 
 $(document).ready(() => {
   $('.js-slider-init').each(
-    (_, $slider) => {
+    (_: number, $slider: HTMLElement) => {
       if ($slider.children.length < 1) {
         new SliderMaker($slider);
       }
