@@ -1,5 +1,6 @@
-import SliderMaker from './SliderMaker';
 import $ from 'jquery';
+
+import SliderMaker from './SliderMaker';
 
 $(document).ready(() => {
   $('.js-slider-init').each(
