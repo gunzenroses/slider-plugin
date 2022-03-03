@@ -2,7 +2,7 @@ import 'SliderMaker/SliderMaker-init';
 import './index.scss';
 
 window.onload = function makeSliderExamples() {
-  let $slider = $('#default').sliderMaker(
+  const $slider = $('#default').sliderMaker(
     {
       min: 0,
       max: 100,
