@@ -64,7 +64,11 @@ class SliderMaker {
   }
 
   unsubscribe(name: string, method?: TCallBackFunction): SliderMaker {
-    this.eventDispatcher.delete(name, method);
+    if (method) {
+      this.eventDispatcher.deleteListener(name, method);
+    } else {
+      this.eventDispatcher.deleteKey(name);
+    }
     return this;
   }
 

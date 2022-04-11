@@ -213,7 +213,7 @@ class View implements IView {
   }
 
   private createSettings(settings: TSettings): void {
-    this.eventDispatcher.delete('updateSubViews');
+    this.eventDispatcher.deleteKey('updateSubViews');
     const ifHorizontal = settings.orientation === TOrient.HORIZONTAL;
     const firstPosition = changeValueToPercents(
       settings.currentFirst,

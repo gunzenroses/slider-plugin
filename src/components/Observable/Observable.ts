@@ -17,10 +17,7 @@ class Observable implements IObservable {
     }
   }
 
-  delete(eventKey: string, listener?: TListener): void {
-    if (!listener) {
-      delete this.listeners[eventKey];
-    }
+  deleteListener(eventKey: string, listener: TListener): void {
     if (listener) {
       const index = this.listeners[eventKey].indexOf(listener);
       if (index !== -1) {
@@ -31,6 +28,10 @@ class Observable implements IObservable {
         delete this.listeners[eventKey];
       }
     }
+  }
+
+  deleteKey(eventKey: string): void {
+    delete this.listeners[eventKey];
   }
 }
 

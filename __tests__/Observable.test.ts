@@ -28,14 +28,14 @@ describe('Observable', () => {
 
   describe('method delete()', () => {
     test('when only 1 argument is passed delete eventKey and all listeners', () => {
-      eventDispatcher.delete('anotherKey');
+      eventDispatcher.deleteKey('anotherKey');
 
       eventDispatcher.notify('anotherKey', 13);
 
       expect(anotherKeyFollower).toHaveBeenCalledTimes(1);
     }),
     test('when 2 argument is passed delete eventKey for mentioned listener', () => {
-      eventDispatcher.delete('someKey', someKeyFollower2);
+      eventDispatcher.deleteListener('someKey', someKeyFollower2);
 
       eventDispatcher.notify('someKey', 13);
 
