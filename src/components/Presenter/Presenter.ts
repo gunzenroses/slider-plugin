@@ -2,7 +2,6 @@ import { boundMethod } from 'autobind-decorator';
 
 import { changePercentsToValue } from 'utils/common';
 import IPresenter from 'Interfaces/IPresenter';
-import IObservable from 'Interfaces/IObservable';
 import IModel from 'Interfaces/IModel';
 import IView from 'Interfaces/IView';
 import Observable from 'Observable/Observable';

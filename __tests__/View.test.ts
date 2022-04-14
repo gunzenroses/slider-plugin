@@ -44,163 +44,6 @@ describe('class View', () => {
     });
   });
 
-  describe('method enable()', () => {
-    test('notify to change one of thumbs when container is clicked', () => {
-      const spyOnClick = jest.spyOn(view, 'notifyListener');
-
-      const clickEvt = {
-        ...pointerUpEvt,
-        clientX: 100,
-        clientY: 100,
-        preventDefault: jest.fn(),
-      };
-      
-      view.selectThumb(clickEvt as unknown as PointerEvent);
-      /* jest dom has a restricted definition of PointerEvent,
-      so it's not possible to simulate it directly and 
-      workaround is needed*/
-
-      expect(spyOnClick).toHaveBeenCalledTimes(1);
-    });
-
-    test('should not notify when thumb or thumbSecond is clicked', () => {
-      const spyOnClick = jest.spyOn(view, 'notifyListener');
-      const evt = new Event('click', {
-        bubbles: true
-      });
-
-      view.thumb.dispatchEvent(evt);
-      view.thumbSecond.dispatchEvent(evt);
-
-      expect(spyOnClick).toHaveBeenCalledTimes(0);
-    });
-
-    test('notify when thumbFirst is moved to a position smaller that thumbSecond', () => {
-      const spyOnDragMove = jest.spyOn(view, 'notifyListener');
-      view.settings.range = true;
-      const pointDown = new CustomEvent('poinerdown', {
-        bubbles: true,
-        cancelable: false, 
-        composed: false,
-      });
-      const startEvent = { 
-        ...pointDown, 
-        target: view.thumb,
-        preventDefault: jest.fn(),
-      };
-      const pointMove = new Event('pointermove', {
-        bubbles: true,
-        cancelable: false, 
-        composed: false
-      });
-      const moveEvent = {
-        ... pointMove,
-        clientX: 2,
-        clientY: 2,
-        preventDefault: jest.fn(),
-      }
-
-
-      view.dragThumbStart(startEvent as unknown as PointerEvent);     
-      view.dragThumbMove(moveEvent as unknown as PointerEvent);
-
-      expect(spyOnDragMove).toHaveBeenCalledTimes(1);
-    });
-
-    test('notify when thumbSecond moved to a position bigger than thumbFirst', () => {
-      const spyOnDragMove = jest.spyOn(view, 'notifyListener');
-      view.settings.range = true;
-      
-      const pointDown = new CustomEvent('poinerdown', {
-        bubbles: true,
-        cancelable: false, 
-        composed: false,
-      });
-      const startEvent = {
-        ...pointDown, 
-        target: view.thumbSecond,
-        preventDefault: jest.fn(),
-      };
-      const pointMove = new Event('pointermove', {
-        bubbles: true,
-        cancelable: false, 
-        composed: false
-      });
-      const moveEvent = {
-        ... pointMove,
-        clientX: 300,
-        clientY: 300,
-        preventDefault: jest.fn(),
-      }
-
-      view.dragThumbStart(startEvent as unknown as PointerEvent); 
-      view.dragThumbMove(moveEvent as unknown as PointerEvent);
-
-      expect(spyOnDragMove).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('method selectThumb()', () => {
-    test('should not notify subscribers if e.target is selectThumb or selectThumbSecond', () => {
-      const spyOnSm = jest.spyOn(view, 'notifyListener');
-
-      const evt = new MouseEvent('pointerup', {
-        bubbles: true
-      });
-      view.thumb.dispatchEvent(evt);
-
-      expect(spyOnSm).toBeCalledTimes(0);
-    });
-
-    test('should notify Listeners when range is false ', () => {
-      view.settings.range = false;
-      const spyOnSm = jest.spyOn(view, 'notifyListener');
-
-      const evt = new MouseEvent("pointerup", {
-        bubbles: true,
-      });
-      view.container.dispatchEvent(evt);
-
-      expect(spyOnSm).toBeCalledTimes(1);
-    });
-
-    test('should notify Listeners when range is true', () => {
-      const spyOnSm = jest.spyOn(view, 'notifyListener');
-
-      const clickEvt = {
-        ...pointerUpEvt,
-        clientX: 200,
-        clientY: 200,
-        preventDefault: jest.fn(),
-      };
-
-      view.selectThumb(clickEvt as unknown as PointerEvent);
-      /* jest dom has a restricted definition of PointerEvent,
-      so it's not possible to simulate it directly and 
-      workaround is needed*/
-
-      expect(spyOnSm).toBeCalledTimes(1);
-    });
-
-    test('should notify Listeners when distances from firstThumb and secondThumb to newPos are equal', () => {
-      const spyOnSm = jest.spyOn(view, 'notifyListener');
-
-      const clickEvt = {
-        ...pointerUpEvt,
-        clientX: 193,
-        clientY: 193,
-        preventDefault: jest.fn(),
-      };
-
-      view.selectThumb(clickEvt as unknown as PointerEvent);
-      /* jest dom has a restricted definition of PointerEvent,
-      so it's not possible to simulate it directly and 
-      workaround is needed*/
-
-      expect(spyOnSm).toBeCalledTimes(1);
-    });
-  });
-
   describe('method dragThumbStart()', () => {
     test('disable pointerdown eventListener', () => {
       const newSet = {
@@ -218,16 +61,6 @@ describe('class View', () => {
     });
   });
 
-  describe('method dragThumbEnd()', () => {
-    test('when pointer is up should end listening to pointermove', () => {
-      const spyOnMoveListener = jest.spyOn(view, 'notifyListener');
-
-      document.dispatchEvent(new Event('pointerup'));
-
-      expect(spyOnMoveListener).toBeCalledTimes(0);
-    });
-  });
-
   describe('method stopListenDown()', () => {
     test('do not listen to thumbDown events when thumbMove', () => {
       const spyOnThumbDown = jest.spyOn(view, 'dragThumbStart');
@@ -235,28 +68,6 @@ describe('class View', () => {
       document.dispatchEvent(new Event('pointerdown'));
 
       expect(spyOnThumbDown).toBeCalledTimes(0);
-    });
-  });
-
-  describe('method changeThumb()', () => {
-    test('change data', () => {
-      const num = 18;
-      const spyOnChangeThumb = jest.spyOn(view, 'notifyListener');
-      view.changeThumb('thumbFirst', num);
-
-      expect(view.settings.currentFirst).toBe(num);
-      expect(spyOnChangeThumb).toBeCalledTimes(1);
-    });
-  });
-
-  describe('method changeSecondThumb()', () => {
-    test('change data', () => {
-      const num = 18;
-      const spyOnChangeThumb = jest.spyOn(view, 'notifyListener');
-      view.changeThumb('thumbSecond', num);
-
-      expect(view.settings.currentSecond).toBe(num);
-      expect(spyOnChangeThumb).toBeCalledTimes(1);
     });
   });
 

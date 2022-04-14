@@ -1,7 +1,7 @@
 import IObservable from 'Interfaces/IObservable';
 
 abstract class Observable implements IObservable {
-  private listeners: TListenerArr = {};
+  protected listeners: TListenerArr = {};
 
   addListener(eventKey: string, listener: TListener): void {
     if (this.listeners[eventKey]) {
@@ -11,7 +11,7 @@ abstract class Observable implements IObservable {
     }
   }
 
-  notifyListener(eventKey: string, args?: TListenerArg): void {
+  protected notifyListener(eventKey: string, args?: TListenerArg): void {
     if (this.listeners[eventKey]) {
       this.listeners[eventKey].forEach((listener) => listener(args));
     }

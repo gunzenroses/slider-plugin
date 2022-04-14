@@ -27,29 +27,6 @@ describe('Panel for double slider', () => {
     });
   });
 
-  describe('handlers for events', () => {
-    test('changes in presenter should trigger panel to update', () => {
-      const spyOnUpdatePanel = jest.spyOn(panel, 'updatePanel').mockImplementation();
-
-      panel.init();
-      panel.presenter.notifyListener('updateAll');
-
-      expect(spyOnUpdatePanel).toHaveBeenCalledTimes(1);
-    });
-
-    test('change of thumbFirst in presenter -> change thumbFirst in panel', () => {
-      panel.presenter.notifyListener('thumbUpdate', 18);
-
-      expect(panel.data.currentFirst).toBe(18);
-    });
-
-    test('change of thumbSecond in presenter -> change thumbSecond in panel', () => {
-      panel.presenter.notifyListener('thumbSecondUpdate', 53);
-
-      expect(panel.data.currentSecond).toBe(53);
-    });
-  });
-
   describe('method changePanel()', () => {
     test('should update data', () => {
       const spyPresenter = jest.spyOn(panel.presenter, 'modelData').mockImplementation();
