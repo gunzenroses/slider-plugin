@@ -23,10 +23,6 @@ abstract class Observable implements IObservable {
       if (index !== -1) {
         this.listeners[eventKey].splice(index, 1);
       }
-      const lengthOfListeners = this.listeners[eventKey].length;
-      if (lengthOfListeners === 0) {
-        delete this.listeners[eventKey];
-      }
     }
   }
 
