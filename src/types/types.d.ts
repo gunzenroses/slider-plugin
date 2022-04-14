@@ -15,14 +15,7 @@ type TFromValueToPercents = {
   step: number
 };
 
-type TListenerArg = any;
-/*
-  TListenerArg may have a type:
-    'IView', 'number', 'Event', 'TSettings', 'undefined', etc.
-  which makes type checking excessively complicated
-*/
-
-type TListener = (args: TListenerArg) => void;
+type TListener<T> = (args: T) => void;
 
 type TListenerArr = {
   [eventKey: string]: Array<TListener>;
@@ -77,7 +70,3 @@ type TTrackElementsData = {
   settings: TViewSettings,
   addListener: TAddListener;
 };
-
-type TCallBackFunction = (value: number | TSettings) => TListenerArg;
-
-type TFuncAddListener = (eventKey: string, listener: TListener) => void;

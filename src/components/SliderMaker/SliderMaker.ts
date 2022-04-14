@@ -1,7 +1,6 @@
 import { boundMethod } from 'autobind-decorator';
 
 import initialData from 'scripts/initialData';
-import IObservable from 'Interfaces/IObservable';
 import IPresenter from 'Interfaces/IPresenter';
 import IModel from 'Interfaces/IModel';
 import IPanel from 'Interfaces/IPanel';
@@ -57,12 +56,12 @@ class SliderMaker extends Observable {
     return this;
   }
 
-  subscribe(name: string, method: TCallBackFunction): SliderMaker {
+  subscribe<T>(name: string, method: TListener<T>): SliderMaker {
     this.addListener(name, method);
     return this;
   }
 
-  unsubscribe(name: string, method?: TCallBackFunction): SliderMaker {
+  unsubscribe<T>(name: string, method?: TListener<T>): SliderMaker {
     if (method) {
       this.deleteListener(name, method);
     } else {
@@ -145,12 +144,12 @@ class SliderMaker extends Observable {
   }
 
   @boundMethod
-  private thumbUpdate(value: number): void {
+  private thumbUpdate<T>(value: T): void {
     this.notifyListener('updateThumb', value);
   }
 
   @boundMethod
-  private thumbSecondUpdate(value: number): void {
+  private thumbSecondUpdate<T>(value: T): void {
     this.notifyListener('updateThumbSecond', value);
   }
 }

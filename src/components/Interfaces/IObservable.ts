@@ -1,6 +1,6 @@
 interface IObservable {
-  addListener(eventKey: string, listener: TListener): void;
-  deleteListener(eventKey: string, listener: TListener): void;
+  addListener<T>(eventKey: string, listener: TListener<T>): void;
+  deleteListener<T>(eventKey: string, listener: TListener<T>): void;
   deleteKey(eventKey: string): void;
 }
 
