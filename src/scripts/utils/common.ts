@@ -32,6 +32,7 @@ function getNumbersAfterDot(value: number): number {
 }
 
 function applyRestrictions(value: number): number {
+  if (isNaN(value)) return 0;
   if (value > 100) {
     return 100;
   } if (value < 0) {
