@@ -1,16 +1,13 @@
 import { applyStepOnValue } from 'utils/common';
 import adjustValue from 'helpers/adjustValue';
-import IObservable from 'Interfaces/IObservable';
 import IModel from 'Interfaces/IModel';
 import Observable from 'Observable/Observable';
 
 class Model extends Observable implements IModel  {
-  //eventDispatcher: IObservable;
 
   private data: TSettings;
 
   constructor(settings: TSettings) {
-    //this.eventDispatcher = new Observable();
     super();
     this.data = settings;
     this.improveData();
