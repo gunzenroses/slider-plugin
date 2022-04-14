@@ -7,7 +7,6 @@ import {
   valueToPercentsApplyStep
 } from 'utils/common';
 import TOrient from 'utils/const';
-import IObservable from 'Interfaces/IObservable';
 import IView from 'Interfaces/IView';
 import Observable from 'Observable/Observable';
 import Range from './Range/Range';
@@ -15,10 +14,8 @@ import Track from './Track/Track';
 import Thumb from './Thumb/Thumb';
 import Scale from './Scale/Scale';
 
-class View implements IView {
+class View extends Observable implements IView {
   container: HTMLElement;
-
-  eventDispatcher: IObservable;
 
   settings!: TViewSettings;
 
@@ -39,8 +36,8 @@ class View implements IView {
   private dragObj!: HTMLElement | null;
 
   constructor(container: HTMLElement) {
+    super();
     this.container = container;
-    this.eventDispatcher = new Observable();
   }
 
   init(settings: TSettings): void {
@@ -63,7 +60,7 @@ class View implements IView {
     if (this.settings.range) {
       this.selectRangeTrue(pos);
     } else {
-      this.eventDispatcher.notify('firstThumb', pos);
+      this.notifyListener('firstThumb', pos);
     }
   }
 
@@ -87,7 +84,7 @@ class View implements IView {
     if (this.settings.range) {
       this.dragThumbRangeTrue(pos);
     } else {
-      this.eventDispatcher.notify('firstThumb', pos);
+      this.notifyListener('firstThumb', pos);
     }
   }
 
@@ -115,7 +112,7 @@ class View implements IView {
       this.settings.currentSecond = value;
     }
     const newSettings = this.settings;
-    this.eventDispatcher.notify('updateSubViews', newSettings);
+    this.notifyListener('updateSubViews', newSettings);
   }
 
   private listenPointerDown(): void {
@@ -154,10 +151,10 @@ class View implements IView {
     const firstDiff: number = Math.abs(firstThumbPercent - newPos);
     const secondDiff: number = Math.abs(secondThumbPercent - newPos);
     if (firstDiff < secondDiff && newPos < secondThumbPercent) {
-      this.eventDispatcher.notify('firstThumb', newPos);
+      this.notifyListener('firstThumb', newPos);
     }
     if (firstDiff > secondDiff && newPos > firstThumbPercent) {
-      this.eventDispatcher.notify('secondThumb', newPos);
+      this.notifyListener('secondThumb', newPos);
     }
     if (firstDiff === secondDiff) {
       this.findClosestThumb(newPos, firstThumbPercent);
@@ -183,9 +180,9 @@ class View implements IView {
 
   private findClosestThumb(newPlace: number, thumbPlace: number): void {
     if (newPlace < thumbPlace) {
-      this.eventDispatcher.notify('firstThumb', newPlace);
+      this.notifyListener('firstThumb', newPlace);
     } else {
-      this.eventDispatcher.notify('secondThumb', newPlace);
+      this.notifyListener('secondThumb', newPlace);
     }
   }
 
@@ -205,15 +202,15 @@ class View implements IView {
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
     if (this.dragObj.classList === this.thumb.classList) {
       const value = newPos > secondThumbPercent ? secondThumbPercent : newPos;
-      this.eventDispatcher.notify('firstThumb', value);
+      this.notifyListener('firstThumb', value);
     } else if (this.dragObj.classList === this.thumbSecond.classList) {
       const value = newPos < firstThumbPercent ? firstThumbPercent : newPos;
-      this.eventDispatcher.notify('secondThumb', value);
+      this.notifyListener('secondThumb', value);
     }
   }
 
   private createSettings(settings: TSettings): void {
-    this.eventDispatcher.deleteKey('updateSubViews');
+    this.deleteKey('updateSubViews');
     const ifHorizontal = settings.orientation === TOrient.HORIZONTAL;
     const firstPosition = changeValueToPercents(
       settings.currentFirst,
@@ -252,8 +249,8 @@ class View implements IView {
     ).element;
     const trackElementsData: TTrackElementsData = {
       container: this.track,
-      eventDispatcher: this.eventDispatcher,
-      settings: this.settings
+      settings: this.settings,
+      addListener: this.addListener.bind(this)
     };
     this.range = new Range(trackElementsData).element;
     this.thumb = new Thumb(trackElementsData, 'first').element;

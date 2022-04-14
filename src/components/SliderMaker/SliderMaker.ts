@@ -11,9 +11,7 @@ import Panel from 'Panel/Panel';
 
 import 'assets/styles/slider.scss';
 
-class SliderMaker {
-  eventDispatcher!: IObservable;
-
+class SliderMaker extends Observable {
   private presenter!: IPresenter;
 
   private panel!: IPanel;
@@ -27,6 +25,7 @@ class SliderMaker {
     ifPanel = false,
     options?: TSettings
   ) {
+    super();
     this.init(container, ifPanel, options);
   }
 
@@ -59,15 +58,15 @@ class SliderMaker {
   }
 
   subscribe(name: string, method: TCallBackFunction): SliderMaker {
-    this.eventDispatcher.add(name, method);
+    this.addListener(name, method);
     return this;
   }
 
   unsubscribe(name: string, method?: TCallBackFunction): SliderMaker {
     if (method) {
-      this.eventDispatcher.deleteListener(name, method);
+      this.deleteListener(name, method);
     } else {
-      this.eventDispatcher.deleteKey(name);
+      this.deleteKey(name);
     }
     return this;
   }
@@ -91,7 +90,6 @@ class SliderMaker {
     this.presenter = new Presenter(container, this.data);
     this.panel = new Panel(container, this.presenter);
     this.model = this.presenter.model;
-    this.eventDispatcher = new Observable();
     if (container.dataset.panel === 'true') {
       this.changePanel(true);
     } else this.changePanel(ifPanel);
@@ -107,9 +105,9 @@ class SliderMaker {
   }
 
   private enable(): SliderMaker {
-    this.presenter.eventDispatcher.add('updateAll', this.updateAll);
-    this.presenter.eventDispatcher.add('thumbUpdate', this.thumbUpdate);
-    this.presenter.eventDispatcher.add(
+    this.presenter.addListener('updateAll', this.updateAll);
+    this.presenter.addListener('thumbUpdate', this.thumbUpdate);
+    this.presenter.addListener(
       'thumbSecondUpdate',
       this.thumbSecondUpdate
     );
@@ -143,17 +141,17 @@ class SliderMaker {
   @boundMethod
   private updateAll(): void {
     const newData = this.getOptions;
-    this.eventDispatcher.notify('updateAll', newData);
+    this.notifyListener('updateAll', newData);
   }
 
   @boundMethod
   private thumbUpdate(value: number): void {
-    this.eventDispatcher.notify('updateThumb', value);
+    this.notifyListener('updateThumb', value);
   }
 
   @boundMethod
   private thumbSecondUpdate(value: number): void {
-    this.eventDispatcher.notify('updateThumbSecond', value);
+    this.notifyListener('updateThumbSecond', value);
   }
 }
 

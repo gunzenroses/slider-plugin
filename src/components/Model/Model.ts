@@ -4,13 +4,14 @@ import IObservable from 'Interfaces/IObservable';
 import IModel from 'Interfaces/IModel';
 import Observable from 'Observable/Observable';
 
-class Model implements IModel {
-  eventDispatcher: IObservable;
+class Model extends Observable implements IModel  {
+  //eventDispatcher: IObservable;
 
   private data: TSettings;
 
   constructor(settings: TSettings) {
-    this.eventDispatcher = new Observable();
+    //this.eventDispatcher = new Observable();
+    super();
     this.data = settings;
     this.improveData();
     this.updateCurrentsWithStep();
@@ -71,11 +72,11 @@ class Model implements IModel {
 
   private changeData(name: keyof TSettings): void {
     if (name === 'currentFirst') {
-      this.eventDispatcher.notify('thumbUpdate', this.data.currentFirst);
+      this.notifyListener('thumbUpdate', this.data.currentFirst);
     } else if (name === 'currentSecond') {
-      this.eventDispatcher.notify('thumbSecondUpdate', this.data.currentSecond);
+      this.notifyListener('thumbSecondUpdate', this.data.currentSecond);
     } else {
-      this.eventDispatcher.notify('updateData');
+      this.notifyListener('updateData');
     }
   }
 }

@@ -70,10 +70,14 @@ type TViewSettings = TSettings & {
   secondPosition: number;
 };
 
+type TAddListener = { (eventKey: string, listener: TListener): void };
+
 type TTrackElementsData = {
   container: HTMLElement,
-  eventDispatcher: IObservable,
-  settings: TViewSettings
+  settings: TViewSettings,
+  addListener: TAddListener;
 };
 
 type TCallBackFunction = (value: number | TSettings) => TListenerArg;
+
+type TFuncAddListener = (eventKey: string, listener: TListener) => void;

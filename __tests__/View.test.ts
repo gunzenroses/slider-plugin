@@ -46,7 +46,7 @@ describe('class View', () => {
 
   describe('method enable()', () => {
     test('notify to change one of thumbs when container is clicked', () => {
-      const spyOnClick = jest.spyOn(view.eventDispatcher, 'notify');
+      const spyOnClick = jest.spyOn(view, 'notifyListener');
 
       const clickEvt = {
         ...pointerUpEvt,
@@ -64,7 +64,7 @@ describe('class View', () => {
     });
 
     test('should not notify when thumb or thumbSecond is clicked', () => {
-      const spyOnClick = jest.spyOn(view.eventDispatcher, 'notify');
+      const spyOnClick = jest.spyOn(view, 'notifyListener');
       const evt = new Event('click', {
         bubbles: true
       });
@@ -76,7 +76,7 @@ describe('class View', () => {
     });
 
     test('notify when thumbFirst is moved to a position smaller that thumbSecond', () => {
-      const spyOnDragMove = jest.spyOn(view.eventDispatcher, 'notify');
+      const spyOnDragMove = jest.spyOn(view, 'notifyListener');
       view.settings.range = true;
       const pointDown = new CustomEvent('poinerdown', {
         bubbles: true,
@@ -108,7 +108,7 @@ describe('class View', () => {
     });
 
     test('notify when thumbSecond moved to a position bigger than thumbFirst', () => {
-      const spyOnDragMove = jest.spyOn(view.eventDispatcher, 'notify');
+      const spyOnDragMove = jest.spyOn(view, 'notifyListener');
       view.settings.range = true;
       
       const pointDown = new CustomEvent('poinerdown', {
@@ -142,7 +142,7 @@ describe('class View', () => {
 
   describe('method selectThumb()', () => {
     test('should not notify subscribers if e.target is selectThumb or selectThumbSecond', () => {
-      const spyOnSm = jest.spyOn(view.eventDispatcher, 'notify');
+      const spyOnSm = jest.spyOn(view, 'notifyListener');
 
       const evt = new MouseEvent('pointerup', {
         bubbles: true
@@ -152,9 +152,9 @@ describe('class View', () => {
       expect(spyOnSm).toBeCalledTimes(0);
     });
 
-    test('should notify eventDispatcher when range is false ', () => {
+    test('should notify Listeners when range is false ', () => {
       view.settings.range = false;
-      const spyOnSm = jest.spyOn(view.eventDispatcher, "notify");
+      const spyOnSm = jest.spyOn(view, 'notifyListener');
 
       const evt = new MouseEvent("pointerup", {
         bubbles: true,
@@ -164,8 +164,8 @@ describe('class View', () => {
       expect(spyOnSm).toBeCalledTimes(1);
     });
 
-    test('should notify eventDispatcher when range is true', () => {
-      const spyOnSm = jest.spyOn(view.eventDispatcher, "notify");
+    test('should notify Listeners when range is true', () => {
+      const spyOnSm = jest.spyOn(view, 'notifyListener');
 
       const clickEvt = {
         ...pointerUpEvt,
@@ -182,8 +182,8 @@ describe('class View', () => {
       expect(spyOnSm).toBeCalledTimes(1);
     });
 
-    test('should notify eventDispatcher when distances from firstThumb and secondThumb to newPos are equal', () => {
-      const spyOnSm = jest.spyOn(view.eventDispatcher, "notify");
+    test('should notify Listeners when distances from firstThumb and secondThumb to newPos are equal', () => {
+      const spyOnSm = jest.spyOn(view, 'notifyListener');
 
       const clickEvt = {
         ...pointerUpEvt,
@@ -220,7 +220,7 @@ describe('class View', () => {
 
   describe('method dragThumbEnd()', () => {
     test('when pointer is up should end listening to pointermove', () => {
-      const spyOnMoveListener = jest.spyOn(view.eventDispatcher, 'notify');
+      const spyOnMoveListener = jest.spyOn(view, 'notifyListener');
 
       document.dispatchEvent(new Event('pointerup'));
 
@@ -241,7 +241,7 @@ describe('class View', () => {
   describe('method changeThumb()', () => {
     test('change data', () => {
       const num = 18;
-      const spyOnChangeThumb = jest.spyOn(view.eventDispatcher, 'notify');
+      const spyOnChangeThumb = jest.spyOn(view, 'notifyListener');
       view.changeThumb('thumbFirst', num);
 
       expect(view.settings.currentFirst).toBe(num);
@@ -252,7 +252,7 @@ describe('class View', () => {
   describe('method changeSecondThumb()', () => {
     test('change data', () => {
       const num = 18;
-      const spyOnChangeThumb = jest.spyOn(view.eventDispatcher, 'notify');
+      const spyOnChangeThumb = jest.spyOn(view, 'notifyListener');
       view.changeThumb('thumbSecond', num);
 
       expect(view.settings.currentSecond).toBe(num);

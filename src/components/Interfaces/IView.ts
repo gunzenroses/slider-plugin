@@ -1,7 +1,6 @@
 import IObservable from './IObservable';
 
-interface IView {
-  eventDispatcher: IObservable;
+interface IView extends IObservable {
   settings: TViewSettings;
   container: HTMLElement;
   thumb: HTMLElement;

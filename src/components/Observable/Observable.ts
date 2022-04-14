@@ -1,9 +1,9 @@
 import IObservable from 'Interfaces/IObservable';
 
-class Observable implements IObservable {
+abstract class Observable implements IObservable {
   private listeners: TListenerArr = {};
 
-  add(eventKey: string, listener: TListener): void {
+  addListener(eventKey: string, listener: TListener): void {
     if (this.listeners[eventKey]) {
       this.listeners[eventKey].push(listener);
     } else {
@@ -11,7 +11,7 @@ class Observable implements IObservable {
     }
   }
 
-  notify(eventKey: string, args?: TListenerArg): void {
+  notifyListener(eventKey: string, args?: TListenerArg): void {
     if (this.listeners[eventKey]) {
       this.listeners[eventKey].forEach((listener) => listener(args));
     }

@@ -1,5 +1,4 @@
 import { boundMethod } from 'autobind-decorator';
-import IObservable from 'Interfaces/IObservable';
 
 class Range {
   element!: HTMLElement;
@@ -9,9 +8,9 @@ class Range {
   }
 
   private init(data: TTrackElementsData): HTMLElement {
-    const { container, eventDispatcher, settings } = data;
+    const { container, settings, addListener } = data;
     this.make(settings);
-    this.enable(eventDispatcher);
+    this.enable(addListener);
     this.change(settings);
     container.append(this.element);
     return this.element;
@@ -27,8 +26,8 @@ class Range {
     return this.element;
   }
 
-  private enable(eventDispatcher: IObservable): void {
-    eventDispatcher.add('updateSubViews', this.change);
+  private enable(addListener: TAddListener): void {
+    addListener('updateSubViews', this.change);
   }
 
   @boundMethod

@@ -2,10 +2,9 @@ import IModel from './IModel';
 import IObservable from './IObservable';
 import IView from './IView';
 
-interface IPresenter {
+interface IPresenter extends IObservable {
   model: IModel;
   view: IView;
-  eventDispatcher: IObservable;
 
   init(): void;
   updateView(): void;

@@ -25,7 +25,7 @@ describe('Presenter', () => {
           'setData'
         ).mockImplementation();
 
-        presenter.view.eventDispatcher.notify('firstThumb', 20);
+        presenter.view.notifyListener('firstThumb', 20);
 
         expect(spyModelUpdate).toHaveBeenCalledTimes(1);
       });
@@ -36,7 +36,7 @@ describe('Presenter', () => {
           'setData'
         ).mockImplementation();
 
-        presenter.view.eventDispatcher.notify('secondThumb', 200);
+        presenter.view.notifyListener('secondThumb', 200);
 
         expect(spyModelUpdate).toHaveBeenCalledTimes(1);
       });
@@ -45,12 +45,12 @@ describe('Presenter', () => {
     describe('should process events from model', () => {
       test('should notify subscribers for changes in currentThumb', () => {
         const value = 18;
-        const spyFromModelUpdate = jest.spyOn(presenter.eventDispatcher, 'notify');
+        const spyFromModelUpdate = jest.spyOn(presenter, 'notifyListener');
         const spyFromModelChangeView = jest.spyOn(
           presenter.view, 'changeThumb'
           ).mockImplementation();
 
-        presenter.model.eventDispatcher.notify('thumbUpdate', value);
+        presenter.model.notifyListener('thumbUpdate', value);
 
         expect(spyFromModelUpdate).toHaveBeenCalledWith('thumbUpdate', value);
         expect(spyFromModelChangeView).toHaveBeenCalledWith('thumbFirst', value);
@@ -59,15 +59,15 @@ describe('Presenter', () => {
       test('should notify subscribers for changes in currentThumbSecond', () => {
         const value = 18;
         const spyFromModelUpdate = jest.spyOn(
-          presenter.eventDispatcher, 
-          'notify'
+          presenter, 
+          'notifyListener'
         );
         const spyFromModelChangeView = jest.spyOn(
           presenter.view, 
           'changeThumb'
         ).mockImplementation();
 
-        presenter.model.eventDispatcher.notify('thumbSecondUpdate', value);
+        presenter.model.notifyListener('thumbSecondUpdate', value);
 
         expect(spyFromModelUpdate).toHaveBeenCalledWith(
           'thumbSecondUpdate', 
@@ -84,15 +84,15 @@ describe('Presenter', () => {
       test('by updating view', () => {
         const spyUpdateView = jest.spyOn(presenter, 'updateView');
 
-        presenter.model.eventDispatcher.notify('updateData');
+        presenter.model.notifyListener('updateData');
 
         expect(spyUpdateView).toHaveBeenCalledTimes(1);
       });
 
       test('by notifying subscribers', () => {
-        const spyUpdateAll = jest.spyOn(presenter.eventDispatcher, 'notify');
+        const spyUpdateAll = jest.spyOn(presenter, 'notifyListener');
 
-        presenter.model.eventDispatcher.notify('updateData');
+        presenter.model.notifyListener('updateData');
 
         expect(spyUpdateAll).toHaveBeenCalledTimes(1);
       });
@@ -146,7 +146,7 @@ describe('should work for single and vertical sliders', () => {
       'setData'
     ).mockImplementation();
 
-    presenterVS.view.eventDispatcher.notify('firstThumb', val);
+    presenterVS.view.notifyListener('firstThumb', val);
 
     expect(spyModelUpdate).toHaveBeenCalledWith('currentFirst', val);
   });
@@ -158,7 +158,7 @@ describe('should work for single and vertical sliders', () => {
       'setData'
     ).mockImplementation();
 
-    presenterVS.view.eventDispatcher.notify('secondThumb', val);
+    presenterVS.view.notifyListener('secondThumb', val);
 
     expect(spyOnModelChange).toHaveBeenCalledWith('currentSecond', val);
   });

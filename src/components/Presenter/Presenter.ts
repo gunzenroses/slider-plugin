@@ -9,8 +9,7 @@ import Observable from 'Observable/Observable';
 import Model from 'Model/Model';
 import View from 'View/View';
 
-class Presenter implements IPresenter {
-  eventDispatcher: IObservable;
+class Presenter extends Observable implements IPresenter {
 
   model: IModel;
 
@@ -19,9 +18,9 @@ class Presenter implements IPresenter {
   private data!: TSettings;
 
   constructor(container: HTMLElement, data: TSettings) {
+    super();
     this.model = new Model(data);
     this.view = new View(container);
-    this.eventDispatcher = new Observable();
     this.init();
   }
 
@@ -45,14 +44,14 @@ class Presenter implements IPresenter {
   }
 
   private enable(): void {
-    this.view.eventDispatcher.add('firstThumb', this.modelThumbFirst);
-    this.view.eventDispatcher.add('secondThumb', this.modelThumbSecond);
-    this.model.eventDispatcher.add('thumbUpdate', this.changeFirstThumb);
-    this.model.eventDispatcher.add(
+    this.view.addListener('firstThumb', this.modelThumbFirst);
+    this.view.addListener('secondThumb', this.modelThumbSecond);
+    this.model.addListener('thumbUpdate', this.changeFirstThumb);
+    this.model.addListener(
       'thumbSecondUpdate',
       this.changeSecondThumb
     );
-    this.model.eventDispatcher.add('updateData', this.updateData);
+    this.model.addListener('updateData', this.updateData);
   }
 
   @boundMethod
@@ -70,18 +69,18 @@ class Presenter implements IPresenter {
   @boundMethod
   private updateData(): void {
     this.updateView();
-    this.eventDispatcher.notify('updateAll');
+    this.notifyListener('updateAll');
   }
 
   @boundMethod
   private changeFirstThumb(value: number): void {
-    this.eventDispatcher.notify('thumbUpdate', value);
+    this.notifyListener('thumbUpdate', value);
     this.view.changeThumb('thumbFirst', value);
   }
 
   @boundMethod
   private changeSecondThumb(value: number): void {
-    this.eventDispatcher.notify('thumbSecondUpdate', value);
+    this.notifyListener('thumbSecondUpdate', value);
     this.view.changeThumb('thumbSecond', value);
   }
 }

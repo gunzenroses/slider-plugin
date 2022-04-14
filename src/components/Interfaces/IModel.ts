@@ -1,7 +1,6 @@
 import IObservable from './IObservable';
 
-interface IModel {
-  eventDispatcher: IObservable;
+interface IModel extends IObservable {
   setData(name: string, data: TModelData): void;
   getData(): TSettings;
 }

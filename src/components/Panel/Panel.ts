@@ -172,9 +172,9 @@ class ConfigurationPanel implements IPanel {
 
   private enable(): void {
     this.panelItems.addEventListener('change', this.changePanel);
-    this.presenter.eventDispatcher.add('updateAll', this.updatePanel);
-    this.presenter.eventDispatcher.add('thumbUpdate', this.updateThumb);
-    this.presenter.eventDispatcher.add(
+    this.presenter.addListener('updateAll', this.updatePanel);
+    this.presenter.addListener('thumbUpdate', this.updateThumb);
+    this.presenter.addListener(
       'thumbSecondUpdate',
       this.updateThumbSecond
     );
