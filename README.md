@@ -196,7 +196,7 @@ After initialization of slider you can use following methods in your `js-file`:
 ||**data** should match option type||
 |showPanel()| | Show configurational panel |
 |hidePanel()| | Hide configurational panel |
-|subscribe(name, method)| **name** equals one of the following: /  'updateThumb'  /  'updateThumbSecond'  /  'updateAll'  /| Add method to the list of event subscibers |
+|subscribe(name, method)| **name** equals one of the following: /  'updateThumb'  /  'updateThumbSecond'  /  'updateAll'  /| Add method to the list of event subscribers |
 || **method** matches function name that should be called ||
 |unsubscribe(name, method)| **name**: 'updateThumb' / 'updateThumbSecond' / 'updateAll' | Removes **method** from event subscribers |
 ||**method**: optional parameter||
