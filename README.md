@@ -196,10 +196,10 @@ After initialization of slider you can use following methods in your `js-file`:
 ||**data** should match option type||
 |showPanel()| | Show configurational panel |
 |hidePanel()| | Hide configurational panel |
-|subscribe(name, method)| **name** equals one of the following: /  'updateThumb'  /  'updateThumbSecond'  /  'updateAll'  /| Calls a method with new value when name-key is notified (event matching to name-key is happening) |
+|subscribe(name, method)| **name** equals one of the following: /  'updateThumb'  /  'updateThumbSecond'  /  'updateAll'  /| Add method to the list of event subscibers |
 || **method** matches function name that should be called ||
-|unsubscribe(name, method)| **name**: 'updateThumb' / 'updateThumbSecond' / 'updateAll' | Method will not be notified when name-key is notified |
-||**method**: optional parameter|When used with **method** it removes this method from event subscribers|
+|unsubscribe(name, method)| **name**: 'updateThumb' / 'updateThumbSecond' / 'updateAll' | Removes **method** from event subscribers |
+||**method**: optional parameter||
 
 All methods except **getOptions()** can be used in a chain. For example:
 
