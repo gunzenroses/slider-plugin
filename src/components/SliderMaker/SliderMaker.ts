@@ -61,11 +61,9 @@ class SliderMaker extends Observable {
     return this;
   }
 
-  unsubscribe<T>(name: string, method?: TListener<T>): SliderMaker {
+  unsubscribe<T>(name: string, method: TListener<T>): SliderMaker {
     if (method) {
       this.deleteListener(name, method);
-    } else {
-      this.deleteKey(name);
     }
     return this;
   }
