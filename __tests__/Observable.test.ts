@@ -34,14 +34,6 @@ describe('Observable', () => {
     expect(anotherKeyFollower).toHaveBeenCalledWith(3);
   });
 
-  test('delete by eventKey removes all listeners', () => {
-    eventDispatcher.deleteKey('anotherKey');
-
-    eventDispatcher.makeNotification('anotherKey', 13);
-
-    expect(anotherKeyFollower).not.toHaveBeenCalledWith(13);
-  });
-
   test('delete by eventKey and Listener removes mentioned listener from eventKey section', () => {
     eventDispatcher.deleteListener('someKey', someKeyFollower2);
 

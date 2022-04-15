@@ -1,7 +1,7 @@
 import IObservable from 'Interfaces/IObservable';
 
 abstract class Observable implements IObservable {
-  private listeners: TListenerArr = {};
+  listeners: TListenerArr = {};
 
   addListener<T>(eventKey: string, listener: TListener<T>): void {
     if (this.listeners[eventKey]) {
@@ -26,8 +26,10 @@ abstract class Observable implements IObservable {
     }
   }
 
-  deleteKey(eventKey: string): void {
-    delete this.listeners[eventKey];
+  protected deleteKey(eventKey: string): void {
+    if (eventKey === 'updateSubViews') {
+      delete this.listeners[eventKey];
+    }
   }
 }
 
