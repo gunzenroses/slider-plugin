@@ -244,12 +244,12 @@ class ConfigurationPanel implements IPanel {
     const panelName = `<div class = '${ 
       panelNameClass }'>${ params.text }</div>`;
     const panelItem = `<div class = '${ panelItemClass }'>
-        ${ panelName } ${ this.panelInput(params) }
+        ${ panelName } ${ this.createPanelInput(params) }
       </div>`;
     return panelItem;
   }
 
-  private panelInput(params: TPanelParam): string {
+  private createPanelInput(params: TPanelParam): string {
     const options = params.options ? params.options : [];
     if (params.type === 'number') {
       return `
