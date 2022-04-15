@@ -27,6 +27,54 @@ describe('class View', () => {
     jest.restoreAllMocks();
   });
 
+  describe('method init()', () => {
+    test('render the view', () => {
+      view.init(data);
+      
+      expect(view.range).toBeDefined();
+    })
+  })
+
+  describe('method selectThumb()', () => {
+    test('notify listeners when position of thumb is changed', () => {
+      view.selectThumb(pointerUpEvt as PointerEvent);
+
+      expect(view.thumb).not.toBe(data.currentFirst);
+    })
+  })
+
+  describe('method dragThumbEnd()', () => {
+    test('set listeners for new dragging', () => {
+      const spyOnDragStart = jest.spyOn(view, 'dragThumbStart');
+
+      const pointerDownEvt = new Event("pointerdown", {
+        bubbles: true,
+        cancelable: false,
+        composed: false,
+      })
+
+      view.dragThumbEnd();
+      view.thumbSecond.dispatchEvent(pointerDownEvt);
+
+      expect(spyOnDragStart).toBeCalledTimes(1);
+    })
+  })
+
+  describe('method changeThumb()', () => {
+    test('change thumbFirst', () => {
+      const num = 20;
+      view.changeThumb('thumbFirst', num);
+
+      expect(view.settings.currentFirst).toBe(num);
+    });
+    test('change thumbSecond', () => {
+      const num = 30;
+      view.changeThumb('thumbSecond', num);
+
+      expect(view.settings.currentSecond).toBe(num);
+    })
+  })
+
   describe('method createSettings()', () => {
     test('create settings for class functionality', () => {
       expect(view.settings.ifHorizontal).toBeDefined();

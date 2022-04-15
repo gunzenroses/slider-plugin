@@ -55,3 +55,34 @@ const VS = {
 };
 const initialDataVS = { ...initialData, ...VS };
 const presenterVS = new Presenter(container, initialDataVS);
+
+describe('should work for single and vertical sliders', () => {
+  test('process data from model to view', () => {
+    const val = 28;
+    const spyViewUpdate = jest.spyOn(
+      presenterVS.view, 
+      'changeThumb'
+    ).mockImplementation();
+
+    presenterVS.model.setData('currentFirst', val);
+
+    expect(spyViewUpdate).toHaveBeenCalled();
+  });
+
+  test('method dragThumb()', () => {
+    const evt = new Event('pointerup', {
+      bubbles: true,
+      cancelable: false,
+      composed: false
+    });
+    const spyOnModelChange = jest.spyOn(
+      presenterVS.model, 
+      'setData'
+    ).mockImplementation();
+    
+    debugger;
+    presenterVS.view.selectThumb(evt as PointerEvent);
+
+    expect(spyOnModelChange).toHaveBeenCalledTimes(1);
+  });
+});
