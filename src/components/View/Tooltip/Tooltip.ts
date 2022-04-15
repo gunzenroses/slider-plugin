@@ -10,6 +10,13 @@ class Tooltip {
     this.init(data);
   }
 
+  @boundMethod
+  change(settings: TViewSettings): void {
+    const { currentFirst, currentSecond } = settings;
+    const value = this.className === 'first' ? currentFirst : currentSecond;
+    this.element.innerText = value.toString();
+  }
+
   private init(data: TViewSettings): HTMLElement {
     this.make(data);
     this.change(data);
@@ -31,13 +38,6 @@ class Tooltip {
     });
     this.element.dataset.name = 'tooltip';
     return this.element;
-  }
-
-  @boundMethod
-  change(settings: TViewSettings): void {
-    const { currentFirst, currentSecond } = settings;
-    const value = this.className === 'first' ? currentFirst : currentSecond;
-    this.element.innerText = value.toString();
   }
 }
 
