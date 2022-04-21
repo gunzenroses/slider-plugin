@@ -65,16 +65,14 @@ type TViewSettings = TSettings & {
 
 type TAddListener = { (eventKey: string, listener: TListener): void };
 
-type TTrackElementsData = {
-  container: HTMLElement,
-  settings: TViewSettings,
-  addListener: TAddListener;
-};
-
-
 type TRange = {
   element: HTMLElement;
   change(settings: TViewSettings): void;
+};
+
+type TTooltip = {
+  element: HTMLElement;
+  change(value: number): void;
 };
 
 type TSubviewData = { 

@@ -11,15 +11,18 @@ class Tooltip {
   }
 
   @boundMethod
-  change(settings: TViewSettings): void {
-    const { currentFirst, currentSecond } = settings;
-    const value = this.className === 'first' ? currentFirst : currentSecond;
+  change(value: number): void {
     this.element.innerText = value.toString();
   }
 
   private init(data: TViewSettings): HTMLElement {
+    const { currentFirst, currentSecond } = data;
     this.make(data);
-    this.change(data);
+    if (this.className === 'first') {
+      this.change(currentFirst);
+    } else {
+      this.change(currentSecond);
+    }
     return this.element;
   }
 
