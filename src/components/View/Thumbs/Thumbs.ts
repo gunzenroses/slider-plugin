@@ -6,6 +6,10 @@ class Thumbs {
 
   thumbSecond!: HTMLElement;
 
+  tooltipFirst!: TTooltip;
+
+  tooltipSecond!: TTooltip;
+
   constructor(data: TSubviewData) {
     this.init(data);
   }
@@ -37,20 +41,19 @@ class Thumbs {
   private init(data: TSubviewData): void {
     const { container, settings } = data;
     this.thumbFirst = this.makeThumb(settings, 'first');
+    this.tooltipFirst = new Tooltip(settings, 'first');
+    this.thumbFirst.append(this.tooltipFirst.element);
     container.append(this.thumbFirst);
     if (settings.range) {
       this.thumbSecond = this.makeThumb(settings, 'second');
+      this.tooltipSecond = new Tooltip(settings, 'second');
+      this.thumbSecond.append(this.tooltipSecond.element);
       container.append(this.thumbSecond);
     }
     this.change(settings);
   }
 
-  private makeThumb(settings: TViewSettings, className: string) {
-    const element = this.make(settings, className);
-    return element;
-  }
-
-  private make(settings: TViewSettings, className: string): HTMLElement {
+  private makeThumb(settings: TViewSettings, className: string): HTMLElement {
     const { ifHorizontal, range } = settings;
     const element = document.createElement('div');
     const typeClass = ifHorizontal
@@ -62,32 +65,27 @@ class Thumbs {
     totalClass.forEach((item: string) => {
       element.classList.add(item);
     });
-    const tooltip = this.makeTooltip(settings, className);
-    element.append(tooltip.element);
     return element;
   }
 
-  private makeTooltip(settings: TViewSettings, className: string) {
-    const tooltip = new Tooltip(settings, className);
-    return tooltip;
-  }
-
   private changeFirst(settings: TViewSettings): void {
-    const { ifHorizontal, firstPosition } = settings;
+    const { ifHorizontal, currentFirst, firstPosition } = settings;
     if (ifHorizontal) {
       this.thumbFirst.style.left = `${ firstPosition }%`;
     } else {
       this.thumbFirst.style.bottom = `${ firstPosition }%`;
     }
+    this.tooltipFirst.change(currentFirst);
   }
 
   private changeSecond(settings: TViewSettings): void {
-    const { ifHorizontal, secondPosition } = settings;
+    const { ifHorizontal, currentSecond, secondPosition } = settings;
     if (ifHorizontal) {
       this.thumbSecond.style.left = `${ secondPosition }%`;
     } else {
       this.thumbSecond.style.bottom = `${ secondPosition }%`;
     }
+    this.tooltipSecond.change(currentSecond);
   }
 }
 
