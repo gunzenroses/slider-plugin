@@ -39,7 +39,7 @@ describe('class View', () => {
     test('notify listeners when position of thumb is changed', () => {
       view.selectThumb(pointerUpEvt as PointerEvent);
 
-      expect(view.thumb).not.toBe(data.currentFirst);
+      expect(view.thumbs.thumbFirst).not.toBe(data.currentFirst);
     })
   })
 
@@ -54,7 +54,7 @@ describe('class View', () => {
       })
 
       view.dragThumbEnd();
-      view.thumbSecond.dispatchEvent(pointerDownEvt);
+      view.thumbs.thumbSecond.dispatchEvent(pointerDownEvt);
 
       expect(spyOnDragStart).toBeCalledTimes(1);
     })
@@ -99,11 +99,11 @@ describe('class View', () => {
         range: false,
       };
       view.init(newSet);
-      view.thumb.dispatchEvent(new Event('pointerdown'));
+      view.thumbs.thumbFirst.dispatchEvent(new Event('pointerdown'));
       document.dispatchEvent(new Event('pointermove'));
       const spyOnDragStart = jest.spyOn(view, 'dragThumbStart');
 
-      view.thumb.dispatchEvent(new Event('pointerdowm'));
+      view.thumbs.thumbFirst.dispatchEvent(new Event('pointerdowm'));
 
       expect(spyOnDragStart).toHaveBeenCalledTimes(0);
     });
@@ -124,8 +124,8 @@ describe('class View', () => {
       expect(view.container).toBeDefined();
       expect(view.track).toBeDefined();
       expect(view.range).toBeDefined();
-      expect(view.thumb).toBeDefined();
-      expect(view.thumbSecond).toBeDefined();
+      expect(view.thumbs.thumbFirst).toBeDefined();
+      expect(view.thumbs.thumbSecond).toBeDefined();
       expect(view.scale).toBeDefined();
     });
 

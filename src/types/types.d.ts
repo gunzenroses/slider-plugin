@@ -70,3 +70,22 @@ type TTrackElementsData = {
   settings: TViewSettings,
   addListener: TAddListener;
 };
+
+
+type TRange = {
+  element: HTMLElement;
+  change(settings: TViewSettings): void;
+};
+
+type TSubviewData = { 
+  container: HTMLElement, 
+  settings: TViewSettings 
+};
+
+type TThumbs = {
+  thumbFirst: HTMLElement;
+  thumbSecond: HTMLElement;
+  change(settings: TViewSettings): void;
+  listenPointerDown(range: boolean, method: { (e: PointerEvent): void });
+  stopListenPointerDown(range: boolean, method: { (e: PointerEvent): void });
+}

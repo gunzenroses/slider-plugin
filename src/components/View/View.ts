@@ -11,7 +11,7 @@ import IView from 'Interfaces/IView';
 import Observable from 'Observable/Observable';
 import Range from './Range/Range';
 import Track from './Track/Track';
-import Thumb from './Thumb/Thumb';
+import Thumbs from './Thumbs/Thumbs';
 import Scale from './Scale/Scale';
 
 class View extends Observable implements IView {
@@ -21,13 +21,11 @@ class View extends Observable implements IView {
 
   track!: HTMLElement;
 
-  range!: HTMLElement;
-
-  thumb!: HTMLElement;
-
-  thumbSecond!: HTMLElement;
-
   scale!: HTMLElement;
+
+  range!: TRange;
+
+  thumbs!: TThumbs;
 
   containerSize!: number;
 
@@ -55,7 +53,7 @@ class View extends Observable implements IView {
 
   @boundMethod
   selectThumb(e: PointerEvent): void {
-    if (e.target === this.thumb || e.target === this.thumbSecond) return;
+    if (e.target === this.thumbs.thumbFirst || e.target === this.thumbs.thumbSecond) return;
     const pos = this.countPosition(e);
     if (this.settings.range) {
       this.selectRangeTrue(pos);
@@ -101,37 +99,31 @@ class View extends Observable implements IView {
       value, min, max, step
     });
     if (name === 'thumbFirst') {
-      this.thumb.classList.add('thumb_active');
-      this.thumbSecond.classList.remove('thumb_active');
+      this.thumbs.thumbFirst.classList.add('thumb_active');
+      this.thumbs.thumbSecond.classList.remove('thumb_active');
       this.settings.firstPosition = newValue;
       this.settings.currentFirst = value;
     } else {
-      this.thumbSecond.classList.add('thumb_active');
-      this.thumb.classList.remove('thumb_active');
+      this.thumbs.thumbSecond.classList.add('thumb_active');
+      this.thumbs.thumbFirst.classList.remove('thumb_active');
       this.settings.secondPosition = newValue;
       this.settings.currentSecond = value;
     }
     const newSettings = this.settings;
-    this.notifyListener('updateSubViews', newSettings);
+    this.notifySubviews(newSettings);
   }
 
+  private notifySubviews(data: TViewSettings) {
+    this.range.change(data);
+    this.thumbs.change(data);
+  };
+
   private listenPointerDown(): void {
-    const elements = this.settings.range
-      ? [this.thumb, this.thumbSecond]
-      : [this.thumb];
-    elements.forEach((element) => element.addEventListener(
-      'pointerdown',
-      this.dragThumbStart
-    ));
+    this.thumbs.listenPointerDown(this.settings.range, this.dragThumbStart);
   }
 
   private stopListenPointerDown(): void {
-    if (this.settings.range === true) {
-      this.thumb.removeEventListener('pointerdown', this.dragThumbStart);
-      this.thumbSecond.removeEventListener('pointerdown', this.dragThumbStart);
-    } else {
-      this.thumb.removeEventListener('pointerdown', this.dragThumbStart);
-    }
+    this.thumbs.stopListenPointerDown(this.settings.range, this.dragThumbStart);
   }
 
   private listenMoveAndUp(): void {
@@ -166,12 +158,12 @@ class View extends Observable implements IView {
     secondThumbPercent: number;
   } {
     const firstThumbPercent: number = findPosition({
-      thisElement: this.thumb,
+      thisElement: this.thumbs.thumbFirst,
       ifHorizontal: this.settings.ifHorizontal,
       containerSize: this.containerSize
     });
     const secondThumbPercent: number = findPosition({
-      thisElement: this.thumbSecond,
+      thisElement: this.thumbs.thumbSecond,
       ifHorizontal: this.settings.ifHorizontal,
       containerSize: this.containerSize
     });
@@ -200,10 +192,10 @@ class View extends Observable implements IView {
   private dragThumbRangeTrue(newPos: number): void {
     if (this.dragObj === null) return;
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
-    if (this.dragObj.classList === this.thumb.classList) {
+    if (this.dragObj.classList === this.thumbs.thumbFirst.classList) {
       const value = newPos > secondThumbPercent ? secondThumbPercent : newPos;
       this.notifyListener('firstThumb', value);
-    } else if (this.dragObj.classList === this.thumbSecond.classList) {
+    } else if (this.dragObj.classList === this.thumbs.thumbSecond.classList) {
       const value = newPos < firstThumbPercent ? firstThumbPercent : newPos;
       this.notifyListener('secondThumb', value);
     }
@@ -234,7 +226,7 @@ class View extends Observable implements IView {
     this.containerSize = this.settings.ifHorizontal
       ? parseInt(containerMeasures.width.replace('px', ''), 10)
       : parseInt(containerMeasures.height.replace('px', ''), 10);
-    const thumbMeasures = getComputedStyle(this.thumb);
+    const thumbMeasures = getComputedStyle(this.thumbs.thumbFirst);
     this.thumbWidth = parseInt(thumbMeasures.width.replace('px', ''), 10);
   }
 
@@ -247,14 +239,12 @@ class View extends Observable implements IView {
       this.settings,
       this.container
     ).element;
-    const trackElementsData: TTrackElementsData = {
+    const trackElementsData: TSubviewData = {
       container: this.track,
-      settings: this.settings,
-      addListener: this.addListener.bind(this)
+      settings: this.settings
     };
-    this.range = new Range(trackElementsData).element;
-    this.thumb = new Thumb(trackElementsData, 'first').element;
-    this.thumbSecond = new Thumb(trackElementsData, 'second').element;
+    this.range = new Range(trackElementsData);
+    this.thumbs = new Thumbs(trackElementsData);
     this.container.append(container);
   }
 

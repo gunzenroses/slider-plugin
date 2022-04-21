@@ -3,11 +3,10 @@ import IObservable from './IObservable';
 interface IView extends IObservable {
   settings: TViewSettings;
   container: HTMLElement;
-  thumb: HTMLElement;
-  thumbSecond: HTMLElement;
   track: HTMLElement;
-  range: HTMLElement;
   scale: HTMLElement;
+  range: TRange;
+  thumbs: TThumbs;
   thumbWidth: number;
   containerSize: number;
 
