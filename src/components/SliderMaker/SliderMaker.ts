@@ -102,10 +102,10 @@ class SliderMaker extends Observable {
   }
 
   private enable(): SliderMaker {
-    this.presenter.addListener('updateAll', this.updateAll);
-    this.presenter.addListener('thumbUpdate', this.thumbUpdate);
+    this.presenter.addListener('updateAllData', this.updateAll);
+    this.presenter.addListener('currentFirstDataUpdated', this.thumbUpdate);
     this.presenter.addListener(
-      'thumbSecondUpdate',
+      'currentSecondDataUpdated',
       this.thumbSecondUpdate
     );
     return this;
@@ -138,7 +138,7 @@ class SliderMaker extends Observable {
   @boundMethod
   private updateAll(): void {
     const newData = this.getOptions;
-    this.notifyListener('updateAll', newData);
+    this.notifyListener('updateAllData', newData);
   }
 
   @boundMethod

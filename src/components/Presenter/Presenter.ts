@@ -43,11 +43,11 @@ class Presenter extends Observable implements IPresenter {
   }
 
   private enable(): void {
-    this.view.addListener('firstThumb', this.modelThumbFirst);
-    this.view.addListener('secondThumb', this.modelThumbSecond);
-    this.model.addListener('thumbUpdate', this.changeFirstThumb);
+    this.view.addListener('changeFirstThumb', this.modelThumbFirst);
+    this.view.addListener('changeSecondThumb', this.modelThumbSecond);
+    this.model.addListener('updateDataCurrentFirst', this.changeFirstThumb);
     this.model.addListener(
-      'thumbSecondUpdate',
+      'updateDataCurrentSecond',
       this.changeSecondThumb
     );
     this.model.addListener('updateData', this.updateData);
@@ -68,18 +68,18 @@ class Presenter extends Observable implements IPresenter {
   @boundMethod
   private updateData(): void {
     this.updateView();
-    this.notifyListener('updateAll');
+    this.notifyListener('updateAllData');
   }
 
   @boundMethod
   private changeFirstThumb(value: number): void {
-    this.notifyListener('thumbUpdate', value);
+    this.notifyListener('currentFirstDataUpdated', value);
     this.view.changeThumb('thumbFirst', value);
   }
 
   @boundMethod
   private changeSecondThumb(value: number): void {
-    this.notifyListener('thumbSecondUpdate', value);
+    this.notifyListener('currentSecondDataUpdated', value);
     this.view.changeThumb('thumbSecond', value);
   }
 }

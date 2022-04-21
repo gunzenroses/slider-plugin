@@ -69,9 +69,9 @@ class Model extends Observable implements IModel  {
 
   private changeData(name: keyof TSettings): void {
     if (name === 'currentFirst') {
-      this.notifyListener('thumbUpdate', this.data.currentFirst);
+      this.notifyListener('updateDataCurrentFirst', this.data.currentFirst);
     } else if (name === 'currentSecond') {
-      this.notifyListener('thumbSecondUpdate', this.data.currentSecond);
+      this.notifyListener('updateDataCurrentSecond', this.data.currentSecond);
     } else {
       this.notifyListener('updateData');
     }

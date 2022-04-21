@@ -58,7 +58,7 @@ class View extends Observable implements IView {
     if (this.settings.range) {
       this.selectRangeTrue(pos);
     } else {
-      this.notifyListener('firstThumb', pos);
+      this.notifyListener('changeFirstThumb', pos);
     }
   }
 
@@ -82,7 +82,7 @@ class View extends Observable implements IView {
     if (this.settings.range) {
       this.dragThumbRangeTrue(pos);
     } else {
-      this.notifyListener('firstThumb', pos);
+      this.notifyListener('changeFirstThumb', pos);
     }
   }
 
@@ -143,10 +143,10 @@ class View extends Observable implements IView {
     const firstDiff: number = Math.abs(firstThumbPercent - newPos);
     const secondDiff: number = Math.abs(secondThumbPercent - newPos);
     if (firstDiff < secondDiff && newPos < secondThumbPercent) {
-      this.notifyListener('firstThumb', newPos);
+      this.notifyListener('changeFirstThumb', newPos);
     }
     if (firstDiff > secondDiff && newPos > firstThumbPercent) {
-      this.notifyListener('secondThumb', newPos);
+      this.notifyListener('changeSecondThumb', newPos);
     }
     if (firstDiff === secondDiff) {
       this.findClosestThumb(newPos, firstThumbPercent);
@@ -172,9 +172,9 @@ class View extends Observable implements IView {
 
   private findClosestThumb(newPlace: number, thumbPlace: number): void {
     if (newPlace < thumbPlace) {
-      this.notifyListener('firstThumb', newPlace);
+      this.notifyListener('changeFirstThumb', newPlace);
     } else {
-      this.notifyListener('secondThumb', newPlace);
+      this.notifyListener('changeSecondThumb', newPlace);
     }
   }
 
@@ -194,10 +194,10 @@ class View extends Observable implements IView {
     const { firstThumbPercent, secondThumbPercent } = this.countPercents();
     if (this.dragObj.classList === this.thumbs.thumbFirst.classList) {
       const value = newPos > secondThumbPercent ? secondThumbPercent : newPos;
-      this.notifyListener('firstThumb', value);
+      this.notifyListener('changeFirstThumb', value);
     } else if (this.dragObj.classList === this.thumbs.thumbSecond.classList) {
       const value = newPos < firstThumbPercent ? firstThumbPercent : newPos;
-      this.notifyListener('secondThumb', value);
+      this.notifyListener('changeSecondThumb', value);
     }
   }
 
