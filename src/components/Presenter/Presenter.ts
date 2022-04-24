@@ -68,7 +68,7 @@ class Presenter extends Observable implements IPresenter {
   @boundMethod
   private updateData(): void {
     this.updateView();
-    this.notifyListener('updateAllData');
+    this.notifyListener('updateAllData', this.data);
   }
 
   @boundMethod
