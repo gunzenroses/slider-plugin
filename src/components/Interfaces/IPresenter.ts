@@ -7,7 +7,7 @@ interface IPresenter extends IObservable {
   view: IView;
 
   init(): void;
-  updateView(): void;
+  updateView(data: TSettings): void;
   getData(): TSettings;
   modelData(name: string, data: TModelData): void;
 }

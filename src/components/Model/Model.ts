@@ -73,7 +73,7 @@ class Model extends Observable implements IModel  {
     } else if (name === 'currentSecond') {
       this.notifyListener('updateDataCurrentSecond', this.data.currentSecond);
     } else {
-      this.notifyListener('updateData');
+      this.notifyListener('updateData', this.data);
     }
   }
 }
