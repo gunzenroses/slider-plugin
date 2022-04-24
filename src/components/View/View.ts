@@ -202,7 +202,6 @@ class View extends Observable implements IView {
   }
 
   private createSettings(settings: TSettings): void {
-    this.deleteKey('updateSubViews');
     const ifHorizontal = settings.orientation === TOrient.HORIZONTAL;
     const firstPosition = changeValueToPercents(
       settings.currentFirst,

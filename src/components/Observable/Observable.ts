@@ -25,12 +25,6 @@ abstract class Observable implements IObservable {
       this.listeners[eventKey].forEach((listener) => listener(args));
     }
   }
-
-  protected deleteKey(eventKey: string): void {
-    if (eventKey === 'updateSubViews') {
-      delete this.listeners[eventKey];
-    }
-  }
 }
 
 export default Observable;
