@@ -2,12 +2,12 @@ import IModel from './IModel';
 import IObservable from './IObservable';
 import IView from './IView';
 
-interface IPresenter extends IObservable {
+interface IPresenter extends IObservable<TPresenterObservable> {
   model: IModel;
   view: IView;
 
   init(): void;
-  updateView(): void;
+  updateView(data: TSettings): void;
   getData(): TSettings;
   modelData(name: string, data: TModelData): void;
 }

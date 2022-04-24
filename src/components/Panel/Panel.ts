@@ -43,19 +43,18 @@ class ConfigurationPanel implements IPanel {
     });
     this.presenter = presenter;
     this.init();
-    this.updatePanel();
   }
 
   init(): void {
-    this.assignData();
-    this.render(this.data);
+    this.data = this.presenter.getData();
+    this.render();
     this.createChildren();
     this.enable();
   }
 
   @boundMethod
-  updatePanel(): void {
-    this.assignData();
+  updatePanel(data: TSettings) {
+    this.data = data;
     this.updateMin();
     this.updateMax();
     this.updateStep();
@@ -77,61 +76,61 @@ class ConfigurationPanel implements IPanel {
     this.modelData({ type, name, data });
   }
 
-  render(data: TSettings): void {
+  render(): void {
     this.listOfPanelItems = [
       {
         name: 'min',
         text: 'min',
-        value: data.min,
+        value: this.data.min,
         type: 'number'
       },
       {
         name: 'max',
         text: 'max',
-        value: data.max,
+        value: this.data.max,
         type: 'number'
       },
       {
         name: 'step',
         text: 'step',
-        value: data.step,
+        value: this.data.step,
         type: 'number'
       },
       {
         name: 'currentFirst',
         text: 'from',
-        value: data.currentFirst,
+        value: this.data.currentFirst,
         type: 'number'
       },
       {
         name: 'currentSecond',
         text: 'to',
-        value: data.currentSecond,
+        value: this.data.currentSecond,
         type: 'number'
       },
       {
         name: 'orientation',
         text: 'orient',
-        value: data.orientation,
+        value: this.data.orientation,
         type: 'select',
         options: ['horizontal', 'vertical']
       },
       {
         name: 'range',
         text: 'range',
-        value: data.range ? 'checked' : '',
+        value: this.data.range ? 'checked' : '',
         type: 'checkbox'
       },
       {
         name: 'scale',
         text: 'scale',
-        value: data.scale ? 'checked' : '',
+        value: this.data.scale ? 'checked' : '',
         type: 'checkbox'
       },
       {
         name: 'tooltip',
         text: 'tooltip',
-        value: data.tooltip ? 'checked' : '',
+        value: this.data.tooltip ? 'checked' : '',
         type: 'checkbox'
       }
     ];
@@ -145,10 +144,6 @@ class ConfigurationPanel implements IPanel {
   private validate(element: HTMLInputElement): void {
     const validation = new CheckValidity(element, this.container);
     validation.init();
-  }
-
-  private assignData(): void {
-    this.data = this.presenter.getData();
   }
 
   private createChildren(): void {
@@ -172,7 +167,7 @@ class ConfigurationPanel implements IPanel {
 
   private enable(): void {
     this.panelItems.addEventListener('change', this.changePanel);
-    this.presenter.addListener('updateAllData', this.updatePanel);
+    this.presenter.addListener('allDataUpdated', this.updatePanel);
     this.presenter.addListener('currentFirstDataUpdated', this.updateThumb);
     this.presenter.addListener(
       'currentSecondDataUpdated',
@@ -241,7 +236,7 @@ class ConfigurationPanel implements IPanel {
     const panelNameClass = params.type === 'checkbox'
       ? 'panel__name panel__name_type_checkbox'
       : 'panel__name';
-    const panelName = `<div class = '${ 
+    const panelName = `<div class = '${
       panelNameClass }'>${ params.text }</div>`;
     const panelItem = `<div class = '${ panelItemClass }'>
         ${ panelName } ${ this.createPanelInput(params) }
@@ -251,31 +246,32 @@ class ConfigurationPanel implements IPanel {
 
   private createPanelInput(params: TPanelParam): string {
     const options = params.options ? params.options : [];
-    if (params.type === 'number') {
+    const { name, type, value } = params;
+    if (type === 'number') {
       return `
       <input 
         class = 'panel__input' 
-        name = ${ params.name } 
-        type = ${ params.type } 
-        value = ${ params.value } required/>`;
+        name = ${ name } 
+        type = ${ type } 
+        value = ${ value } required/>`;
     }
-    if (params.type === 'checkbox') {
+    if (type === 'checkbox') {
       return `
         <input 
           class = 'panel__input panel__input_type_checkbox' 
-          name = ${ params.name } 
-          type = ${ params.type } ${ params.value }/>`;
+          name = ${ name } 
+          type = ${ type } ${ value }/>`;
     }
     return `
-        <${ params.type } 
+        <${ type } 
           class = 'panel__input' 
-          name = ${ params.name }> 
-          ${ options.map((el: string) => this.selectOptions(el)).join('') } 
-        </${ params.type }>`;
+          name = ${ name }> 
+          ${ options.map((el: string) => this.selectOptions(value, el)).join('') } 
+        </${ type }>`;
   }
 
-  private selectOptions(arg: string): string {
-    const orient = this.data.orientation === TOrient.HORIZONTAL
+  private selectOptions(value: string | number, arg: string): string {
+    const orient = value === TOrient.HORIZONTAL
       ? 'horizontal'
       : 'vertical';
     return arg === orient

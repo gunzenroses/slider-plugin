@@ -14,7 +14,7 @@ import Track from './Track/Track';
 import Thumbs from './Thumbs/Thumbs';
 import Scale from './Scale/Scale';
 
-class View extends Observable implements IView {
+class View extends Observable<TViewObservable> implements IView {
   container: HTMLElement;
 
   settings!: TViewSettings;
@@ -116,7 +116,7 @@ class View extends Observable implements IView {
   private notifySubviews(data: TViewSettings) {
     this.range.change(data);
     this.thumbs.change(data);
-  };
+  }
 
   private listenPointerDown(): void {
     this.thumbs.listenPointerDown(this.settings.range, this.dragThumbStart);
@@ -202,7 +202,6 @@ class View extends Observable implements IView {
   }
 
   private createSettings(settings: TSettings): void {
-    this.deleteKey('updateSubViews');
     const ifHorizontal = settings.orientation === TOrient.HORIZONTAL;
     const firstPosition = changeValueToPercents(
       settings.currentFirst,

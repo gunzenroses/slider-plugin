@@ -1,6 +1,6 @@
 import IObservable from './IObservable';
 
-interface IView extends IObservable {
+interface IView extends IObservable<TViewObservable> {
   settings: TViewSettings;
   container: HTMLElement;
   track: HTMLElement;

@@ -3,8 +3,7 @@ import adjustValue from 'helpers/adjustValue';
 import IModel from 'Interfaces/IModel';
 import Observable from 'Observable/Observable';
 
-class Model extends Observable implements IModel  {
-
+class Model extends Observable<TModelObservable> implements IModel {
   private data: TSettings;
 
   constructor(settings: TSettings) {
@@ -73,7 +72,7 @@ class Model extends Observable implements IModel  {
     } else if (name === 'currentSecond') {
       this.notifyListener('updateDataCurrentSecond', this.data.currentSecond);
     } else {
-      this.notifyListener('updateData');
+      this.notifyListener('updateData', this.data);
     }
   }
 }

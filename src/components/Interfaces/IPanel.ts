@@ -8,7 +8,7 @@ interface IPanel {
   init(): void;
   render(data: TSettings): void;
   changePanel(e: Event): void;
-  updatePanel(): void;
+  updatePanel(data: TSettings): void;
 }
 
 export default IPanel;

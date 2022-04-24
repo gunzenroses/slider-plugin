@@ -1,9 +1,9 @@
 import IObservable from 'Interfaces/IObservable';
 
-abstract class Observable implements IObservable {
-  listeners: TListenerArr = {};
+abstract class Observable<T extends Record<string, unknown>> implements IObservable<T> {
+  listeners: TListenerArr<T> = {} as TListenerArr<T>;
 
-  addListener<T>(eventKey: string, listener: TListener<T>): void {
+  addListener<K extends keyof T>(eventKey: K, listener: TListener<T>): void {
     if (this.listeners[eventKey]) {
       this.listeners[eventKey].push(listener);
     } else {
@@ -11,7 +11,7 @@ abstract class Observable implements IObservable {
     }
   }
 
-  deleteListener<T>(eventKey: string, listener: TListener<T>): void {
+  deleteListener<K extends keyof T>(eventKey: K, listener: TListener<T>): void {
     if (listener) {
       const index = this.listeners[eventKey].indexOf(listener);
       if (index !== -1) {
@@ -20,15 +20,9 @@ abstract class Observable implements IObservable {
     }
   }
 
-  protected notifyListener<T>(eventKey: string, args?: T): void {
+  protected notifyListener<K extends keyof T>(eventKey: K, args: T[K]): void {
     if (this.listeners[eventKey]) {
       this.listeners[eventKey].forEach((listener) => listener(args));
-    }
-  }
-
-  protected deleteKey(eventKey: string): void {
-    if (eventKey === 'updateSubViews') {
-      delete this.listeners[eventKey];
     }
   }
 }
