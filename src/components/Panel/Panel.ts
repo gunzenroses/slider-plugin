@@ -167,7 +167,7 @@ class ConfigurationPanel implements IPanel {
 
   private enable(): void {
     this.panelItems.addEventListener('change', this.changePanel);
-    this.presenter.addListener('updateAllData', this.updatePanel);
+    this.presenter.addListener('allDataUpdated', this.updatePanel);
     this.presenter.addListener('currentFirstDataUpdated', this.updateThumb);
     this.presenter.addListener(
       'currentSecondDataUpdated',
@@ -236,7 +236,7 @@ class ConfigurationPanel implements IPanel {
     const panelNameClass = params.type === 'checkbox'
       ? 'panel__name panel__name_type_checkbox'
       : 'panel__name';
-    const panelName = `<div class = '${ 
+    const panelName = `<div class = '${
       panelNameClass }'>${ params.text }</div>`;
     const panelItem = `<div class = '${ panelItemClass }'>
         ${ panelName } ${ this.createPanelInput(params) }

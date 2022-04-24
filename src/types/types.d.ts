@@ -15,11 +15,34 @@ type TFromValueToPercents = {
   step: number
 };
 
-type TListener<T> = (args: T) => void;
+type TListener<T> = <K extends keyof T>(args: T[K]) => void;
 
-type TListenerArr = {
-  [eventKey: string]: Array<TListener>;
+type TListenerArr<T> = Record<keyof T, TListener<T>[]>;
+
+type TPresenterObservable = {
+  'currentFirstDataUpdated': number,
+  'currentSecondDataUpdated': number,
+  'allDataUpdated': TSettings
 };
+
+type TModelObservable = {
+  'updateDataCurrentFirst': number,
+  'updateDataCurrentSecond': number,
+  'updateData': TSettings
+};
+
+type TViewObservable = {
+  'changeFirstThumb': number,
+  'changeSecondThumb': number
+};
+
+type TSMObservable = {
+  'allDataUpdated': TSettings | string,
+  'updateThumb': number,
+  'updateThumbSecond': number
+};
+
+type TObservable = TModelObservable & TViewObservable & TPresenterObservable;
 
 type TPanelParam = {
   name: string;
@@ -75,9 +98,9 @@ type TTooltip = {
   change(value: number): void;
 };
 
-type TSubviewData = { 
-  container: HTMLElement, 
-  settings: TViewSettings 
+type TSubviewData = {
+  container: HTMLElement,
+  settings: TViewSettings
 };
 
 type TThumbs = {
@@ -86,4 +109,4 @@ type TThumbs = {
   change(settings: TViewSettings): void;
   listenPointerDown(range: boolean, method: { (e: PointerEvent): void });
   stopListenPointerDown(range: boolean, method: { (e: PointerEvent): void });
-}
+};

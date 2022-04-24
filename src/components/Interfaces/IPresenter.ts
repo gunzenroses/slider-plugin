@@ -2,7 +2,7 @@ import IModel from './IModel';
 import IObservable from './IObservable';
 import IView from './IView';
 
-interface IPresenter extends IObservable {
+interface IPresenter extends IObservable<TPresenterObservable> {
   model: IModel;
   view: IView;
 

@@ -3,8 +3,7 @@ import adjustValue from 'helpers/adjustValue';
 import IModel from 'Interfaces/IModel';
 import Observable from 'Observable/Observable';
 
-class Model extends Observable implements IModel  {
-
+class Model extends Observable<TModelObservable> implements IModel {
   private data: TSettings;
 
   constructor(settings: TSettings) {

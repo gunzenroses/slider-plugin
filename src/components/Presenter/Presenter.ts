@@ -9,7 +9,6 @@ import Model from 'Model/Model';
 import View from 'View/View';
 
 class Presenter extends Observable<TPresenterObservable> implements IPresenter {
-
   model: IModel;
 
   view: IView;
@@ -68,7 +67,7 @@ class Presenter extends Observable<TPresenterObservable> implements IPresenter {
   @boundMethod
   private updateData(data: TSettings): void {
     this.updateView(data);
-    this.notifyListener('updateAllData', this.data);
+    this.notifyListener('allDataUpdated', this.data);
   }
 
   @boundMethod

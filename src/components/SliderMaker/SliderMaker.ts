@@ -10,7 +10,7 @@ import Panel from 'Panel/Panel';
 
 import 'assets/styles/slider.scss';
 
-class SliderMaker extends Observable {
+class SliderMaker extends Observable<TSMObservable> {
   private presenter!: IPresenter;
 
   private panel!: IPanel;
@@ -56,12 +56,12 @@ class SliderMaker extends Observable {
     return this;
   }
 
-  subscribe<T>(name: string, method: TListener<T>): SliderMaker {
+  subscribe(name: keyof TSMObservable, method: TListener<TSMObservable>): SliderMaker {
     this.addListener(name, method);
     return this;
   }
 
-  unsubscribe<T>(name: string, method: TListener<T>): SliderMaker {
+  unsubscribe(name: keyof TSMObservable, method: TListener<TSMObservable>): SliderMaker {
     if (method) {
       this.deleteListener(name, method);
     }
@@ -102,7 +102,7 @@ class SliderMaker extends Observable {
   }
 
   private enable(): SliderMaker {
-    this.presenter.addListener('updateAllData', this.updateAll);
+    this.presenter.addListener('allDataUpdated', this.updateAll);
     this.presenter.addListener('currentFirstDataUpdated', this.thumbUpdate);
     this.presenter.addListener(
       'currentSecondDataUpdated',
@@ -136,18 +136,17 @@ class SliderMaker extends Observable {
   }
 
   @boundMethod
-  private updateAll(): void {
-    const newData = this.getOptions;
-    this.notifyListener('updateAllData', newData);
+  private updateAll(data: TSettings): void {
+    this.notifyListener('allDataUpdated', data);
   }
 
   @boundMethod
-  private thumbUpdate<T>(value: T): void {
+  private thumbUpdate(value: number): void {
     this.notifyListener('updateThumb', value);
   }
 
   @boundMethod
-  private thumbSecondUpdate<T>(value: T): void {
+  private thumbSecondUpdate(value: number): void {
     this.notifyListener('updateThumbSecond', value);
   }
 }
