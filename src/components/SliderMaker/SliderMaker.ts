@@ -56,12 +56,12 @@ class SliderMaker extends Observable<TSMObservable> {
     return this;
   }
 
-  subscribe(name: keyof TSMObservable, method: TListener<TSMObservable>): SliderMaker {
+  subscribe<K extends keyof TSMObservable>(name: K, method: TListener<TSMObservable[K]>): SliderMaker {
     this.addListener(name, method);
     return this;
   }
 
-  unsubscribe(name: keyof TSMObservable, method: TListener<TSMObservable>): SliderMaker {
+  unsubscribe<K extends keyof TSMObservable>(name: K, method: TListener<TSMObservable[K]>): SliderMaker {
     if (method) {
       this.deleteListener(name, method);
     }

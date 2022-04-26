@@ -1,12 +1,17 @@
 import Observable from 'Observable/Observable';
 
+type TObserve = {
+  'someKey': number,
+  'anotherKey': number
+}
+
 describe('Observable', () => {
-  class Observe extends Observable {
+  class Observe extends Observable<TObserve> {
     constructor() {
       super();
     }
 
-    makeNotification(key: string, data: number) {
+    makeNotification(key: keyof TObserve, data: number) {
       this.notifyListener(key, data);
     }
   };
