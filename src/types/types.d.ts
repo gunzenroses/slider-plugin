@@ -15,9 +15,11 @@ type TFromValueToPercents = {
   step: number
 };
 
-type TListener<T> = <K extends keyof T>(args: T[K]) => void;
+type TListener<T> = (args: T) => void;
 
-type TListenerArr<T> = Record<keyof T, TListener<T>[]>;
+type TListenerArr<T> = { 
+  [K in keyof T]: TListener<T[K]>[]; 
+};
 
 type TPresenterObservable = {
   'currentFirstDataUpdated': number,
