@@ -65,11 +65,9 @@ class View extends Observable<TViewObservable> implements IView {
   @boundMethod
   dragThumbStart(e: PointerEvent): void {
     if (!e.target) return;
-    this.dragObj = (e.target as HTMLElement).closest('.thumb');
-    /* 'as' is used here
-    cause eventTarget does not inherit properties from Element like 'classList'
-    (not all targets are elements),
-    but in our case (event happened on a DOM Element) it is */
+    if (e.target instanceof HTMLElement) {
+      this.dragObj = e.target.closest(".thumb");
+    };
     e.preventDefault();
     this.listenMoveAndUp();
   }
