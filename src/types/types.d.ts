@@ -26,6 +26,10 @@ type TViewObservable = {
   'changeSecondThumb': number
 };
 
+type TThumbObservable = {
+  'dragThumb': PointerEvent
+}
+
 type TPresenterObservable = {
   'updateCurrentFirstPosition': number,
   'updateCurrentSecondPosition': number,
@@ -103,12 +107,4 @@ type TTooltip = {
 type TSubviewData = {
   container: HTMLElement,
   settings: TViewSettings
-};
-
-type TThumbs = {
-  thumbFirst: HTMLElement;
-  thumbSecond: HTMLElement;
-  change(settings: TViewSettings): void;
-  listenPointerDown(range: boolean, method: { (e: PointerEvent): void });
-  stopListenPointerDown(range: boolean, method: { (e: PointerEvent): void });
 };

@@ -1,3 +1,4 @@
+import Thumb from 'View/Thumb/Thumb';
 import IObservable from './IObservable';
 
 interface IView extends IObservable<TViewObservable> {
@@ -6,16 +7,15 @@ interface IView extends IObservable<TViewObservable> {
   track: HTMLElement;
   scale: HTMLElement;
   range: TRange;
-  thumbs: TThumbs;
+  thumbFirst: Thumb;
+  thumbSecond: Thumb;
   thumbWidth: number;
   containerSize: number;
 
   init(settings: TSettings): void;
   enable(): void;
   selectThumb(e: PointerEvent): void;
-  dragThumbStart(e: PointerEvent): void;
-  dragThumbMove(e: PointerEvent): void;
-  dragThumbEnd(): void;
+  dragThumb(e: PointerEvent): void;
   changeThumb(name: string, val: number): void;
 }
 

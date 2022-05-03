@@ -39,24 +39,7 @@ describe('class View', () => {
     test('notify listeners when position of thumb is changed', () => {
       view.selectThumb(pointerUpEvt as PointerEvent);
 
-      expect(view.thumbs.thumbFirst).not.toBe(data.currentFirst);
-    })
-  })
-
-  describe('method dragThumbEnd()', () => {
-    test('set listeners for new dragging', () => {
-      const spyOnDragStart = jest.spyOn(view, 'dragThumbStart');
-
-      const pointerDownEvt = new Event("pointerdown", {
-        bubbles: true,
-        cancelable: false,
-        composed: false,
-      })
-
-      view.dragThumbEnd();
-      view.thumbs.thumbSecond.dispatchEvent(pointerDownEvt);
-
-      expect(spyOnDragStart).toBeCalledTimes(1);
+      expect(view.thumbFirst.element).not.toBe(data.currentFirst);
     })
   })
 
@@ -92,40 +75,13 @@ describe('class View', () => {
     });
   });
 
-  describe('method dragThumbStart()', () => {
-    test('disable pointerdown eventListener', () => {
-      const newSet = {
-        ...data,
-        range: false,
-      };
-      view.init(newSet);
-      view.thumbs.thumbFirst.dispatchEvent(new Event('pointerdown'));
-      document.dispatchEvent(new Event('pointermove'));
-      const spyOnDragStart = jest.spyOn(view, 'dragThumbStart');
-
-      view.thumbs.thumbFirst.dispatchEvent(new Event('pointerdowm'));
-
-      expect(spyOnDragStart).toHaveBeenCalledTimes(0);
-    });
-  });
-
-  describe('method stopListenDown()', () => {
-    test('do not listen to thumbDown events when thumbMove', () => {
-      const spyOnThumbDown = jest.spyOn(view, 'dragThumbStart');
-
-      document.dispatchEvent(new Event('pointerdown'));
-
-      expect(spyOnThumbDown).toBeCalledTimes(0);
-    });
-  });
-
   describe('method render()', () => {
     test('init rendering view elements', () => {
       expect(view.container).toBeDefined();
       expect(view.track).toBeDefined();
       expect(view.range).toBeDefined();
-      expect(view.thumbs.thumbFirst).toBeDefined();
-      expect(view.thumbs.thumbSecond).toBeDefined();
+      expect(view.thumbFirst.element).toBeDefined();
+      expect(view.thumbSecond.element).toBeDefined();
       expect(view.scale).toBeDefined();
     });
 
