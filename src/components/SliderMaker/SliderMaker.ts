@@ -102,10 +102,10 @@ class SliderMaker extends Observable<TSMObservable> {
   }
 
   private enable(): SliderMaker {
-    this.presenter.addListener('allDataUpdated', this.updateAll);
-    this.presenter.addListener('currentFirstDataUpdated', this.thumbUpdate);
+    this.presenter.addListener('updateAllPositions', this.updateAll);
+    this.presenter.addListener('updateCurrentFirstPosition', this.thumbUpdate);
     this.presenter.addListener(
-      'currentSecondDataUpdated',
+      'updateCurrentSecondPosition',
       this.thumbSecondUpdate
     );
     return this;
@@ -137,7 +137,7 @@ class SliderMaker extends Observable<TSMObservable> {
 
   @boundMethod
   private updateAll(data: TSettings): void {
-    this.notifyListener('allDataUpdated', data);
+    this.notifyListener('updateData', data);
   }
 
   @boundMethod

@@ -21,25 +21,25 @@ type TListenerArr<T> = {
   [K in keyof T]: TListener<T[K]>[]; 
 };
 
-type TPresenterObservable = {
-  'currentFirstDataUpdated': number,
-  'currentSecondDataUpdated': number,
-  'allDataUpdated': TSettings
-};
-
-type TModelObservable = {
-  'updateDataCurrentFirst': number,
-  'updateDataCurrentSecond': number,
-  'updateData': TSettings
-};
-
 type TViewObservable = {
   'changeFirstThumb': number,
   'changeSecondThumb': number
 };
 
+type TPresenterObservable = {
+  'updateCurrentFirstPosition': number,
+  'updateCurrentSecondPosition': number,
+  'updateAllPositions': TSettings
+};
+
+type TModelObservable = {
+  'updateCurrentFirstData': number,
+  'updateCurrentSecondData': number,
+  'updateAllData': TSettings
+};
+
 type TSMObservable = {
-  'allDataUpdated': TSettings | string,
+  'updateData': TSettings | string,
   'updateThumb': number,
   'updateThumbSecond': number
 };

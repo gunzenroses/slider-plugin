@@ -167,10 +167,10 @@ class ConfigurationPanel implements IPanel {
 
   private enable(): void {
     this.panelItems.addEventListener('change', this.changePanel);
-    this.presenter.addListener('allDataUpdated', this.updatePanel);
-    this.presenter.addListener('currentFirstDataUpdated', this.updateThumb);
+    this.presenter.addListener('updateAllPositions', this.updatePanel);
+    this.presenter.addListener('updateCurrentFirstPosition', this.updateThumb);
     this.presenter.addListener(
-      'currentSecondDataUpdated',
+      'updateCurrentSecondPosition',
       this.updateThumbSecond
     );
   }

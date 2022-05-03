@@ -44,12 +44,12 @@ class Presenter extends Observable<TPresenterObservable> implements IPresenter {
   private enable(): void {
     this.view.addListener('changeFirstThumb', this.modelThumbFirst);
     this.view.addListener('changeSecondThumb', this.modelThumbSecond);
-    this.model.addListener('updateDataCurrentFirst', this.changeFirstThumb);
+    this.model.addListener('updateCurrentFirstData', this.changeFirstThumb);
     this.model.addListener(
-      'updateDataCurrentSecond',
+      'updateCurrentSecondData',
       this.changeSecondThumb
     );
-    this.model.addListener('updateData', this.updateData);
+    this.model.addListener('updateAllData', this.updateData);
   }
 
   @boundMethod
@@ -66,20 +66,23 @@ class Presenter extends Observable<TPresenterObservable> implements IPresenter {
 
   @boundMethod
   private updateData(data: TSettings): void {
-    this.updateView(data);
-    this.notifyListener('allDataUpdated', this.data);
+    this.data = data;
+    this.updateView(this.data);
+    this.notifyListener('updateAllPositions', this.data);
   }
 
   @boundMethod
   private changeFirstThumb(value: number): void {
-    this.notifyListener('currentFirstDataUpdated', value);
-    this.view.changeThumb('thumbFirst', value);
+    this.data.currentFirst = value;
+    this.notifyListener('updateCurrentFirstPosition', this.data.currentFirst);
+    this.view.changeThumb('thumbFirst', this.data.currentFirst);
   }
 
   @boundMethod
   private changeSecondThumb(value: number): void {
-    this.notifyListener('currentSecondDataUpdated', value);
-    this.view.changeThumb('thumbSecond', value);
+    this.data.currentSecond = value;
+    this.notifyListener('updateCurrentSecondPosition', this.data.currentSecond);
+    this.view.changeThumb('thumbSecond', this.data.currentSecond);
   }
 }
 
