@@ -96,10 +96,10 @@ class View extends Observable<TViewObservable> implements IView {
       this.settings.currentSecond = value;
     }
     const newSettings = this.settings;
-    this.notifySubviews(newSettings);
+    this.changeSubviews(newSettings);
   }
 
-  private notifySubviews(data: TViewSettings) {
+  private changeSubviews(data: TViewSettings) {
     this.range.change(data);
     this.thumbFirst.change(data, 'first');
     if (this.range){
