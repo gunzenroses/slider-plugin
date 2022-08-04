@@ -9,11 +9,9 @@ import Model from 'Model/Model';
 import View from 'View/View';
 
 class Presenter extends Observable<TPresenterObservable> implements IPresenter {
-  model: IModel;
+  private model: IModel;
 
-  view: IView;
-
-  private data!: TSettings;
+  private view: IView;
 
   constructor(container: HTMLElement, data: TSettings) {
     super();
@@ -23,62 +21,58 @@ class Presenter extends Observable<TPresenterObservable> implements IPresenter {
   }
 
   init(): void {
-    this.data = this.model.getData();
-    this.updateView(this.data);
+    this.updateView(this.model.getData());
     this.enable();
   }
 
-  updateView(data: TSettings): void {
-    this.view.init(data);
-  }
-
   getData(): TSettings {
-    const requiredData = this.data;
+    const requiredData = this.model.getData();
     return requiredData;
   }
 
-  modelData(name: keyof TSettings, data: TModelData): void {
+  setData(name: keyof TSettings, data: TSetData): void {
     this.model.setData(name, data);
   }
 
   private enable(): void {
     this.view.addListener('changeFirstThumb', this.modelThumbFirst);
     this.view.addListener('changeSecondThumb', this.modelThumbSecond);
-    this.model.addListener('updateDataCurrentFirst', this.changeFirstThumb);
-    this.model.addListener(
-      'updateDataCurrentSecond',
-      this.changeSecondThumb
-    );
-    this.model.addListener('updateData', this.updateData);
+    this.model.addListener('updateCurrentFirstData', this.changeFirstThumb);
+    this.model.addListener('updateCurrentSecondData', this.changeSecondThumb);
+    this.model.addListener('updateAllData', this.updateData);
+  }
+
+  private updateView(data: TSettings): void {
+    this.view.init(data);
   }
 
   @boundMethod
   private modelThumbFirst(value: number): void {
-    const newValue = changePercentsToValue(value, this.data);
+    const newValue = changePercentsToValue(value, this.model.getData());
     this.model.setData('currentFirst', newValue);
   }
 
   @boundMethod
   private modelThumbSecond(value: number): void {
-    const newValue = changePercentsToValue(value, this.data);
+    const newValue = changePercentsToValue(value, this.model.getData());
     this.model.setData('currentSecond', newValue);
   }
 
   @boundMethod
   private updateData(data: TSettings): void {
     this.updateView(data);
-    this.notifyListener('allDataUpdated', this.data);
+    this.notifyListener('updateAllPositions', data);
   }
 
   @boundMethod
   private changeFirstThumb(value: number): void {
-    this.notifyListener('currentFirstDataUpdated', value);
+    this.notifyListener('updateCurrentFirstPosition', value);
     this.view.changeThumb('thumbFirst', value);
   }
 
   @boundMethod
   private changeSecondThumb(value: number): void {
-    this.notifyListener('currentSecondDataUpdated', value);
+    this.notifyListener('updateCurrentSecondPosition', value);
     this.view.changeThumb('thumbSecond', value);
   }
 }

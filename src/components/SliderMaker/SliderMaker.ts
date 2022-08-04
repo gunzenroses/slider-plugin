@@ -15,25 +15,19 @@ class SliderMaker extends Observable<TSMObservable> {
 
   private panel!: IPanel;
 
-  private model!: IModel;
-
   private data!: TSettings;
 
-  constructor(
-    container: HTMLElement,
-    ifPanel = false,
-    options?: TSettings
-  ) {
+  constructor(container: HTMLElement, ifPanel = false, options?: TSettings) {
     super();
     this.init(container, ifPanel, options);
   }
 
-  getOptions(name?: TModelData): string | TSettings {
-    const newData = this.model.getData();
+  getOptions(name?: TSetData): string | TSettings {
+    const newData = this.presenter.getData();
     if (name) {
       Object.entries(newData).forEach((entry) => {
         if (entry[0] === name) {
-          return `${ entry[0] }: ${ entry[1] }`;
+          return `${entry[0]}: ${entry[1]}`;
         }
         return 'this option does not exist';
       });
@@ -41,8 +35,8 @@ class SliderMaker extends Observable<TSMObservable> {
     return newData;
   }
 
-  setOptions(name: string, data: TModelData): SliderMaker {
-    this.presenter.modelData(name, data);
+  setOptions(name: string, data: TSetData): SliderMaker {
+    this.presenter.setData(name, data);
     return this;
   }
 
@@ -56,12 +50,18 @@ class SliderMaker extends Observable<TSMObservable> {
     return this;
   }
 
-  subscribe<K extends keyof TSMObservable>(name: K, method: TListener<TSMObservable[K]>): SliderMaker {
+  subscribe<K extends keyof TSMObservable>(
+    name: K,
+    method: TListener<TSMObservable[K]>
+  ): SliderMaker {
     this.addListener(name, method);
     return this;
   }
 
-  unsubscribe<K extends keyof TSMObservable>(name: K, method: TListener<TSMObservable[K]>): SliderMaker {
+  unsubscribe<K extends keyof TSMObservable>(
+    name: K,
+    method: TListener<TSMObservable[K]>
+  ): SliderMaker {
     if (method) {
       this.deleteListener(name, method);
     }
@@ -86,7 +86,6 @@ class SliderMaker extends Observable<TSMObservable> {
     this.makeData(container, options);
     this.presenter = new Presenter(container, this.data);
     this.panel = new Panel(container, this.presenter);
-    this.model = this.presenter.model;
     if (container.dataset.panel === 'true') {
       this.changePanel(true);
     } else this.changePanel(ifPanel);
@@ -102,10 +101,10 @@ class SliderMaker extends Observable<TSMObservable> {
   }
 
   private enable(): SliderMaker {
-    this.presenter.addListener('allDataUpdated', this.updateAll);
-    this.presenter.addListener('currentFirstDataUpdated', this.thumbUpdate);
+    this.presenter.addListener('updateAllPositions', this.updateAll);
+    this.presenter.addListener('updateCurrentFirstPosition', this.thumbUpdate);
     this.presenter.addListener(
-      'currentSecondDataUpdated',
+      'updateCurrentSecondPosition',
       this.thumbSecondUpdate
     );
     return this;
@@ -119,11 +118,12 @@ class SliderMaker extends Observable<TSMObservable> {
       const value = entry[1];
       const undefinedValue = typeof value === 'undefined';
       const panelKey = key === 'panel';
-      const keyOfNumValue = key === 'min'
-        || key === 'max'
-        || key === 'step'
-        || key === 'currentFirst'
-        || key === 'currentSecond';
+      const keyOfNumValue =
+        key === 'min' ||
+        key === 'max' ||
+        key === 'step' ||
+        key === 'currentFirst' ||
+        key === 'currentSecond';
       const valueTypeString = typeof value === 'string';
       if (keyOfNumValue && valueTypeString) {
         dataArr.push([key, parseFloat(value)]);
@@ -137,7 +137,7 @@ class SliderMaker extends Observable<TSMObservable> {
 
   @boundMethod
   private updateAll(data: TSettings): void {
-    this.notifyListener('allDataUpdated', data);
+    this.notifyListener('updateData', data);
   }
 
   @boundMethod

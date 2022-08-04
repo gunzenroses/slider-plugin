@@ -1,10 +1,7 @@
 import { boundMethod } from 'autobind-decorator';
 
 import CheckValidity from 'helpers/CheckValidity';
-import {
-  afterCustomElement,
-  appendCustomElement
-} from 'utils/common';
+import { afterCustomElement, appendCustomElement } from 'utils/common';
 import TOrient from 'utils/const';
 import IPresenter from 'Interfaces/IPresenter';
 import IPanel from 'Interfaces/IPanel';
@@ -34,12 +31,12 @@ class ConfigurationPanel implements IPanel {
     this.container = afterCustomElement({
       type: 'div',
       className: 'panel',
-      parent: container
+      parent: container,
     });
     this.panelItems = appendCustomElement({
       type: 'div',
       className: 'panel__items',
-      parent: this.container
+      parent: this.container,
     });
     this.presenter = presenter;
     this.init();
@@ -73,7 +70,7 @@ class ConfigurationPanel implements IPanel {
       this.validate(element);
     }
     if (data === null || name === null) return;
-    this.modelData({ type, name, data });
+    this.setData({ type, name, data });
   }
 
   render(): void {
@@ -82,57 +79,57 @@ class ConfigurationPanel implements IPanel {
         name: 'min',
         text: 'min',
         value: this.data.min,
-        type: 'number'
+        type: 'number',
       },
       {
         name: 'max',
         text: 'max',
         value: this.data.max,
-        type: 'number'
+        type: 'number',
       },
       {
         name: 'step',
         text: 'step',
         value: this.data.step,
-        type: 'number'
+        type: 'number',
       },
       {
         name: 'currentFirst',
         text: 'from',
         value: this.data.currentFirst,
-        type: 'number'
+        type: 'number',
       },
       {
         name: 'currentSecond',
         text: 'to',
         value: this.data.currentSecond,
-        type: 'number'
+        type: 'number',
       },
       {
         name: 'orientation',
         text: 'orient',
         value: this.data.orientation,
         type: 'select',
-        options: ['horizontal', 'vertical']
+        options: ['horizontal', 'vertical'],
       },
       {
         name: 'range',
         text: 'range',
         value: this.data.range ? 'checked' : '',
-        type: 'checkbox'
+        type: 'checkbox',
       },
       {
         name: 'scale',
         text: 'scale',
         value: this.data.scale ? 'checked' : '',
-        type: 'checkbox'
+        type: 'checkbox',
       },
       {
         name: 'tooltip',
         text: 'tooltip',
         value: this.data.tooltip ? 'checked' : '',
-        type: 'checkbox'
-      }
+        type: 'checkbox',
+      },
     ];
 
     this.panelItems.innerHTML = '';
@@ -167,10 +164,10 @@ class ConfigurationPanel implements IPanel {
 
   private enable(): void {
     this.panelItems.addEventListener('change', this.changePanel);
-    this.presenter.addListener('allDataUpdated', this.updatePanel);
-    this.presenter.addListener('currentFirstDataUpdated', this.updateThumb);
+    this.presenter.addListener('updateAllPositions', this.updatePanel);
+    this.presenter.addListener('updateCurrentFirstPosition', this.updateThumb);
     this.presenter.addListener(
-      'currentSecondDataUpdated',
+      'updateCurrentSecondPosition',
       this.updateThumbSecond
     );
   }
@@ -216,30 +213,31 @@ class ConfigurationPanel implements IPanel {
       : this.data.max.toString();
   }
 
-  private modelData(options: TDataInfo): void {
+  private setData(options: TDataInfo): void {
     const { type, name, data } = options;
     if (type === 'number') {
       if (typeof data === 'string') {
-        this.presenter.modelData(name, parseFloat(data));
+        this.presenter.setData(name, parseFloat(data));
       } else {
-        this.presenter.modelData(name, data);
+        this.presenter.setData(name, data);
       }
     } else {
-      this.presenter.modelData(name, data);
+      this.presenter.setData(name, data);
     }
   }
 
   private createPanelItem(params: TPanelParam): string {
-    const panelItemClass = params.type === 'checkbox'
-      ? 'panel__item panel__item_type_checkbox'
-      : 'panel__item';
-    const panelNameClass = params.type === 'checkbox'
-      ? 'panel__name panel__name_type_checkbox'
-      : 'panel__name';
-    const panelName = `<div class = '${
-      panelNameClass }'>${ params.text }</div>`;
-    const panelItem = `<div class = '${ panelItemClass }'>
-        ${ panelName } ${ this.createPanelInput(params) }
+    const panelItemClass =
+      params.type === 'checkbox'
+        ? 'panel__item panel__item_type_checkbox'
+        : 'panel__item';
+    const panelNameClass =
+      params.type === 'checkbox'
+        ? 'panel__name panel__name_type_checkbox'
+        : 'panel__name';
+    const panelName = `<div class = '${panelNameClass}'>${params.text}</div>`;
+    const panelItem = `<div class = '${panelItemClass}'>
+        ${panelName} ${this.createPanelInput(params)}
       </div>`;
     return panelItem;
   }
@@ -251,32 +249,32 @@ class ConfigurationPanel implements IPanel {
       return `
       <input 
         class = 'panel__input' 
-        name = ${ name } 
-        type = ${ type } 
-        value = ${ value } required/>`;
+        name = ${name} 
+        type = ${type} 
+        value = ${value} required/>`;
     }
     if (type === 'checkbox') {
       return `
         <input 
           class = 'panel__input panel__input_type_checkbox' 
-          name = ${ name } 
-          type = ${ type } ${ value }/>`;
+          name = ${name} 
+          type = ${type} ${value}/>`;
     }
     return `
-        <${ type } 
+        <${type} 
           class = 'panel__input' 
-          name = ${ name }> 
-          ${ options.map((el: string) => this.selectOptions(value, el)).join('') } 
-        </${ type }>`;
+          name = ${name}> 
+          ${options
+            .map((el: string) => this.selectOptions(value, el))
+            .join('')} 
+        </${type}>`;
   }
 
   private selectOptions(value: string | number, arg: string): string {
-    const orient = value === TOrient.HORIZONTAL
-      ? 'horizontal'
-      : 'vertical';
+    const orient = value === TOrient.HORIZONTAL ? 'horizontal' : 'vertical';
     return arg === orient
-      ? `<option selected value = '${ arg }'>${ arg }</option> `
-      : `<option value = '${ arg }'>${ arg }</option> `;
+      ? `<option selected value = '${arg}'>${arg}</option> `
+      : `<option value = '${arg}'>${arg}</option> `;
   }
 }
 

@@ -3,13 +3,9 @@ import IObservable from './IObservable';
 import IView from './IView';
 
 interface IPresenter extends IObservable<TPresenterObservable> {
-  model: IModel;
-  view: IView;
-
   init(): void;
-  updateView(data: TSettings): void;
   getData(): TSettings;
-  modelData(name: string, data: TModelData): void;
+  setData(name: string, data: TSetData): void;
 }
 
 export default IPresenter;

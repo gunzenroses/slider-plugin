@@ -1,47 +1,54 @@
-type TModelData = boolean | number | string;
+type TSetData = boolean | number | string;
 
 type TDataInfo = {
-  type: string | null,
-  name: string,
-  data: TModelData
+  type: string | null;
+  name: string;
+  data: TSetData;
 };
 
-type TArrayOfEntries = Array<[string, TModelData]>;
+type TArrayOfEntries = Array<[string, TSetData]>;
 
 type TFromValueToPercents = {
-  value: number,
-  min: number,
-  max: number,
-  step: number
+  value: number;
+  min: number;
+  max: number;
+  step: number;
 };
 
 type TListener<T> = (args: T) => void;
 
-type TListenerArr<T> = { 
-  [K in keyof T]: TListener<T[K]>[]; 
-};
-
-type TPresenterObservable = {
-  'currentFirstDataUpdated': number,
-  'currentSecondDataUpdated': number,
-  'allDataUpdated': TSettings
-};
-
-type TModelObservable = {
-  'updateDataCurrentFirst': number,
-  'updateDataCurrentSecond': number,
-  'updateData': TSettings
+type TListenerArr<T> = {
+  [K in keyof T]: TListener<T[K]>[];
 };
 
 type TViewObservable = {
-  'changeFirstThumb': number,
-  'changeSecondThumb': number
+  changeFirstThumb: number;
+  changeSecondThumb: number;
+};
+
+type TThumbObservable = {
+  dragThumb: {
+    element: HTMLElement;
+    event: PointerEvent;
+  }
+};
+
+type TPresenterObservable = {
+  updateCurrentFirstPosition: number;
+  updateCurrentSecondPosition: number;
+  updateAllPositions: TSettings;
+};
+
+type TModelObservable = {
+  updateCurrentFirstData: number;
+  updateCurrentSecondData: number;
+  updateAllData: TSettings;
 };
 
 type TSMObservable = {
-  'allDataUpdated': TSettings | string,
-  'updateThumb': number,
-  'updateThumbSecond': number
+  updateData: TSettings | string;
+  updateThumb: number;
+  updateThumbSecond: number;
 };
 
 type TObservable = TModelObservable & TViewObservable & TPresenterObservable;
@@ -100,15 +107,7 @@ type TTooltip = {
   change(value: number): void;
 };
 
-type TSubviewData = { 
-  container: HTMLElement, 
-  settings: TViewSettings
-};
-
-type TThumbs = {
-  thumbFirst: HTMLElement;
-  thumbSecond: HTMLElement;
-  change(settings: TViewSettings): void;
-  listenPointerDown(range: boolean, method: { (e: PointerEvent): void });
-  stopListenPointerDown(range: boolean, method: { (e: PointerEvent): void });
+type TSubviewData = {
+  container: HTMLElement;
+  settings: TViewSettings;
 };

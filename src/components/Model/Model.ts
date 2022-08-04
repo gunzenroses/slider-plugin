@@ -18,7 +18,7 @@ class Model extends Observable<TModelObservable> implements IModel {
     return requiredData;
   }
 
-  setData(name: keyof TSettings, data: TModelData): void {
+  setData(name: keyof TSettings, data: TSetData): void {
     this.updateData(name, data);
     this.updateCurrentsWithStep();
     this.changeData(name);
@@ -44,13 +44,13 @@ class Model extends Observable<TModelObservable> implements IModel {
     this.data = settings;
   }
 
-  private updateData(name: keyof TSettings, data: TModelData): void {
+  private updateData(name: keyof TSettings, data: TSetData): void {
     const oldData = this.getData();
     if (oldData[name] === data) return;
     const updData = adjustValue({
       name,
       value: data,
-      data: oldData
+      data: oldData,
     });
     const newData = { [name]: updData };
     this.data = { ...oldData, ...newData };
@@ -68,11 +68,11 @@ class Model extends Observable<TModelObservable> implements IModel {
 
   private changeData(name: keyof TSettings): void {
     if (name === 'currentFirst') {
-      this.notifyListener('updateDataCurrentFirst', this.data.currentFirst);
+      this.notifyListener('updateCurrentFirstData', this.data.currentFirst);
     } else if (name === 'currentSecond') {
-      this.notifyListener('updateDataCurrentSecond', this.data.currentSecond);
+      this.notifyListener('updateCurrentSecondData', this.data.currentSecond);
     } else {
-      this.notifyListener('updateData', this.data);
+      this.notifyListener('updateAllData', this.data);
     }
   }
 }

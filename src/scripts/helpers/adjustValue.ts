@@ -2,9 +2,9 @@ import { applyStepOnValue, getNumbersAfterDot } from 'utils/common';
 
 function adjustValue(options: {
   name: string,
-  value: TModelData,
+  value: TSetData,
   data: TSettings,
-}): TModelData {
+}): TSetData {
   const { name, value, data } = options;
   const {
     max, min, step, currentFirst, currentSecond
@@ -74,7 +74,7 @@ function adjustValue(options: {
     } return max;
   }
 
-  function adjustAsIs(val: TModelData): TModelData {
+  function adjustAsIs(val: TSetData): TSetData {
     return val;
   }
 

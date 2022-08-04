@@ -17,72 +17,51 @@ describe('Presenter', () => {
     jest.restoreAllMocks();
   });
 
-  describe('method updateView()', () => {
-    test('should get data from model', () => {
-      presenter.init();
+  describe('method init()', () => {
+    test('should initiate model', () => {
+      const setData = presenter.getData();
 
-      const data = presenter.getData();
-
-      expect(data).toEqual(presenter.model.getData());
-    });
-
-    test('should initiate view', () => {
-      const spyOnView = jest.spyOn(presenter.view, 'init');
-
-      presenter.init();
-
-      expect(spyOnView).toHaveBeenCalledTimes(1);
-      expect(spyOnView).toHaveBeenCalledWith(presenter.model.getData());
+      expect(setData).toBeDefined();
     });
   });
 
-  describe('method modelData()', () => {
-    test('should call process data to update Model', () => {
+  describe('method setData()', () => {
+    test('update Model', () => {
       const name = 'min';
       const data = 15;
-      const spySetDataInModel = jest.spyOn(presenter.model, 'setData');
+      presenter.setData(name, data);
 
-      presenter.modelData(name, data);
-      expect(spySetDataInModel).toHaveBeenCalledTimes(1);
-      expect(spySetDataInModel).toHaveBeenCalledWith(name, data);
+      const newMin = presenter.getData().min;
+      expect(newMin).toBe(data);
+    });
+
+    test('update currentFirst', () => {
+      const name = 'currentFirst';
+      const data = 25;
+      presenter.setData(name, data);
+
+      const newCurrentFirst = presenter.getData().currentFirst;
+      expect(newCurrentFirst).toBe(data);
+    });
+
+    test('update currentSecond', () => {
+      const name = 'currentSecond';
+      const data = 35;
+      presenter.setData(name, data);
+
+      const newCurrentSecond = presenter.getData().currentSecond;
+      expect(newCurrentSecond).toBe(data);
     });
   });
-});
 
-const VS = {
-  orientation: TOrient.VERTICAL,
-  range: false,
-};
-const initialDataVS = { ...initialData, ...VS };
-const presenterVS = new Presenter(container, initialDataVS);
+  describe('mediate data from view to model', () => {
+    it('change thumb data by clicking on document', () => {
+      const firstThumbOld = presenter.getData().currentFirst;
+      const evt = new Event('pointerup', { bubbles: true });
 
-describe('should work for single and vertical sliders', () => {
-  test('process data from model to view', () => {
-    const val = 28;
-    const spyViewUpdate = jest.spyOn(
-      presenterVS.view, 
-      'changeThumb'
-    ).mockImplementation();
-
-    presenterVS.model.setData('currentFirst', val);
-
-    expect(spyViewUpdate).toHaveBeenCalled();
-  });
-
-  test('method dragThumb()', () => {
-    const evt = new Event('pointerup', {
-      bubbles: true,
-      cancelable: false,
-      composed: false
+      container.dispatchEvent(evt);
+      const firstThumbNew = presenter.getData().currentFirst;
+      expect(firstThumbOld).not.toBe(firstThumbNew);
     });
-    const spyOnModelChange = jest.spyOn(
-      presenterVS.model, 
-      'setData'
-    ).mockImplementation();
-    
-    debugger;
-    presenterVS.view.selectThumb(evt as PointerEvent);
-
-    expect(spyOnModelChange).toHaveBeenCalledTimes(1);
   });
 });
