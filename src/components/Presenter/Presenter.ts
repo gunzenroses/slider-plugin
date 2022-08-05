@@ -21,13 +21,12 @@ class Presenter extends Observable<TPresenterObservable> implements IPresenter {
   }
 
   init(): void {
-    this.updateView(this.model.getData());
+    this.view.init(this.getData());
     this.enable();
   }
 
   getData(): TSettings {
-    const requiredData = this.model.getData();
-    return requiredData;
+    return this.model.getData();
   }
 
   setData(name: keyof TSettings, data: TSetData): void {
@@ -35,43 +34,39 @@ class Presenter extends Observable<TPresenterObservable> implements IPresenter {
   }
 
   private enable(): void {
-    this.view.addListener('changeFirstThumb', this.modelThumbFirst);
-    this.view.addListener('changeSecondThumb', this.modelThumbSecond);
-    this.model.addListener('updateCurrentFirstData', this.changeFirstThumb);
-    this.model.addListener('updateCurrentSecondData', this.changeSecondThumb);
+    this.view.addListener('changeFirstThumb', this.changeThumbFirst);
+    this.view.addListener('changeSecondThumb', this.changeSecondThumb);
+    this.model.addListener('updateCurrentFirstData', this.updateFirstThumb);
+    this.model.addListener('updateCurrentSecondData', this.updateSecondThumb);
     this.model.addListener('updateAllData', this.updateData);
   }
 
-  private updateView(data: TSettings): void {
-    this.view.init(data);
-  }
-
   @boundMethod
-  private modelThumbFirst(value: number): void {
-    const newValue = changePercentsToValue(value, this.model.getData());
+  private changeThumbFirst(value: number): void {
+    const newValue = changePercentsToValue(value, this.getData());
     this.model.setData('currentFirst', newValue);
   }
 
   @boundMethod
-  private modelThumbSecond(value: number): void {
-    const newValue = changePercentsToValue(value, this.model.getData());
+  private changeSecondThumb(value: number): void {
+    const newValue = changePercentsToValue(value, this.getData());
     this.model.setData('currentSecond', newValue);
   }
 
   @boundMethod
   private updateData(data: TSettings): void {
-    this.updateView(data);
+    this.view.init(data);
     this.notifyListener('updateAllPositions', data);
   }
 
   @boundMethod
-  private changeFirstThumb(value: number): void {
+  private updateFirstThumb(value: number): void {
     this.notifyListener('updateCurrentFirstPosition', value);
     this.view.changeThumb('thumbFirst', value);
   }
 
   @boundMethod
-  private changeSecondThumb(value: number): void {
+  private updateSecondThumb(value: number): void {
     this.notifyListener('updateCurrentSecondPosition', value);
     this.view.changeThumb('thumbSecond', value);
   }

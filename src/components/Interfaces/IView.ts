@@ -1,8 +1,6 @@
 import IObservable from './IObservable';
 
 interface IView extends IObservable<TViewObservable> {
-  settings: TViewSettings;
-  container: HTMLElement;
   thumbWidth: number;
   containerSize: number;
 

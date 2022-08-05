@@ -15,25 +15,23 @@ import Thumb from './Thumb/Thumb';
 import Scale from './Scale/Scale';
 
 class View extends Observable<TViewObservable> implements IView {
-  container: HTMLElement;
+  private container: HTMLElement;
 
-  settings!: TViewSettings;
+  private settings!: TViewSettings;
 
-  track!: HTMLElement;
+  private track!: HTMLElement;
 
-  scale!: HTMLElement;
+  private scale!: HTMLElement;
 
-  range!: TRange;
+  private range!: TRange;
 
-  thumbFirst!: Thumb;
+  private thumbFirst!: Thumb;
 
-  thumbSecond!: Thumb;
+  private thumbSecond!: Thumb;
 
   containerSize!: number;
 
   thumbWidth!: number;
-
-  private dragObj!: HTMLElement | null;
 
   constructor(container: HTMLElement) {
     super();
@@ -218,7 +216,7 @@ class View extends Observable<TViewObservable> implements IView {
     };
     this.range = new Range(trackElementsData);
     this.thumbFirst = new Thumb(trackElementsData, 'first');
-    if (this.range) {
+    if (this.settings.range) {
       this.thumbSecond = new Thumb(trackElementsData, 'second');
     }
     this.container.append(container);
